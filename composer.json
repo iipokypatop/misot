@@ -1,0 +1,38 @@
+{
+  "name": "mivar-projects/aot",
+  "description": "",
+  "minimum-stability": "dev",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Peter Semenyuk",
+      "email": "peter.semenyuk@mivar.ru"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.0",
+    "phpunit/phpunit": "4.7.*",
+    "mivar-projects/loader": "dev-master",
+    "mivar-projects/test-utils": "dev-master",
+    "mivar-projects/text-libraries" : "dev-master"
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@gitlab.mivar.ru:mivar-projects/loader.git"
+    },
+    {
+      "type": "git",
+      "url": "git@gitlab.mivar.ru:mivar-projects/test-utils.git"
+    },
+    {
+      "type": "git",
+      "url": "git@gitlab.mivar.ru:mivar-projects/text-libraries.git"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "RussianMorphology\\": "src/"
+    }
+  }
+}
