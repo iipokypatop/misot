@@ -16,6 +16,9 @@ abstract class Factory
     {
     }
 
+    /**
+     * @return static
+     */
     public static function get()
     {
         if (static::$uniqueInstance === null) {

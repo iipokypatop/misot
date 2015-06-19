@@ -11,59 +11,70 @@ namespace RussianMorphology\ChastiRechi\Samostoyatelnie\Suschestvitelnoe;
 class Analyser extends \RussianMorphology\Analyser
 {
     /**
+     * @var $protocol AnalysisProtocol
+     */
+    protected $protocol;
+
+    /**
      * @param $text
      * @return AnalysisProtocol
      */
     public function run($text)
     {
-        /**
-         * @var $protocol AnalysisProtocol
-         */
-        $protocol = parent::run($text);
+        parent::run($text);
 
-        $protocol->chislo = $this->analyzeChislo();
-        $protocol->sklonenie = $this->analyzeSklonenie();
-        $protocol->rod = $this->analyzeRod();
-        $protocol->padeszh = $this->analyzePadeszh();
-        $protocol->odushevlyonnost = $this->analyzeOdushevlyonnost();
-        $protocol->naritcatelnost = $this->analyzeNaritcatelnost();
+        foreach ($this->protocol->similar_word_forms as $text) {
 
-        return $protocol;
+        }
+
+        $words = \DMivarDictionary::get_words(
+
+        );
+
+        $this->analyzeChislo();
+        $this->analyzeSklonenie();
+        $this->analyzeRod();
+        $this->analyzePadeszh();
+        $this->analyzeOdushevlyonnost();
+        $this->analyzeNaritcatelnost();
+
+        return $this->protocol;
     }
 
     protected function analyzeChislo()
     {
-        return [];
+
+
+        $this->protocol->chislo = [];
     }
 
     protected function analyzeSklonenie()
     {
-        return [];
+        $this->protocol->sklonenie = [];
     }
 
     protected function analyzeRod()
     {
-        return [];
+        $this->protocol->rod = [];
     }
 
     protected function analyzePadeszh()
     {
-        return [];
+        $this->protocol->padeszh = [];
     }
 
     protected function analyzeOdushevlyonnost()
     {
-        return [];
+        $this->protocol->odushevlyonnost = [];
     }
 
     protected function analyzeNaritcatelnost()
     {
-        return [];
+        $this->protocol->naritcatelnost = [];
     }
 
-    protected function getProtocol()
+    protected function getProtocolObject()
     {
         return new AnalysisProtocol;
     }
-
 }

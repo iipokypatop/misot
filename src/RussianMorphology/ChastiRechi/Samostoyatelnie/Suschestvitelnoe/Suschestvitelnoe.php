@@ -45,7 +45,7 @@ class Suschestvitelnoe extends Slovo
      * @param Morphology\Sklonenie\Base $sklonenie
      * @return static
      */
-    public function create(
+    public static function create(
         $text,
         Morphology\Chislo\Base $chislo,
         Morphology\Naritcatelnost\Base $naritcatelnost,

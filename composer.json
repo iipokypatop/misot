@@ -14,7 +14,7 @@
     "phpunit/phpunit": "4.7.*",
     "mivar-projects/loader": "dev-master",
     "mivar-projects/test-utils": "dev-master",
-    "mivar-projects/text-libraries" : "dev-master"
+    "mivar-projects/text-libraries": "dev-master"
   },
   "repositories": [
     {
@@ -28,11 +28,16 @@
     {
       "type": "git",
       "url": "git@gitlab.mivar.ru:mivar-projects/text-libraries.git"
+    },
+    {
+      "url": "https://github.com/yeeegem/doctrine2-nestedset.git",
+      "type": "git"
     }
   ],
   "autoload": {
     "psr-4": {
-      "RussianMorphology\\": "src/"
+      "RussianMorphology\\": "src/",
+      "MivarTest\\": "tests/"
     }
   }
 }

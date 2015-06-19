@@ -11,39 +11,55 @@ namespace RussianMorphology;
 
 class Analyser
 {
-    const SPELL_ANALYSIS_PASSED = 1;
-    const SPELL_ANALYSIS_FAILED = 2;
+    const SPELL_ANALYSIS_OK = 1;
+    const SPELL_ANALYSIS_CAN_BE_REPAIRED = 2;
+    const SPELL_ANALYSIS_REPAIR_SUGGESTS_MORE_THAN_ONE_OPTION = 3;
+    const SPELL_ANALYSIS_FAIL = 4;
 
     public $text;
 
     protected $similar = [];
+
+    /**
+     * @var $protocol AnalysisProtocol
+     */
+    protected $protocol;
 
 
     public function run($text)
     {
         $this->text = $text;
 
-        $protocol = $this->getProtocol();
-        $protocol->text = $text;
-        $protocol->spell_check_status = $this->analyzeSpelling();;
-        $protocol->similar_word_forms = $this->analyzeSimilar();
+        $this->protocol = $this->getProtocolObject();
+        $this->protocol->text = $text;
+        $this->analyzeSpelling();;
+        $this->analyzeSimilar();
 
-        return $protocol;
+        return $this->protocol;
     }
 
-    protected function getProtocol()
+    protected function getProtocolObject()
     {
         return new AnalysisProtocol();
     }
 
     protected function analyzeSpelling()
     {
-
-        return static::SPELL_ANALYSIS_PASSED;
+        $this->protocol->spell_check_status = static::SPELL_ANALYSIS_OK;
     }
 
     protected function analyzeSimilar()
     {
-        return [];
+        $this->protocol->similar_word_forms = [];
+    }
+
+    protected function analyzePartsOfWord()
+    {
+        throw new \Exception('not implemented yet');
+    }
+
+    protected function analyzeAccent()
+    {
+        throw new \Exception('not implemented yet');
     }
 }

@@ -10,21 +10,30 @@ namespace RussianMorphology\ChastiRechi\Samostoyatelnie\Suschestvitelnoe;
  */
 class Factory extends \RussianMorphology\Factory
 {
-    public function analyze($text)
+    public function build($text)
     {
         /**
-         * @var $protocol \RussianMorphology\ChastiRechi\Samostoyatelnie\Suschestvitelnoe\AnalysisProtocol
+         * @var $protocol AnalysisProtocol
          */
-        $protocol = parent::analyze($text);
+        $protocol = $this->analyze($text);
 
         $protocol->similar_word_forms; // [тучка, точка, тачка]
 
-        if ($protocol->spell_check_status === Analyser::SPELL_ANALYSIS_PASSED) {
+        die("asd");
 
-        }
-
-        if (count($protocol->similar_word_forms) !== 1) {
-
+        if (
+            $protocol->spell_check_status === Analyser::SPELL_ANALYSIS_OK
+            && count($protocol->similar_word_forms) === 1
+        ) {
+            return Suschestvitelnoe::create(
+                $protocol->text,
+                $protocol->chislo[0],
+                $protocol->naritcatelnost[0],
+                $protocol->odushevlyonnost[0],
+                $protocol->padeszh[0],
+                $protocol->rod[0],
+                $protocol->sklonenie[0]
+            );
         }
 
         return null;
