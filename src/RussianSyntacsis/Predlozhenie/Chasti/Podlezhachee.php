@@ -9,7 +9,7 @@
 namespace RussianSyntacsis\Predlozhenie\Chasti;
 
 
-class Podlezhachee
+class Podlezhachee extends Base
 {
 
 }

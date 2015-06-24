@@ -10,6 +10,13 @@ namespace RussianMorphology;
  */
 class Slovo
 {
+    protected static $children = [
+        ChastiRechi\Suschestvitelnoe\Base::class,
+        ChastiRechi\Prilagatelnoe\Base::class
+    ];
+
+    protected $morphology;
+
     protected $text;
 
     /**

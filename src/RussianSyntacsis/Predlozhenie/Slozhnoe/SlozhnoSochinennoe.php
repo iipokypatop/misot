@@ -8,8 +8,9 @@
 
 namespace RussianSyntacsis\Predlozhenie\Slozhnoe;
 
+use RussianSyntacsis\Predlozhenie\Predlozhenie;
 
-class SlozhnoSochinennoe
+class SlozhnoSochinennoe extends Predlozhenie
 {
 
 }

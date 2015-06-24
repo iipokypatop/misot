@@ -10,8 +10,7 @@
     }
   ],
   "require": {
-    "php": ">=5.5.0",
-    "phpunit/phpunit": "4.7.*",
+    "phpunit/phpunit": "4.7.1",
     "mivar-projects/loader": "dev-master",
     "mivar-projects/test-utils": "dev-master",
     "mivar-projects/text-libraries": "dev-master"
@@ -36,8 +35,10 @@
   ],
   "autoload": {
     "psr-4": {
-      "RussianMorphology\\": "src/",
-      "MivarTest\\": "tests/"
+      "RussianMorphology\\": "src/RussianMorphology",
+      "RussianSyntacsis\\": "src/RussianSyntacsis",
+      "Etc\\": "src/Etc",
+      "AotTest\\": "tests/"
     }
   }
 }

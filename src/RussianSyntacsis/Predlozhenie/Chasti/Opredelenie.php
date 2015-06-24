@@ -9,7 +9,7 @@
 namespace RussianSyntacsis\Predlozhenie\Chasti;
 
 
-class Opredelenie
+class Opredelenie extends Base
 {
 
 }

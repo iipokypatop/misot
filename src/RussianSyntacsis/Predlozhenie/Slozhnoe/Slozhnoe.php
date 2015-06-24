@@ -9,7 +9,9 @@
 namespace RussianSyntacsis\Predlozhenie\Slozhnoe;
 
 
-class Slozhnoe
+use RussianSyntacsis\Predlozhenie\Predlozhenie;
+
+class Slozhnoe extends Predlozhenie
 {
 
 }

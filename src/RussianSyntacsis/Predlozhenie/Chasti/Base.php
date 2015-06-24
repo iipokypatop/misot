@@ -2,14 +2,14 @@
 /**
  * Created by PhpStorm.
  * User: p.semenyuk
- * Date: 19.06.2015
- * Time: 14:49
+ * Date: 21.06.2015
+ * Time: 22:17
  */
 
 namespace RussianSyntacsis\Predlozhenie\Chasti;
 
 
-class Obstoyatelstvo  extends Base
+class Base
 {
 
 }
