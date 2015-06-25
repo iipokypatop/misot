@@ -9,7 +9,7 @@
 namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost;
 
 
-class Null extends Base
+class Null extends \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
 {
 
 }

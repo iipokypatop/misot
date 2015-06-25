@@ -8,7 +8,7 @@ namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelno
  * Date: 18.06.2015
  * Time: 16:17
  */
-class ImiaSobstvennoe  extends Base
+class ImiaSobstvennoe  extends \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
 {
 
 }

@@ -9,7 +9,7 @@ namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie;
  * Date: 17.06.2015
  * Time: 22:19
  */
-class Pervoe extends Base
+class Pervoe extends \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
 {
 
 }

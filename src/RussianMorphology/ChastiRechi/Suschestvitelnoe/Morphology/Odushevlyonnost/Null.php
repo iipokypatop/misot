@@ -9,7 +9,7 @@
 namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost;
 
 
-class Null extends Base
+class Null extends \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
 {
 
 }

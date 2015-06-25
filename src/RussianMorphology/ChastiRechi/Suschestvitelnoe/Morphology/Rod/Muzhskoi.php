@@ -8,7 +8,7 @@ namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod;
  * Date: 18.06.2015
  * Time: 16:19
  */
-class Muzhskoi  extends Base
+class Muzhskoi  extends \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
 {
 
 }
