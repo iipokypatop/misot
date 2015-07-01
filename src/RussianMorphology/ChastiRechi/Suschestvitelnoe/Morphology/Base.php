@@ -13,18 +13,5 @@ use RussianMorphology\ChastiRechi\MorphologyBase;
 
 class Base extends MorphologyBase
 {
-    /**
-     * @return static []
-     */
-    public static function getTreeChildrenNodes()
-    {
-        return [
-            Chislo\Base::class,
-            Naritcatelnost\Base::class,
-            Odushevlyonnost\Base::class,
-            Padeszh\Base::class,
-            Rod\Base::class,
-            Sklonenie\Base::class,
-        ];
-    }
+
 }

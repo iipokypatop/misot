@@ -64,7 +64,7 @@ class Base extends Slovo
         $ob = new static($text);
 
         $ob->chislo = $chislo;
-        $ob->$litso = $litso;
+        $ob->litso = $litso;
         $ob->naklonenie = $naklonenie;
         $ob->perehodnost = $perehodnost;
         $ob->rod = $rod;

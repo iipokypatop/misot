@@ -6,10 +6,10 @@
  * Time: 22:14
  */
 
-namespace RussianSyntacsis\Punctuation\Skobki;
+namespace RussianSyntacsis\Punctuaciya\Skobki;
 
 
-class Zakrivauchaya extends Base
+class Otkrivauchaya extends Base
 {
 
 }

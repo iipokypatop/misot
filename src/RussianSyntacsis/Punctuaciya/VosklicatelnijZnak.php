@@ -6,7 +6,7 @@
  * Time: 22:12
  */
 
-namespace RussianSyntacsis\Punctuation;
+namespace RussianSyntacsis\Punctuaciya;
 
 
 class VosklicatelnijZnak extends Base

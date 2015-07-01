@@ -54,7 +54,7 @@ class Base extends Slovo
         $ob = new static($text);
 
         $ob->chislo = $chislo;
-        $ob->$forma = $forma;
+        $ob->forma = $forma;
         $ob->padeszh = $padeszh;
         $ob->rod = $rod;
         $ob->razriad = $razriad;

@@ -6,10 +6,10 @@
  * Time: 22:11
  */
 
-namespace RussianSyntacsis\Punctuation;
+namespace RussianSyntacsis\Punctuaciya;
 
 
-class Dvoetochie extends Base
+class Zapiataya extends Base
 {
 
 }

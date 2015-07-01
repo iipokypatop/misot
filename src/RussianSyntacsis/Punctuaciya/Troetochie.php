@@ -3,13 +3,13 @@
  * Created by PhpStorm.
  * User: p.semenyuk
  * Date: 21.06.2015
- * Time: 22:11
+ * Time: 22:12
  */
 
-namespace RussianSyntacsis\Punctuation;
+namespace RussianSyntacsis\Punctuaciya;
 
 
-class Zapiataya extends Base
+class Troetochie extends Base
 {
 
 }

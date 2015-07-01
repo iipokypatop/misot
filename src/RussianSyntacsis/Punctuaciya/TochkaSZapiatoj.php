@@ -6,7 +6,7 @@
  * Time: 22:16
  */
 
-namespace RussianSyntacsis\Punctuation;
+namespace RussianSyntacsis\Punctuaciya;
 
 
 class TochkaSZapiatoj extends Base

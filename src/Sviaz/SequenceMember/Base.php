@@ -2,14 +2,15 @@
 /**
  * Created by PhpStorm.
  * User: p.semenyuk
- * Date: 21.06.2015
- * Time: 22:10
+ * Date: 01.07.2015
+ * Time: 13:02
  */
 
-namespace RussianSyntacsis\Punctuation;
+namespace Sviaz\SequenceMember;
 
 
 class Base
 {
+
 
 }
