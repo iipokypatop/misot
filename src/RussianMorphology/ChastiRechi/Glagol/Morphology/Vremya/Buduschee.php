@@ -6,10 +6,10 @@
  * Time: 14:30
  */
 
-namespace RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo;
 
 
-class Buduschee extends \RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Buduschee extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
 {
 
 }

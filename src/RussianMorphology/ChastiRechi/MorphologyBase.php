@@ -6,7 +6,7 @@
  * Time: 14:50
  */
 
-namespace RussianMorphology\ChastiRechi;
+namespace Aot\RussianMorphology\ChastiRechi;
 
 
 

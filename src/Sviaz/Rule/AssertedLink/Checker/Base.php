@@ -6,7 +6,7 @@
  * Time: 13:30
  */
 
-namespace Sviaz\Rule\AssertedLink\Checker;
+namespace Aot\Sviaz\Rule\AssertedLink\Checker;
 
 
 class Base

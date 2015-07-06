@@ -6,10 +6,10 @@
  * Time: 19:10
  */
 
-namespace RussianMorphology\ChastiRechi\Glagol;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol;
 
 
-class AnalysisProtocol extends \RussianMorphology\AnalysisProtocol
+class AnalysisProtocol extends \Aot\RussianMorphology\AnalysisProtocol
 {
     /**
      * @var Morphology\Chislo\Base[]

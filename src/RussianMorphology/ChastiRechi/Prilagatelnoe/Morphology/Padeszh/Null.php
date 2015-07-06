@@ -6,10 +6,10 @@
  * Time: 19:35
  */
 
-namespace RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh;
+namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh;
 
 
-class Null extends \RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Base
+class Null extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Base
 {
 
 }

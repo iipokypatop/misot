@@ -9,18 +9,17 @@
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Suschestvitelnoe;
 
 
-
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Factory;
 use MivarTest\Base;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Factory;
 
-class FactoryTest extends Base
+class FactoryTest extends \AotTest\AotDataStorage
 {
     public function testbuild()
     {
         $text = 'мама';
 
-        $result = Factory::get()->build($text);
+        #$result = Factory::get()->build($text);
 
-        var_export($result);die;
+        #var_export($result);die;
     }
 }

@@ -6,7 +6,7 @@
  * Time: 14:40
  */
 
-namespace RussianSyntacsis\Predlozhenie;
+namespace Aot\RussianSyntacsis\Predlozhenie;
 
 
 class Predlozhenie

@@ -6,10 +6,10 @@
  * Time: 12:23
  */
 
-namespace RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia;
+namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia;
 
 
-class Base extends \RussianMorphology\ChastiRechi\Prilagatelnoe\Base
+class Base extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base
 {
 
 }

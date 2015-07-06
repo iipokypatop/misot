@@ -6,10 +6,10 @@
  * Time: 14:41
  */
 
-namespace RussianSyntacsis\Predlozhenie\Slozhnoe;
+namespace Aot\RussianSyntacsis\Predlozhenie\Slozhnoe;
 
 
-use RussianSyntacsis\Predlozhenie\Predlozhenie;
+use Aot\RussianSyntacsis\Predlozhenie\Predlozhenie;
 
 class Slozhnoe extends Predlozhenie
 {

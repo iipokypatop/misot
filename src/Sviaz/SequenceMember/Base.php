@@ -6,11 +6,12 @@
  * Time: 13:02
  */
 
-namespace Sviaz\SequenceMember;
+namespace Aot\Sviaz\SequenceMember;
 
 
-class Base
+abstract class Base
 {
-
-
+    protected function __construct()
+    {
+    }
 }

@@ -6,10 +6,10 @@
  * Time: 14:32
  */
 
-namespace RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog;
 
 
-class Stradatelnyj extends \RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Stradatelnyj extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
 {
 
 }

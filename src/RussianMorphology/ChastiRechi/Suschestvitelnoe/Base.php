@@ -1,8 +1,8 @@
 <?php
 
-namespace RussianMorphology\ChastiRechi\Suschestvitelnoe;
+namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe;
 
-use RussianMorphology\Slovo;
+use Aot\RussianMorphology\Slovo;
 
 /**
  * Created by PhpStorm.
@@ -10,30 +10,31 @@ use RussianMorphology\Slovo;
  * Date: 17.06.2015
  * Time: 22:11
  */
+
+/**
+ * Class Base
+ * @package Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe
+ * @property Morphology\Chislo\Base $chislo
+ * @property Morphology\Naritcatelnost\Base $naritcatelnost
+ * @property Morphology\Odushevlyonnost\Base $odushevlyonnost
+ * @property Morphology\Padeszh\Base $padeszh
+ * @property Morphology\Rod\Base $rod
+ * @property Morphology\Sklonenie\Base $sklonenie
+ */
 class Base extends Slovo
 {
-    /**
-     * @var Morphology\Chislo\Base
-     */
-    public $chislo;
 
-    /** @var  Morphology\Naritcatelnost\Base */
-    public $naritcatelnost;
-
-    /** @var   Morphology\Odushevlyonnost\Base */
-    public $odushevlyonnost;
-
-    /**
-     * @var Morphology\Padeszh\Base
-     */
-    public $padeszh;
-
-    /** @var  Morphology\Rod\Base */
-    public $rod;
-
-    /** @var Morphology\Sklonenie\Base */
-    public $sklonenie;
-
+    protected function getMorphology()
+    {
+        return [
+            'chislo' => Morphology\Chislo\Base::class,
+            'naritcatelnost' => Morphology\Naritcatelnost\Base::class,
+            'odushevlyonnost' => Morphology\Odushevlyonnost\Base::class,
+            'padeszh' => Morphology\Padeszh\Base::class,
+            'rod' => Morphology\Rod\Base::class,
+            'sklonenie' => Morphology\Sklonenie\Base::class,
+        ];
+    }
 
     /**
      * Suschestvitelnoe constructor.

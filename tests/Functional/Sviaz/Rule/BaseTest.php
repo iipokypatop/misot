@@ -9,13 +9,10 @@
 namespace AotTest\Functional\Sviaz\Rule;
 
 
-use MivarTest\Base;
-
-class BaseTest extends Base
+class BaseTest extends \AotTest\AotDataStorage
 {
     public function testRule()
     {
-
-
+        $this->getRule();
     }
 }

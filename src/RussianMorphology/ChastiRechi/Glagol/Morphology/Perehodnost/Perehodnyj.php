@@ -6,10 +6,10 @@
  * Time: 14:24
  */
 
-namespace RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost;
 
 
-class Perehodnyj extends \RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Perehodnyj extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
 {
 
 }

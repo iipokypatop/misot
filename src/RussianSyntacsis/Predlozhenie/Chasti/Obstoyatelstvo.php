@@ -6,7 +6,7 @@
  * Time: 14:49
  */
 
-namespace RussianSyntacsis\Predlozhenie\Chasti;
+namespace Aot\RussianSyntacsis\Predlozhenie\Chasti;
 
 
 class Obstoyatelstvo  extends Base

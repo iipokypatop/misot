@@ -6,7 +6,7 @@
  * Time: 22:22
  */
 
-namespace RussianSyntacsis\ChastiSlova;
+namespace Aot\RussianSyntacsis\ChastiSlova;
 
 
 class Okonchanie extends Base

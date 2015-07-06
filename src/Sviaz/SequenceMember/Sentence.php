@@ -6,7 +6,7 @@
  * Time: 13:25
  */
 
-namespace Sviaz\SequenceMember;
+namespace Aot\Sviaz\SequenceMember;
 
 
 class Sentence extends Base

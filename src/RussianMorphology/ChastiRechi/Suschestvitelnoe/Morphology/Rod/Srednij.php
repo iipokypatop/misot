@@ -1,6 +1,6 @@
 <?php
 
-namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod;
+namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod;
 
 /**
  * Created by PhpStorm.
@@ -8,7 +8,7 @@ namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod;
  * Date: 18.06.2015
  * Time: 16:20
  */
-class Srednij  extends \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+class Srednij  extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
 {
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod;
+namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod;
 
 /**
  * Created by PhpStorm.
@@ -8,7 +8,7 @@ namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod;
  * Date: 18.06.2015
  * Time: 16:19
  */
-class Muzhskoi  extends \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+class Muzhskoi  extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
 {
 
 }

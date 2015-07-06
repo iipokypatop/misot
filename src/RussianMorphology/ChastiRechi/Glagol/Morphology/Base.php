@@ -5,9 +5,9 @@
  * Date: 25.06.15
  * Time: 12:13
  */
-namespace RussianMorphology\ChastiRechi\Glagol\Morphology;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology;
 
-use RussianMorphology\ChastiRechi\MorphologyBase;
+use Aot\RussianMorphology\ChastiRechi\MorphologyBase;
 
 
 class Base extends MorphologyBase

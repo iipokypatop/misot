@@ -6,10 +6,10 @@
  * Time: 14:28
  */
 
-namespace RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost;
 
 
-class Nevozvratnyj extends \RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Nevozvratnyj extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
 {
 
 }

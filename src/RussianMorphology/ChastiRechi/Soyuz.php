@@ -1,5 +1,9 @@
 <?php
 
+
+namespace Aot\RussianMorphology\ChastiRechi;
+use Aot\RussianMorphology\Slovo;
+
 /**
  * Created by PhpStorm.
  * User: p.semenyuk

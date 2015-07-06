@@ -6,7 +6,7 @@
  * Time: 22:21
  */
 
-namespace RussianSyntacsis\ChastiSlova;
+namespace Aot\RussianSyntacsis\ChastiSlova;
 
 
 class Suffix extends Base

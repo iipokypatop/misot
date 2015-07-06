@@ -6,7 +6,7 @@
  * Time: 19:10
  */
 
-namespace RussianMorphology;
+namespace Aot\RussianMorphology;
 
 
 class AnalysisProtocol

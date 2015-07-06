@@ -6,7 +6,7 @@
  * Time: 22:10
  */
 
-namespace RussianSyntacsis\Punctuaciya;
+namespace Aot\RussianSyntacsis\Punctuaciya;
 
 
 class Base

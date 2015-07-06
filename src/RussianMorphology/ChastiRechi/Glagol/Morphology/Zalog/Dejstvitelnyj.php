@@ -6,10 +6,10 @@
  * Time: 14:31
  */
 
-namespace RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog;
 
 
-class Dejstvitelnyj extends \RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Dejstvitelnyj extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
 {
 
 }

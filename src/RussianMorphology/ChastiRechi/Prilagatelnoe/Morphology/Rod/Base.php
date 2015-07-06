@@ -5,10 +5,10 @@
  * Date: 25.06.15
  * Time: 12:19
  */
-namespace RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod;
+namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod;
 
 
-class Base extends \RussianMorphology\ChastiRechi\Prilagatelnoe\Base
+class Base extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base
 {
 
 }

@@ -9,7 +9,7 @@
 namespace AotTest\Functional\Language;
 
 
-class FirstTest extends \MivarTest\Base
+class FirstTest extends \AotTest\AotDataStorage
 {
     public function testFirst()
     {

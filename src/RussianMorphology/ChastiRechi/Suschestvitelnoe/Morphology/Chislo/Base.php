@@ -6,10 +6,10 @@
  * Time: 18:03
  */
 
-namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo;
+namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo;
 
 
-class Base extends \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+class Base extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
 {
 
 }

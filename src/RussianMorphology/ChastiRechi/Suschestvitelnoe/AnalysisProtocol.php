@@ -6,10 +6,10 @@
  * Time: 19:10
  */
 
-namespace RussianMorphology\ChastiRechi\Suschestvitelnoe;
+namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe;
 
 
-class AnalysisProtocol extends \RussianMorphology\AnalysisProtocol
+class AnalysisProtocol extends \Aot\RussianMorphology\AnalysisProtocol
 {
     /**
      * @var Morphology\Chislo\Base[]

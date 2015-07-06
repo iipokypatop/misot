@@ -6,7 +6,7 @@
  * Time: 14:48
  */
 
-namespace RussianSyntacsis\Predlozhenie\Chasti;
+namespace Aot\RussianSyntacsis\Predlozhenie\Chasti;
 
 
 class Podlezhachee extends Base
