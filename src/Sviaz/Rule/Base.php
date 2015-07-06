@@ -73,5 +73,34 @@ class Base
         $this->links[] = $link;
     }
 
+    public function attemptLink(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
+    {
+        foreach ($this->links as $link) {
+
+            $result = $link->attempt($main_candidate, $depended_candidate, $sequence);
+
+            if (!$result) {
+                return false;
+
+            }
+        }
+
+
+        return true;
+    }
+
+
+    public function attemptMain(\Aot\Sviaz\SequenceMember\Base $actual)
+    {
+        return $this->getMain()->attempt($actual);
+    }
+
+
+    public function attemptDepended(\Aot\Sviaz\SequenceMember\Base $actual)
+    {
+        return $this->getDepended()->attempt($actual);
+    }
+
 
 }
+
