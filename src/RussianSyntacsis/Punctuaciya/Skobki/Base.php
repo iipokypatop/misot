@@ -6,10 +6,10 @@
  * Time: 22:13
  */
 
-namespace RussianSyntacsis\Punctuaciya\Skobki;
+namespace Aot\RussianSyntacsis\Punctuaciya\Skobki;
 
 
-class Base extends \RussianSyntacsis\Punctuaciya\Base
+class Base extends \Aot\RussianSyntacsis\Punctuaciya\Base
 {
 
 }

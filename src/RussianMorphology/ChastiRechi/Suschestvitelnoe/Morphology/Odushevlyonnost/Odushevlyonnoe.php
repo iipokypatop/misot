@@ -1,6 +1,6 @@
 <?php
 
-namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost;
+namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost;
 
 /**
  * Created by PhpStorm.
@@ -8,7 +8,7 @@ namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonn
  * Date: 18.06.2015
  * Time: 16:18
  */
-class Odushevlyonnoe  extends \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+class Odushevlyonnoe  extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
 {
 
 }

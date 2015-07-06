@@ -1,6 +1,6 @@
 <?php
 
-namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost;
+namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost;
 
 /**
  * Created by PhpStorm.
@@ -8,7 +8,7 @@ namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelno
  * Date: 18.06.2015
  * Time: 16:17
  */
-class ImiaSobstvennoe  extends \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+class ImiaSobstvennoe  extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
 {
 
 }

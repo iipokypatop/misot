@@ -1,8 +1,9 @@
 <?php
 
-namespace RussianMorphology\ChastiRechi\Glagol;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol;
 
-use RussianMorphology\Slovo;
+use Aot\RussianMorphology\Slovo;
+
 /**
  * Created by PhpStorm.
  * User: p.semenyuk

@@ -6,10 +6,10 @@
  * Time: 18:07
  */
 
-namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost;
+namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost;
 
 
-abstract class Base extends \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+abstract class Base extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
 {
 
 }

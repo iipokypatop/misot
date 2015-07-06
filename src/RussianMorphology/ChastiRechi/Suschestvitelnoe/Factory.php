@@ -1,30 +1,28 @@
 <?php
 
-namespace RussianMorphology\ChastiRechi\Suschestvitelnoe;
+namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe;
 
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaSobstvennoe;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Odushevlyonnoe;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Datelnij;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Imenitelnij;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Predlozshnij;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Roditelnij;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Tvoritelnij;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Vinitelnij;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Muzhskoi;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Zhenskii;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Pervoe;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Tretie;
+use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Vtoroe;
 use Dw;
-
 use MorphAttribute;
 use Word;
-
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaSobstvennoe;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Odushevlyonnoe;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Datelnij;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Imenitelnij;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Predlozshnij;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Roditelnij;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Tvoritelnij;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Vinitelnij;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Muzhskoi;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Zhenskii;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Pervoe;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Tretie;
-use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Vtoroe;
 
 
 /**
@@ -33,7 +31,7 @@ use RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Vtoroe;
  * Date: 18.06.2015
  * Time: 16:33
  */
-class Factory extends \RussianMorphology\Factory
+class Factory extends \Aot\RussianMorphology\Factory
 {
     /**
      * @param Dw $dw
@@ -109,7 +107,7 @@ class Factory extends \RussianMorphology\Factory
 
     /**
      * @param MorphAttribute $value
-     * @return \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+     * @return \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
      */
     protected function getOdushevlennost(MorphAttribute $value)
     {
@@ -126,7 +124,7 @@ class Factory extends \RussianMorphology\Factory
 
     /**
      * @param MorphAttribute $value
-     * @return \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+     * @return \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
      */
     protected function getRod(MorphAttribute $value) {
 
@@ -146,7 +144,7 @@ class Factory extends \RussianMorphology\Factory
 
     /**
      * @param MorphAttribute $value
-     * @return \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+     * @return \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
      */
     protected function getChislo(MorphAttribute $value) {
         if (current($value->id_value_attr) === NUMBER_SINGULAR_ID) {
@@ -162,7 +160,7 @@ class Factory extends \RussianMorphology\Factory
 
     /**
      * @param MorphAttribute $value
-     * @return \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+     * @return \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
      */
     protected function getSklonenie(MorphAttribute $value) {
         if (current($value->id_value_attr) === \OldAotConstants::DECLENSION_1) {
@@ -181,7 +179,7 @@ class Factory extends \RussianMorphology\Factory
 
     /**
      * @param MorphAttribute $value
-     * @return \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+     * @return \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
      */
     protected function getPadeszh(MorphAttribute $value) {
         if (current($value->id_value_attr) === CASE_SUBJECTIVE_ID) {
@@ -209,7 +207,7 @@ class Factory extends \RussianMorphology\Factory
 
     /**
      * @param MorphAttribute $value
-     * @return \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+     * @return \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
      */
     protected function getNaritcatelnost(MorphAttribute $value) {
         if (current($value->id_value_attr) === \OldAotConstants::SELF) {

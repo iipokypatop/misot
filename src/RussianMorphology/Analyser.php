@@ -6,7 +6,7 @@
  * Time: 18:43
  */
 
-namespace RussianMorphology;
+namespace Aot\RussianMorphology;
 
 
 class Analyser

@@ -6,10 +6,10 @@
  * Time: 19:35
  */
 
-namespace RussianMorphology\ChastiRechi\Glagol\Morphology\Litso;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso;
 
 
-class Null extends \RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Null extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
 {
 
 }

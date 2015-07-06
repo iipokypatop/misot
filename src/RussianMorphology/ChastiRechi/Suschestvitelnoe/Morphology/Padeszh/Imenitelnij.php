@@ -1,7 +1,7 @@
 <?php
 
 
-namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh;
+namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh;
 
 /**
  * Created by PhpStorm.
@@ -9,7 +9,7 @@ namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh;
  * Date: 17.06.2015
  * Time: 22:17
  */
-class Imenitelnij extends \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+class Imenitelnij extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
 {
 
 }

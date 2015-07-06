@@ -1,8 +1,9 @@
 <?php
 
-namespace RussianMorphology\ChastiRechi\Prilagatelnoe;
+namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe;
 
-use RussianMorphology\Slovo;
+use Aot\RussianMorphology\Slovo;
+
 /**
  * Created by PhpStorm.
  * User: p.semenyuk

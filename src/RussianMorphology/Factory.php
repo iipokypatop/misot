@@ -1,6 +1,6 @@
 <?php
 
-namespace RussianMorphology;
+namespace Aot\RussianMorphology;
 
 /**
  * Created by PhpStorm.

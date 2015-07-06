@@ -13,33 +13,35 @@
     "phpunit/phpunit": "4.7.*",
     "mivar-projects/loader": "dev-master",
     "mivar-projects/test-utils": "dev-master",
-    "mivar-projects/text-libraries": "dev-master"
+    "mivar-projects/text-libraries": "dev-master",
+    "txt/mivar_text_semantic.git": "dev-master"
   },
   "repositories": [
     {
       "type": "git",
-      "url": "git@gitlab.mivar.ru:mivar-projects/loader.git"
+      "url": "git@git.mivar.pro:mivar-projects/loader.git"
     },
     {
       "type": "git",
-      "url": "git@gitlab.mivar.ru:mivar-projects/test-utils.git"
+      "url": "git@git.mivar.pro:mivar-projects/test-utils.git"
     },
     {
       "type": "git",
-      "url": "git@gitlab.mivar.ru:mivar-projects/text-libraries.git"
+      "url": "git@git.mivar.pro:mivar-projects/text-libraries.git"
     },
     {
       "url": "https://github.com/yeeegem/doctrine2-nestedset.git",
+      "type": "git"
+    },
+    {
+      "url": "git@gitlab.mivar.ru:txt/mivar_text_semantic.git",
       "type": "git"
     }
   ],
   "autoload": {
     "psr-4": {
       "AotTest\\": "tests/",
-      "RussianMorphology\\": "src/RussianMorphology",
-      "RussianSyntacsis\\": "src/RussianSyntacsis",
-      "Etc\\": "src/Etc",
-      "Sviaz\\": "src/Sviaz"
+      "Aot\\": "src/"
     }
   }
 }

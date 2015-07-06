@@ -1,6 +1,6 @@
 <?php
 
-namespace RussianMorphology\ChastiRechi\Glagol\Morphology\Litso;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso;
 
 /**
  * Created by PhpStorm.
@@ -8,7 +8,7 @@ namespace RussianMorphology\ChastiRechi\Glagol\Morphology\Litso;
  * Date: 25.06.15
  * Time: 11:36
  */
-class Tretie extends \RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Tretie extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
 {
 
 }

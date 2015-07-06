@@ -6,10 +6,10 @@
  * Time: 14:26
  */
 
-namespace RussianMorphology\ChastiRechi\Glagol\Morphology\Vid;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid;
 
 
-class Sovershennyj extends \RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Sovershennyj extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
 {
 
 }

@@ -6,9 +6,9 @@
  * Time: 14:42
  */
 
-namespace RussianSyntacsis\Predlozhenie\Slozhnoe;
+namespace Aot\RussianSyntacsis\Predlozhenie\Slozhnoe;
 
-use RussianSyntacsis\Predlozhenie\Predlozhenie;
+use Aot\RussianSyntacsis\Predlozhenie\Predlozhenie;
 
 class SlozhnoSochinennoe extends Predlozhenie
 {

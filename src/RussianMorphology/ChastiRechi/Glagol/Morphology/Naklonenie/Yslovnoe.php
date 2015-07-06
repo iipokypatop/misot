@@ -6,10 +6,10 @@
  * Time: 14:17
  */
 
-namespace RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie;
 
 
-class Yslovnoe extends \RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Yslovnoe extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
 {
 
 }

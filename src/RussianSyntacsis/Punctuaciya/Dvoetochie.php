@@ -6,7 +6,7 @@
  * Time: 22:11
  */
 
-namespace RussianSyntacsis\Punctuaciya;
+namespace Aot\RussianSyntacsis\Punctuaciya;
 
 
 class Dvoetochie extends Base

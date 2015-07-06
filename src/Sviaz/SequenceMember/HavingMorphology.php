@@ -6,7 +6,7 @@
  * Time: 13:39
  */
 
-namespace Sviaz\SequenceMember;
+namespace Aot\Sviaz\SequenceMember;
 
 
 interface HavingMorphology

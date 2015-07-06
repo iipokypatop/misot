@@ -1,12 +1,12 @@
 <?php
-namespace RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh;
+namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh;
 /**
  * Created by PhpStorm.
  * User: p.semenyuk
  * Date: 17.06.2015
  * Time: 22:17
  */
-class Imenitelnij extends \RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Base
+class Imenitelnij extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Base
 {
 
 }

@@ -6,7 +6,7 @@
  * Time: 22:17
  */
 
-namespace RussianSyntacsis\Predlozhenie\Chasti;
+namespace Aot\RussianSyntacsis\Predlozhenie\Chasti;
 
 
 class Base

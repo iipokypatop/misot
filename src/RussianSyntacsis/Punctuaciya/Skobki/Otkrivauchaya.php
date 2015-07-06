@@ -6,7 +6,7 @@
  * Time: 22:14
  */
 
-namespace RussianSyntacsis\Punctuaciya\Skobki;
+namespace Aot\RussianSyntacsis\Punctuaciya\Skobki;
 
 
 class Otkrivauchaya extends Base

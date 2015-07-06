@@ -6,10 +6,10 @@
  * Time: 14:52
  */
 
-namespace RussianSyntacsis\Predlozhenie\Prostoe;
+namespace Aot\RussianSyntacsis\Predlozhenie\Prostoe;
 
 
-use RussianSyntacsis\Predlozhenie\Predlozhenie;
+use Aot\RussianSyntacsis\Predlozhenie\Predlozhenie;
 
 class Prostoe extends Predlozhenie
 {

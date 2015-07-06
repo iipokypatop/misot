@@ -5,10 +5,10 @@
  * Date: 25.06.15
  * Time: 12:19
  */
-namespace RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost;
 
 
-class Base extends \RussianMorphology\ChastiRechi\Glagol\Base
+class Base extends \Aot\RussianMorphology\ChastiRechi\Glagol\Base
 {
 
 }
