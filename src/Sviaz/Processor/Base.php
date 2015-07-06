@@ -56,8 +56,9 @@ class Base
 
         $links = [];
 
+
         foreach ($sequence as $main_candidate) {
-            if (!$this->tryMain($main_candidate, $rule)) {
+            if (!$rule->getMain()->attempt($main_candidate)) {
                 continue;
             }
             foreach ($sequence as $depended_candidate) {
@@ -65,59 +66,18 @@ class Base
                     continue;
                 }
 
-                if (!$this->tryDepended($depended_candidate, $rule)) {
+                if (!$rule->getDepended()->attempt($depended_candidate)) {
                     continue;
                 }
 
-                $links[] = $this->tryLink($main_candidate, $depended_candidate, $rule);
+                $links[] = $link= $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
+
             }
         }
 
         var_export($rule);
     }
 
-
-    public function tryMain(SequenceMemberBase $sequence_member, RuleBase $rule)
-    {
-        $main = $rule->getMain();
-
-        if ($sequence_member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
-
-            if (null !== $main->getAssertedChastRechiClass()) {
-                if (get_class($sequence_member->getSlovo()) !== $main->getAssertedChastRechiClass()) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        throw new \RuntimeException("unsupported sequence_member type");
-    }
-
-
-    public function tryDepended(SequenceMemberBase $sequence_member, RuleBase $rule)
-    {
-        $main = $rule->getMain();
-
-        if ($sequence_member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
-
-            if (null !== $main->getAssertedChastRechiClass()) {
-                if (get_class($sequence_member->getSlovo()) !== $main->getAssertedChastRechiClass()) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        throw new \RuntimeException("unsupported sequence_member type");
-    }
-
-    protected function tryLink(SequenceMemberBase $main_candidate, SequenceMemberBase $depended_candidate, RuleBase $rule)
-    {
-        return false;
-    }
 
     protected function getRawSequences(\Aot\Text\NormalizedMatrix $normalized_matrix)
     {

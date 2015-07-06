@@ -75,4 +75,11 @@ class Base
 
         $this->position = $position;
     }
+
+
+    public function attempt(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
+    {
+        return false;
+    }
+
 }
