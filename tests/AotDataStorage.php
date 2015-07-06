@@ -77,7 +77,7 @@ TEXT;
     }
 
     /**
-     * @return Chastica|Deeprichastie|Glagol|Suschestvitelnoe|Zapiataya|\PHPUnit_Framework_MockObject_MockObject
+     * @return Chastica|Deeprichastie|Glagol|Suschestvitelnoe|Zapiataya | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getSafeMockLocal()
     {
@@ -135,15 +135,15 @@ TEXT;
 
         /** @var  $Suschestvitelnoe \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base */
         $Suschestvitelnoe = $this->getSafeMock(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class);
-        $Suschestvitelnoe->chislo = new \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base;
+        $Suschestvitelnoe->chislo = new \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe();
 
 
         $link = \Aot\Sviaz\Rule\AssertedLink\Base::create($main, $depended);
 
         $asserted_match = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
-            new \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base,
+             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class,
             \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
-            new \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base
+            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class
         );
 
         $link->addAssertedMatches($asserted_match);

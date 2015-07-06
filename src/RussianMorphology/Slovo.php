@@ -27,14 +27,14 @@ abstract class Slovo
     /**
      * @return \Aot\RussianMorphology\ChastiRechi\MorphologyBase[]
      */
-    protected function getMorphology()
+    public function getMorphology()
     {
         return [];
     }
 
     function __get($name)
     {
-        if (in_array($name, static::getMorphology(), true)) {
+        if (!array_key_exists($name, static::getMorphology())) {
             return $this->storage[$name];
         }
 
@@ -43,12 +43,16 @@ abstract class Slovo
 
     function __set($name, $value)
     {
-        if (in_array($name, static::getMorphology(), true)) {
-            $this->storage[$name] = $value;
-            return;
+        if (!array_key_exists($name, static::getMorphology())) {
+            throw new \RuntimeException("unsupported field exception");
         }
 
-        throw new \RuntimeException("unsupported field exception");
+        if (get_class($value) !== static::getMorphology()[$name]) {
+            throw new \RuntimeException("incorrect field type");
+        }
+
+
+        $this->storage[$name] = $value;
     }
 
 
@@ -81,3 +85,4 @@ abstract class Slovo
         return null;
     }
 }
+

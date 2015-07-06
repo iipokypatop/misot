@@ -24,7 +24,7 @@ use Aot\RussianMorphology\Slovo;
 class Base extends Slovo
 {
 
-    protected function getMorphology()
+    public function getMorphology()
     {
         return [
             'chislo' => Morphology\Chislo\Base::class,
@@ -68,6 +68,4 @@ class Base extends Slovo
 
         return $ob;
     }
-
-
 }
