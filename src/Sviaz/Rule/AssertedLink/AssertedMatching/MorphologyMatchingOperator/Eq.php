@@ -19,6 +19,22 @@ class Eq extends Base
      */
     public function match(MorphologyBase $left, MorphologyBase $right)
     {
-        return get_class($left) === get_class($right);
+        if ($left === $right) {
+            throw new \RuntimeException("wtf?!");
+        }
+
+        if (get_class($left) === get_class($right)) {
+            return true;
+        }
+
+        foreach (static::get_eq_classes() as $morphology_id => $variants) {
+            foreach ($variants as $variant) {
+                if (in_array($left, $variant, true) && in_array($right, $variant, true)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

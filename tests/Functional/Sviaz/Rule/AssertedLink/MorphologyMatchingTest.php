@@ -12,8 +12,6 @@ use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base as Suschestvitelnoe;
 
 class MorphologyMatchingTest extends \AotTest\AotDataStorage
 {
-
-
     public function testLaunch()
     {
         $this->getMorphologyMatching();
