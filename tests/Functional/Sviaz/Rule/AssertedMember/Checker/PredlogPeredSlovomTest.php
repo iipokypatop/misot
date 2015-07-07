@@ -34,7 +34,7 @@ class PredlogPeredSlovomTest extends \AotTest\AotDataStorage
 
         $asserted_member =   \Aot\Sviaz\Rule\AssertedMember\Main::create();
 
-        $result = $checker->execute($seq, $asserted_member, $member[1]);
+        $result = $checker->check($seq, $asserted_member, $member[1]);
 
         $this->assertTrue($result);
 
@@ -61,7 +61,7 @@ class PredlogPeredSlovomTest extends \AotTest\AotDataStorage
 
         $asserted_member = \Aot\Sviaz\Rule\AssertedMember\Main::create();
 
-        $result = $checker->execute($seq, $asserted_member, $member[1]);
+        $result = $checker->check($seq, $asserted_member, $member[1]);
 
         $this->assertFalse($result);
     }

@@ -24,6 +24,10 @@ class Main extends Base
             return true;
         }
 
+        if ($actual instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
+            return false;
+        }
+
         throw new \RuntimeException("unsupported sequence_member type");
     }
 }

@@ -11,7 +11,6 @@ namespace Aot\Sviaz\Processor;
 
 use Aot\Sviaz\Rule\Base as RuleBase;
 use Aot\Sviaz\Sequence;
-use Aot\Sviaz\SequenceMember\Base as SequenceMemberBase;
 
 class Base
 {
@@ -42,40 +41,65 @@ class Base
 
         $get_raw_sequences = $this->getRawSequences($normalized_matrix);
 
-        $this->applyRule(
+        $sviazi = $this->applyRules(
             $get_raw_sequences[0],
-            $rules[0]
+            $rules
         );
 
-        #var_export($get_raw_sequences[0]);
+
+        var_export($sviazi);
+
     }
 
-    protected function applyRule(\Aot\Sviaz\Sequence $sequence, RuleBase $rule)
+
+    /**
+     * @param Sequence $sequence
+     * @param RuleBase[] $rules
+     * @return \Aot\Sviaz\Base[]
+     */
+    protected function applyRules(\Aot\Sviaz\Sequence $sequence, array $rules)
     {
-        /** @var $sequence SequenceMemberBase[] */
+        assert(!empty($rules));
 
-        $links = [];
+        foreach ($rules as $_rule) {
+            assert(is_a($_rule, \Aot\Sviaz\Rule\Base::class));
+        }
 
 
-        foreach ($sequence as $main_candidate) {
-            if (!$rule->getMain()->attempt($main_candidate)) {
-                continue;
-            }
-            foreach ($sequence as $depended_candidate) {
-                if ($depended_candidate === $main_candidate) {
+        $sviazi = [];
+
+        foreach ($rules as $rule) {
+
+            foreach ($sequence as $main_candidate) {
+                if (!$rule->getMain()->attempt($main_candidate)) {
                     continue;
                 }
+                foreach ($sequence as $depended_candidate) {
+                    if ($depended_candidate === $main_candidate) {
+                        continue;
+                    }
 
-                if (!$rule->getDepended()->attempt($depended_candidate)) {
-                    continue;
+                    if (!$rule->getDepended()->attempt($depended_candidate)) {
+                        continue;
+                    }
+
+                    $result = $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
+
+                    if ($result) {
+
+                        $sviazi[] = \Aot\Sviaz\Base::create(
+                            $main_candidate,
+                            $depended_candidate,
+                            $rule->getMain()->getRole(),
+                            $rule->getDepended()->getRole()
+                        );
+                    }
                 }
-
-                $links[] = $link= $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
-
             }
         }
 
-        var_export($rule);
+
+        return $sviazi;
     }
 
 

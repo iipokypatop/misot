@@ -10,7 +10,7 @@ namespace Aot\Sviaz\Rule\AssertedMember\Checker;
 
 abstract class Base
 {
-    abstract public function execute(
+    abstract public function check(
         \Aot\Sviaz\Sequence $sequence,
         \Aot\Sviaz\Rule\AssertedMember\Base $expected_member,
         \Aot\Sviaz\SequenceMember\Base $actual_member

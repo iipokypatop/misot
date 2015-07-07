@@ -16,9 +16,9 @@ class BaseTest extends \AotTest\AotDataStorage
 
         $rule = $this->getRule();
 
-        /*$processor->go(
+        $processor->go(
             $this->getNormalizedMatrix(),
             [$rule]
-        );*/
+        );
     }
 }

@@ -11,7 +11,7 @@ namespace Aot\Sviaz\Rule\AssertedMember\Checker;
 
 class PredlogPeredSlovom extends Base
 {
-    public function execute(
+    public function check(
         \Aot\Sviaz\Sequence $sequence,
         \Aot\Sviaz\Rule\AssertedMember\Base $expected_member,
         \Aot\Sviaz\SequenceMember\Base $actual_member

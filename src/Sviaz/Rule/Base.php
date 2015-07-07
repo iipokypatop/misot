@@ -73,6 +73,12 @@ class Base
         $this->links[] = $link;
     }
 
+    /**
+     * @param \Aot\Sviaz\SequenceMember\Base $main_candidate
+     * @param \Aot\Sviaz\SequenceMember\Base $depended_candidate
+     * @param \Aot\Sviaz\Sequence $sequence
+     * @return bool
+     */
     public function attemptLink(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
     {
         $result = false;
@@ -89,18 +95,14 @@ class Base
         return $result;
     }
 
-
     public function attemptMain(\Aot\Sviaz\SequenceMember\Base $actual)
     {
         return $this->getMain()->attempt($actual);
     }
 
-
     public function attemptDepended(\Aot\Sviaz\SequenceMember\Base $actual)
     {
         return $this->getDepended()->attempt($actual);
     }
-
-
 }
 

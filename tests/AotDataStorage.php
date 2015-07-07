@@ -146,7 +146,7 @@ TEXT;
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class
         );
 
-        $link->addAssertedMatchings($asserted_match);
+        $link->addAssertedMatching($asserted_match);
 
         $rule->addLink($link);
 

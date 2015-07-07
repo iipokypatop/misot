@@ -24,7 +24,11 @@ class Depended extends Base
             return true;
         }
 
-        throw new \RuntimeException("unsupported sequence_member type");
+        if ($actual instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
+            return false;
+        }
+
+        throw new \RuntimeException("unsupported sequence_member type " . get_class($actual));
     }
 
 }

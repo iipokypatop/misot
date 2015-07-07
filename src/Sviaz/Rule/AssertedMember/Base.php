@@ -105,4 +105,6 @@ abstract class Base
     {
         $this->role = $role;
     }
+
+    abstract public function attempt(\Aot\Sviaz\SequenceMember\Base $actual);
 }

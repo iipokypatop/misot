@@ -81,11 +81,8 @@ class Base
         $this->position = $position;
     }
 
-
     public function attempt(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
     {
-        throw new \RuntimeException("этот метод не тестировался. пока не тестировался...");
-
         foreach ($this->asserted_matchings as $asserted_matching) {
 
             $result = $asserted_matching->attempt(
@@ -99,5 +96,4 @@ class Base
 
         return true;
     }
-
 }
