@@ -9,6 +9,7 @@
 namespace Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator;
 
 use Aot\RussianMorphology\ChastiRechi\MorphologyBase;
+use Aot\RussianMorphology\Map;
 
 class Eq extends Base
 {
@@ -27,7 +28,7 @@ class Eq extends Base
             return true;
         }
 
-        foreach (static::get_eq_classes() as $morphology_id => $variants) {
+        foreach (Map::getEqClasses() as $morphology_id => $variants) {
             foreach ($variants as $variant) {
                 if (in_array($left, $variant, true) && in_array($right, $variant, true)) {
                     return true;
