@@ -65,9 +65,8 @@ abstract class Base
      */
     public function assertChastRechi($asserted_chast_rechi_class)
     {
-        assert(
-            is_subclass_of($asserted_chast_rechi_class, Slovo::class)
-        );
+        assert(is_a($asserted_chast_rechi_class, Slovo::class, true));
+
         $this->asserted_chast_rechi_class = $asserted_chast_rechi_class;
     }
 
@@ -81,9 +80,7 @@ abstract class Base
 
     public function assertMorphology($morphology_class)
     {
-        assert(
-            is_subclass_of($morphology_class, MorphologyBase::class)
-        );
+        assert(is_a($morphology_class, MorphologyBase::class, true));
 
         $this->asserted_morphology_class[get_class($morphology_class)] = $morphology_class;
     }

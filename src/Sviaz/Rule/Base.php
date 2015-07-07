@@ -75,18 +75,18 @@ class Base
 
     public function attemptLink(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
     {
+        $result = false;
+
         foreach ($this->links as $link) {
 
             $result = $link->attempt($main_candidate, $depended_candidate, $sequence);
 
-            if (!$result) {
-                return false;
-
+            if (false === $result) {
+                return $result;
             }
         }
 
-
-        return true;
+        return $result;
     }
 
 

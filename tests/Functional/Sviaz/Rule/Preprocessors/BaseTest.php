@@ -15,12 +15,12 @@ use MivarTest\Base;
  */
 class BaseTest extends Base
 {
-
-    /**
-     * @param $dw
-     * @param $word
-     * @throws \Exception
-     */
+//
+//    /**
+//     * @param $dw
+//     * @param $word
+//     * @throws \Exception
+//     */
 //    public function testfirst($dw, $word)
 //    {
 //

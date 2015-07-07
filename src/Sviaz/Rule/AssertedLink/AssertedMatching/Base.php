@@ -11,6 +11,5 @@ namespace Aot\Sviaz\Rule\AssertedLink\AssertedMatching;
 
 abstract class Base
 {
-
-
+    abstract public function attempt(\Aot\Sviaz\SequenceMember\Base $actual_left, \Aot\Sviaz\SequenceMember\Base $actual_right);
 }

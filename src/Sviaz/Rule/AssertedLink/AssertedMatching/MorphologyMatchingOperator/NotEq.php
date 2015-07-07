@@ -20,6 +20,6 @@ class NotEq extends Base
     public function match(MorphologyBase $left, MorphologyBase $right)
     {
         throw new \RuntimeException("неужели этим кто-то воспользовался :-) ");
-        //return get_class($left) !== get_class($left);
+        //return get_class($left) !== get_class($right);
     }
 }

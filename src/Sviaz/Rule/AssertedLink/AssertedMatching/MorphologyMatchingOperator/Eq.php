@@ -19,6 +19,6 @@ class Eq extends Base
      */
     public function match(MorphologyBase $left, MorphologyBase $right)
     {
-        return get_class($left) === get_class($left);
+        return get_class($left) === get_class($right);
     }
 }

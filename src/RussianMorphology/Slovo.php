@@ -34,11 +34,11 @@ abstract class Slovo
 
     function __get($name)
     {
-        if (!array_key_exists($name, static::getMorphology())) {
+        if (array_key_exists($name, static::getMorphology())) {
             return $this->storage[$name];
         }
 
-        throw new \RuntimeException("unsupported field exception");
+        throw new \RuntimeException("unsupported field name exception");
     }
 
     function __set($name, $value)
@@ -47,10 +47,9 @@ abstract class Slovo
             throw new \RuntimeException("unsupported field exception");
         }
 
-        if (get_class($value) !== static::getMorphology()[$name]) {
+        if (!is_subclass_of($value, static::getMorphology()[$name])) {
             throw new \RuntimeException("incorrect field type");
         }
-
 
         $this->storage[$name] = $value;
     }
@@ -76,10 +75,22 @@ abstract class Slovo
      */
     public function getMorphologyByClass_TEMPORARY($classname)
     {
-        foreach ($this as $name => $value) {
-            if ($value instanceof $classname) {
-                return $value;
+        #throw new \RuntimeException("more than one subclass of $classname");
+
+        $values = [];
+        foreach ($this->storage as $name => $value) {
+            // if ($value instanceof $classname) {
+            if (is_subclass_of($value, $classname)) {
+                $values[] = $value;
             }
+        }
+
+        if (count($values) > 1) {
+            throw new \RuntimeException("more than one subclass of $classname");
+        }
+
+        if (count($values) === 1) {
+            return $values[0];
         }
 
         return null;

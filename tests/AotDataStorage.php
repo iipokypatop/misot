@@ -146,11 +146,22 @@ TEXT;
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class
         );
 
-        $link->addAssertedMatches($asserted_match);
+        $link->addAssertedMatchings($asserted_match);
 
         $rule->addLink($link);
 
         return $rule;
 
+    }
+
+    protected function getMorphologyMatching()
+    {
+       $MorphologyMatching = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
+            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base::class,
+            \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
+            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base::class
+        );
+
+        return $MorphologyMatching;
     }
 }

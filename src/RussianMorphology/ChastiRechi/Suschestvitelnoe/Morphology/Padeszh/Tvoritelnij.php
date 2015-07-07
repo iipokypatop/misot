@@ -8,7 +8,7 @@ namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh;
  * Date: 17.06.2015
  * Time: 22:18
  */
-class Tvoritelnij extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+class Tvoritelnij extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base
 {
 
 }

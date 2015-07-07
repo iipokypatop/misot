@@ -20,7 +20,9 @@ class Base
     protected $asserted_main;
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Depended */
     protected $asserted_depended;
-    protected $asserted_matches = [];
+
+    /** @var \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\Base[] */
+    protected $asserted_matchings = [];
     protected $position;
 
     /**
@@ -55,9 +57,12 @@ class Base
         return $this->asserted_depended;
     }
 
-    public function addAssertedMatches(\Aot\Sviaz\Rule\AssertedLink\AssertedMatching\Base $asserted_matching)
+    /**
+     * @param AssertedMatching\Base $asserted_matching
+     */
+    public function addAssertedMatching(\Aot\Sviaz\Rule\AssertedLink\AssertedMatching\Base $asserted_matching)
     {
-        $this->asserted_matches[] = $asserted_matching;
+        $this->asserted_matchings[] = $asserted_matching;
     }
 
     public function setPosition($position)
@@ -79,7 +84,20 @@ class Base
 
     public function attempt(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
     {
-        return false;
+        throw new \RuntimeException("этот метод не тестировался. пока не тестировался...");
+
+        foreach ($this->asserted_matchings as $asserted_matching) {
+
+            $result = $asserted_matching->attempt(
+                $main_candidate, $depended_candidate
+            );
+
+            if (!$result) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }
