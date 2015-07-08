@@ -30,7 +30,7 @@ class Eq extends Base
 
         foreach (Map::getEqClasses() as $morphology_id => $variants) {
             foreach ($variants as $variant) {
-                if (in_array($left, $variant, true) && in_array($right, $variant, true)) {
+                if (in_array(get_class($left), $variant, true) && in_array(get_class($right), $variant, true)) {
                     return true;
                 }
             }

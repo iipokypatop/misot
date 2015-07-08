@@ -16,4 +16,15 @@ class Sequence extends \ArrayObject
     {
         return new static;
     }
+
+    public function getPosition(\Aot\Sviaz\SequenceMember\Base $search)
+    {
+        foreach ($this as $index => $member) {
+            if($search === $member){
+                return $index;
+            }
+        }
+
+        return null;
+    }
 }

@@ -11,5 +11,8 @@ namespace Aot\Sviaz\Role;
 
 class Base
 {
-
+    public static function create()
+    {
+        return new static();
+    }
 }

@@ -91,17 +91,17 @@ class MorphologyMatching extends Base
         }
 
         $morphology_left = $actual_left->getSlovo()->getMorphologyByClass_TEMPORARY(
-            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base::class
+            $this->asserted_left_class
         );
-        $morphology_right = $actual_right->getSlovo()->getMorphologyByClass_TEMPORARY(
-            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base::class
-        );
-
-        if (!$morphology_left instanceof $this->asserted_left_class) {
+        if (null === $morphology_left) {
             $this->message = "морфологичесекий признак левого операнда не соответствует ожидаемому";
             return false;
         }
-        if (!$morphology_right instanceof $this->asserted_right_class) {
+
+        $morphology_right = $actual_right->getSlovo()->getMorphologyByClass_TEMPORARY(
+            $this->asserted_right_class
+        );
+        if (null === $morphology_right) {
             $this->message = "морфологичесекий признак правого операнда не соответствует ожидаемому";
             return false;
         }

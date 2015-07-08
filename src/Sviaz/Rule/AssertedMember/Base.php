@@ -16,9 +16,13 @@ abstract class Base
 {
     /** @var  string */
     protected $asserted_chast_rechi_class;
+
     protected $asserted_text;
     protected $asserted_text_group_id;
-    protected $asserted_morphology_class = [];
+
+
+    /** @var \Aot\RussianMorphology\ChastiRechi\MorphologyBase[] */
+    protected $asserted_morphologies = [];
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Checker\Base[] */
     protected $checkers;
     /** @var  \Aot\Sviaz\Role\Base */
@@ -26,10 +30,10 @@ abstract class Base
 
     protected function __construct()
     {
-
+        // Rule\AssertedMember\Main $main_sequence_member, Rule\AssertedMember\Depended $depended_sequence_member, Role\Base $main_role, Role\Base $depended_role
     }
 
-    public static function create()
+    public static function create(/** Rule\AssertedMember\Main $main_sequence_member re */)
     {
         return new static;
     }
@@ -65,6 +69,7 @@ abstract class Base
      */
     public function assertChastRechi($asserted_chast_rechi_class)
     {
+        assert(is_string($asserted_chast_rechi_class));
         assert(is_a($asserted_chast_rechi_class, Slovo::class, true));
 
         $this->asserted_chast_rechi_class = $asserted_chast_rechi_class;
@@ -78,11 +83,14 @@ abstract class Base
         return $this->asserted_chast_rechi_class;
     }
 
+    /**
+     * @param string $morphology_class
+     */
     public function assertMorphology($morphology_class)
     {
         assert(is_a($morphology_class, MorphologyBase::class, true));
 
-        $this->asserted_morphology_class[get_class($morphology_class)] = $morphology_class;
+        $this->asserted_morphologies[] = $morphology_class;
     }
 
     public function addChecker(\Aot\Sviaz\Rule\AssertedMember\Checker\Base $checker)
@@ -106,5 +114,33 @@ abstract class Base
         $this->role = $role;
     }
 
-    abstract public function attempt(\Aot\Sviaz\SequenceMember\Base $actual);
+    public function attempt(\Aot\Sviaz\SequenceMember\Base $actual)
+    {
+        if ($actual instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
+
+            if (null !== $this->getAssertedChastRechiClass()) {
+                if (!is_a($actual->getSlovo(), $this->getAssertedChastRechiClass(), true)) {
+                    return false;
+                }
+            }
+
+            foreach ($this->asserted_morphologies as $asserted_morphology) {
+
+                $morphology = $actual->getSlovo()->getMorphologyByClass_TEMPORARY($asserted_morphology);
+
+                if (null === $morphology) {
+                    return false;
+                    //throw new \RuntimeException("признак " . is_object($asserted_morphology) ? get_class($asserted_morphology) : $asserted_morphology . " отсутствует у " . var_export($actual->getSlovo(), 1));
+                }
+            }
+
+            return true;
+
+        } else if ($actual instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
+
+            return true;
+        }
+
+        throw new \RuntimeException("unsupported sequence_member type " . get_class($actual));
+    }
 }

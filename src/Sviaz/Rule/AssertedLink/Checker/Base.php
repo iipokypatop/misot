@@ -9,7 +9,7 @@
 namespace Aot\Sviaz\Rule\AssertedLink\Checker;
 
 
-class Base
+abstract class Base
 {
-
+   abstract public function check(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence);
 }

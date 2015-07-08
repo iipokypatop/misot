@@ -65,7 +65,7 @@ class Base
         $this->asserted_matchings[] = $asserted_matching;
     }
 
-    public function setPosition($position)
+    public function assertPosition($position)
     {
         if (!in_array($position, [
             static::POSITION_DEPENDED_ANY,
@@ -81,19 +81,39 @@ class Base
         $this->position = $position;
     }
 
+    /** @var \Aot\Sviaz\Rule\AssertedLink\Checker\Base[] */
+    protected $checkers = [];
+
     public function attempt(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
     {
+        $result = false;
+
         foreach ($this->asserted_matchings as $asserted_matching) {
 
-            $result = $asserted_matching->attempt(
-                $main_candidate, $depended_candidate
-            );
+            $result = $asserted_matching->attempt($main_candidate, $depended_candidate);
 
             if (!$result) {
                 return false;
             }
         }
 
-        return true;
+        foreach ($this->checkers as $checker) {
+
+            $result = $checker->check($main_candidate, $depended_candidate, $sequence);
+
+            if (!$result) {
+                return false;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param Checker\Base $checker
+     */
+    public function addChecker(\Aot\Sviaz\Rule\AssertedLink\Checker\Base $checker)
+    {
+        $this->checkers[] = $checker;
     }
 }

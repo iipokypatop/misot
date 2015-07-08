@@ -29,7 +29,8 @@ class Base
 
     /**
      * @param \Aot\Text\NormalizedMatrix $normalized_matrix
-     * @param RuleBase[] $rules
+     * @param array $rules
+     * @return \Aot\Sviaz\Base[][]
      */
     public function go(\Aot\Text\NormalizedMatrix $normalized_matrix, array $rules)
     {
@@ -41,13 +42,17 @@ class Base
 
         $get_raw_sequences = $this->getRawSequences($normalized_matrix);
 
-        $sviazi = $this->applyRules(
-            $get_raw_sequences[0],
-            $rules
-        );
 
+        $sviazi = [];
 
-        var_export($sviazi);
+        foreach ($get_raw_sequences as $raw_sequence) {
+            $sviazi[] = $this->applyRules(
+                $raw_sequence,
+                $rules
+            );
+        }
+
+        return $sviazi;
 
     }
 
@@ -65,7 +70,6 @@ class Base
             assert(is_a($_rule, \Aot\Sviaz\Rule\Base::class));
         }
 
-
         $sviazi = [];
 
         foreach ($rules as $rule) {
@@ -74,6 +78,7 @@ class Base
                 if (!$rule->getMain()->attempt($main_candidate)) {
                     continue;
                 }
+
                 foreach ($sequence as $depended_candidate) {
                     if ($depended_candidate === $main_candidate) {
                         continue;
@@ -82,6 +87,7 @@ class Base
                     if (!$rule->getDepended()->attempt($depended_candidate)) {
                         continue;
                     }
+                    //var_export($depended_candidate);die;
 
                     $result = $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
 
@@ -97,7 +103,6 @@ class Base
                 }
             }
         }
-
 
         return $sviazi;
     }

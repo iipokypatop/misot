@@ -54,4 +54,9 @@ class BaseTest extends Base
 
       //  $this->assertEquals(1, $sequence->count());
    // }
+
+
+    public function test()
+    {
+    }
 }
