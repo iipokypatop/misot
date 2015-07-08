@@ -28,6 +28,10 @@ class Map
     const ROD_ZHENSKII = 2002;
     const ROD_SREDNIJ = 2003;
 
+    const CHISLO = 3000;
+    const CHISLO_EDINSTVENNOE = 3001;
+    const CHISLO_MNOZHESTVENNOE = 3002;
+
     public static function getNames()
     {
         return [
@@ -96,6 +100,16 @@ class Map
                     static::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Srednij::class,
                 ],
             ],
+            static::CHISLO => [
+                static::CHISLO_EDINSTVENNOE => [
+                    \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe::class,
+                    \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Edinstvennoe::class,
+                ],
+                static::CHISLO_MNOZHESTVENNOE => [
+                    \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::class,
+                    \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe::class,
+                ]
+            ]
         ];
     }
 }
