@@ -6,7 +6,7 @@ namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravn
  * Date: 18.06.2015
  * Time: 16:28
  */
-class Sravnitelnaia extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Base
+class Sravnitelnaia extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Base
 {
 
 }

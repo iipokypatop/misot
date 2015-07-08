@@ -6,7 +6,7 @@ namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razriad;
  * Date: 18.06.2015
  * Time: 16:27
  */
-class Pritiazhatelnoe extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Base
+class Pritiazhatelnoe extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razriad\Base
 {
 
 }

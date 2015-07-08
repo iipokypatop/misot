@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso;
 
 
-class Base extends \Aot\RussianMorphology\ChastiRechi\Glagol\Base
+class Base extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
 {
 
 }

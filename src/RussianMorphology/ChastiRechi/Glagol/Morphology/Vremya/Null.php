@@ -6,10 +6,10 @@
  * Time: 19:35
  */
 
-namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya;
 
 
-class Null extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Null extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Base
 {
 
 }

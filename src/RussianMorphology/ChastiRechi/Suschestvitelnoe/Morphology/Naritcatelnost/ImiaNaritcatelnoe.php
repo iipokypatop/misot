@@ -9,7 +9,7 @@ namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcat
  * Date: 18.06.2015
  * Time: 16:17
  */
-class ImiaNaritcatelnoe extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+class ImiaNaritcatelnoe extends Base
 {
 
 }

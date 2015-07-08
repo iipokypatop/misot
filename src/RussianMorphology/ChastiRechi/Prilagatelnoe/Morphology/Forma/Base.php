@@ -8,7 +8,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma;
 
 
-class Base extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base
+class Base extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Base
 {
 
 }

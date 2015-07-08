@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost;
 
 
-class Nevozvratnyj extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Nevozvratnyj extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Base
 {
 
 }

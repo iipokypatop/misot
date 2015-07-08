@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog;
 
 
-class Dejstvitelnyj extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Dejstvitelnyj extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Base
 {
 
 }

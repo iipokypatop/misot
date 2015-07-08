@@ -6,7 +6,7 @@ namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh;
  * Date: 17.06.2015
  * Time: 22:17
  */
-class Roditelnij extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Base
+class Roditelnij extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Base
 {
 
 }

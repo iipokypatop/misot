@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost;
 
 
-class Neperehodnyj extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Neperehodnyj extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Base
 {
 
 }

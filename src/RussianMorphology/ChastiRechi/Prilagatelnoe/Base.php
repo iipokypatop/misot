@@ -10,25 +10,29 @@ use Aot\RussianMorphology\Slovo;
  * Date: 17.06.2015
  * Time: 22:11
  */
+/**
+ * Class Base
+ * @package Aot\RussianMorphology\ChastiRechi\Prilagatelnoe
+ * @property Morphology\Chislo\Base $chislo
+ * @property Morphology\Forma\Base $forma
+ * @property Morphology\Padeszh\Base $padeszh
+ * @property Morphology\Razriad\Base $razriad
+ * @property Morphology\Rod\Base $rod
+ * @property Morphology\StepenSravneniia\Base $stepen_sravneniia
+ */
 class Base extends Slovo
 {
-    /**@var Morphology\Chislo\Base*/
-    public $chislo;
-
-    /**@var Morphology\Forma\Base*/
-    public $forma;
-
-    /**@var Morphology\Padeszh\Base*/
-    public $padeszh;
-
-    /**@var Morphology\Razriad\Base*/
-    public $razriad;
-
-    /**@var Morphology\Rod\Base*/
-    public $rod;
-
-    /**@var Morphology\StepenSravneniia\Base*/
-    public $stepen_sravneniia;
+    public function getMorphology()
+    {
+        return [
+            'chislo' => Morphology\Chislo\Base::class,
+            'forma' => Morphology\Forma\Base::class,
+            'padeszh' => Morphology\Padeszh\Base::class,
+            'razriad' => Morphology\Razriad\Base::class,
+            'rod' => Morphology\Rod\Base::class,
+            'stepen_sravneniia' => Morphology\StepenSravneniia\Base::class,
+        ];
+    }
 
     /**
      * Prilagatelnoe constructor.

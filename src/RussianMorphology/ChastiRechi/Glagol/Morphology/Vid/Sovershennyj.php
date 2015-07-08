@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid;
 
 
-class Sovershennyj extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Sovershennyj extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Base
 {
 
 }

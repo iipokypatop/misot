@@ -8,7 +8,7 @@ namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevl
  * Date: 18.06.2015
  * Time: 16:18
  */
-class Neodushevlyonnoe extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+class Neodushevlyonnoe extends Base
 {
 
 }

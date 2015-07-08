@@ -8,7 +8,7 @@ namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Skloneni
  * Date: 17.06.2015
  * Time: 22:19
  */
-class Tretie extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+class Tretie extends Base
 {
 
 }

@@ -8,7 +8,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie;
 
 
-class Base extends \Aot\RussianMorphology\ChastiRechi\Glagol\Base
+class Base extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
 {
 
 }

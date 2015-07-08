@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia;
 
 
-class Null extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Base
+class Null extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Base
 {
 
 }

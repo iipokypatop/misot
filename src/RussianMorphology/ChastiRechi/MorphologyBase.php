@@ -8,8 +8,6 @@
 
 namespace Aot\RussianMorphology\ChastiRechi;
 
-
-
 abstract class MorphologyBase
 {
     /**

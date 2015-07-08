@@ -44,7 +44,7 @@ class Base extends Slovo
      * @param Morphology\Odushevlyonnost\Base $odushevlyonnost
      * @param Morphology\Padeszh\Base $padeszh
      * @param Morphology\Rod\Base $rod
-     * @param Morphology\Sklonenie\Base $sklonenie
+     * @param Morphology\Sklonenie\Base Glagol
      * @return static
      */
     public static function create(

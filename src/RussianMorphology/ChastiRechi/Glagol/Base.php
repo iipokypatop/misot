@@ -10,31 +10,41 @@ use Aot\RussianMorphology\Slovo;
  * Date: 17.06.2015
  * Time: 22:11
  */
+
+/**
+ * Class Base
+ * @package Aot\RussianMorphology\ChastiRechi\Glagol
+ * @property Morphology\Chislo\Base $chislo
+ * @property Morphology\Litso\Base $litso
+ * @property Morphology\Naklonenie\Base $naklonenie
+ * @property Morphology\Perehodnost\Base $perehodnost
+ * @property Morphology\Rod\Base $rod
+ * @property Morphology\Spryazhenie\Base $spryazhenie
+ * @property Morphology\Vid\Base $vid
+ * @property Morphology\Vozvratnost\Base $vozvratnost
+ * @property Morphology\Vremya\Base $vremya
+ * @property Morphology\Zalog\Base $zalog
+ */
 class Base extends Slovo
 {
-    /**@var Morphology\Chislo\Base*/
-    public $chislo;
-
-    /**@var Morphology\Litso\Base*/
-    public $litso;
-
-    /**@var Morphology\Naklonenie\Base*/
-    public $naklonenie;
-
-    /**@var Morphology\Perehodnost\Base*/
-    public $perehodnost;
-
-    /**@var Morphology\Rod\Base*/
-    public $rod;
-
-    /**@var Morphology\Spryazhenie\Base*/
-    public $spryazhenie;
-
-    /**@var Morphology\Vid\Base*/
-    public $vid;
+    public function getMorphology()
+    {
+        return [
+            'chislo' => Morphology\Chislo\Base::class,
+            'litso' => Morphology\Litso\Base::class,
+            'naklonenie' => Morphology\Naklonenie\Base::class,
+            'perehodnost' => Morphology\Perehodnost\Base::class,
+            'rod' => Morphology\Rod\Base::class,
+            'spryazhenie' => Morphology\Spryazhenie\Base::class,
+            'vid' => Morphology\Vid\Base::class,
+            'vozvratnost' => Morphology\Vozvratnost\Base::class,
+            'vremya' => Morphology\Vremya\Base::class,
+            'zalog' => Morphology\Zalog\Base::class,
+        ];
+    }
 
     /**
-     * Prilagatelnoe constructor.
+     * Glagol constructor.
      * @param $text
      * @param Morphology\Chislo\Base $chislo
      * @param Morphology\Litso\Base $litso
@@ -62,6 +72,7 @@ class Base extends Slovo
         Morphology\Zalog\Base $zalog
     )
     {
+
         $ob = new static($text);
 
         $ob->chislo = $chislo;
@@ -71,7 +82,7 @@ class Base extends Slovo
         $ob->rod = $rod;
         $ob->spryazhenie = $spryazhenie;
         $ob->vid = $vid;
-        $ob->rod = $vozvratnost;
+        $ob->vozvratnost = $vozvratnost;
         $ob->spryazhenie = $vremya;
         $ob->vid = $zalog;
 

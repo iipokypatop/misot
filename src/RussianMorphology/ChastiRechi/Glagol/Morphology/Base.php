@@ -12,22 +12,8 @@ use Aot\RussianMorphology\ChastiRechi\MorphologyBase;
 
 class Base extends MorphologyBase
 {
-    /**
-     * @return static []
-     */
-    public static function getTreeChildrenNodes()
+    public static function create()
     {
-        return [
-            Chislo\Base::class,
-            Litso\Base::class,
-            Naklonenie\Base::class,
-            Perehodnost\Base::class,
-            Rod\Base::class,
-            Spryazhenie\Base::class,
-            Vid\Base::class,
-            Vozvratnost\Base::class,
-            Vremya\Base::class,
-            Zalog\Base::class
-        ];
+        return new static();
     }
 }

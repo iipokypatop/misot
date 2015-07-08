@@ -6,10 +6,10 @@
  * Time: 14:30
  */
 
-namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya;
 
 
-class Nastoyaschee extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base
+class Nastoyaschee extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Base
 {
 
 }

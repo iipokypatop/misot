@@ -14,18 +14,8 @@ use Aot\RussianMorphology\ChastiRechi\MorphologyBase;
 
 class Base extends MorphologyBase
 {
-    /**
-     * @return static []
-     */
-    public static function getTreeChildrenNodes()
+    public static function create()
     {
-        return [
-            Chislo\Base::class,
-            Forma\Base::class,
-            Padeszh\Base::class,
-            Razriad\Base::class,
-            Rod\Base::class,
-            StepenSravneniia\Base::class,
-        ];
+        return new static();
     }
 }

@@ -10,12 +10,9 @@ namespace Aot\RussianMorphology;
  */
 abstract class Slovo
 {
-    protected static $children = [
-        ChastiRechi\Suschestvitelnoe\Base::class,
-        ChastiRechi\Prilagatelnoe\Base::class
-    ];
+    protected $storage = [
 
-    protected $storage = [];
+    ];
 
     protected function init()
     {
@@ -32,7 +29,7 @@ abstract class Slovo
         return [];
     }
 
-    function __get($name)
+    public  function __get($name)
     {
         if (array_key_exists($name, static::getMorphology())) {
             return $this->storage[$name];
@@ -41,7 +38,7 @@ abstract class Slovo
         throw new \RuntimeException("unsupported field name exception");
     }
 
-    function __set($name, $value)
+    public function __set($name, $value)
     {
         if (!array_key_exists($name, static::getMorphology())) {
             throw new \RuntimeException("unsupported field exception");
@@ -79,11 +76,20 @@ abstract class Slovo
 
         $values = [];
         foreach ($this->storage as $name => $value) {
-            // if ($value instanceof $classname) {
-            if (is_subclass_of($value, $classname)) {
+            if ( $value instanceof $classname ) {
                 $values[] = $value;
             }
         }
+
+
+        /// TEMPORARY start
+        foreach ($this as $name => $value) {
+
+            if ( $value instanceof $classname ) {
+                $values[] = $value;
+            }
+        }
+        /// TEMPORARY end
 
         if (count($values) > 1) {
             throw new \RuntimeException("more than one subclass of $classname");
@@ -95,5 +101,15 @@ abstract class Slovo
 
         return null;
     }
+
+    /**
+     * @return string
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+
 }
 

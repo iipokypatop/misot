@@ -10,7 +10,7 @@ namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod;
  * Date: 18.06.2015
  * Time: 16:20
  */
-class Zhenskii extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+class Zhenskii extends Base
 {
 
 }
