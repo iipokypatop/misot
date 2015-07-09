@@ -142,37 +142,44 @@ class Factory extends \Aot\RussianMorphology\Factory
         } else throw new \Exception('not implemented yet');
     }
 
+    /**
+     * @param MorphAttribute $value
+     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Base[]
+     */
     private function getPadeszh(MorphAttribute $value) {
         $padeszh = [];
 
         foreach ($value->id_value_attr as $val) {
             if ($val === CASE_SUBJECTIVE_ID) {
-                $padeszh[] = array_push($padeszh, new Imenitelnij());
+                $padeszh[] = new Imenitelnij();
             }
             elseif ($val === CASE_GENITIVE_ID) {
-                $padeszh[] = array_push($padeszh, new Roditelnij());
+                $padeszh[] = new Roditelnij();
             }
             elseif ($val === CASE_DATIVE_ID) {
-                $padeszh[] = array_push($padeszh, new Datelnij());
+                $padeszh[] = new Datelnij();
             }
             elseif ($val === CASE_ACCUSATIVE_ID) {
-                $padeszh[] = array_push($padeszh, new Vinitelnij());
+                $padeszh[] = new Vinitelnij();
             }
             elseif ($val === CASE_INSTRUMENTAL_ID) {
-                $padeszh[] = array_push($padeszh, new Tvoritelnij());
+                $padeszh[] = new Tvoritelnij();
             }
             elseif ($val === CASE_PREPOSITIONAL_ID) {
-                $padeszh[] = array_push($padeszh, new Predlozshnij());
+                $padeszh[] = new Predlozshnij();
             }
             else{
                 $padeszh[] = new NullPadeszh();
             }
         }
 
-
         return $padeszh;
     }
 
+    /**
+     * @param MorphAttribute $value
+     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Forma\Base[]
+     */
     private function getForma(MorphAttribute $value) {
 
         $forma = [];
@@ -238,14 +245,14 @@ class Factory extends \Aot\RussianMorphology\Factory
         foreach ($value->id_value_attr as $val) {
             if ($val === -1)
             {
-                $perehodnost[] = new Perehodnij();
+                $perehodnost[] = Perehodnij::create();
             }
             elseif ($val === -1)
             {
-                $perehodnost[] = new Neperehodnij();
+                $perehodnost[] = Neperehodnij::create();
             }
             else {
-                $perehodnost[] = new NullPerehodnost();
+                $perehodnost[] = NullPerehodnost::create();
             }
         }
 

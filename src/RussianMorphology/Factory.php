@@ -1,6 +1,8 @@
 <?php
 
 namespace Aot\RussianMorphology;
+use Dw;
+use Word;
 
 /**
  * Created by PhpStorm.
@@ -28,11 +30,6 @@ abstract class Factory
         return static::$uniqueInstance;
     }
 
-    public function create()
-    {
-
-    }
-
     /**
      * @param $text
      * @return AnalysisProtocol
@@ -51,7 +48,9 @@ abstract class Factory
         return new Analyser();
     }
 
-    private function __clone()
+    protected function __clone()
     {
     }
+
+    abstract public function build(Dw $dw, Word $word);
 }
