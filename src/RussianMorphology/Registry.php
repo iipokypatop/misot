@@ -14,6 +14,8 @@ class Registry
     const SUSCHESTVITELNOE = 10;
     const PRILAGATELNOE = 11;
     const GLAGOL = 12;
+    const PRICHASTIE = 13; // ??
+    const NARECHIE = 14; // ??
 
     const PADEJ = 1000;
     const PADEJ_IMENITELNIJ = 1001;
@@ -32,14 +34,14 @@ class Registry
     const CHISLO_EDINSTVENNOE = 3001;
     const CHISLO_MNOZHESTVENNOE = 3002;
 
-
-
     public static function getNames()
     {
         return [
             static::SUSCHESTVITELNOE => 'существительное',
             static::PRILAGATELNOE => 'прилагательное',
             static::GLAGOL => 'глагол',
+            static::PRICHASTIE => 'причастие',
+            static::NARECHIE => 'наречие',
 
             static::PADEJ => 'падеж',
             static::PADEJ_IMENITELNIJ => 'именительный падеж',
@@ -55,6 +57,4 @@ class Registry
             static::ROD_SREDNIJ => 'средний род',
         ];
     }
-
-
 }
