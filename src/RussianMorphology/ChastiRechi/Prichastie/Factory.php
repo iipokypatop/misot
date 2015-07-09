@@ -52,6 +52,12 @@ use Word;
 
 class Factory extends \Aot\RussianMorphology\Factory
 {
+    /**
+     * @param Dw $dw
+     * @param Word $word
+     * @return static
+     * @throws \Exception
+     */
     public function build(Dw $dw, Word $word)
     {
         $text = $dw->initial_form;
