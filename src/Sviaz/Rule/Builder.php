@@ -299,11 +299,21 @@ class Builder
     {
         if (null === $config['chast_rechi']) {
 
-            throw new \RuntimeException("chast_rechi must be definded!");
+            throw new \RuntimeException("chast_rechi must be defined!");
 
         } else {
             $member->assertChastRechi(
                 ChastiRechiRegistry::getClasses()[$config['chast_rechi']]
+            );
+        }
+
+        if (null === $config['role']) {
+
+            throw new \RuntimeException("role must be defined!");
+
+        } else {
+            $member->setRole(
+                forward_static_call_array([RoleRegistry::getClasses()[$config['role']], 'create'])
             );
         }
 

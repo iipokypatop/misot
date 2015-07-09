@@ -10,11 +10,12 @@ namespace AotTest\Functional\Sviaz\Rule;
 
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
-use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as CheckerRegistry;
+use Aot\Sviaz\Role\Registry as RoleRegistry;
+use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
-use AotTest\AotDataStorage;
 
-class BuilderTest extends AotDataStorage
+
+class BuilderTest extends \AotTest\AotDataStorage
 {
     public function testLaunch()
     {
@@ -25,11 +26,14 @@ class BuilderTest extends AotDataStorage
             ->mainMorphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
             ->mainMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
             ->mainMorphology(MorphologyRegistry::ROD_SREDNIJ)
+            ->mainRole(RoleRegistry::SVOISTVO)
             ->dependedText("text text text")
             ->dependedChastRechi(ChastiRechiRegistry::PRILAGATELNOE)
             ->dependedCheck(MemberCheckerRegistry::PredlogPeredSlovom)
             ->dependedMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
-            ->dependedMorphology(MorphologyRegistry::ROD_MUZHSKOI);
+            ->dependedMorphology(MorphologyRegistry::ROD_MUZHSKOI)
+            ->dependedRole(RoleRegistry::OTNOSHENIE)
+        ;
 
 
         $builder->dependedAndMainMorphologyMatching(
@@ -40,7 +44,7 @@ class BuilderTest extends AotDataStorage
             MorphologyRegistry::CHISLO
         );
         $builder->dependedAndMainCheck(
-            CheckerRegistry::NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim
+            LinkCheckerRegistry::NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim
         );
 
         $rule = $builder->get();

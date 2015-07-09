@@ -33,7 +33,7 @@ abstract class Base
 
     protected function __construct()
     {
-        // Rule\AssertedMember\Main $main_sequence_member, Rule\AssertedMember\Depended $depended_sequence_member, Role\Base $main_role, Role\Base $depended_role
+
     }
 
     public static function create(/** Rule\AssertedMember\Main $main_sequence_member re */)

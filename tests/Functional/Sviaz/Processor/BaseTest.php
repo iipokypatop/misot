@@ -17,8 +17,15 @@ use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base as Suschestvitelnoe;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base as SuschestvitelnoePadeszhBase;
 use Aot\RussianSyntacsis\Punctuaciya\Zapiataya;
 use Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq;
+use Aot\Sviaz\Rule\Builder;
 use MivarTest\PHPUnitHelper;
 
+
+use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
+use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
+use Aot\Sviaz\Role\Registry as RoleRegistry;
+use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
+use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 
 class BaseTest extends \AotTest\AotDataStorage
 {
@@ -37,7 +44,7 @@ class BaseTest extends \AotTest\AotDataStorage
 
         foreach ($link_container as $sequence_index => $links) {
             $data = [];
-            $data []= $sequence_index;
+            $data [] = $sequence_index;
 
             foreach ($links as $link) {
                 $data[] =
@@ -50,6 +57,40 @@ class BaseTest extends \AotTest\AotDataStorage
         }
     }
 
+    protected function getRule2()
+    {
+
+        $builder = \Aot\Sviaz\Rule\Builder::create()
+            ->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE)
+            ->mainCheck(MemberCheckerRegistry::PredlogPeredSlovom)
+            ->mainMorphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
+            ->mainMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+            ->mainMorphology(MorphologyRegistry::ROD_SREDNIJ)
+            ->mainRole(RoleRegistry::SVOISTVO)
+            ->dependedChastRechi(ChastiRechiRegistry::PRILAGATELNOE)
+            ->dependedCheck(MemberCheckerRegistry::PredlogPeredSlovom)
+            ->dependedMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+            ->dependedMorphology(MorphologyRegistry::ROD_MUZHSKOI)
+            ->dependedRole(RoleRegistry::OTNOSHENIE)
+        ;
+
+
+        $builder->dependedAndMainMorphologyMatching(
+            MorphologyRegistry::PADEJ
+        );
+
+        $builder->dependedAndMainMorphologyMatching(
+            MorphologyRegistry::CHISLO
+        );
+        $builder->dependedAndMainCheck(
+            LinkCheckerRegistry::NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim
+        );
+
+        $rule = $builder->get();
+
+        var_export($rule);
+
+    }
 
     /**
      * @return \Aot\Sviaz\Rule\AssertedMember\Main
