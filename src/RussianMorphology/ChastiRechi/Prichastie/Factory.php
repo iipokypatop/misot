@@ -60,7 +60,7 @@ class Factory extends \Aot\RussianMorphology\Factory
             foreach ($dw->parameters as $value) {
                 /** @var $value MorphAttribute */
                 # форма
-                if ($value->id_morph_attr === -1) {
+                if ($value->id_morph_attr === \OldAotConstants::WORD_FORM()) {
                     $forma = $this->getForma($value);
                 }
                 # род
@@ -72,27 +72,27 @@ class Factory extends \Aot\RussianMorphology\Factory
                     $chislo = $this->getChislo($value);
                 }
                 # переходность
-                elseif ($value->id_morph_attr === -1 ) {
+                elseif ($value->id_morph_attr === TRANSIVITY_ID ) {
                     $perehodnost = $this->getPerehodnost($value);
                 }
                 # падеж
-                elseif ($value->id_morph_attr === CASE_ID ) {
+                elseif ($value->id_morph_attr === CASE_ID) {
                     $padeszh = $this->getPadeszh($value);
                 }
                 # вид
-                elseif ($value->id_morph_attr === -1) {
+                elseif ($value->id_morph_attr === VIEW_ID) {
                     $vid = $this->getVid($value);
                 }
                 # возвратность
-                elseif ($value->id_morph_attr === -1 ) {
+                elseif ($value->id_morph_attr === \OldAotConstants::RETRIEVABLE_IRRETRIEVABLE() ) {
                     $vozvratnost = $this->getVozvratnost($value);
                 }
                 # время
-                elseif ($value->id_morph_attr === -1 ) {
+                elseif ($value->id_morph_attr === TIME_ID) {
                     $vremya = $this->getVremya($value);
                 }
                 # залог
-                elseif ($value->id_morph_attr === -1 ) {
+                elseif ($value->id_morph_attr === \OldAotConstants::VOICE() ) {
                     $zalog = $this->getZalog($value);
                 }
             }
@@ -184,10 +184,10 @@ class Factory extends \Aot\RussianMorphology\Factory
 
         $forma = [];
         foreach ($value->id_value_attr as $val) {
-            if ($val === -1) {
+            if ($val === \OldAotConstants::SHORT_WORD_FORM()) {
                 $forma[] = new Kratkaya();
             }
-            elseif ($val === -1) {
+            elseif ($val === \OldAotConstants::FULL_WORD_FORM()) {
                 $forma[] = new Polnaya();
             }
             else
@@ -243,11 +243,11 @@ class Factory extends \Aot\RussianMorphology\Factory
 
         $perehodnost = [];
         foreach ($value->id_value_attr as $val) {
-            if ($val === -1)
+            if ($val === \OldAotConstants::TRANSITIVE())
             {
                 $perehodnost[] = Perehodnij::create();
             }
-            elseif ($val === -1)
+            elseif ($val === \OldAotConstants::INTRANSITIVE())
             {
                 $perehodnost[] = Neperehodnij::create();
             }
@@ -263,11 +263,11 @@ class Factory extends \Aot\RussianMorphology\Factory
 
         $vid = [];
         foreach ($value->id_value_attr as $val) {
-            if ($val === -1)
+            if ($val === VIEW_PERFECTIVE_ID)
             {
                 $vid[] = new Sovershennyj();
             }
-            elseif ($val === -1)
+            elseif ($val === VIEW_IMPERFECT_ID)
             {
                 $vid[] = new Nesovershennyj();
             }
@@ -283,15 +283,15 @@ class Factory extends \Aot\RussianMorphology\Factory
 
         $vremya = [];
         foreach ($value->id_value_attr as $val) {
-            if ($val === -1)
+            if ($val === TIME_SIMPLE_ID)
             {
                 $vremya[] = new Nastoyaschee();
             }
-            elseif ($val === -1)
+            elseif ($val === TIME_FUTURE_ID)
             {
                 $vremya[] = new Buduschee();
             }
-            elseif ($val === -1)
+            elseif ($val === TIME_PAST_ID)
             {
                 $vremya[] = new Proshedshee();
             }
@@ -307,11 +307,11 @@ class Factory extends \Aot\RussianMorphology\Factory
 
         $vozvratnost = [];
         foreach ($value->id_value_attr as $val) {
-            if ($val === -1)
+            if ($val === \OldAotConstants::RETRIEVABLE())
             {
                 $vozvratnost[] = new Vozvratnyj();
             }
-            elseif ($val === -1)
+            elseif ($val === \OldAotConstants::IRRETRIEVABLE())
             {
                 $vozvratnost[] = new Nevozvratnyj();
             }
@@ -328,11 +328,11 @@ class Factory extends \Aot\RussianMorphology\Factory
 
         $zalog = [];
         foreach ($value->id_value_attr as $val) {
-            if ($val === -1)
+            if ($val === \OldAotConstants::ACTIVE_VOICE())
             {
                 $zalog[] = new Dejstvitelnyj();
             }
-            elseif ($val === -1)
+            elseif ($val === \OldAotConstants::PASSIVE_VOICE())
             {
                 $zalog[] = new Stradatelnyj();
             }
