@@ -11,5 +11,12 @@ namespace Aot\Sviaz\Rule\AssertedLink\Checker;
 
 class Registry
 {
-    const NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim = \Aot\Sviaz\Rule\AssertedLink\Checker\NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim::class;
+    const NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim = 1;
+
+    public static function getClasses()
+    {
+        return [
+            static::NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim => NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim::class
+        ];
+    }
 }

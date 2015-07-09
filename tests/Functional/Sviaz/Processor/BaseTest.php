@@ -65,7 +65,6 @@ class BaseTest extends \AotTest\AotDataStorage
             new \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Imenitelnij
         );
 
-
         $asserted_main->setRole(
             \Aot\Sviaz\Role\Vesch::create()
         );
