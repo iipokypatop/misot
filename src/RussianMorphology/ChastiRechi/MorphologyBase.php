@@ -18,6 +18,9 @@ abstract class MorphologyBase
         return [
             Suschestvitelnoe\Morphology\Base::class,
             //Prilagatelnoe\Morphology\Base::class,
+            //Prichastie\Morphology\Base::class,
+            //Narechie\Morphology\Base::class,
+
         ];
     }
 }
