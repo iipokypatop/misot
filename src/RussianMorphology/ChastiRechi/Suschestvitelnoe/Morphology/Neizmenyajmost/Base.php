@@ -6,10 +6,10 @@
  * Date: 03.07.15
  * Time: 19:29
  */
-namespace RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Neizmenyajmost;
+namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Neizmenyajmost;
 
 
-class Base extends \RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+abstract class Base extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
 {
 
 }
