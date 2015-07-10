@@ -11,11 +11,6 @@ namespace Aot\Sviaz\Rule\AssertedLink;
 
 class Base
 {
-    const POSITION_DEPENDED_ANY = 1;
-    const POSITION_DEPENDED_RIGHT_AFTER_MAIN = 2;
-    const POSITION_DEPENDED_AFTER_MAIN = 3;
-    const POSITION_DEPENDED_RIGHT_BEFORE_MAIN = 4;
-    const POSITION_DEPENDED_BEFORE_MAIN = 5;
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Main */
     protected $asserted_main;
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Depended */
@@ -23,7 +18,8 @@ class Base
 
     /** @var \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\Base[] */
     protected $asserted_matchings = [];
-    protected $position;
+    /** @var \Aot\Sviaz\Rule\AssertedLink\Checker\Base[] */
+    protected $asserted_checkers = [];
 
     /**
      * Base constructor.
@@ -65,42 +61,19 @@ class Base
         $this->asserted_matchings[] = $asserted_matching;
     }
 
-    public function assertPosition($position)
-    {
-        if (!in_array($position, [
-            static::POSITION_DEPENDED_ANY,
-            static::POSITION_DEPENDED_RIGHT_AFTER_MAIN,
-            static::POSITION_DEPENDED_AFTER_MAIN,
-            static::POSITION_DEPENDED_RIGHT_BEFORE_MAIN,
-            static::POSITION_DEPENDED_BEFORE_MAIN,
-        ], true)
-        ) {
-            throw new \RuntimeException("invalid position");
-        }
-
-        $this->position = $position;
-    }
-
-    /** @var \Aot\Sviaz\Rule\AssertedLink\Checker\Base[] */
-    protected $checkers = [];
-
     public function attempt(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
     {
         $result = false;
 
         foreach ($this->asserted_matchings as $asserted_matching) {
-
             $result = $asserted_matching->attempt($main_candidate, $depended_candidate);
-
             if (!$result) {
                 return false;
             }
         }
 
-        foreach ($this->checkers as $checker) {
-
+        foreach ($this->asserted_checkers as $checker) {
             $result = $checker->check($main_candidate, $depended_candidate, $sequence);
-
             if (!$result) {
                 return false;
             }
@@ -114,6 +87,6 @@ class Base
      */
     public function addChecker(\Aot\Sviaz\Rule\AssertedLink\Checker\Base $checker)
     {
-        $this->checkers[] = $checker;
+        $this->asserted_checkers[] = $checker;
     }
 }

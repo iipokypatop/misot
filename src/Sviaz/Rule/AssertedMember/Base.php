@@ -23,14 +23,17 @@ abstract class Base
 
     /** @var \Aot\RussianMorphology\ChastiRechi\MorphologyBase[] */
     protected $asserted_morphologies = [];
-    /** @var  \Aot\Sviaz\Rule\AssertedMember\Checker\Base[] */
-    protected $checkers;
+
+    /** @var  string[] */
+    protected $checker_classes;
+
+
     /** @var  \Aot\Sviaz\Role\Base */
     protected $role;
 
     protected function __construct()
     {
-        // Rule\AssertedMember\Main $main_sequence_member, Rule\AssertedMember\Depended $depended_sequence_member, Role\Base $main_role, Role\Base $depended_role
+
     }
 
     public static function create(/** Rule\AssertedMember\Main $main_sequence_member re */)
@@ -93,9 +96,19 @@ abstract class Base
         $this->asserted_morphologies[] = $morphology_class;
     }
 
-    public function addChecker(\Aot\Sviaz\Rule\AssertedMember\Checker\Base $checker)
+    /**
+     * @param string $checker_class
+     */
+    public function addChecker($checker_class)
     {
-        $this->checkers[] = $checker;
+        if (!is_string($checker_class)) {
+            throw new \RuntimeException("must be string " . var_export($checker_class, 1));
+        }
+
+        if (!is_a($checker_class, \Aot\Sviaz\Rule\AssertedMember\Checker\Base::class, true)) {
+            throw new \RuntimeException("unsupported checker class $checker_class");
+        }
+        $this->checker_classes[] = $checker_class;
     }
 
     /**

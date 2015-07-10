@@ -11,5 +11,12 @@ namespace Aot\Sviaz\Rule\AssertedMember\Checker;
 
 class Registry
 {
-    const PredlogPeredSlovom = \Aot\Sviaz\Rule\AssertedMember\Checker\PredlogPeredSlovom::class;
+    const PredlogPeredSlovom = 1;
+
+    public static function getClasses()
+    {
+        return [
+            static::PredlogPeredSlovom => \Aot\Sviaz\Rule\AssertedMember\Checker\PredlogPeredSlovom::class
+        ];
+    }
 }
