@@ -217,7 +217,7 @@ RULE;
             $this->getNormalizedMatrix1(),
             [\Aot\Sviaz\Rule\Container::getRule1()]
         );
-        var_dump($result);
+        //var_dump($result);
     }
     /**
      * @return array
