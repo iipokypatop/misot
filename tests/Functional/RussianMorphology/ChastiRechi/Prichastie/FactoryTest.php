@@ -17,7 +17,6 @@ class FactoryTest extends \AotTest\AotDataStorage
     public function testBuild_Success()
     {
         $point = $this->getPoint(); // берем точку тестовую
-        print_r($point);
         $result = $this->buildFactory($point);
 
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Base::class, $result[0]);
