@@ -208,6 +208,17 @@ RULE;
         );
     }
 
+    public function testSecond()
+    {
+        $processor = \Aot\Sviaz\Processor\Base::create();
+
+
+        $result = $processor->go(
+            $this->getNormalizedMatrix1(),
+            [\Aot\Sviaz\Rule\Container::getRule1()]
+        );
+        var_dump($result);
+    }
     /**
      * @return array
      */
