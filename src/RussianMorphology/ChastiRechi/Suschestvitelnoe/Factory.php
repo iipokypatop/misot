@@ -42,6 +42,7 @@ class Factory extends \Aot\RussianMorphology\Factory
     public function build(Dw $dw, Word $word)
     {
         $text = $dw->initial_form;
+        $words = [];
 
         // проверить что dw - существительное. если нет то эксептион
 
@@ -102,7 +103,6 @@ class Factory extends \Aot\RussianMorphology\Factory
             }
 
 
-            $words =[];
             foreach ($chislo as $val_chislo) {
                 foreach ($naritcatelnost as $val_naritcatelnost) {
                     foreach ($odushevlyonnost as $val_odushevlyonnost) {
@@ -126,11 +126,8 @@ class Factory extends \Aot\RussianMorphology\Factory
                 }
 
             }
-            return $words;
         }
-        else {
-            throw new \Exception('not implemented yet');
-        }
+        return $words;
     }
 
     protected function getAnalyser()

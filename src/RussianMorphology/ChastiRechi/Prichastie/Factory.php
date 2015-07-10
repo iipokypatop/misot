@@ -28,9 +28,9 @@ use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Proshedshee;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Nastoyaschee;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Null as NullVremya;
 
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Dejstvitelnyj;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Stradatelnyj;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Null as NullZalog;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad\Dejstvitelnyj;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad\Stradatelnyj;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad\Null as NullRazryad;
 
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Datelnij;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Imenitelnij;
@@ -45,6 +45,8 @@ use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Srednij;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Zhenskij;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Null as NullRod;
 
+use Aot\RussianMorphology\FactoryException;
+use Aot\RussianMorphology\Slovo;
 use Dw;
 use MorphAttribute;
 use Word;
@@ -55,127 +57,156 @@ class Factory extends \Aot\RussianMorphology\Factory
     /**
      * @param Dw $dw
      * @param Word $word
-     * @return static
+     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Base[]
      * @throws \Exception
      */
     public function build(Dw $dw, Word $word)
     {
         $text = $dw->initial_form;
+        $words = [];
 
-        if (isset($word->word) && $dw->id_word_class === PARTICIPLE_CLASS_ID) {
-            foreach ($dw->parameters as $value) {
-                /** @var $value MorphAttribute */
-                # форма
-                if ($value->id_morph_attr === \OldAotConstants::WORD_FORM()) {
-                    $forma = $this->getForma($value);
+        if (isset($word->word) && $dw->id_word_class === COMMUNION_CLASS_ID) {
+            /*
+                if(!empty($dw->parameters[])){
+                    $ = $this->($dw->parameters[]);
                 }
-                # род
-                elseif ($value->id_morph_attr === GENUS_ID) {
-                    $rod = $this->getRod($value);
+                else{
+                    $[] = new ();
                 }
-                # число
-                elseif ($value->id_morph_attr === NUMBER_ID) {
-                    $chislo = $this->getChislo($value);
-                }
-                # переходность
-                elseif ($value->id_morph_attr === TRANSIVITY_ID ) {
-                    $perehodnost = $this->getPerehodnost($value);
-                }
-                # падеж
-                elseif ($value->id_morph_attr === CASE_ID) {
-                    $padeszh = $this->getPadeszh($value);
-                }
-                # вид
-                elseif ($value->id_morph_attr === VIEW_ID) {
-                    $vid = $this->getVid($value);
-                }
-                # возвратность
-                elseif ($value->id_morph_attr === \OldAotConstants::RETRIEVABLE_IRRETRIEVABLE() ) {
-                    $vozvratnost = $this->getVozvratnost($value);
-                }
-                # время
-                elseif ($value->id_morph_attr === TIME_ID) {
-                    $vremya = $this->getVremya($value);
-                }
-                # залог
-                elseif ($value->id_morph_attr === \OldAotConstants::VOICE() ) {
-                    $zalog = $this->getZalog($value);
-                }
+            */
+            # форма
+            if(!empty($dw->parameters->{\OldAotConstants::WORD_FORM()})){
+                $forma = $this->getForma($dw->parameters->{\OldAotConstants::WORD_FORM()});
+            }
+            else{
+                $forma[] = new Polnaya();
             }
 
-            if(empty($forma)){
-                throw new \RuntimeException("rod not defined");
+            # род
+            if(!empty($dw->parameters->{GENUS_ID})){
+                $rod = $this->getRod($dw->parameters->{GENUS_ID});
             }
-            if(empty($rod)){
-                throw new \RuntimeException("rod not defined");
-            }
-            if(empty($perehodnost)){
-                throw new \RuntimeException("perehodnost not defined");
-            }
-            if(empty($chislo)){
-                throw new \RuntimeException("chislo not defined");
-            }
-            if(empty($padeszh)){
-                throw new \RuntimeException("padeszh not defined");
-            }
-            if(empty($vid)){
-                throw new \RuntimeException("vid not defined");
-            }
-            if(empty($vozvratnost)){
-                throw new \RuntimeException("vozvratnost not defined");
-            }
-            if(empty($vremya)){
-                throw new \RuntimeException("vremya not defined");
-            }
-            if(empty($zalog)){
-                throw new \RuntimeException("zalog not defined");
+            else{
+                throw new FactoryException("rod not defined", 24);
             }
 
+            # число
+            if(!empty($dw->parameters->{NUMBER_ID})){
+                $chislo = $this->getChislo($dw->parameters->{NUMBER_ID});
+            }
+            else{
+                throw new FactoryException("chislo not defined", 24);
+            }
 
-            return Base::create(
-                $text,
-                $forma,
-                $rod,
-                $perehodnost,
-                $chislo,
-                $padeszh,
-                $vid,
-                $vozvratnost,
-                $vremya,
-                $zalog
-            );
+            # переходность
+            if(!empty($dw->parameters->{TRANSIVITY_ID})){
+                $perehodnost = $this->getPerehodnost($dw->parameters->{TRANSIVITY_ID});
+            }
+            else{
+                $perehodnost[] = Neperehodnij::create();
+            }
 
-        } else throw new \Exception('not implemented yet');
+            # падеж
+            if(!empty($dw->parameters->{CASE_ID})){
+                $padeszh = $this->getPadeszh($dw->parameters->{CASE_ID});
+            }
+            else{
+                throw new FactoryException("padeszh not defined", 24);
+            }
+            # вид
+            if(!empty($dw->parameters->{VIEW_ID})){
+                $vid = $this->getVid($dw->parameters->{VIEW_ID});
+            }
+            else{
+                throw new FactoryException("vid not defined", 24);
+            }
+
+            # возвратность
+            if(!empty($dw->parameters->{\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()})){
+                $vozvratnost = $this->getVozvratnost($dw->parameters->{\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()});
+            }
+            else{
+                $vozvratnost[] = new Nevozvratnyj();
+            }
+
+            # время
+            if(!empty($dw->parameters->{TIME_ID})){
+                $vremya = $this->getVremya($dw->parameters->{TIME_ID});
+            }
+            else{
+                throw new FactoryException("vremya not defined", 24);
+            }
+
+            # разряд
+            if(!empty($dw->parameters->{DISCHARGE_COMMUNION_ID})){
+                $razryad = $this->getRazryad($dw->parameters->{DISCHARGE_COMMUNION_ID});
+            }
+            else{
+                throw new FactoryException("razryad not defined", 24);
+            }
+
+            foreach ($forma as $val_forma) {
+                foreach ($rod as $val_rod) {
+                    foreach ($perehodnost as $val_perehodnost) {
+                        foreach ($chislo as $val_chislo) {
+                            foreach ($padeszh as $val_padeszh) {
+                                foreach ($vid as $val_vid) {
+                                    foreach ($vozvratnost as $val_vozvratnost) {
+                                        foreach ($vremya as $val_vremya) {
+                                            foreach ($razryad as $val_razryad) {
+                                                $words[] = Base::create(
+                                                    $text,
+                                                    $val_chislo,
+                                                    $val_forma,
+                                                    $val_padeszh,
+                                                    $val_perehodnost,
+                                                    $val_rod,
+                                                    $val_vid,
+                                                    $val_vozvratnost,
+                                                    $val_vremya,
+                                                    $val_razryad
+                                                );
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $words;
     }
 
     /**
      * @param MorphAttribute $value
      * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Base[]
      */
-    private function getPadeszh(MorphAttribute $value) {
+    private function getPadeszh($value) {
         $padeszh = [];
 
         foreach ($value->id_value_attr as $val) {
             if ($val === CASE_SUBJECTIVE_ID) {
-                $padeszh[] = new Imenitelnij();
+                $padeszh[] = Imenitelnij::create();
             }
             elseif ($val === CASE_GENITIVE_ID) {
-                $padeszh[] = new Roditelnij();
+                $padeszh[] = Roditelnij::create();
             }
             elseif ($val === CASE_DATIVE_ID) {
-                $padeszh[] = new Datelnij();
+                $padeszh[] = Datelnij::create();
             }
             elseif ($val === CASE_ACCUSATIVE_ID) {
-                $padeszh[] = new Vinitelnij();
+                $padeszh[] = Vinitelnij::create();
             }
             elseif ($val === CASE_INSTRUMENTAL_ID) {
-                $padeszh[] = new Tvoritelnij();
+                $padeszh[] = Tvoritelnij::create();
             }
             elseif ($val === CASE_PREPOSITIONAL_ID) {
-                $padeszh[] = new Predlozshnij();
+                $padeszh[] = Predlozshnij::create();
             }
             else{
-                $padeszh[] = new NullPadeszh();
+                $padeszh[] = NullPadeszh::create();
             }
         }
 
@@ -186,66 +217,66 @@ class Factory extends \Aot\RussianMorphology\Factory
      * @param MorphAttribute $value
      * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Forma\Base[]
      */
-    private function getForma(MorphAttribute $value) {
+    private function getForma($value) {
 
         $forma = [];
         foreach ($value->id_value_attr as $val) {
             if ($val === \OldAotConstants::SHORT_WORD_FORM()) {
-                $forma[] = new Kratkaya();
+                $forma[] = Kratkaya::create();
             }
             elseif ($val === \OldAotConstants::FULL_WORD_FORM()) {
-                $forma[] = new Polnaya();
+                $forma[] = Polnaya::create();
             }
             else
             {
-                $forma[] = new NullForma();
+                $forma[] = NullForma::create();
             }
         }
         return $forma;
     }
 
-    private function getRod(MorphAttribute $value) {
+    private function getRod($value) {
 
         $rod = [];
         foreach ($value->id_value_attr as $val) {
             if ($val === GENUS_MASCULINE_ID) {
-                $rod[] = new Muzhskoi();
+                $rod[] = Muzhskoi::create();
             }
             elseif ($val === GENUS_NEUTER_ID) {
-                $rod[] = new Srednij();
+                $rod[] = Srednij::create();
             }
             elseif ($val === GENUS_FEMININE_ID) {
-                $rod[] = new Zhenskij();
+                $rod[] = Zhenskij::create();
             }
             else
             {
-                $rod[] = new NullRod();
+                $rod[] = NullRod::create();
             }
         }
         return $rod;
     }
 
-    private function getChislo(MorphAttribute $value) {
+    private function getChislo($value) {
 
         $chislo = [];
         foreach ($value->id_value_attr as $val) {
             if ($val === NUMBER_SINGULAR_ID)
             {
-                $chislo[] = new Edinstvennoe();
+                $chislo[] = Edinstvennoe::create();
             }
             elseif ($val === NUMBER_PLURAL_ID)
             {
-                $chislo[] = new Mnozhestvennoe();
+                $chislo[] = Mnozhestvennoe::create();
             }
             else {
-                $chislo[] = new NullChislo();
+                $chislo[] = NullChislo::create();
             }
         }
 
         return $chislo;
     }
 
-    private function getPerehodnost(MorphAttribute $value) {
+    private function getPerehodnost($value) {
 
         $perehodnost = [];
         foreach ($value->id_value_attr as $val) {
@@ -265,64 +296,64 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $perehodnost;
     }
 
-    private function getVid(MorphAttribute $value) {
+    private function getVid($value) {
 
         $vid = [];
         foreach ($value->id_value_attr as $val) {
             if ($val === VIEW_PERFECTIVE_ID)
             {
-                $vid[] = new Sovershennyj();
+                $vid[] = Sovershennyj::create();
             }
             elseif ($val === VIEW_IMPERFECT_ID)
             {
-                $vid[] = new Nesovershennyj();
+                $vid[] = Nesovershennyj::create();
             }
             else {
-                $vid[] = new NullVid();
+                $vid[] = NullVid::create();
             }
         }
 
         return $vid;
     }
 
-    private function getVremya(MorphAttribute $value) {
+    private function getVremya($value) {
 
         $vremya = [];
         foreach ($value->id_value_attr as $val) {
             if ($val === TIME_SIMPLE_ID)
             {
-                $vremya[] = new Nastoyaschee();
+                $vremya[] = Nastoyaschee::create();
             }
             elseif ($val === TIME_FUTURE_ID)
             {
-                $vremya[] = new Buduschee();
+                $vremya[] = Buduschee::create();
             }
             elseif ($val === TIME_PAST_ID)
             {
-                $vremya[] = new Proshedshee();
+                $vremya[] = Proshedshee::create();
             }
             else {
-                $vremya[] = new NullVremya();
+                $vremya[] = NullVremya::create();
             }
         }
 
         return $vremya;
     }
 
-    private function getVozvratnost(MorphAttribute $value) {
+    private function getVozvratnost($value) {
 
         $vozvratnost = [];
         foreach ($value->id_value_attr as $val) {
             if ($val === \OldAotConstants::RETRIEVABLE())
             {
-                $vozvratnost[] = new Vozvratnyj();
+                $vozvratnost[] = Vozvratnyj::create();
             }
             elseif ($val === \OldAotConstants::IRRETRIEVABLE())
             {
-                $vozvratnost[] = new Nevozvratnyj();
+                $vozvratnost[] = Nevozvratnyj::create();
             }
             else {
-                $vozvratnost[] = new NullVozvratnost();
+                $vozvratnost[] = NullVozvratnost::create();
             }
         }
 
@@ -330,23 +361,23 @@ class Factory extends \Aot\RussianMorphology\Factory
     }
 
 
-    private function getZalog(MorphAttribute $value) {
+    private function getRazryad($value) {
 
-        $zalog = [];
+        $razryad = [];
         foreach ($value->id_value_attr as $val) {
-            if ($val === \OldAotConstants::ACTIVE_VOICE())
+            if ($val === COMMUNION_VALID_ID)
             {
-                $zalog[] = new Dejstvitelnyj();
+                $razryad[] = Dejstvitelnyj::create();
             }
-            elseif ($val === \OldAotConstants::PASSIVE_VOICE())
+            elseif ($val === COMMUNION_PASSIVE_ID)
             {
-                $zalog[] = new Stradatelnyj();
+                $razryad[] = Stradatelnyj::create();
             }
             else {
-                $zalog[] = new NullZalog();
+                $razryad[] = NullRazryad::create();
             }
         }
 
-        return $zalog;
+        return $razryad;
     }
 }

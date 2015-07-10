@@ -202,7 +202,7 @@ TEXT;
         'sklonenie' => Morphology\Sklonenie\Base::class,
         'vozvratnost' => Morphology\Vozvratnost\Base::class,
         'vremya' => Morphology\Vremya\Base::class,
-        'zalog' => Morphology\Zalog\Base::class,
+        'zalog' => Morphology\Razryad\Base::class,
         */
 
         //$poiavilis[0] = $this->getSafeMockLocal1(Glagol::class);

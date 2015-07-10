@@ -54,3 +54,8 @@ abstract class Factory
 
     abstract public function build(Dw $dw, Word $word);
 }
+
+class FactoryException extends \RuntimeException
+{
+
+}

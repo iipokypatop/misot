@@ -2,6 +2,12 @@
 namespace Aot\RussianMorphology\ChastiRechi\Prichastie;
 use Aot\RussianMorphology\Slovo;
 
+/**
+ * Class Base
+ * @package Aot\RussianMorphology\ChastiRechi\Prichastie
+ * @property Morphology\Chislo\Base $chislo
+ */
+
 class Base extends Slovo
 {
     /**
@@ -18,7 +24,7 @@ class Base extends Slovo
             'vid' => Morphology\Vid\Base::class,
             'vozvratnost' => Morphology\Vozvratnost\Base::class,
             'vremya' => Morphology\Vremya\Base::class,
-            'zalog' => Morphology\Zalog\Base::class,
+            'razryad' => Morphology\Razryad\Base::class,
         ];
     }
 
@@ -32,7 +38,7 @@ class Base extends Slovo
         Morphology\Vid\Base $vid,
         Morphology\Vozvratnost\Base $vozvratnost,
         Morphology\Vremya\Base $vremya,
-        Morphology\Zalog\Base $zalog
+        Morphology\Razryad\Base $razryad
     )
     {
         $ob = new static($text);
@@ -45,7 +51,7 @@ class Base extends Slovo
         $ob->vid = $vid;
         $ob->vozvratnost = $vozvratnost;
         $ob->vremya = $vremya;
-        $ob->zalog = $zalog;
+        $ob->razryad = $razryad;
 
         return $ob;
     }
