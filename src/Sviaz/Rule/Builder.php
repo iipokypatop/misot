@@ -441,11 +441,11 @@ class Builder
         foreach ($this->link['morphology_matchings'] as $morphology_matching) {
 
             if (empty(MorphologyRegistry::getBaseClasses()[$morphology_matching][$this->main['chast_rechi']])) {
-                throw new \RuntimeException("unsupported morphology for main chast_rechi = {$this->depended['chast_rechi']} " . var_export($morphology_matching, 1));
+                throw new \RuntimeException("unsupported morphology for main chast_rechi = {$this->depended['chast_rechi']}, morphology_id = " . var_export($morphology_matching, 1));
             }
 
             if (empty(MorphologyRegistry::getBaseClasses()[$morphology_matching][$this->depended['chast_rechi']])) {
-                throw new \RuntimeException("unsupported morphology for depended chast_rechi = {$this->depended['chast_rechi']} " . var_export($morphology_matching, 1));
+                throw new \RuntimeException("unsupported morphology for depended chast_rechi = {$this->depended['chast_rechi']}, morphology_id =  " . var_export($morphology_matching, 1));
             }
 
 
@@ -466,6 +466,7 @@ class Builder
 
     /**
      * @param int $role_id
+     * @return $this
      */
     public function suschestvitelnoe($role_id)
     {
@@ -473,10 +474,12 @@ class Builder
 
         $this->mainRole($role_id);
         $this->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE);
+        return $this;
     }
 
     /**
      * @param int $role_id
+     * @return $this
      */
     public function withSuschestvitelnoe($role_id)
     {
@@ -484,26 +487,35 @@ class Builder
 
         $this->dependedRole($role_id);
         $this->dependedChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE);
+        return $this;
     }
 
+    # Зависимое после главного
     public function dependedAfterMain()
     {
         $this->linkChecker(LinkCheckerRegistry::DependedAfterMain);
+        return $this;
     }
 
+    # Главное после зависимого
     public function dependedBeforeMain()
     {
         $this->linkChecker(LinkCheckerRegistry::DependedBeforeMain);
+        return $this;
     }
 
+    # Зависимое после главного, стоят подряд
     public function dependedRightAfterMain()
     {
-        $this->linkChecker(LinkCheckerRegistry::DependedRightBeforeMain);
+      $this->linkChecker(LinkCheckerRegistry::DependedRightBeforeMain);
+      return $this;
     }
 
+    # Главное после зависимого, стоят подряд
     public function dependedRightBeforeMain()
     {
-        $this->linkChecker(LinkCheckerRegistry::DependedRightAfterMain);
+         $this->linkChecker(LinkCheckerRegistry::DependedRightAfterMain);
+        return $this;
     }
 }
 

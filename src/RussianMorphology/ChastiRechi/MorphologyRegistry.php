@@ -38,6 +38,10 @@ class MorphologyRegistry
     const NEIZMENYAJMOST_IZMNYAJMIJ = 5001;
     const NEIZMENYAJMOST_NEIZMNYAJMIJ = 5002;
 
+    const PEREHODNOST = 6000;
+    const PEREHODNOST_PEREHODNII = 6001;
+    const PEREHODNOST_NEPEREHODNII = 6002;
+
     public static function getNames()
     {
         return [
@@ -67,6 +71,10 @@ class MorphologyRegistry
             static::NEIZMENYAJMOST_IZMNYAJMIJ => 'неизменяемый',
             static::NEIZMENYAJMOST_NEIZMNYAJMIJ => 'изменяемый',
 
+
+            static::PEREHODNOST => 'переходность',
+            static::PEREHODNOST_PEREHODNII => 'переходный',
+            static::PEREHODNOST_NEPEREHODNII => 'непереходный',
         ];
     }
 
@@ -101,7 +109,7 @@ class MorphologyRegistry
                 ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Base::class,
                 ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Base::class,
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Base::class,
-                ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Rod\Base::class,
+                ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Base::class,
 
             ],
             static::CHISLO => [
@@ -114,6 +122,9 @@ class MorphologyRegistry
             ],
             static::NEIZMENYAJMOST => [
                 ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Neizmenyajmost\Base::class
+            ],
+            static::PEREHODNOST => [
+                ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Base::class,
             ],
         ];
     }
@@ -145,27 +156,27 @@ class MorphologyRegistry
                 static::PADEJ_RODITELNIJ => [
                     ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Roditelnij::class,
                     ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Roditelnij::class,
-                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Padeszh\Roditelnij::class,
+                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Roditelnij::class,
                 ],
                 static::PADEJ_DATELNIJ => [
                     ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Datelnij::class,
                     ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Datelnij::class,
-                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Padeszh\Datelnij::class,
+                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Datelnij::class,
                 ],
                 static::PADEJ_VINITELNIJ => [
                     ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Vinitelnij::class,
                     ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Vinitelnij::class,
-                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Padeszh\Vinitelnij::class,
+                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Vinitelnij::class,
                 ],
                 static::PADEJ_TVORITELNIJ => [
                     ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Tvoritelnij::class,
                     ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Tvoritelnij::class,
-                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Padeszh\Tvoritelnij::class,
+                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Tvoritelnij::class,
                 ],
                 static::PADEJ_PREDLOZSHNIJ => [
                     ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Predlozshnij::class,
                     ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Predlozshnij::class,
-                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Padeszh\Predlozshnij::class,
+                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Predlozshnij::class,
                 ],
             ],
             static::ROD => [
@@ -173,31 +184,41 @@ class MorphologyRegistry
                     ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Zhenskii::class,
                     ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Zhenskii::class,
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Zhenskii::class,
-                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Rod\Zhenskij::class,
+                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Zhenskij::class,
                 ],
                 static::ROD_SREDNIJ => [
                     ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij::class,
                     ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Srednij::class,
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Srednij::class,
-                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Rod\Srednij::class,
+                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Srednij::class,
                 ],
                 static::ROD_MUZHSKOI => [
                     ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Muzhskoi::class,
                     ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Muzhskoi::class,
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Muzhskoi::class,
-                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Rod\Muzhskoi::class,
+                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Muzhskoi::class,
                 ],
             ],
             static::CHISLO => [
                 static::CHISLO_EDINSTVENNOE => [
                     ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe::class,
                     ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Edinstvennoe::class,
-                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Chislo\Edinstvennoe::class,
+                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Chislo\Edinstvennoe::class,
+                    ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Edinstvennoe::class,
                 ],
                 static::CHISLO_MNOZHESTVENNOE => [
                     ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::class,
                     ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe::class,
-                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Chislo\Mnozhestvennoe::class,
+                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Chislo\Mnozhestvennoe::class,
+                    ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Mnozhestvennoe::class,
+                ]
+            ],
+            static::PEREHODNOST => [
+                static::PEREHODNOST_PEREHODNII => [
+                    ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Perehodnyj::class,
+                ],
+                static::PEREHODNOST_NEPEREHODNII => [
+                    ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Neperehodnyj::class,
                 ]
             ],
             static::SKLONENIE => [
