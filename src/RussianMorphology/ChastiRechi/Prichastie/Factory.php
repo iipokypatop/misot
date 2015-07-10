@@ -46,7 +46,6 @@ use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Zhenskij;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Null as NullRod;
 
 use Aot\RussianMorphology\FactoryException;
-use Aot\RussianMorphology\Slovo;
 use Dw;
 use MorphAttribute;
 use Word;
