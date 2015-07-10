@@ -9,14 +9,26 @@
 namespace Aot\Sviaz\Rule\AssertedLink\Checker;
 
 
+use Aot\Sviaz\Rule\AssertedLink\Checker\BeetweenMainAndDepended\NetSuschestvitelnogoVImenitelnomPadeszhe;
+
 class Registry
 {
-    const NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim = 1;
+    const DependedAfterMain = 1;
+    const DependedBeforeMain = 2;
+    const DependedRightBeforeMain = 3;
+    const DependedRightAfterMain = 4;
+
+    const NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim = 10;
 
     public static function getClasses()
     {
         return [
-            static::NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim => NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim::class
+            static::NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim => NetSuschestvitelnogoVImenitelnomPadeszhe::class,
+            static::DependedAfterMain => \Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition\AfterMain::class,
+            static::DependedBeforeMain => \Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition\BeforeMain::class,
+            static::DependedRightBeforeMain => \Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition\RightBeforeMain::class,
+            static::DependedRightAfterMain => \Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition\RightAfterMain::class,
+
         ];
     }
 }

@@ -12,6 +12,7 @@ namespace Aot\Sviaz\Rule;
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
+use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 
 class Builder
@@ -64,18 +65,22 @@ class Builder
      */
     public function mainText($text)
     {
+        assert(is_string($text));
+
         $this->main['text'] = $text;
 
         return $this;
     }
 
     /**
-     * @param int $text_group_id
+     * @param int $id
      * @return $this
      */
-    public function mainGroupId($text_group_id)
+    public function mainGroupId($id)
     {
-        $this->main['text_group_id'] = $text_group_id;
+        assert(is_int($id));
+
+        $this->main['text_group_id'] = $id;
 
         return $this;
     }
@@ -86,6 +91,8 @@ class Builder
      */
     public function mainChastRechi($id)
     {
+        assert(is_int($id));
+
         if (empty(ChastiRechiRegistry::getClasses()[$id])) {
             throw new \RuntimeException("unsupported chast rechi id = " . $id);
         }
@@ -101,6 +108,8 @@ class Builder
      */
     public function mainCheck($id)
     {
+        assert(is_int($id));
+
         if (empty(MemberCheckerRegistry::getClasses()[$id])) {
             throw new \RuntimeException("unsupported checker id = " . $id);
         }
@@ -116,6 +125,8 @@ class Builder
      */
     public function mainMorphology($id)
     {
+        assert(is_int($id));
+
         if (!in_array($id, MorphologyRegistry::getLvl2(), true)) {
             throw new \RuntimeException("unsupported morphology id = " . var_export($id, 1));
         }
@@ -126,16 +137,18 @@ class Builder
     }
 
     /**
-     * @param int $main_role_id
+     * @param int $id
      * @return $this
      */
-    public function mainRole($main_role_id)
+    public function mainRole($id)
     {
-        if (empty(RoleRegistry::getClasses()[$main_role_id])) {
-            throw new \RuntimeException("unsupported role id $main_role_id");
+        assert(is_int($id));
+
+        if (empty(RoleRegistry::getClasses()[$id])) {
+            throw new \RuntimeException("unsupported role id $id");
         }
 
-        $this->main['role'] = $main_role_id;
+        $this->main['role'] = $id;
 
         return $this;
     }
@@ -146,18 +159,22 @@ class Builder
      */
     public function dependedText($text)
     {
+        assert(is_string($text));
+
         $this->depended['text'] = $text;
 
         return $this;
     }
 
     /**
-     * @param int $text_group_id
+     * @param int $id
      * @return $this
      */
-    public function dependedGroupId($text_group_id)
+    public function dependedGroupId($id)
     {
-        $this->depended['text_group_id'] = $text_group_id;
+        assert(is_int($id));
+
+        $this->depended['text_group_id'] = $id;
 
         return $this;
     }
@@ -168,6 +185,8 @@ class Builder
      */
     public function dependedChastRechi($id)
     {
+        assert(is_int($id));
+
         if (empty(ChastiRechiRegistry::getClasses()[$id])) {
             throw new \RuntimeException("unsupported chast rechi id = " . $id);
         }
@@ -183,6 +202,8 @@ class Builder
      */
     public function dependedCheck($id)
     {
+        assert(is_int($id));
+
         if (empty(MemberCheckerRegistry::getClasses()[$id])) {
             throw new \RuntimeException("unsupported checker id = " . $id);
         }
@@ -198,6 +219,8 @@ class Builder
      */
     public function dependedMorphology($id)
     {
+        assert(is_int($id));
+
         if (!in_array($id, MorphologyRegistry::getLvl2(), true)) {
             throw new \RuntimeException("unsupported morphology id = " . var_export($id, 1));
         }
@@ -208,16 +231,18 @@ class Builder
     }
 
     /**
-     * @param $depended_role_id
+     * @param $id
      * @return $this
      */
-    public function dependedRole($depended_role_id)
+    public function dependedRole($id)
     {
-        if (empty(RoleRegistry::getClasses()[$depended_role_id])) {
-            throw new \RuntimeException("unsupported role id $depended_role_id");
+        assert(is_int($id));
+
+        if (empty(RoleRegistry::getClasses()[$id])) {
+            throw new \RuntimeException("unsupported role id $id");
         }
 
-        $this->depended['role'] = $depended_role_id;
+        $this->depended['role'] = $id;
 
         return $this;
     }
@@ -228,6 +253,8 @@ class Builder
      */
     public function dependedAndMainMorphologyMatching($id)
     {
+        assert(is_int($id));
+
         if (empty(MorphologyRegistry::getBaseClasses()[$id])) {
             throw new \RuntimeException("unsupported morphology id = " . var_export($id, 1));
         }
@@ -243,6 +270,8 @@ class Builder
      */
     public function linkChecker($id)
     {
+        assert(is_int($id));
+
         $this->link['checkers'][] = $id;
 
         return $this;
@@ -254,6 +283,8 @@ class Builder
      */
     public function linkFinders($id)
     {
+        assert(is_int($id));
+
         $this->link['finders'][] = $id;
 
         return $this;
@@ -265,7 +296,9 @@ class Builder
      */
     public function dependedAndMainCheck($id)
     {
-        if (empty(\Aot\Sviaz\Rule\AssertedLink\Checker\Registry::getClasses()[$id])) {
+        assert(is_int($id));
+
+        if (empty(AssertedLink\Checker\Registry::getClasses()[$id])) {
             throw new \RuntimeException("unsupported checker id " . var_export($id, 1));
         }
 
@@ -280,9 +313,11 @@ class Builder
      */
     public function dependedAndMainFind($id)
     {
+        assert(is_int($id));
+
         throw new \RuntimeException("not implemented yet");
 
-        if (empty(\Aot\Sviaz\Rule\AssertedLink\Checker\Registry::getClasses()[$id])) {
+        if (empty(AssertedLink\Checker\Registry::getClasses()[$id])) {
             throw new \RuntimeException("unsupported checker id " . var_export($id, 1));
         }
         $this->link['finders'][] = $id;
@@ -313,7 +348,7 @@ class Builder
 
         } else {
             $member->setRole(
-                forward_static_call_array([RoleRegistry::getClasses()[$config['role']], 'create'])
+                forward_static_call_array([RoleRegistry::getClasses()[$config['role']], 'create'], [])
             );
         }
 
@@ -418,17 +453,50 @@ class Builder
 
         return $asserted_matchings;
     }
+
+
+    /**
+     * @param int $role_id
+     */
+    public function suschestvitelnoe($role_id)
+    {
+        assert(is_int($role_id));
+
+        $this->mainRole($role_id);
+        $this->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE);
+    }
+
+    /**
+     * @param int $role_id
+     */
+    public function withSuschestvitelnoe($role_id)
+    {
+        assert(is_int($role_id));
+
+        $this->dependedRole($role_id);
+        $this->dependedChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE);
+    }
+
+    public function dependedAfterMain()
+    {
+        $this->linkChecker(LinkCheckerRegistry::DependedAfterMain);
+    }
+
+    public function dependedBeforeMain()
+    {
+        $this->linkChecker(LinkCheckerRegistry::DependedBeforeMain);
+    }
+
+    public function dependedRightAfterMain()
+    {
+      $this->linkChecker(LinkCheckerRegistry::DependedRightBeforeMain);
+    }
+
+    public function dependedRightBeforeMain()
+    {
+         $this->linkChecker(LinkCheckerRegistry::DependedRightAfterMain);
+    }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 

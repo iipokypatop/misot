@@ -17,6 +17,8 @@ class ChastiRechiRegistry
     const PRICHASTIE = 13; // ??
     const NARECHIE = 14; // ??
 
+    const PREDLOG = 19; // ??
+
     public static function getNames()
     {
         return [
@@ -25,6 +27,7 @@ class ChastiRechiRegistry
             static::GLAGOL => 'глагол',
             static::PRICHASTIE => 'причастие',
             static::NARECHIE => 'наречие',
+            static::PREDLOG => 'предлог',
         ];
     }
 
@@ -36,6 +39,7 @@ class ChastiRechiRegistry
             static::GLAGOL =>  Glagol\Base::class,
             static::PRICHASTIE =>  Prichastie\Base::class,
             static::NARECHIE =>  Narechie\Base::class,
+            static::PREDLOG => Predlog::class,
         ];
     }
 }

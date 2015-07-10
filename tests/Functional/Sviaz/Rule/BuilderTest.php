@@ -33,7 +33,12 @@ class BuilderTest extends \AotTest\AotDataStorage
             ->dependedMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
             ->dependedMorphology(MorphologyRegistry::ROD_MUZHSKOI)
             ->dependedRole(RoleRegistry::OTNOSHENIE)
-        ;
+            ->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE);
+
+        $builder->dependedAfterMain();
+        $builder->dependedBeforeMain();
+        $builder->dependedRightAfterMain();
+        $builder->dependedRightBeforeMain();
 
 
         $builder->dependedAndMainMorphologyMatching(
@@ -50,6 +55,5 @@ class BuilderTest extends \AotTest\AotDataStorage
         $rule = $builder->get();
 
         var_export($rule);
-
     }
 }

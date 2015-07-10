@@ -9,23 +9,21 @@
 namespace AotTest\Functional\Sviaz\Processor;
 
 
+use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Base as Glagol;
+use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\RussianMorphology\ChastiRechi\Predlog;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base as Prilagatelnoe;
 use Aot\RussianMorphology\ChastiRechi\Soyuz;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base as Suschestvitelnoe;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base as SuschestvitelnoePadeszhBase;
 use Aot\RussianSyntacsis\Punctuaciya\Zapiataya;
-use Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq;
-use Aot\Sviaz\Rule\Builder;
-use MivarTest\PHPUnitHelper;
-
-
-use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
-use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
+use Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq;
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
+use MivarTest\PHPUnitHelper;
+
 
 class BaseTest extends \AotTest\AotDataStorage
 {
@@ -34,6 +32,7 @@ class BaseTest extends \AotTest\AotDataStorage
         $processor = \Aot\Sviaz\Processor\Base::create();
 
         $rule = $this->getRule1();
+        $rule = $this->getRule2();
 
         $link_container = $processor->go(
             $this->getNormalizedMatrix1(),
@@ -74,6 +73,7 @@ class BaseTest extends \AotTest\AotDataStorage
             ->dependedRole(RoleRegistry::OTNOSHENIE)
         ;
 
+       // $builder->s
 
         $builder->dependedAndMainMorphologyMatching(
             MorphologyRegistry::PADEJ
@@ -88,8 +88,7 @@ class BaseTest extends \AotTest\AotDataStorage
 
         $rule = $builder->get();
 
-        var_export($rule);
-
+        return $rule;
     }
 
     /**
@@ -186,7 +185,7 @@ RULE;
         $rule->addLink($link);
 
         $link->addChecker(
-            \Aot\Sviaz\Rule\AssertedLink\Checker\NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim::create()
+            \Aot\Sviaz\Rule\AssertedLink\Checker\BeetweenMainAndDepended\NetSuschestvitelnogoVImenitelnomPadeszhe::create()
         );
 
 
