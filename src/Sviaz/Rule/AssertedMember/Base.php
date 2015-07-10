@@ -11,6 +11,7 @@ namespace Aot\Sviaz\Rule\AssertedMember;
 use Aot\RussianMorphology\ChastiRechi\MorphologyBase;
 use Aot\RussianMorphology\Slovo;
 use Aot\Sviaz\SequenceMember;
+use Aot\Text\GroupIdRegistry;
 
 abstract class Base
 {
@@ -48,6 +49,8 @@ abstract class Base
 
     public function assertText($asserted_text)
     {
+        assert(is_string($asserted_text));
+
         if (isset($this->asserted_text_group_id))
             throw new \RuntimeException("asserted_text_group_id already defined");
 
@@ -61,6 +64,8 @@ abstract class Base
 
     public function assertTextGroupId($asserted_text_group_id)
     {
+        assert(is_int($asserted_text_group_id));
+
         if (isset($this->asserted_text))
             throw new \RuntimeException("asserted_text already defined");
 
@@ -131,6 +136,24 @@ abstract class Base
     {
         if ($actual instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
 
+
+            if (null !== $this->asserted_text) {
+                if (strtolower($actual->getSlovo()->getText()) !== strtolower($this->asserted_text)) {
+                    return false;
+                }
+            }
+
+            if (null !== $this->asserted_text_group_id) {
+                if (empty(GroupIdRegistry::getWordVariants()[$this->asserted_text_group_id])) {
+                    return false;
+                }
+
+                if (!in_array(strtolower($actual->getSlovo()->getText()), GroupIdRegistry::getWordVariants()[$this->asserted_text_group_id])) {
+                    return false;
+                }
+            }
+
+
             if (null !== $this->getAssertedChastRechiClass()) {
                 if (!is_a($actual->getSlovo(), $this->getAssertedChastRechiClass(), true)) {
                     return false;
@@ -143,7 +166,6 @@ abstract class Base
 
                 if (null === $morphology) {
                     return false;
-                    //throw new \RuntimeException("признак " . is_object($asserted_morphology) ? get_class($asserted_morphology) : $asserted_morphology . " отсутствует у " . var_export($actual->getSlovo(), 1));
                 }
             }
 

@@ -14,6 +14,7 @@ use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
+use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 
 class Builder
 {
@@ -76,9 +77,13 @@ class Builder
      * @param int $id
      * @return $this
      */
-    public function mainGroupId($id)
+    public function mainTextGroupId($id)
     {
         assert(is_int($id));
+
+        if (!array_key_exists($id, GroupIdRegistry::getWordVariants())) {
+            throw new \RuntimeException("unsupported text_group_group_id = " . $id);
+        }
 
         $this->main['text_group_id'] = $id;
 
@@ -170,9 +175,13 @@ class Builder
      * @param int $id
      * @return $this
      */
-    public function dependedGroupId($id)
+    public function dependedTextGroupId($id)
     {
         assert(is_int($id));
+
+        if (!array_key_exists($id, GroupIdRegistry::getWordVariants())) {
+            throw new \RuntimeException("unsupported text_group_group_id = " . $id);
+        }
 
         $this->depended['text_group_id'] = $id;
 
@@ -357,7 +366,7 @@ class Builder
         }
 
         if (null !== $config['text_group_id']) {
-            $member->assertTextGroupId($config['text']);
+            $member->assertTextGroupId($config['text_group_id']);
         }
 
         if (null !== $config['checkers']) {
@@ -489,12 +498,12 @@ class Builder
 
     public function dependedRightAfterMain()
     {
-      $this->linkChecker(LinkCheckerRegistry::DependedRightBeforeMain);
+        $this->linkChecker(LinkCheckerRegistry::DependedRightBeforeMain);
     }
 
     public function dependedRightBeforeMain()
     {
-         $this->linkChecker(LinkCheckerRegistry::DependedRightAfterMain);
+        $this->linkChecker(LinkCheckerRegistry::DependedRightAfterMain);
     }
 }
 

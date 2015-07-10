@@ -13,6 +13,7 @@ use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
+use Aot\Text\GroupIdRegistry;
 
 
 class BuilderTest extends \AotTest\AotDataStorage
@@ -55,5 +56,43 @@ class BuilderTest extends \AotTest\AotDataStorage
         $rule = $builder->get();
 
         //var_export($rule);
+    }
+
+    public function testGroupId_success()
+    {
+        $builder = \Aot\Sviaz\Rule\Builder::create()
+            ->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE)
+            ->mainRole(RoleRegistry::SVOISTVO)
+            ->mainTextGroupId(GroupIdRegistry::BIT)
+            ->dependedChastRechi(ChastiRechiRegistry::PRILAGATELNOE)
+            ->dependedRole(RoleRegistry::OTNOSHENIE)
+            ->dependedTextGroupId(GroupIdRegistry::BIT);
+
+        $rule = $builder->get();
+
+        //var_export($rule);
+    }
+
+    public function testGroupId_throw_exception()
+    {
+        $id = 0;
+
+        try {
+            \Aot\Sviaz\Rule\Builder::create()
+                ->mainTextGroupId($id);
+            $this->fail();
+
+        } catch (\RuntimeException $e) {
+            $this->assertEquals("unsupported text_group_group_id = " . $id, $e->getMessage());
+        }
+
+        try {
+            \Aot\Sviaz\Rule\Builder::create()
+                ->dependedTextGroupId($id);
+            $this->fail();
+
+        } catch (\RuntimeException $e) {
+            $this->assertEquals("unsupported text_group_group_id = " . $id, $e->getMessage());
+        }
     }
 }
