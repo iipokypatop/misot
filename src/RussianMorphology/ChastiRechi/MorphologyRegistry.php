@@ -29,6 +29,15 @@ class MorphologyRegistry
     const CHISLO_EDINSTVENNOE = 3001;
     const CHISLO_MNOZHESTVENNOE = 3002;
 
+    const SKLONENIE = 4000;
+    const SKLONENIE_PERVOE = 4001;
+    const SKLONENIE_VTOROE = 4002;
+    const SKLONENIE_TRETIE = 4003;
+
+    const NEIZMENYAJMOST = 5000;
+    const NEIZMENYAJMOST_IZMNYAJMIJ = 5001;
+    const NEIZMENYAJMOST_NEIZMNYAJMIJ = 5002;
+
     public static function getNames()
     {
         return [
@@ -48,6 +57,16 @@ class MorphologyRegistry
             static::CHISLO => 'число',
             static::CHISLO_EDINSTVENNOE => 'единственное число',
             static::CHISLO_MNOZHESTVENNOE => 'множественное число',
+
+            static::SKLONENIE => 'склонение',
+            static::SKLONENIE_PERVOE => 'первое склонение',
+            static::SKLONENIE_VTOROE => 'второе склонение',
+            static::SKLONENIE_TRETIE => 'третье склонение',
+
+            static::NEIZMENYAJMOST => 'изменяемость',
+            static::NEIZMENYAJMOST_IZMNYAJMIJ => 'неизменяемый',
+            static::NEIZMENYAJMOST_NEIZMNYAJMIJ => 'изменяемый',
+
         ];
     }
 
@@ -89,7 +108,13 @@ class MorphologyRegistry
                 ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class,
                 ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Base::class,
                 ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Chislo\Base::class,
-            ]
+            ],
+            static::SKLONENIE => [
+                ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Base::class
+            ],
+            static::NEIZMENYAJMOST => [
+                ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Neizmenyajmost\Base::class
+            ],
         ];
     }
 
@@ -174,7 +199,26 @@ class MorphologyRegistry
                     ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe::class,
                     ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Chislo\Mnozhestvennoe::class,
                 ]
-            ]
+            ],
+            static::SKLONENIE => [
+                static::SKLONENIE_PERVOE => [
+                    ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Pervoe::class
+                ],
+                static::SKLONENIE_VTOROE => [
+                    ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Vtoroe::class
+                ],
+                static::SKLONENIE_TRETIE => [
+                    ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Tretie::class
+                ],
+            ],
+            static::NEIZMENYAJMOST => [
+                static::NEIZMENYAJMOST_IZMNYAJMIJ => [
+                    ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Neizmenyajmost\Izmnyajmij::class
+                ],
+                static::NEIZMENYAJMOST_NEIZMNYAJMIJ => [
+                    ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Neizmenyajmost\Neizmnyajmij::class
+                ],
+            ],
         ];
     }
 }
