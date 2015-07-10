@@ -66,33 +66,24 @@ class Factory extends \Aot\RussianMorphology\Factory
         $words = [];
 
         if (isset($word->word) && $dw->id_word_class === COMMUNION_CLASS_ID) {
-            /*
-                if(!empty($dw->parameters[])){
-                    $ = $this->($dw->parameters[]);
-                }
-                else{
-                    $[] = new ();
-                }
-            */
-            # форма
-            if(!empty($dw->parameters->{\OldAotConstants::WORD_FORM()})){
-                $forma = $this->getForma($dw->parameters->{\OldAotConstants::WORD_FORM()});
-            }
-            else{
-                $forma[] = new Polnaya();
-            }
-
-            # род
-            if(!empty($dw->parameters->{GENUS_ID})){
-                $rod = $this->getRod($dw->parameters->{GENUS_ID});
-            }
-            else{
-                throw new FactoryException("rod not defined", 24);
-            }
-
             # число
             if(!empty($dw->parameters->{NUMBER_ID})){
                 $chislo = $this->getChislo($dw->parameters->{NUMBER_ID});
+                # род (зависит от наличия единственного числа)
+                foreach ($chislo as $val_chislo) {
+                    if( ($val_chislo instanceof Edinstvennoe) ){
+                        if( !empty($dw->parameters->{GENUS_ID}) )
+                        {
+                            $rod = $this->getRod($dw->parameters->{GENUS_ID});
+                        }
+                        else{
+                            throw new FactoryException("rod not defined", 24);
+                        }
+                    }
+                    else{
+                        $rod = NullRod::create();
+                    }
+                }
             }
             else{
                 throw new FactoryException("chislo not defined", 24);
@@ -126,7 +117,7 @@ class Factory extends \Aot\RussianMorphology\Factory
                 $vozvratnost = $this->getVozvratnost($dw->parameters->{\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()});
             }
             else{
-                $vozvratnost[] = new Nevozvratnyj();
+                $vozvratnost[] = Nevozvratnyj::create();
             }
 
             # время
@@ -140,11 +131,28 @@ class Factory extends \Aot\RussianMorphology\Factory
             # разряд
             if(!empty($dw->parameters->{DISCHARGE_COMMUNION_ID})){
                 $razryad = $this->getRazryad($dw->parameters->{DISCHARGE_COMMUNION_ID});
+                # форма (зависит от разряда)
+                foreach ($razryad as $val_razryad) {
+                    if( ($val_razryad instanceof Stradatelnyj) ) {
+                        if( !empty($dw->parameters->{\OldAotConstants::WORD_FORM()}) ) {
+                            $forma = $this->getForma($dw->parameters->{\OldAotConstants::WORD_FORM()});
+                        }
+                        else{
+                            $forma[] = Polnaya::create();
+                        }
+                    }
+                    else{
+                        $forma[] = Polnaya::create();
+                    }
+                }
             }
             else{
                 throw new FactoryException("razryad not defined", 24);
             }
-
+            /**
+             * если страдательный - то краткий к нему
+             * если единственное число - то род к нему
+             */
             foreach ($forma as $val_forma) {
                 foreach ($rod as $val_rod) {
                     foreach ($perehodnost as $val_perehodnost) {
