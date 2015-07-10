@@ -184,7 +184,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     protected function getPoint(){
         $json_p = <<<JSON
 {
-            "kw": 0,
+        "kw": 0,
         "ks": 0,
         "dw": {
             "id_word_form": "559e9e4664db1",

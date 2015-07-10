@@ -10,9 +10,11 @@ namespace Aot\RussianMorphology\ChastiRechi\Narechie;
 
 use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Null;
 use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Prevoshodnaia;
-use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Polozhitelnaia;
-use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Sravnitelnaia;
+use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Polozhitelnaia;
+use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Sravnitelnaia;
+
 use Dw;
+use MorphAttribute;
 use Word;
 
 class Factory extends \Aot\RussianMorphology\Factory
@@ -40,6 +42,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $words;
     }
 
+    /**
+     * @param $param
+     * @return array
+     */
     private function getStepenSravneniia($param)
     {
         $stepen_sravneniia = [];
