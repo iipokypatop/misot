@@ -18,17 +18,16 @@ class Registry
     const DependedRightBeforeMain = 3;
     const DependedRightAfterMain = 4;
 
-    const NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim = 10;
+    const NetSuschestvitelnogoVImenitelnomPadeszhe = 10;
 
     public static function getClasses()
     {
         return [
-            static::NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim => NetSuschestvitelnogoVImenitelnomPadeszhe::class,
+            static::NetSuschestvitelnogoVImenitelnomPadeszhe => NetSuschestvitelnogoVImenitelnomPadeszhe::class,
             static::DependedAfterMain => \Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition\AfterMain::class,
             static::DependedBeforeMain => \Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition\BeforeMain::class,
             static::DependedRightBeforeMain => \Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition\RightBeforeMain::class,
             static::DependedRightAfterMain => \Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition\RightAfterMain::class,
-
         ];
     }
 }

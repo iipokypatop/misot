@@ -22,25 +22,26 @@ class MatrixTest extends \AotTest\AotDataStorage
 
         $matrix = new \Aot\Text\Matrix;
 
-        try {
-            foreach ($mixed as $value) {
+        foreach ($mixed as $value) {
 
-                if (is_array($value) && $value[0] instanceof \Aot\RussianMorphology\Slovo) {
+            if (is_array($value) && $value[0] instanceof \Aot\RussianMorphology\Slovo) {
+                $matrix->appendWordsForm($value);
+
+                try {
+
                     $matrix->appendWordsForm($value);
+
+                    $this->fail();
+
+                } catch (\RuntimeException $e) {
+
+                    $this->assertEquals(
+                        "one word or punctuation can't be here twice " . var_export($value[0], 1),
+                        $e->getMessage()
+                    );
+
                 }
-
-                if (is_array($value) && $value[0] instanceof \Aot\RussianMorphology\Slovo) {
-                    $matrix->appendWordsForm($value);
-                }
-
-
             }
-            $this->fail();
-
-        } catch (\RuntimeException $e) {
-
-
-            $this->assertTrue(true);
         }
     }
 }

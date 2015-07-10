@@ -83,7 +83,7 @@ class BaseTest extends \AotTest\AotDataStorage
             MorphologyRegistry::CHISLO
         );
         $builder->dependedAndMainCheck(
-            LinkCheckerRegistry::NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim
+            LinkCheckerRegistry::NetSuschestvitelnogoVImenitelnomPadeszhe
         );
 
         $rule = $builder->get();

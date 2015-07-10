@@ -49,11 +49,11 @@ class BuilderTest extends \AotTest\AotDataStorage
             MorphologyRegistry::CHISLO
         );
         $builder->dependedAndMainCheck(
-            LinkCheckerRegistry::NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim
+            LinkCheckerRegistry::NetSuschestvitelnogoVImenitelnomPadeszhe
         );
 
         $rule = $builder->get();
 
-        var_export($rule);
+        //var_export($rule);
     }
 }
