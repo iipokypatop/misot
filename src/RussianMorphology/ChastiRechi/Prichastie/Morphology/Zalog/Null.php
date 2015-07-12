@@ -6,7 +6,7 @@
  * Time: 04:03
  */
 
-namespace Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad;
+namespace Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog;
 
 
 class Null extends Base

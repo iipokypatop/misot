@@ -6,13 +6,19 @@
  * Time: 15:50
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\Checker;
+namespace Aot\Sviaz\Rule\AssertedLink\Checker\BeetweenMainAndDepended;
 
 
-class NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim extends Base
+class NetSuschestvitelnogoVImenitelnomPadeszhe extends Base
 {
     public function check(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
     {
+        $result = parent::check($main_candidate, $depended_candidate, $sequence);
+
+        if (!$result) {
+            return $result;
+        }
+
         if ($main_candidate === $depended_candidate) {
             throw new \RuntimeException("wtf!?");
         }
@@ -31,8 +37,6 @@ class NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim extends Ba
         if ($depended_position === null) {
             throw new \RuntimeException("wtf!?");
         }
-
-        $result = true;
 
         if ($main_position < $depended_position) {
             for ($i = $main_position + 1; $i < $depended_position; $i++) {

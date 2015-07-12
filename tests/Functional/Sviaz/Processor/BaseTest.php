@@ -9,14 +9,19 @@
 namespace AotTest\Functional\Sviaz\Processor;
 
 
+use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Base as Glagol;
+use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\RussianMorphology\ChastiRechi\Predlog;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base as Prilagatelnoe;
 use Aot\RussianMorphology\ChastiRechi\Soyuz;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base as Suschestvitelnoe;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base as SuschestvitelnoePadeszhBase;
 use Aot\RussianSyntacsis\Punctuaciya\Zapiataya;
+use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq;
+use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
+use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use MivarTest\PHPUnitHelper;
 
 
@@ -27,6 +32,7 @@ class BaseTest extends \AotTest\AotDataStorage
         $processor = \Aot\Sviaz\Processor\Base::create();
 
         $rule = $this->getRule1();
+        $rule = $this->getRule2();
 
         $link_container = $processor->go(
             $this->getNormalizedMatrix1(),
@@ -37,7 +43,7 @@ class BaseTest extends \AotTest\AotDataStorage
 
         foreach ($link_container as $sequence_index => $links) {
             $data = [];
-            $data []= $sequence_index;
+            $data [] = $sequence_index;
 
             foreach ($links as $link) {
                 $data[] =
@@ -50,6 +56,40 @@ class BaseTest extends \AotTest\AotDataStorage
         }
     }
 
+    protected function getRule2()
+    {
+
+        $builder = \Aot\Sviaz\Rule\Builder::create()
+            ->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE)
+            ->mainCheck(MemberCheckerRegistry::PredlogPeredSlovom)
+            ->mainMorphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
+            ->mainMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+            ->mainMorphology(MorphologyRegistry::ROD_SREDNIJ)
+            ->mainRole(RoleRegistry::SVOISTVO)
+            ->dependedChastRechi(ChastiRechiRegistry::PRILAGATELNOE)
+            ->dependedCheck(MemberCheckerRegistry::PredlogPeredSlovom)
+            ->dependedMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+            ->dependedMorphology(MorphologyRegistry::ROD_MUZHSKOI)
+            ->dependedRole(RoleRegistry::OTNOSHENIE)
+        ;
+
+       // $builder->s
+
+        $builder->dependedAndMainMorphologyMatching(
+            MorphologyRegistry::PADEJ
+        );
+
+        $builder->dependedAndMainMorphologyMatching(
+            MorphologyRegistry::CHISLO
+        );
+        $builder->dependedAndMainCheck(
+            LinkCheckerRegistry::NetSuschestvitelnogoVImenitelnomPadeszhe
+        );
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
 
     /**
      * @return \Aot\Sviaz\Rule\AssertedMember\Main
@@ -64,7 +104,6 @@ class BaseTest extends \AotTest\AotDataStorage
         $asserted_main->assertMorphology(
             new \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Imenitelnij
         );
-
 
         $asserted_main->setRole(
             \Aot\Sviaz\Role\Vesch::create()
@@ -94,12 +133,9 @@ class BaseTest extends \AotTest\AotDataStorage
         return $asserted_depended;
     }
 
-    protected function get_asserted_link($asserted_main, $asserted_depended)
+    protected function get_asserted_link($rule)
     {
-        $link = \Aot\Sviaz\Rule\AssertedLink\Base::create(
-            $asserted_main,
-            $asserted_depended
-        );
+        $link = \Aot\Sviaz\Rule\AssertedLink\Base::create($rule);
 
         // падеж
         $asserted_matching[0] = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
@@ -136,17 +172,19 @@ class BaseTest extends \AotTest\AotDataStorage
 RULE;
         $asserted_main = $this->get_asserted_main();
         $asserted_depended = $this->get_asserted_depended();
-        $link = $this->get_asserted_link($asserted_main, $asserted_depended);
+
 
         $rule = \Aot\Sviaz\Rule\Base::create(
             $asserted_main,
             $asserted_depended
         );
 
+        $link = $this->get_asserted_link($rule);
+
         $rule->addLink($link);
 
         $link->addChecker(
-            \Aot\Sviaz\Rule\AssertedLink\Checker\NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim::create()
+            \Aot\Sviaz\Rule\AssertedLink\Checker\BeetweenMainAndDepended\NetSuschestvitelnogoVImenitelnomPadeszhe::create()
         );
 
 
@@ -169,6 +207,17 @@ RULE;
         );
     }
 
+    public function testSecond()
+    {
+        $processor = \Aot\Sviaz\Processor\Base::create();
+
+
+        $result = $processor->go(
+            $this->getNormalizedMatrix1(),
+            [\Aot\Sviaz\Rule\Container::getRule1()]
+        );
+        //var_dump($result);
+    }
     /**
      * @return array
      */
@@ -202,7 +251,7 @@ TEXT;
         'sklonenie' => Morphology\Sklonenie\Base::class,
         'vozvratnost' => Morphology\Vozvratnost\Base::class,
         'vremya' => Morphology\Vremya\Base::class,
-        'zalog' => Morphology\Razryad\Base::class,
+        'zalog' => Morphology\Zalog\Base::class,
         */
 
         //$poiavilis[0] = $this->getSafeMockLocal1(Glagol::class);

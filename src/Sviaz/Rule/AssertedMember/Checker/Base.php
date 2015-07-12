@@ -15,4 +15,9 @@ abstract class Base
         \Aot\Sviaz\Rule\AssertedMember\Base $expected_member,
         \Aot\Sviaz\SequenceMember\Base $actual_member
     );
+
+    public static function create()
+    {
+        return new static();
+    }
 }

@@ -11,5 +11,17 @@ namespace Aot\Sviaz\Rule\AssertedLink\Checker;
 
 abstract class Base
 {
-   abstract public function check(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence);
+    public function check(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
+    {
+        if ($main_candidate === $depended_candidate) {
+            throw new \RuntimeException("wtf?!");
+        }
+
+        return true;
+    }
+
+    public static function create()
+    {
+        return new static();
+    }
 }

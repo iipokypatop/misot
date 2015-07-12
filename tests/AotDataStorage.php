@@ -138,7 +138,7 @@ TEXT;
         $Suschestvitelnoe->chislo = new \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe();
 
 
-        $link = \Aot\Sviaz\Rule\AssertedLink\Base::create($main, $depended);
+        $link = \Aot\Sviaz\Rule\AssertedLink\Base::create($rule);
 
         $asserted_match = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
              \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class,

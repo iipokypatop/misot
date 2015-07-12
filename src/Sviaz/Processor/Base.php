@@ -75,7 +75,7 @@ class Base
         foreach ($rules as $rule) {
 
             foreach ($sequence as $main_candidate) {
-                if (!$rule->getMain()->attempt($main_candidate)) {
+                if (!$rule->getAssertedMain()->attempt($main_candidate)) {
                     continue;
                 }
 
@@ -84,7 +84,7 @@ class Base
                         continue;
                     }
 
-                    if (!$rule->getDepended()->attempt($depended_candidate)) {
+                    if (!$rule->getAssertedDepended()->attempt($depended_candidate)) {
                         continue;
                     }
                     //var_export($depended_candidate);die;
@@ -96,8 +96,8 @@ class Base
                         $sviazi[] = \Aot\Sviaz\Base::create(
                             $main_candidate,
                             $depended_candidate,
-                            $rule->getMain()->getRole(),
-                            $rule->getDepended()->getRole()
+                            $rule->getAssertedMain()->getRole(),
+                            $rule->getAssertedDepended()->getRole()
                         );
                     }
                 }

@@ -8,7 +8,7 @@
  */
 namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Neizmenyajmost;
 
-class Neizmnyajmij
+class Neizmnyajmij  extends Base
 {
 
 }

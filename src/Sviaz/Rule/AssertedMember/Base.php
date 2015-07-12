@@ -11,6 +11,7 @@ namespace Aot\Sviaz\Rule\AssertedMember;
 use Aot\RussianMorphology\ChastiRechi\MorphologyBase;
 use Aot\RussianMorphology\Slovo;
 use Aot\Sviaz\SequenceMember;
+use Aot\Text\GroupIdRegistry;
 
 abstract class Base
 {
@@ -23,14 +24,17 @@ abstract class Base
 
     /** @var \Aot\RussianMorphology\ChastiRechi\MorphologyBase[] */
     protected $asserted_morphologies = [];
-    /** @var  \Aot\Sviaz\Rule\AssertedMember\Checker\Base[] */
-    protected $checkers;
+
+    /** @var  string[] */
+    protected $checker_classes;
+
+
     /** @var  \Aot\Sviaz\Role\Base */
     protected $role;
 
     protected function __construct()
     {
-        // Rule\AssertedMember\Main $main_sequence_member, Rule\AssertedMember\Depended $depended_sequence_member, Role\Base $main_role, Role\Base $depended_role
+
     }
 
     public static function create(/** Rule\AssertedMember\Main $main_sequence_member re */)
@@ -45,6 +49,8 @@ abstract class Base
 
     public function assertText($asserted_text)
     {
+        assert(is_string($asserted_text));
+
         if (isset($this->asserted_text_group_id))
             throw new \RuntimeException("asserted_text_group_id already defined");
 
@@ -58,6 +64,8 @@ abstract class Base
 
     public function assertTextGroupId($asserted_text_group_id)
     {
+        assert(is_int($asserted_text_group_id));
+
         if (isset($this->asserted_text))
             throw new \RuntimeException("asserted_text already defined");
 
@@ -93,9 +101,19 @@ abstract class Base
         $this->asserted_morphologies[] = $morphology_class;
     }
 
-    public function addChecker(\Aot\Sviaz\Rule\AssertedMember\Checker\Base $checker)
+    /**
+     * @param string $checker_class
+     */
+    public function addChecker($checker_class)
     {
-        $this->checkers[] = $checker;
+        if (!is_string($checker_class)) {
+            throw new \RuntimeException("must be string " . var_export($checker_class, 1));
+        }
+
+        if (!is_a($checker_class, \Aot\Sviaz\Rule\AssertedMember\Checker\Base::class, true)) {
+            throw new \RuntimeException("unsupported checker class $checker_class");
+        }
+        $this->checker_classes[] = $checker_class;
     }
 
     /**
@@ -118,6 +136,24 @@ abstract class Base
     {
         if ($actual instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
 
+
+            if (null !== $this->asserted_text) {
+                if (strtolower($actual->getSlovo()->getText()) !== strtolower($this->asserted_text)) {
+                    return false;
+                }
+            }
+
+            if (null !== $this->asserted_text_group_id) {
+                if (empty(GroupIdRegistry::getWordVariants()[$this->asserted_text_group_id])) {
+                    return false;
+                }
+
+                if (!in_array(strtolower($actual->getSlovo()->getText()), GroupIdRegistry::getWordVariants()[$this->asserted_text_group_id])) {
+                    return false;
+                }
+            }
+
+
             if (null !== $this->getAssertedChastRechiClass()) {
                 if (!is_a($actual->getSlovo(), $this->getAssertedChastRechiClass(), true)) {
                     return false;
@@ -130,7 +166,6 @@ abstract class Base
 
                 if (null === $morphology) {
                     return false;
-                    //throw new \RuntimeException("признак " . is_object($asserted_morphology) ? get_class($asserted_morphology) : $asserted_morphology . " отсутствует у " . var_export($actual->getSlovo(), 1));
                 }
             }
 

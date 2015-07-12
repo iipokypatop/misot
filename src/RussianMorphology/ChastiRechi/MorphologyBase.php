@@ -10,16 +10,8 @@ namespace Aot\RussianMorphology\ChastiRechi;
 
 abstract class MorphologyBase
 {
-    /**
-     * @return static []
-     */
-    public static function getTreeChildrenNodes()
+    public static function create()
     {
-        return [
-            Suschestvitelnoe\Morphology\Base::class,
-            //Prilagatelnoe\Morphology\Base::class,
-            Prichastie\Morphology\Base::class,
-            Narechie\Morphology\Base::class,
-        ];
+        return new static();
     }
 }
