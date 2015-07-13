@@ -70,10 +70,9 @@ class BaseTest extends \AotTest\AotDataStorage
             ->dependedCheck(MemberCheckerRegistry::PredlogPeredSlovom)
             ->dependedMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
             ->dependedMorphology(MorphologyRegistry::ROD_MUZHSKOI)
-            ->dependedRole(RoleRegistry::OTNOSHENIE)
-        ;
+            ->dependedRole(RoleRegistry::OTNOSHENIE);
 
-       // $builder->s
+        // $builder->s
 
         $builder->dependedAndMainMorphologyMatching(
             MorphologyRegistry::PADEJ
@@ -212,12 +211,35 @@ RULE;
         $processor = \Aot\Sviaz\Processor\Base::create();
 
 
-        $result = $processor->go(
+        $link_container = $processor->go(
             $this->getNormalizedMatrix1(),
-            [\Aot\Sviaz\Rule\Container::getRule1()]
+            array_merge([
+                \Aot\Sviaz\Rule\Container::getRule1(),
+                \Aot\Sviaz\Rule\Container::getRule2(),
+                \Aot\Sviaz\Rule\Container::getRule3(),
+                \Aot\Sviaz\Rule\Container::getRule4(),
+                \Aot\Sviaz\Rule\Container::getRule5(),
+            //\Aot\Sviaz\Rule\Container::getRuleSuchestvitelnoeiSuchestvitelnoeDocOtLarisu(),
+            ], \Aot\Sviaz\Rule\Container::getRuleSuch1()
+            )
         );
-        //var_dump($result);
+
+        foreach ($link_container as $sequence_index => $links) {
+            $data = [];
+            $data [] = $sequence_index;
+
+            foreach ($links as $link) {
+                $data[] =
+                    $link->getMainSequenceMember()->getSlovo()->getText()
+                    . "->" .
+                    $link->getDependedSequenceMember()->getSlovo()->getText();
+            }
+
+            echo join(" ", $data) . "\n";
+        }
+
     }
+
     /**
      * @return array
      */

@@ -497,6 +497,7 @@ class Builder
         $this->dependedAndMainCheck(LinkCheckerRegistry::DependedRightAfterMain);
         return $this;
     }
+}
 
     public function estSlovo($chast_rechi_id, array $morphology)
     {

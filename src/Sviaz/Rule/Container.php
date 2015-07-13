@@ -9,6 +9,10 @@
 namespace Aot\Sviaz\Rule;
 
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
+use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Izyavitelnoe;
+use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Povelitelnoe;
+use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Yslovnoe;
+use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
@@ -28,16 +32,14 @@ TEXT;
         $builder = \Aot\Sviaz\Rule\Builder::create()
             ->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE)
             ->mainMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+            ->mainMorphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
             ->mainRole(RoleRegistry::VESCH)
             ->dependedChastRechi(ChastiRechiRegistry::GLAGOL)
+            ->dependedMorphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
             ->dependedRole(RoleRegistry::OTNOSHENIE);
 
         $builder->dependedAndMainMorphologyMatching(
             MorphologyRegistry::ROD
-        );
-
-        $builder->dependedAndMainMorphologyMatching(
-            MorphologyRegistry::CHISLO
         );
 
         $rule = $builder->get();
@@ -160,6 +162,57 @@ TEXT;
         return $rule;
     }
 
+    public static function getRuleSuchestvitelnoeiSuchestvitelnoeDocOtLarisu($mainMorphology, $dependedMorphology)
+    {
+        $builder = \Aot\Sviaz\Rule\Builder::create()
+            ->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE)
+            ->mainMorphology($mainMorphology)
+            ->mainRole(RoleRegistry::VESCH)
+            ->dependedRightAfterMain()
+            ->dependedChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE)
+            ->dependedMorphology($dependedMorphology)
+            ->dependedRole(RoleRegistry::VESCH);
+
+        $rule = $builder->get();
+
+        return $rule;
+
+    }
+
+    public static function getRuleSuch1()
+    {
+        <<<TEXT
+существительное (* падеж) + существительное (* падеж)
+TEXT;
+        $priznaki = [
+            'ImenitelniiImenitelnii' => [MorphologyRegistry::PADEJ_IMENITELNIJ,MorphologyRegistry::PADEJ_IMENITELNIJ],
+            'ImenitelniiRoditelnii' => [MorphologyRegistry::PADEJ_IMENITELNIJ,MorphologyRegistry::PADEJ_RODITELNIJ],
+            'ImenitelniiDatelnij' => [MorphologyRegistry::PADEJ_IMENITELNIJ,MorphologyRegistry::PADEJ_DATELNIJ],
+            'ImenitelniiTvoritelnij' => [MorphologyRegistry::PADEJ_IMENITELNIJ,MorphologyRegistry::PADEJ_TVORITELNIJ],
+            'RoditelniiRoditelnii' => [MorphologyRegistry::PADEJ_RODITELNIJ,MorphologyRegistry::PADEJ_RODITELNIJ],
+            'RoditelniiDatelnij' => [MorphologyRegistry::PADEJ_RODITELNIJ,MorphologyRegistry::PADEJ_DATELNIJ],
+            'RoditelniiTvoritelnij' => [MorphologyRegistry::PADEJ_RODITELNIJ,MorphologyRegistry::PADEJ_TVORITELNIJ],
+            'DatelnijRoditelnii' => [MorphologyRegistry::PADEJ_DATELNIJ,MorphologyRegistry::PADEJ_RODITELNIJ],
+            'DatelnijTvoritelnij' => [MorphologyRegistry::PADEJ_DATELNIJ,MorphologyRegistry::PADEJ_TVORITELNIJ],
+            'VinitelnijRoditelnii' => [MorphologyRegistry::PADEJ_VINITELNIJ,MorphologyRegistry::PADEJ_RODITELNIJ],
+            'VinitelnijDatelnij' => [MorphologyRegistry::PADEJ_VINITELNIJ,MorphologyRegistry::PADEJ_DATELNIJ],
+            'VinitelnijTvoritelnij' => [MorphologyRegistry::PADEJ_VINITELNIJ,MorphologyRegistry::PADEJ_TVORITELNIJ],
+            'TvoritelnijRoditelnii' => [MorphologyRegistry::PADEJ_TVORITELNIJ,MorphologyRegistry::PADEJ_RODITELNIJ],
+            'TvoritelnijDatelnij' => [MorphologyRegistry::PADEJ_TVORITELNIJ,MorphologyRegistry::PADEJ_DATELNIJ],
+            'PredlojnijRoditelnii' => [MorphologyRegistry::PADEJ_PREDLOZSHNIJ,MorphologyRegistry::PADEJ_RODITELNIJ],
+            'PredlojnijDatelnij' => [MorphologyRegistry::PADEJ_PREDLOZSHNIJ,MorphologyRegistry::PADEJ_DATELNIJ],
+            'PredlojnijTvoritelnij' => [MorphologyRegistry::PADEJ_PREDLOZSHNIJ,MorphologyRegistry::PADEJ_TVORITELNIJ],
 
 
+        ];
+
+
+        $rules = [];
+        foreach ($priznaki as $name => $priznak) {
+
+            $rules[$name] = static::getRuleSuchestvitelnoeiSuchestvitelnoeDocOtLarisu($priznak[0], $priznak[1]);
+        }
+        return $rules;
+
+    }
 }
