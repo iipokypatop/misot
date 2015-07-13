@@ -6,7 +6,7 @@
  * Time: 04:02
  */
 
-namespace Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad;
+namespace Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog;
 
 
 class Stradatelnyj extends Base

@@ -106,8 +106,9 @@ class MorphologyMatching extends Base
             return false;
         }
 
-        return $this->operator->match($morphology_left, $morphology_right);
+        return $this->operator->match(
+            $morphology_left,
+            $morphology_right
+        );
     }
-
-
 }

@@ -12,10 +12,10 @@ namespace Aot\Sviaz\Rule;
 class Base
 {
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Main */
-    protected $main;
+    protected $asserted_main;
 
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Depended */
-    protected $depended;
+    protected $asserted_depended;
 
     /** @var  \Aot\Sviaz\Rule\AssertedLink\Base[] */
     protected $links = [];
@@ -27,8 +27,8 @@ class Base
      */
     public function __construct(AssertedMember\Main $main, AssertedMember\Depended $depended)
     {
-        $this->main = $main;
-        $this->depended = $depended;
+        $this->asserted_main = $main;
+        $this->asserted_depended = $depended;
     }
 
     /**
@@ -44,17 +44,17 @@ class Base
     /**
      * @return AssertedMember\Main
      */
-    public function getMain()
+    public function getAssertedMain()
     {
-        return $this->main;
+        return $this->asserted_main;
     }
 
     /**
      * @return AssertedMember\Depended
      */
-    public function getDepended()
+    public function getAssertedDepended()
     {
-        return $this->depended;
+        return $this->asserted_depended;
     }
 
     /**
@@ -97,12 +97,12 @@ class Base
 
     public function attemptMain(\Aot\Sviaz\SequenceMember\Base $actual)
     {
-        return $this->getMain()->attempt($actual);
+        return $this->asserted_main->attempt($actual);
     }
 
     public function attemptDepended(\Aot\Sviaz\SequenceMember\Base $actual)
     {
-        return $this->getDepended()->attempt($actual);
+        return $this->asserted_depended->attempt($actual);
     }
 }
 

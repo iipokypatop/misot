@@ -24,7 +24,10 @@ abstract class Base
      * @param MorphologyBase $right
      * @return boolean
      */
-    abstract public function match(MorphologyBase $left, MorphologyBase $right);
+    abstract public function match(
+        MorphologyBase $left,
+        MorphologyBase $right
+    );
 
     public static function create()
     {

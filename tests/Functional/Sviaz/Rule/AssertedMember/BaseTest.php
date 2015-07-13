@@ -9,7 +9,7 @@
 namespace AotTest\Functional\Sviaz\Rule\AssertedMember;
 
 
-use MivarTest\Base;
+use MivarTest\PHPUnitHelper;
 
 class BaseTest extends \AotTest\AotDataStorage
 {
@@ -66,4 +66,43 @@ class BaseTest extends \AotTest\AotDataStorage
         }
     }
 
+    public function testAddChecker_throws_exception()
+    {
+        $depended = \Aot\Sviaz\Rule\AssertedMember\Depended::create();
+
+        $checker_class = new \stdClass;
+        try {
+            $depended->addChecker($checker_class);
+            $this->fail();
+        } catch (\RuntimeException $e) {
+            $this->assertEquals(get_class($e), \RuntimeException::class);
+            $this->assertEquals("must be string " . var_export($checker_class, 1), $e->getMessage());
+        }
+
+
+        $checker_class = \stdClass::class;
+        try {
+            $depended->addChecker($checker_class);
+            $this->fail();
+        } catch (\RuntimeException $e) {
+            $this->assertEquals(get_class($e), \RuntimeException::class);
+            $this->assertEquals("unsupported checker class $checker_class", $e->getMessage());
+        }
+    }
+
+
+    public function testAddChecker_returns_void()
+    {
+        $depended = \Aot\Sviaz\Rule\AssertedMember\Depended::create();
+
+        $checker_class = \Aot\Sviaz\Rule\AssertedMember\Checker\PredlogPeredSlovom::class;
+
+        $result = $depended->addChecker($checker_class);
+
+        $this->assertEquals(null, $result);
+        $this->assertEquals(
+            [$checker_class],
+            PHPUnitHelper::getProtectedProperty($depended, 'checker_classes')
+        );
+    }
 }
