@@ -208,7 +208,7 @@ RULE;
 
     public function testSecond()
     {
-        $this->markTestSkipped();
+
         $processor = \Aot\Sviaz\Processor\Base::create();
 
 
@@ -236,7 +236,7 @@ RULE;
                     $link->getDependedSequenceMember()->getSlovo()->getText();
             }
 
-           # echo join(" ", $data) . "\n";
+          //echo join(" ", $data) . "\n";
         }
 
     }

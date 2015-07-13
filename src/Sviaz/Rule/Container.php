@@ -122,7 +122,7 @@ TEXT;
             MorphologyRegistry::CHISLO
         );
         $builder->dependedAndMainCheck(
-            LinkCheckerRegistry::NetSuschestvitelnogoVImenitelnomPadeszheMezhduGlavnimIZavisimim
+            LinkCheckerRegistry::NetSuschestvitelnogoVImenitelnomPadeszhe
         );
 
         $rule = $builder->get();

@@ -190,7 +190,7 @@ class MorphologyRegistry
             static::CHISLO => [
                 ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class,
                 ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Base::class,
-                ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Chislo\Base::class,
+                ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Chislo\Base::class,
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Base::class,
             ],
             static::SKLONENIE => [
@@ -223,7 +223,7 @@ class MorphologyRegistry
             static::CHISLO => [
                 ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Null::class,
                 ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Null::class,
-                ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\prichastie\Morphology\Chislo\Null::class,
+                ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Chislo\Null::class,
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Null::class,
             ],
             static::SKLONENIE => [
