@@ -187,8 +187,8 @@ class Factory extends \Aot\RussianMorphology\Factory
     }
 
     /**
-     * @param MorphAttribute $value
-     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Base[]
+     * @param $value
+     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Base []
      */
     private function getPadeszh($value) {
         $padeszh = [];
@@ -221,8 +221,8 @@ class Factory extends \Aot\RussianMorphology\Factory
     }
 
     /**
-     * @param MorphAttribute $value
-     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Forma\Base[]
+     * @param $value
+     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Forma\Base []
      */
     private function getForma($value) {
 
@@ -242,6 +242,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $forma;
     }
 
+    /**
+     * @param $value
+     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Base []
+     */
     private function getRod($value) {
 
         $rod = [];
@@ -263,6 +267,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $rod;
     }
 
+    /**
+     * @param $value
+     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Chislo\Base []
+     */
     private function getChislo($value) {
 
         $chislo = [];
@@ -283,6 +291,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $chislo;
     }
 
+    /**
+     * @param $value
+     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Perehodnost\Base []
+     */
     private function getPerehodnost($value) {
 
         $perehodnost = [];
@@ -303,6 +315,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $perehodnost;
     }
 
+    /**
+     * @param $value
+     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vid\Base []
+     */
     private function getVid($value) {
 
         $vid = [];
@@ -323,6 +339,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $vid;
     }
 
+    /**
+     * @param $value
+     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Base []
+     */
     private function getVremya($value) {
 
         $vremya = [];
@@ -347,6 +367,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $vremya;
     }
 
+    /**
+     * @param $value
+     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vozvratnost\Base []
+     */
     private function getVozvratnost($value) {
 
         $vozvratnost = [];
@@ -367,7 +391,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $vozvratnost;
     }
 
-
+    /**
+     * @param $value
+     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad\Base []
+     */
     private function getRazryad($value) {
 
         $razryad = [];

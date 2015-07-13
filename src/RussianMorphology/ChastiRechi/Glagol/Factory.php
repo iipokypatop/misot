@@ -61,6 +61,12 @@ use Word;
 class Factory extends \Aot\RussianMorphology\Factory
 {
 
+    /**
+     * @param Dw $dw
+     * @param Word $word
+     * @return \Aot\RussianMorphology\ChastiRechi\Glagol\Base[]
+     * @throws \Exception
+     */
     public function build(Dw $dw, Word $word)
     {
         $text = $dw->initial_form;
@@ -185,6 +191,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $words;
     }
 
+    /**
+     * @param $param
+     * @return \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Base []
+     */
     private function getChislo($param)
     {
         $chislo = [];
@@ -205,6 +215,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $chislo;
     }
 
+    /**
+     * @param $param
+     * @return \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Base []
+     */
     private function getVid($param)
     {
         $vid = [];
@@ -225,6 +239,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $vid;
     }
 
+    /**
+     * @param $param
+     * @return \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Base []
+     */
     private function getPerehodnost($param)
     {
         $perehodnost = [];
@@ -245,6 +263,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $perehodnost;
     }
 
+    /**
+     * @param $param
+     * @return \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Base []
+     */
     private function getVozvratnost($param)
     {
         $vozvratnost = [];
@@ -265,6 +287,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $vozvratnost;
     }
 
+    /**
+     * @param $param
+     * @return \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Razryad\Base []
+     */
     private function getRazryad($param)
     {
         $razryad = [];
@@ -285,6 +311,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $razryad;
     }
 
+    /**
+     * @param $param
+     * @return \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie\Base []
+     */
     private function getSpryazhenie($param)
     {
         $spryazhenie = [];
@@ -306,6 +336,10 @@ class Factory extends \Aot\RussianMorphology\Factory
 
     }
 
+    /**
+     * @param $param
+     * @return \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Base []
+     */
     private function getNaklonenie($param)
     {
         $naklonenie = [];
@@ -330,6 +364,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $naklonenie;
     }
 
+    /**
+     * @param $param
+     * @return \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Base []
+     */
     private function getVremya($param)
     {
         $vremya = [];
@@ -354,6 +392,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $vremya;
     }
 
+    /**
+     * @param $param
+     * @return \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Base []
+     */
     private function getRod($param)
     {
         $rod = [];
@@ -375,6 +417,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $rod;
     }
 
+    /**
+     * @param $param
+     * @return \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Base []
+     */
     private function getLitso($param)
     {
         $litso = [];

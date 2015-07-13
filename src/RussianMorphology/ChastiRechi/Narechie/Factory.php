@@ -20,6 +20,11 @@ use Word;
 class Factory extends \Aot\RussianMorphology\Factory
 {
 
+    /**
+     * @param Dw $dw
+     * @param Word $word
+     * @return \Aot\RussianMorphology\ChastiRechi\Narechie\Base[]
+     */
     public function build(Dw $dw, Word $word)
     {
         $text = $dw->initial_form;
@@ -44,7 +49,7 @@ class Factory extends \Aot\RussianMorphology\Factory
 
     /**
      * @param $param
-     * @return array
+     * @return \Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Base []
      */
     private function getStepenSravneniia($param)
     {
