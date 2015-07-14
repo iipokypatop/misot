@@ -18,24 +18,16 @@ use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 
 class Builder2
 {
-    protected $main = [];
-    protected $main_default = [
-        'role' => null,
-        'text' => null,
-        'text_group_id' => null,
-        'chast_rechi' => null,
-        'checkers' => [],
-        'morphology' => [],
-    ];
-    protected $depended = [];
-    protected $depended_default = [
-        'role' => null,
-        'text' => null,
-        'text_group_id' => null,
-        'chast_rechi' => null,
-        'checkers' => [],
-        'morphology' => [],
-    ];
+
+
+    /** @var  \Aot\Sviaz\Rule\AssertedMember\Main */
+    protected $main;
+
+
+    /** @var  \Aot\Sviaz\Rule\AssertedMember\Depended */
+    protected $depended;
+
+
     protected $link;
     protected $link_default = [
         'morphology_matchings' => [],
@@ -46,8 +38,6 @@ class Builder2
 
     protected function __construct()
     {
-        $this->main = $this->main_default;
-        $this->depended = $this->depended_default;
         $this->link = $this->link_default;
     }
 
@@ -59,236 +49,17 @@ class Builder2
         return new static();
     }
 
-
-    /**
-     * @param string $text
-     * @return $this
-     */
-    public function mainText($text)
+    public function main(\Aot\Sviaz\Rule\AssertedMember\Main $main)
     {
-        assert(is_string($text));
-
-        $this->main['text'] = $text;
-
-        return $this;
+        $this->main = $main;
     }
 
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function mainTextGroupId($id)
+    public function depended(\Aot\Sviaz\Rule\AssertedMember\Depended $main)
     {
-        assert(is_int($id));
-
-        if (!array_key_exists($id, GroupIdRegistry::getWordVariants())) {
-            throw new \RuntimeException("unsupported text_group_group_id = " . $id);
-        }
-
-        $this->main['text_group_id'] = $id;
-
-        return $this;
+        $this->main = $main;
     }
 
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function mainChastRechi($id)
-    {
-        assert(is_int($id));
 
-        if (empty(ChastiRechiRegistry::getClasses()[$id])) {
-            throw new \RuntimeException("unsupported chast rechi id = " . $id);
-        }
-
-        $this->main['chast_rechi'] = $id;
-
-        return $this;
-    }
-
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function mainCheck($id)
-    {
-        assert(is_int($id));
-
-        if (empty(MemberCheckerRegistry::getClasses()[$id])) {
-            throw new \RuntimeException("unsupported checker id = " . $id);
-        }
-
-        $this->main['checkers'][] = $id;
-
-        return $this;
-    }
-
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function mainMorphology($id)
-    {
-        assert(is_int($id));
-
-        if (!in_array($id, MorphologyRegistry::getLvl2(), true)) {
-            throw new \RuntimeException("unsupported morphology id = " . var_export($id, 1));
-        }
-
-        $this->main['morphology'][] = $id;
-
-        return $this;
-    }
-
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function mainRole($id)
-    {
-        assert(is_int($id));
-
-        if (empty(RoleRegistry::getClasses()[$id])) {
-            throw new \RuntimeException("unsupported role id $id");
-        }
-
-        $this->main['role'] = $id;
-
-        return $this;
-    }
-
-    /**
-     * @param string $text
-     * @return $this
-     */
-    public function dependedText($text)
-    {
-        assert(is_string($text));
-
-        $this->depended['text'] = $text;
-
-        return $this;
-    }
-
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function dependedTextGroupId($id)
-    {
-        assert(is_int($id));
-
-        if (!array_key_exists($id, GroupIdRegistry::getWordVariants())) {
-            throw new \RuntimeException("unsupported text_group_group_id = " . $id);
-        }
-
-        $this->depended['text_group_id'] = $id;
-
-        return $this;
-    }
-
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function dependedChastRechi($id)
-    {
-        assert(is_int($id));
-
-        if (empty(ChastiRechiRegistry::getClasses()[$id])) {
-            throw new \RuntimeException("unsupported chast rechi id = " . $id);
-        }
-
-        $this->depended['chast_rechi'] = $id;
-
-        return $this;
-    }
-
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function dependedCheck($id)
-    {
-        assert(is_int($id));
-
-        if (empty(MemberCheckerRegistry::getClasses()[$id])) {
-            throw new \RuntimeException("unsupported checker id = " . $id);
-        }
-
-        $this->depended['checkers'][] = $id;
-
-        return $this;
-    }
-
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function dependedMorphology($id)
-    {
-        assert(is_int($id));
-
-        if (!in_array($id, MorphologyRegistry::getLvl2(), true)) {
-            throw new \RuntimeException("unsupported morphology id = " . var_export($id, 1));
-        }
-
-        $this->depended['morphology'][] = $id;
-
-        return $this;
-    }
-
-    /**
-     * @param $id
-     * @return $this
-     */
-    public function dependedRole($id)
-    {
-        assert(is_int($id));
-
-        if (empty(RoleRegistry::getClasses()[$id])) {
-            throw new \RuntimeException("unsupported role id $id");
-        }
-
-        $this->depended['role'] = $id;
-
-        return $this;
-    }
-
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function dependedAndMainMorphologyMatching($id)
-    {
-        assert(is_int($id));
-
-        if (empty(MorphologyRegistry::getBaseClasses()[$id])) {
-            throw new \RuntimeException("unsupported morphology id = " . var_export($id, 1));
-        }
-
-        $this->link['morphology_matchings'][] = $id;
-
-        return $this;
-    }
-
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function dependedAndMainCheck($id)
-    {
-        assert(is_int($id));
-
-        if (empty(AssertedLink\Checker\Registry::getClasses()[$id])) {
-            throw new \RuntimeException("unsupported checker id " . var_export($id, 1));
-        }
-
-        $this->link['checkers'][] = $id;
-
-        return $this;
-    }
 
     /**
      * @param int $id
@@ -306,70 +77,6 @@ class Builder2
         $this->link['finders'][] = $id;
 
         return $this;
-    }
-
-    /**
-     * @param AssertedMember\Base $member
-     * @param $config
-     * @return AssertedMember\Base
-     */
-    protected function getAssertedMember(\Aot\Sviaz\Rule\AssertedMember\Base $member, $config)
-    {
-        if (null === $config['chast_rechi']) {
-
-            throw new \RuntimeException("chast_rechi must be defined!");
-
-        } else {
-            $member->assertChastRechi(
-                ChastiRechiRegistry::getClasses()[$config['chast_rechi']]
-            );
-        }
-
-        if (null === $config['role']) {
-
-            throw new \RuntimeException("role must be defined!");
-
-        } else {
-            $member->setRole(
-                forward_static_call_array([RoleRegistry::getClasses()[$config['role']], 'create'], [])
-            );
-        }
-
-        if (null !== $config['text']) {
-            $member->assertText($config['text']);
-        }
-
-        if (null !== $config['text_group_id']) {
-            $member->assertTextGroupId($config['text_group_id']);
-        }
-
-        if (null !== $config['checkers']) {
-            foreach ($config['checkers'] as $checker_id) {
-                $checker_class = MemberCheckerRegistry::getClasses()[$checker_id];
-                $member->addChecker($checker_class);
-            }
-        }
-
-        if (null !== $config['morphology']) {
-            foreach ($config['morphology'] as $morphology) {
-                foreach (MorphologyRegistry::getClasses() as $priznak_group => $variants) {
-                    foreach ($variants as $priznak => $classes) {
-                        if ($priznak !== $morphology) {
-                            continue;
-                        }
-                        if (empty($classes[$config['chast_rechi']])) {
-                            throw new \RuntimeException("где же признак $morphology ???");
-                        }
-
-                        $member->assertMorphology(
-                            $classes[$config['chast_rechi']]
-                        );
-                    }
-                }
-            }
-        }
-
-        return $member;
     }
 
     public function get()
@@ -444,29 +151,21 @@ class Builder2
     }
 
 
-    /**
-     * @param int $role_id
-     * @return $this
-     */
-    public function suschestvitelnoe($role_id)
-    {
-        assert(is_int($role_id));
-
-        $this->mainRole($role_id);
-        $this->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE);
-        return $this;
-    }
 
     /**
-     * @param int $role_id
+     * @param int $id
      * @return $this
      */
-    public function withSuschestvitelnoe($role_id)
+    public function dependedAndMainCheck($id)
     {
-        assert(is_int($role_id));
+        assert(is_int($id));
 
-        $this->dependedRole($role_id);
-        $this->dependedChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE);
+        if (empty(AssertedLink\Checker\Registry::getClasses()[$id])) {
+            throw new \RuntimeException("unsupported checker id " . var_export($id, 1));
+        }
+
+        $this->link['checkers'][] = $id;
+
         return $this;
     }
 
@@ -499,38 +198,34 @@ class Builder2
     }
 
 
-    const POSITION_BETWEEN_MAIN_AND_DEPENDED = 1;
-    const POSITION_AFTER_MAIN = 2;
-    const POSITION_BEFORE_MAIN = 3;
-    const POSITION_AFTER_DEPENDED = 4;
-    const POSITION_BEFORE_DEPENDED = 5;
-
 
     public function slovo(\Aot\Sviaz\Rule\AssertedMember\Base $member)
     {
-
-
+        throw new \RuntimeException("not implemented yet");
     }
 
     public function estSlovo($chast_rechi_id, array $morphology)
     {
 
-
+        throw new \RuntimeException("not implemented yet");
         return $this;
     }
 
     public function netSlova($chast_rechi_id, array $morphology)
     {
+        throw new \RuntimeException("not implemented yet");
         return $this;
     }
 
     public function netSlovaMezhduGlavnimIZavisimim($chast_rechi_id, array $morphology)
     {
+        throw new \RuntimeException("not implemented yet");
         return $this;
     }
 
     public function estSlovoMezhduGlavnimIZavisimim($chast_rechi_id, array $morphology)
     {
+        throw new \RuntimeException("not implemented yet");
         return $this;
     }
 
