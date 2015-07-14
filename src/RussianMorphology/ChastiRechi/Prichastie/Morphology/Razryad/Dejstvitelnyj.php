@@ -6,7 +6,7 @@
  * Time: 04:02
  */
 
-namespace Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog;
+namespace Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad;
 
 
 class Dejstvitelnyj extends Base

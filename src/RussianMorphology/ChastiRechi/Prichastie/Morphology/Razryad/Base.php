@@ -6,7 +6,7 @@
  * Time: 04:01
  */
 
-namespace Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog;
+namespace Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad;
 use \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Base as BaseMorphology;
 
 class Base extends BaseMorphology

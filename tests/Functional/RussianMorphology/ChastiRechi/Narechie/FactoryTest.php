@@ -24,10 +24,18 @@ class NarechieTest extends \AotTest\AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         $result = $this->buildFactory($point);
-        //print_r($result);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Narechie\Base::class, $result[0]);
         $this->assertEquals(1, count($result));
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Sravnitelnaia::class, $result[0]->stepen_sravneniia);
+    }
+
+    public function testBuild_Success_point2()
+    {
+        $point = $this->getPoint2();
+        $result = $this->buildFactory($point);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Narechie\Base::class, $result[0]);
+        $this->assertEquals(1, count($result));
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Null::class, $result[0]->stepen_sravneniia);
     }
 
     protected function buildFactory($point){
@@ -97,6 +105,31 @@ class NarechieTest extends \AotTest\AotDataStorage
         "Oz": "559ffb37ef1c0",
         "direction": "y",
         "id_sentence": "559ffb37ee4942.53244756",
+        "denial": ""
+    }
+JSON;
+
+        return json_decode($json_p);
+    }
+
+    protected function getPoint2(){
+        // слово - тихо
+        $json_p = <<<JSON
+{
+        "kw": 0,
+        "ks": 0,
+        "dw": {
+            "id_word_form": "55a501fe0e773",
+            "initial_form": "тихо",
+            "name_word_class": "наречие",
+            "id_word_class": 12,
+            "parameters": null
+        },
+        "ps": "adjunct",
+        "O": "adjunct_verb",
+        "Oz": "55a501fe0e654",
+        "direction": "y",
+        "id_sentence": "55a501fe0dac79.47855019",
         "denial": ""
     }
 JSON;

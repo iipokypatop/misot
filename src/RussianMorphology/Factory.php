@@ -13,7 +13,7 @@ use Word;
  */
 abstract class Factory
 {
-    protected static $uniqueInstance = null;
+    protected static $uniqueInstances = null;
 
     protected function __construct()
     {
@@ -24,11 +24,11 @@ abstract class Factory
      */
     public static function get()
     {
-        if (static::$uniqueInstance === null) {
-            static::$uniqueInstance = new static;
+        if (empty(static::$uniqueInstances[static::class])) {
+            static::$uniqueInstances[static::class] = new static;
         }
 
-        return static::$uniqueInstance;
+        return static::$uniqueInstances[static::class];
     }
 
     public function create()

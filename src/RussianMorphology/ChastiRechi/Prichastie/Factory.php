@@ -28,9 +28,9 @@ use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Proshedshee;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Nastoyaschee;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Null as NullVremya;
 
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Dejstvitelnyj;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Stradatelnyj;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Null as NullRazryad;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad\Dejstvitelnyj;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad\Stradatelnyj;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad\Null as NullRazryad;
 
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Datelnij;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Imenitelnij;
@@ -148,10 +148,7 @@ class Factory extends \Aot\RussianMorphology\Factory
             else{
                 throw new FactoryException("razryad not defined", 24);
             }
-            /**
-             * если страдательный - то краткий к нему
-             * если единственное число - то род к нему
-             */
+
             foreach ($forma as $val_forma) {
                 foreach ($rod as $val_rod) {
                     foreach ($perehodnost as $val_perehodnost) {
