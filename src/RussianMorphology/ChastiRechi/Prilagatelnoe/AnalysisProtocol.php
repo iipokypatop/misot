@@ -25,7 +25,7 @@ class AnalysisProtocol extends \Aot\RussianMorphology\AnalysisProtocol
     public $padeszh = [];
 
     /**
-     * @var Morphology\Razriad\Base[]
+     * @var Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Base[]
      */
     public $razriad = [];
 

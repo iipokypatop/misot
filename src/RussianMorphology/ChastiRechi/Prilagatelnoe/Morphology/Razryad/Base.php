@@ -6,7 +6,7 @@
  * Time: 12:08
  */
 
-namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razriad;
+namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad;
 
 
 class Base extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Base

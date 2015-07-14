@@ -16,7 +16,7 @@ use Aot\RussianMorphology\Slovo;
  * @property Morphology\Chislo\Base $chislo
  * @property Morphology\Forma\Base $forma
  * @property Morphology\Padeszh\Base $padeszh
- * @property Morphology\Razriad\Base $razriad
+ * @property Morphology\Razryad\Base $razryad
  * @property Morphology\Rod\Base $rod
  * @property Morphology\StepenSravneniia\Base $stepen_sravneniia
  */
@@ -28,7 +28,7 @@ class Base extends Slovo
             'chislo' => Morphology\Chislo\Base::class,
             'forma' => Morphology\Forma\Base::class,
             'padeszh' => Morphology\Padeszh\Base::class,
-            'razriad' => Morphology\Razriad\Base::class,
+            'razryad' => Morphology\Razryad\Base::class,
             'rod' => Morphology\Rod\Base::class,
             'stepen_sravneniia' => Morphology\StepenSravneniia\Base::class,
         ];
@@ -40,7 +40,7 @@ class Base extends Slovo
      * @param Morphology\Chislo\Base $chislo
      * @param Morphology\Forma\Base $forma
      * @param Morphology\Padeszh\Base $padeszh
-     * @param Morphology\Razriad\Base $razriad
+     * @param Morphology\Razryad\Base $razryad
      * @param Morphology\Rod\Base $rod
      * @param Morphology\StepenSravneniia\Base $stepen_sravneniia
      * @return static
@@ -50,7 +50,7 @@ class Base extends Slovo
         Morphology\Chislo\Base $chislo,
         Morphology\Forma\Base $forma,
         Morphology\Padeszh\Base $padeszh,
-        Morphology\Razriad\Base $razriad,
+        Morphology\Razryad\Base $razryad,
         Morphology\Rod\Base $rod,
         Morphology\StepenSravneniia\Base $stepen_sravneniia
 
@@ -62,7 +62,7 @@ class Base extends Slovo
         $ob->forma = $forma;
         $ob->padeszh = $padeszh;
         $ob->rod = $rod;
-        $ob->razriad = $razriad;
+        $ob->razryad = $razryad;
         $ob->stepen_sravneniia = $stepen_sravneniia;
 
         return $ob;

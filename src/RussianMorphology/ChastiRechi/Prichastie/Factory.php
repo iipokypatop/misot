@@ -148,10 +148,7 @@ class Factory extends \Aot\RussianMorphology\Factory
             else{
                 throw new FactoryException("razryad not defined", 24);
             }
-            /**
-             * если страдательный - то краткий к нему
-             * если единственное число - то род к нему
-             */
+
             foreach ($forma as $val_forma) {
                 foreach ($rod as $val_rod) {
                     foreach ($perehodnost as $val_perehodnost) {

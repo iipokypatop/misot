@@ -14,8 +14,8 @@ class ChastiRechiRegistry
     const SUSCHESTVITELNOE = 10;
     const PRILAGATELNOE = 11;
     const GLAGOL = 12;
-    const NARECHIE = 13; // ??
-    const PRICHASTIE = 14; // ??
+    const NARECHIE = 13;
+    const PRICHASTIE = 14;
     const DEEPRICHASTIE = 15;
     const CHISLITELNOE = 16;
     const MESTOIMENIE = 17;
