@@ -17,6 +17,25 @@ class Base
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Depended */
     protected $asserted_depended;
 
+    /** @var  \Aot\Sviaz\Rule\AssertedMember\Member */
+    protected $asserted_member;
+
+    /**
+     * @return \Aot\Sviaz\Rule\AssertedMember\Member
+     */
+    public function getAssertedMember()
+    {
+        return $this->asserted_member;
+    }
+
+    /**
+     * @param \Aot\Sviaz\Rule\AssertedMember\Member  $asserted_member
+     */
+    public function assertMember(\Aot\Sviaz\Rule\AssertedMember\Member  $asserted_member)
+    {
+        $this->asserted_member = $asserted_member;
+    }
+
     /** @var  \Aot\Sviaz\Rule\AssertedLink\Base[] */
     protected $links = [];
 
@@ -104,5 +123,12 @@ class Base
     {
         return $this->asserted_depended->attempt($actual);
     }
+
+    public function attemptMember(\Aot\Sviaz\SequenceMember\Base $actual)
+    {
+        return $this->asserted_member->attempt($actual);
+    }
+
+
 }
 

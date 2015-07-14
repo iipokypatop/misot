@@ -44,16 +44,29 @@ class ChastiRechiRegistry
     {
         return [
             static::SUSCHESTVITELNOE => Suschestvitelnoe\Base::class,
-            static::PRILAGATELNOE =>  Prilagatelnoe\Base::class,
-            static::GLAGOL =>  Glagol\Base::class,
-            static::PRICHASTIE =>  Prichastie\Base::class,
-            static::NARECHIE =>  Narechie\Base::class,
-            static::DEEPRICHASTIE =>  Deeprichastie\Base::class,
-
-
+            static::PRILAGATELNOE => Prilagatelnoe\Base::class,
+            static::GLAGOL => Glagol\Base::class,
+            static::PRICHASTIE => Prichastie\Base::class,
+            static::NARECHIE => Narechie\Base::class,
+            static::DEEPRICHASTIE => Deeprichastie\Base::class,
 
 
             static::PREDLOG => Predlog::class,
         ];
+    }
+
+    /**
+     * @param $class
+     * @return int | null
+     */
+    public static function getIdByClass($class)
+    {
+        $key = array_search($class, static::getClasses(), true);
+
+        if ($key !== false) {
+            return $key;
+        }
+
+        return null;
     }
 }

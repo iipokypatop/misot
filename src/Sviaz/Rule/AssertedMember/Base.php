@@ -21,6 +21,14 @@ class Base
     protected $asserted_text;
     protected $asserted_text_group_id;
 
+    /**
+     * @return string
+     */
+    public function getRoleClass()
+    {
+        return $this->role_class;
+    }
+
 
     /** @var string[] */
     protected $asserted_morphologies_classes = [];
@@ -154,6 +162,7 @@ class Base
         assert(is_a($role_class, \Aot\Sviaz\Role\Base::class, true));
         $this->role_class = $role_class;
     }
+
 
     public function attempt(\Aot\Sviaz\SequenceMember\Base $actual)
     {

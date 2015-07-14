@@ -24,7 +24,7 @@ class NarechieTest extends \AotTest\AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         $result = $this->buildFactory($point);
-        print_r($result);
+        //print_r($result);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Narechie\Base::class, $result[0]);
         $this->assertEquals(1, count($result));
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Sravnitelnaia::class, $result[0]->stepen_sravneniia);

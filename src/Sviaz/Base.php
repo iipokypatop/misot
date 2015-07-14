@@ -15,29 +15,28 @@ class Base
     protected $main_sequence_member;
     /** @var  \Aot\Sviaz\SequenceMember\Base */
     protected $depended_sequence_member;
-    /** @var  \Aot\Sviaz\Role\Base */
-    protected $main_role;
-    /** @var  \Aot\Sviaz\Role\Base */
-    protected $depended_role;
+    /** @var  string */
+    protected $main_role_class;
+    /** @var  string */
+    protected $depended_role_class;
 
     /**
-     * Base constructor.
      * @param SequenceMember\Base $main_sequence_member
      * @param SequenceMember\Base $depended_sequence_member
-     * @param Role\Base $main_role
-     * @param Role\Base $depended_role
+     * @param $main_role_class
+     * @param $depended_role_class
      */
-    protected function __construct(SequenceMember\Base $main_sequence_member, SequenceMember\Base $depended_sequence_member, Role\Base $main_role, Role\Base $depended_role)
+    protected function __construct(SequenceMember\Base $main_sequence_member, SequenceMember\Base $depended_sequence_member, $main_role_class, $depended_role_class)
     {
         $this->main_sequence_member = $main_sequence_member;
         $this->depended_sequence_member = $depended_sequence_member;
-        $this->main_role = $main_role;
-        $this->depended_role = $depended_role;
+        $this->main_role_class = $main_role_class;
+        $this->depended_role_class = $depended_role_class;
     }
 
-    public static function create(SequenceMember\Base $main_sequence_member, SequenceMember\Base $depended_sequence_member, Role\Base $main_role, Role\Base $depended_role)
+    public static function create(SequenceMember\Base $main_sequence_member, SequenceMember\Base $depended_sequence_member, $main_role_class, $depended_role_class)
     {
-        return new static($main_sequence_member, $depended_sequence_member, $main_role, $depended_role);
+        return new static($main_sequence_member, $depended_sequence_member, $main_role_class, $depended_role_class);
     }
 
     /**
@@ -57,18 +56,18 @@ class Base
     }
 
     /**
-     * @return Role\Base
+     * @return string
      */
-    public function getMainRole()
+    public function getMainRoleClass()
     {
-        return $this->main_role;
+        return $this->main_role_class;
     }
 
     /**
-     * @return Role\Base
+     * @return string
      */
-    public function getDependedRole()
+    public function getDependedRoleClass()
     {
-        return $this->depended_role;
+        return $this->depended_role_class;
     }
 }

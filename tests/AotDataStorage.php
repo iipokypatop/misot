@@ -8,6 +8,15 @@ use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base as Suschestvitelnoe;
 use Aot\RussianSyntacsis\Punctuaciya\Zapiataya;
 use MivarTest\PHPUnitHelper;
 
+
+use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
+use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
+use Aot\Sviaz\Role\Registry as RoleRegistry;
+use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
+use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
+use Aot\Text\GroupIdRegistry as GroupIdRegistry;
+
+
 /**
  * Created by PhpStorm.
  * User: p.semenyuk
@@ -141,7 +150,7 @@ TEXT;
         $link = \Aot\Sviaz\Rule\AssertedLink\Base::create($rule);
 
         $asserted_match = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
-             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class,
+            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class,
             \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class
         );
@@ -156,7 +165,7 @@ TEXT;
 
     protected function getMorphologyMatching()
     {
-       $MorphologyMatching = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
+        $MorphologyMatching = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base::class,
             \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base::class
@@ -164,4 +173,57 @@ TEXT;
 
         return $MorphologyMatching;
     }
+
+
+    /**
+     * @return \Aot\Sviaz\Rule\AssertedMember\Builder\Base
+     */
+    public function getAssertedMemberBuilder_main()
+    {
+        $builder =
+            \Aot\Sviaz\Rule\AssertedMember\Builder\Main::create(
+                ChastiRechiRegistry::SUSCHESTVITELNOE,
+                RoleRegistry::OTNOSHENIE
+            )
+                ->text("text text");
+
+        $builder->morphology(MorphologyRegistry::PADEJ_DATELNIJ);
+        $builder->check(MemberCheckerRegistry::PredlogPeredSlovom);
+
+        return $builder;
+    }
+
+    /**
+     * @return \Aot\Sviaz\Rule\AssertedMember\Builder\Base
+     */
+    public function getAssertedMemberBuilder_depended()
+    {
+        $builder =
+            \Aot\Sviaz\Rule\AssertedMember\Builder\Depended::create(
+                ChastiRechiRegistry::PRILAGATELNOE,
+                RoleRegistry::OTNOSHENIE
+            )
+                ->text("text text");
+
+
+        return $builder;
+    }
+
+    /**
+     * @return \Aot\Sviaz\Rule\AssertedMember\Builder\Base
+     */
+    public function getAssertedMemberBuilder_member()
+    {
+        $builder =
+            \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                ChastiRechiRegistry::SUSCHESTVITELNOE
+            )
+                ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BEFORE_DEPENDED)
+                ->text("text text");
+
+
+        return $builder;
+    }
+
+
 }

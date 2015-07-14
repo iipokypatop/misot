@@ -15,60 +15,42 @@ use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use Aot\Text\GroupIdRegistry as GroupIdRegistry;
-use Aot\Sviaz\Rule\AssertedMember\Builder as AssertedMemberBuilder;
+use Aot\Sviaz\Rule\AssertedMember\Builder\Base as AssertedMemberBuilder;
 
 class BuilderTest extends \AotTest\AotDataStorage
 {
     public function testLaunch()
     {
-        $builder =
-            AssertedMemberBuilder::main(
-                ChastiRechiRegistry::SUSCHESTVITELNOE,
-                RoleRegistry::OTNOSHENIE
-            )
-                ->text("text text");
-
-        $builder->morphology(MorphologyRegistry::PADEJ_DATELNIJ);
-        $builder->check(MemberCheckerRegistry::PredlogPeredSlovom);
+        $main_builder = $this->getAssertedMemberBuilder_main();
 
 
         $this->assertInstanceOf(
             \Aot\Sviaz\Rule\AssertedMember\Main::class,
-            $builder->get()
+            $main_builder->get()
         );
 
+        $depended_builder = $this->getAssertedMemberBuilder_depended();
 
-        $builder =
-            AssertedMemberBuilder::depended(
-                ChastiRechiRegistry::SUSCHESTVITELNOE,
-                RoleRegistry::OTNOSHENIE
-            )
-                ->text("text text");
 
         $this->assertInstanceOf(
             \Aot\Sviaz\Rule\AssertedMember\Depended::class,
-            $builder->get()
+            $depended_builder->get()
         );
 
-
-        $builder =
-            AssertedMemberBuilder::member(
-                ChastiRechiRegistry::SUSCHESTVITELNOE,
-                AssertedMemberBuilder::POSITION_BEFORE_DEPENDED
-            )
-                ->text("text text");
+        $builder_member = $this->getAssertedMemberBuilder_member();
 
         $this->assertInstanceOf(
-            \Aot\Sviaz\Rule\AssertedMember\Depended::class,
-            $builder->get()
+            \Aot\Sviaz\Rule\AssertedMember\Member::class,
+            $builder_member->get()
         );
 
     }
 
+
     public function testMorphologyOk()
     {
         $builder =
-            AssertedMemberBuilder::main(
+            \Aot\Sviaz\Rule\AssertedMember\Builder\Main::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE,
                 RoleRegistry::OTNOSHENIE
             );
@@ -85,7 +67,7 @@ class BuilderTest extends \AotTest\AotDataStorage
     public function testMorphology_throws_exception()
     {
         $builder =
-            AssertedMemberBuilder::main(
+            \Aot\Sviaz\Rule\AssertedMember\Builder\Main::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE,
                 RoleRegistry::OTNOSHENIE
             );
@@ -124,35 +106,3 @@ class BuilderTest extends \AotTest\AotDataStorage
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

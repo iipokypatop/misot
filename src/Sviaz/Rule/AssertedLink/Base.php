@@ -31,8 +31,12 @@ class Base
     public function __construct(\Aot\Sviaz\Rule\Base $rule)
     {
         $this->rule = $rule;
+
         $this->asserted_main  = $rule->getAssertedMain();
+
         $this->asserted_depended = $rule->getAssertedDepended();
+
+        $this->rule->addLink($this);
     }
 
     /**

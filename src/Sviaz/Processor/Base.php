@@ -89,6 +89,71 @@ class Base
                     }
                     //var_export($depended_candidate);die;
 
+                    $third = $rule->getAssertedMember();
+
+                    $result = true;
+                    if (null !== $third) {
+                        if (\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_PRESENT === $third->getPresence()) {
+
+                            $result = false;
+
+                            foreach ($sequence as $third_candidate) {
+                                if ($third_candidate === $main_candidate) {
+                                    continue;
+                                }
+                                if ($third_candidate === $depended_candidate) {
+                                    continue;
+                                }
+
+                                $result = $third->attempt($third_candidate);
+
+                                if (true === $result) {
+                                    $result = $this->processPosition(
+                                        $sequence->getPosition($main_candidate),
+                                        $sequence->getPosition($depended_candidate),
+                                        $third->getPosition(),
+                                        $sequence->getPosition($third_candidate)
+                                    );
+                                }
+                                if (true === $result) {
+                                    break;
+                                }
+                            }
+
+                        } else if (\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_NOT_PRESENT === $third->getPresence()) {
+
+                            $result = true;
+
+                            foreach ($sequence as $third_candidate) {
+                                if ($third_candidate === $main_candidate) {
+                                    continue;
+                                }
+                                if ($third_candidate === $depended_candidate) {
+                                    continue;
+                                }
+
+                                $result = $third->attempt($third_candidate);
+
+                                if (true === $result) {
+                                    $result = $this->processPosition(
+                                        $sequence->getPosition($main_candidate),
+                                        $sequence->getPosition($depended_candidate),
+                                        $third->getPosition(),
+                                        $sequence->getPosition($third_candidate)
+                                    );
+                                }
+                                if (true === $result) {
+                                    $result = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (!$result) {
+                        continue;
+                    }
+
                     $result = $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
 
                     if ($result) {
@@ -96,15 +161,66 @@ class Base
                         $sviazi[] = \Aot\Sviaz\Base::create(
                             $main_candidate,
                             $depended_candidate,
-                            $rule->getAssertedMain()->getRole(),
-                            $rule->getAssertedDepended()->getRole()
+                            $rule->getAssertedMain()->getRoleClass(),
+                            $rule->getAssertedDepended()->getRoleClass()
                         );
                     }
                 }
             }
         }
 
+
         return $sviazi;
+    }
+
+
+    /**
+     * @param int $main_position
+     * @param int $depended_position
+     * @param int $third_position_expected
+     * @param int $third_position_actual
+     * @return bool
+     */
+    protected function processPosition($main_position, $depended_position, $third_position_expected, $third_position_actual)
+    {
+        assert(is_int($main_position));
+        assert(is_int($depended_position));
+        assert(is_int($third_position_expected));
+        assert(is_int($third_position_actual));
+
+        if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_ANY) {
+
+            return true;
+
+        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BETWEEN_MAIN_AND_DEPENDED) {
+            if ($main_position > $depended_position) {
+                if ($main_position > $third_position_actual && $third_position_actual > $depended_position) {
+                    return true;
+                }
+            } else if ($depended_position > $main_position) {
+                if ($depended_position > $third_position_actual && $third_position_actual > $main_position) {
+                    return true;
+                }
+            }
+        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_AFTER_MAIN) {
+            if ($third_position_actual > $main_position) {
+                return true;
+            }
+        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BEFORE_MAIN) {
+            if ($third_position_actual < $main_position) {
+                return true;
+            }
+        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_AFTER_DEPENDED) {
+            if ($third_position_actual > $depended_position) {
+                return true;
+            }
+        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BEFORE_DEPENDED) {
+            if ($third_position_actual < $depended_position) {
+                return true;
+            }
+        };
+
+        return false;
     }
 
 
