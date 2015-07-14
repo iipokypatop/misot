@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "phpunit/phpunit": "4.7.*",
+    "phpunit/phpunit": "4.7.7",
     "mivar-projects/loader": "dev-master",
     "mivar-projects/test-utils": "dev-master",
     "mivar-projects/text-libraries": "dev-master",

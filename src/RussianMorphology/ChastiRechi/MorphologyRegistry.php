@@ -172,6 +172,18 @@ class MorphologyRegistry
         return $priznaki;
     }
 
+    public static function getVariantsLvl2()
+    {
+        $tmp = [];
+        foreach (static::getClasses() as $priznak => $variants) {
+            $tmp = array_merge(
+                $tmp,
+                array_values($variants)
+            );
+        }
+        return $tmp;
+    }
+
     public static function getBaseClasses()
     {
         return [
@@ -238,13 +250,13 @@ class MorphologyRegistry
         ];
     }
 
-    public static function getClassByChastRechiAndPriznak($priznak_input, $chast_rechi)
+    public static function getClassByChastRechiAndPriznak($chast_rechi_id, $priznak_id_input)
     {
-        foreach (static::getClasses() as $priznak_group => $priznak) {
-            foreach ($priznak as $classes) {
-                if ($priznak_input === $priznak) {
-                    if (!empty($classes[$chast_rechi])) {
-                        return $classes[$chast_rechi];
+        foreach (static::getClasses() as $priznak_group => $variants) {
+            foreach ($variants as $priznak_id => $classes) {
+                if ($priznak_id_input === $priznak_id) {
+                    if (!empty($classes[$chast_rechi_id])) {
+                        return $classes[$chast_rechi_id];
                     }
                 }
             }

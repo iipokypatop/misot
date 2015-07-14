@@ -1,7 +1,7 @@
 <phpunit
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.6/phpunit.xsd"
-        backupGlobals="true"
+        backupGlobals="false"
         backupStaticAttributes="false"
         bootstrap="./Bootstrap.php"
         cacheTokens="false"
@@ -16,7 +16,7 @@
         processIsolation="false"
         stopOnError="true"
         stopOnFailure="true"
-        stopOnIncomplete="true"
+        stopOnIncomplete="false"
         stopOnSkipped="false"
         testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
 
@@ -32,7 +32,9 @@
             <directory suffix=".php">../</directory>
             <exclude>
                 <!--<directory suffix=".php">../tests</directory>-->
-                <directory suffix=".php">../vendor</directory>
+                <directory>../vendor</directory>
+                <directory>../tests</directory>
+                <directory>../../mivar_text_semantic</directory>
             </exclude>
         </whitelist>
     </filter>

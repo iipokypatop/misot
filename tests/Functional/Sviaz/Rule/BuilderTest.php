@@ -60,8 +60,6 @@ class BuilderTest extends \AotTest\AotDataStorage
         );
 */
 
-
-
         $rule = $builder->get();
 
         //var_export($rule);

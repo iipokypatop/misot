@@ -13,7 +13,7 @@ use Aot\RussianMorphology\Slovo;
 use Aot\Sviaz\SequenceMember;
 use Aot\Text\GroupIdRegistry;
 
-abstract class Base
+class Base
 {
     /** @var  string */
     protected $asserted_chast_rechi_class;
@@ -22,8 +22,9 @@ abstract class Base
     protected $asserted_text_group_id;
 
 
-    /** @var \Aot\RussianMorphology\ChastiRechi\MorphologyBase[] */
-    protected $asserted_morphologies = [];
+    /** @var string[] */
+    protected $asserted_morphologies_classes = [];
+
 
     /** @var  string[] */
     protected $checker_classes;
@@ -31,6 +32,9 @@ abstract class Base
 
     /** @var  \Aot\Sviaz\Role\Base */
     protected $role;
+
+    /** @var  string */
+    protected $role_class;
 
     protected function __construct()
     {
@@ -45,6 +49,14 @@ abstract class Base
     public function getAssertedText()
     {
         return $this->asserted_text;
+    }
+
+    /**
+     * @return \string[]
+     */
+    public function getAssertedMorphologiesClasses()
+    {
+        return $this->asserted_morphologies_classes;
     }
 
     public function assertText($asserted_text)
@@ -98,7 +110,7 @@ abstract class Base
     {
         assert(is_a($morphology_class, MorphologyBase::class, true));
 
-        $this->asserted_morphologies[] = $morphology_class;
+        $this->asserted_morphologies_classes[] = $morphology_class;
     }
 
     /**
@@ -126,10 +138,21 @@ abstract class Base
 
     /**
      * @param \Aot\Sviaz\Role\Base $role
+     * @deprecated
      */
     public function setRole(\Aot\Sviaz\Role\Base $role)
     {
         $this->role = $role;
+    }
+
+    /**
+     * @param $role_class
+     */
+    public function setRoleClass($role_class)
+    {
+        assert(is_string($role_class));
+        assert(is_a($role_class, \Aot\Sviaz\Role\Base::class, true));
+        $this->role_class = $role_class;
     }
 
     public function attempt(\Aot\Sviaz\SequenceMember\Base $actual)
@@ -160,7 +183,7 @@ abstract class Base
                 }
             }
 
-            foreach ($this->asserted_morphologies as $asserted_morphology) {
+            foreach ($this->asserted_morphologies_classes as $asserted_morphology) {
 
                 $morphology = $actual->getSlovo()->getMorphologyByClass_TEMPORARY($asserted_morphology);
 
