@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya;
 
 
-class Proshedshee extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Base
+class Proshedshee extends Base
 {
 
 }

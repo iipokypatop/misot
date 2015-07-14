@@ -10,6 +10,11 @@ namespace Aot\RussianMorphology\ChastiRechi\Narechie;
 
 use Aot\RussianMorphology\Slovo;
 
+/**
+ * Class Base
+ * @package Aot\RussianMorphology\ChastiRechi\Narechie
+ * @property Morphology\StepenSravneniia\Base $stepen_sravneniia
+ */
 class Base extends Slovo
 {
     public function getMorphology()
@@ -19,6 +24,12 @@ class Base extends Slovo
         ];
     }
 
+    /**
+     * Narechie constructor.
+     * @param $text
+     * @param Morphology\StepenSravneniia\Base $stepen_sravneniia
+     * @return static
+     */
     public static function create(
         $text,
         Morphology\StepenSravneniia\Base $stepen_sravneniia

@@ -5,7 +5,7 @@
  * Date: 25.06.15
  * Time: 12:19
  */
-namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Razryad;
 
 
 class Base extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Base

@@ -6,7 +6,7 @@ namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod;
  * Date: 18.06.2015
  * Time: 16:19
  */
-class Muzhskoi extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Base
+class Muzhskoi extends Base
 {
 
 }
