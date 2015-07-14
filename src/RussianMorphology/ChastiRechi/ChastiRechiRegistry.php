@@ -49,6 +49,7 @@ class ChastiRechiRegistry
             static::PRILAGATELNOE => Prilagatelnoe\Base::class,
             static::GLAGOL => Glagol\Base::class,
             static::PRICHASTIE => Prichastie\Base::class,
+            static::DEEPRICHASTIE => Deeprichastie\Base::class,
             static::NARECHIE => Narechie\Base::class,
 
 
