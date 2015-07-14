@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie;
 
 
-class Yslovnoe extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Base
+class Yslovnoe extends Base
 {
 
 }

@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost;
 
 
-class Null extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Base
+class Null extends Base
 {
 
 }
