@@ -1,5 +1,6 @@
 <?php
 namespace Aot\RussianMorphology\ChastiRechi\Prichastie;
+
 use Aot\RussianMorphology\Slovo;
 
 /**
@@ -15,7 +16,6 @@ use Aot\RussianMorphology\Slovo;
  * @property Morphology\Vremya\Base $vremya
  * @property Morphology\Razryad\Base $razryad
  */
-
 class Base extends Slovo
 {
     /**
@@ -35,6 +35,7 @@ class Base extends Slovo
             'razryad' => Morphology\Razryad\Base::class,
         ];
     }
+
     /**
      * Prichastie constructor.
      * @param $text

@@ -15,7 +15,8 @@ use Aot\RussianMorphology\FactoryException;
 class FactoryTest extends \AotTest\AotDataStorage
 {
 
-    public function testLaunch(){
+    public function testLaunch()
+    {
 //        $factory = Factory::get();
 //        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Factory::class, $factory);
     }
@@ -67,15 +68,15 @@ class FactoryTest extends \AotTest\AotDataStorage
 
     }
 
-    public function testBuild_wo_vid(){
+    public function testBuild_wo_vid()
+    {
         # убираем число
         $point_wo_vid = $this->getPoint1();
         unset($point_wo_vid->dw->parameters->{VIEW_ID});
-        try{
+        try {
             $this->buildFactory($point_wo_vid);
             $this->fail("Не должно было тут быть!");
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->assertInstanceOf(FactoryException::class, $e);
             $this->assertEquals("vid not defined", $e->getMessage());
             $this->assertEquals(24, $e->getCode());
@@ -471,8 +472,6 @@ JSON;
 
         return json_decode($json);
     }
-
-
 
 
 }
