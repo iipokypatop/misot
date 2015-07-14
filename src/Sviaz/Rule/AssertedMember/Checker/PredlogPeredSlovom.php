@@ -30,7 +30,7 @@ class PredlogPeredSlovom extends Base
             }
 
             if ($member === $actual_member) {
-                if ($prev->getSlovo() instanceof \Aot\RussianMorphology\ChastiRechi\Predlog) {
+                if ($prev->getSlovo() instanceof \Aot\RussianMorphology\ChastiRechi\Predlog\Base) {
                     return true;
                 }
             }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Aot\RussianMorphology\ChastiRechi;
+namespace Aot\RussianMorphology\ChastiRechi\Predlog;
 use Aot\RussianMorphology\Slovo;
 
 /**
@@ -9,7 +9,7 @@ use Aot\RussianMorphology\Slovo;
  * Date: 17.06.2015
  * Time: 22:14
  */
-class Predlog extends Slovo
+class Base extends Slovo
 {
 
 }
