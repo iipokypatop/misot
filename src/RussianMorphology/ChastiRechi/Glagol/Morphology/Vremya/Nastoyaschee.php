@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya;
 
 
-class Nastoyaschee extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Base
+class Nastoyaschee extends Base
 {
 
 }

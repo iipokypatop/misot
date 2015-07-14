@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod;
 
 
-class Null extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Base
+class Null extends Base
 {
 
 }

@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya;
 
 
-class Null extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Base
+class Null extends Base
 {
 
 }

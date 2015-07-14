@@ -9,7 +9,7 @@ namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie;
  * Date: 25.06.15
  * Time: 11:36
  */
-class Pervoe extends \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie\Base
+class Pervoe extends Base
 {
 
 }
