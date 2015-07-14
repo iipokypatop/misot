@@ -55,7 +55,6 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         $point = $this->getPoint4();
         $result = $this->buildFactory($point);
-        print_r($result);
         $this->assertEquals(2, count($result));
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Base::class, $result[0]);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Edinstvennoe::class, $result[0]->chislo);
