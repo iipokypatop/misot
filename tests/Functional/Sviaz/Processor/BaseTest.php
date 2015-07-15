@@ -250,14 +250,11 @@ RULE;
         <<<TEXT
 Над горами появились облака – сначала легкие и воздушные, затем серые, с рваными краями
 TEXT;
-        //$nad[0] = $this->getSafeMockLocal1(Predlog::class, ['__set', 'getMorphology', '__get', 'getMorphologyByClass_TEMPORARY']);
         $nad[0] = $this->getMock(Predlog::class, ['_']);
         PHPUnitHelper::setProtectedProperty($nad[0], 'text', 'Над');
 
-        # $gorami[0] = $this->getSafeMockLocal1(Suschestvitelnoe::class);
         $gorami[0] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($gorami[0], 'text', 'горами');
-
 
         $gorami[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $gorami[0]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
@@ -266,22 +263,8 @@ TEXT;
         $gorami[0]->rod = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Zhenskii::create();
         $gorami[0]->sklonenie = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::create();
 
-        /*
-        'chislo' => Morphology\Chislo\Base::class,
-        'naritcatelnost' => Morphology\Naritcatelnost\Base::class,
-        'odushevlyonnost' => Morphology\Odushevlyonnost\Base::class,
-        'padeszh' => Morphology\Padeszh\Base::class,
-        'rod' => Morphology\Rod\Base::class,
-        'sklonenie' => Morphology\Sklonenie\Base::class,
-        'vozvratnost' => Morphology\Vozvratnost\Base::class,
-        'vremya' => Morphology\Vremya\Base::class,
-        'zalog' => Morphology\Zalog\Base::class,
-        */
-
-        //$poiavilis[0] = $this->getSafeMockLocal1(Glagol::class);
         $poiavilis[0] = $this->getMock(Glagol::class, ['_']);
         PHPUnitHelper::setProtectedProperty($poiavilis[0], 'text', 'появились');
-
         $poiavilis[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Mnozhestvennoe::create();
         $poiavilis[0]->litso = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Tretie::create();
         $poiavilis[0]->naklonenie = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Izyavitelnoe::create();
@@ -292,34 +275,9 @@ TEXT;
         $poiavilis[0]->vozvratnost = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Nevozvratnyj::create();
         $poiavilis[0]->vremya = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Proshedshee::create();
         $poiavilis[0]->razryad = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Razryad\Null::create();
-        /*
-                / **@var Morphology\Chislo\Base * /
-                public $chislo;
 
-                / **@var Morphology\Litso\Base * /
-                public $litso;
-
-                / **@var Morphology\Naklonenie\Base * /
-                public $naklonenie;
-
-                / **@var Morphology\Perehodnost\Base * /
-                public $perehodnost;
-
-                /**@var Morphology\Rod\Base * /
-                public $rod;
-
-                / * *@var Morphology\Spryazhenie\Base * /
-                public $spryazhenie;
-
-                /**@var Morphology\Vid\Base * /
-                public $vid;
-
-            /***/
-
-        //$oblaka[0] = $this->getSafeMockLocal1(Suschestvitelnoe::class);
         $oblaka[0] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($oblaka[0], 'text', 'облака');
-
         $oblaka[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe::create();
         $oblaka[0]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $oblaka[0]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -327,10 +285,8 @@ TEXT;
         $oblaka[0]->rod = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij::create();
         $oblaka[0]->sklonenie = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::create();
 
-//        $oblaka[1] = $this->getSafeMockLocal1(Suschestvitelnoe::class);
         $oblaka[1] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($oblaka[1], 'text', 'облака');
-
         $oblaka[1]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $oblaka[1]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $oblaka[1]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -338,31 +294,18 @@ TEXT;
         $oblaka[1]->rod = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij::create();
         $oblaka[1]->sklonenie = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::create();
 
-        //$oblaka[2] = $this->getSafeMockLocal1(Suschestvitelnoe::class);
         $oblaka[2] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($oblaka[2], 'text', 'облака');
-
         $oblaka[2]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $oblaka[2]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $oblaka[2]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
         $oblaka[2]->padeszh = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Vinitelnij::create();
         $oblaka[2]->rod = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij::create();
         $oblaka[2]->sklonenie = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::create();
-        /*
-                          'chislo' => Morphology\Chislo\Base::class,
-                          'naritcatelnost' => Morphology\Naritcatelnost\Base::class,
-                          'odushevlyonnost' => Morphology\Odushevlyonnost\Base::class,
-                          'padeszh' => Morphology\Padeszh\Base::class,р
-                          'rod' => Morphology\Rod\Base::class,
-                          'sklonenie' => Morphology\Sklonenie\Base::class,
 
-                          */
 
-        #  $legkie[0] = $this->getSafeMockLocal1(Suschestvitelnoe::class);
         $legkie[0] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($legkie[0], 'text', 'легкие');
-
-        //$legkie[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe::create();
         $legkie[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $legkie[0]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $legkie[0]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -370,10 +313,8 @@ TEXT;
         $legkie[0]->rod = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij::create();
         $legkie[0]->sklonenie = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::create();
 
-        #$legkie[1] = $this->getSafeMockLocal1(Suschestvitelnoe::class);
         $legkie[1] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($legkie[1], 'text', 'легкие');
-
         $legkie[1]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $legkie[1]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $legkie[1]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -381,10 +322,8 @@ TEXT;
         $legkie[1]->rod = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij::create();
         $legkie[1]->sklonenie = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::create();
 
-        #$legkie[2] = $this->getSafeMockLocal1(Suschestvitelnoe::class);
         $legkie[2] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($legkie[2], 'text', 'легкие');
-
         $legkie[2]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe::create();
         $legkie[2]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $legkie[2]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -392,10 +331,8 @@ TEXT;
         $legkie[2]->rod = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij::create();
         $legkie[2]->sklonenie = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::create();
 
-        # $legkie[3] = $this->getSafeMockLocal1(Suschestvitelnoe::class);
         $legkie[3] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($legkie[3], 'text', 'легкое');
-
         $legkie[3]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $legkie[3]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $legkie[3]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -403,102 +340,67 @@ TEXT;
         $legkie[3]->rod = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij::create();
         $legkie[3]->sklonenie = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::create();
 
-//        $i[0] = $this->getSafeMockLocal1(Soyuz::class);
         $i[0] = $this->getMock(Soyuz::class, ['_']);
         PHPUnitHelper::setProtectedProperty($i[0], 'text', 'и');
-        /*
-            /* *@var Morphology\Chislo\Base * /
-            public $chislo;
 
-            /* *@var Morphology\Forma\Base * /
-            public $forma;
 
-            /* *@var Morphology\Padeszh\Base * /
-            public $padeszh;
-
-            /* *@var Morphology\Razriad\Base * /
-            public $razriad;
-
-            /* *@var Morphology\Rod\Base * /
-            public $rod;
-
-            /* *@var Morphology\StepenSravneniia\Base * /
-            public $stepen_sravneniia;
-
-            /***/
-        #  $vozdushnue[0] = $this->getSafeMockLocal1(Prilagatelnoe::class);
         $vozdushnue[0] = $this->getMock(Prilagatelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($vozdushnue[0], 'text', 'воздушные');
-
         $vozdushnue[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $vozdushnue[0]->forma = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::create();
         $vozdushnue[0]->padeszh = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij::create();
-        $vozdushnue[0]->razriad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
+        $vozdushnue[0]->razryad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
         //$vozdushnue[0]->rod = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::create();
         $vozdushnue[0]->rod = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Srednij::create();
         $vozdushnue[0]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Null::create();
 
-        # $vozdushnue[1] = $this->getSafeMockLocal1(Prilagatelnoe::class);
         $vozdushnue[1] = $this->getMock(Prilagatelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($vozdushnue[1], 'text', 'воздушные');
-
         $vozdushnue[1]->chislo = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $vozdushnue[1]->forma = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::create();
         $vozdushnue[1]->padeszh = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Vinitelnij::create();
-        $vozdushnue[1]->razriad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
+        $vozdushnue[1]->razryad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
         $vozdushnue[1]->rod = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::create();
         $vozdushnue[1]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Null::create();
 
-        # $zapiztaya[0] = $this->getSafeMockLocal1(Zapiataya::class);
         $zapiztaya[0] = $this->getMock(Zapiataya::class, ['_']);
 
-
-        #$serye[0] = $this->getSafeMockLocal1(Prilagatelnoe::class);
         $serye[0] = $this->getMock(Prilagatelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($serye[0], 'text', 'серые');
 
         $serye[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $serye[0]->forma = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::create();
         $serye[0]->padeszh = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij::create();
-        $serye[0]->razriad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
+        $serye[0]->razryad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
         $serye[0]->rod = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::create();
         $serye[0]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Null::create();
 
-        # $serye[1] = $this->getSafeMockLocal1(Prilagatelnoe::class);
         $serye[1] = $this->getMock(Prilagatelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($serye[1], 'text', 'серые');
-
         $serye[1]->chislo = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $serye[1]->forma = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::create();
         $serye[1]->padeszh = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Vinitelnij::create();
-        $serye[1]->razriad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
+        $serye[1]->razryad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
         $serye[1]->rod = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::create();
         $serye[1]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Null::create();
 
-        #    $zapiztaya[1] = $this->getSafeMockLocal1(Zapiataya::class);
         $zapiztaya[1] = $this->getMock(Zapiataya::class, ['_']);
 
-        #     $s[0] = $this->getSafeMockLocal1(Predlog::class);
         $s[0] = $this->getMock(Predlog::class, ['_']);
-
         PHPUnitHelper::setProtectedProperty($s[0], 'text', 'с');
 
-        #       $rvanymi[0] = $this->getSafeMockLocal1(Prilagatelnoe::class);
         $rvanymi[0] = $this->getMock(Prilagatelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($rvanymi[0], 'text', 'рваными');
-
         $rvanymi[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $rvanymi[0]->forma = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::create();
         $rvanymi[0]->padeszh = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Tvoritelnij::create();
-        $rvanymi[0]->razriad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
+        $rvanymi[0]->razryad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
         $rvanymi[0]->rod = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::create();
         $rvanymi[0]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Null::create();
 
 
-        #$krayami[0] = $this->getSafeMockLocal1(Suschestvitelnoe::class);
         $krayami[0] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($krayami[0], 'text', 'краями');
-
         $krayami[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $krayami[0]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $krayami[0]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -565,6 +467,19 @@ TEXT;
         return $normalized_matrix;
     }
 
+    /**
+     * @param string $originalClassName
+     * @param array $methods
+     * @param array $arguments
+     * @param string $mockClassName
+     * @param bool|false $callOriginalConstructor
+     * @param bool|true $callOriginalClone
+     * @param bool|true $callAutoload
+     * @param bool|false $cloneArguments
+     * @param bool|false $callOriginalMethods
+     * @return Prilagatelnoe|Glagol|Suschestvitelnoe|Zapiataya|Predlog|Soyuz | \PHPUnit_Framework_MockObject_MockObject
+     */
+
     public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false)
     {
         return parent::getMock($originalClassName, $methods, $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods); // TODO: Change the autogenerated stub
@@ -602,9 +517,9 @@ TEXT;
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
                         ChastiRechiRegistry::SUSCHESTVITELNOE
                     )
-                    ->text('облака')
-                    //->notPresent()
-                    ->position( \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_AFTER_MAIN)
+                        ->text('облака')
+                        //->notPresent()
+                        ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_AFTER_MAIN)
                 );
 
 
@@ -633,5 +548,7 @@ TEXT;
             //echo join(" ", $data) . "\n";
         }
     }
+
+
 
 }

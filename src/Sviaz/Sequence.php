@@ -20,7 +20,7 @@ class Sequence extends \ArrayObject
     public function getPosition(\Aot\Sviaz\SequenceMember\Base $search)
     {
         foreach ($this as $index => $member) {
-            if($search === $member){
+            if ($search === $member) {
                 return $index;
             }
         }

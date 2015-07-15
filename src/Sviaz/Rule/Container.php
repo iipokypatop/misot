@@ -176,7 +176,6 @@ TEXT;
         $rule = $builder->get();
 
         return $rule;
-
     }
 
     public static function getRuleSuch1()
