@@ -34,10 +34,10 @@ use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Srednij;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Zhenskij;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null as NullRod;
 
-use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Polozhitelnaia;
-use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Prevoshodnaia;
-use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Sravnitelnaia;
-use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Null as NullStepenSravneniia;
+use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Polozhitelnaya;
+use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Prevoshodnaya;
+use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Sravnitelnaya;
+use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Null as NullStepenSravneniia;
 
 use Dw;
 use Word;
@@ -214,15 +214,15 @@ class Factory extends \Aot\RussianMorphology\Factory
         foreach ($param->id_value_attr as $val) {
             if ($val === \OldAotConstants::POSITIVE_DEGREE_COMPARISON())
             {
-                $stepen_sravneniia[] = Polozhitelnaia::create();
+                $stepen_sravneniia[] = Polozhitelnaya::create();
             }
             elseif ($val === DEGREE_SUPERLATIVE_ID)
             {
-                $stepen_sravneniia[] = Prevoshodnaia::create();
+                $stepen_sravneniia[] = Prevoshodnaya::create();
             }
             elseif ($val === \OldAotConstants::COMPARATIVE_DEGREE_COMPARISON())
             {
-                $stepen_sravneniia[] = Sravnitelnaia::create();
+                $stepen_sravneniia[] = Sravnitelnaya::create();
             }
             else{
                 $stepen_sravneniia[] = NullStepenSravneniia::create();

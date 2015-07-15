@@ -30,7 +30,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vid\Nesovershennyj::class, $result[0]->vid);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vozvratnost\Nevozvratnyj::class, $result[0]->vozvratnost);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Nastoyaschee::class, $result[0]->vremya);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad\Dejstvitelnyj::class, $result[0]->razryad);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Dejstvitelnyj::class, $result[0]->razryad);
     }
 
     public function testBuild_wo_chislo(){

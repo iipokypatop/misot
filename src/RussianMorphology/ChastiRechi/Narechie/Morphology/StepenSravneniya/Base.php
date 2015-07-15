@@ -6,7 +6,7 @@
  * Time: 04:07
  */
 
-namespace Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia;
+namespace Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya;
 
 use \Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\Base as BaseMorphology;
 

@@ -8,10 +8,10 @@
 
 namespace Aot\RussianMorphology\ChastiRechi\Narechie;
 
-use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Null;
-use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Prevoshodnaia;
-use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Polozhitelnaia;
-use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Sravnitelnaia;
+use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Null;
+use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Prevoshodnaya;
+use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Polozhitelnaya;
+use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Sravnitelnaya;
 
 use Dw;
 use MorphAttribute;
@@ -49,7 +49,7 @@ class Factory extends \Aot\RussianMorphology\Factory
 
     /**
      * @param $param
-     * @return \Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Base []
+     * @return \Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Base []
      */
     private function getStepenSravneniia($param)
     {
@@ -57,15 +57,15 @@ class Factory extends \Aot\RussianMorphology\Factory
         foreach ($param->id_value_attr as $val) {
             if ($val === \OldAotConstants::POSITIVE_DEGREE_COMPARISON())
             {
-                $stepen_sravneniia[] = Polozhitelnaia::create();
+                $stepen_sravneniia[] = Polozhitelnaya::create();
             }
             elseif ($val === DEGREE_SUPERLATIVE_ID)
             {
-                $stepen_sravneniia[] = Prevoshodnaia::create();
+                $stepen_sravneniia[] = Prevoshodnaya::create();
             }
             elseif ($val === \OldAotConstants::COMPARATIVE_DEGREE_COMPARISON())
             {
-                $stepen_sravneniia[] = Sravnitelnaia::create();
+                $stepen_sravneniia[] = Sravnitelnaya::create();
             }
             else{
                 $stepen_sravneniia[] = Null::create();

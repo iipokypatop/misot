@@ -26,7 +26,7 @@ class NarechieTest extends \AotTest\AotDataStorage
         $result = $this->buildFactory($point);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Narechie\Base::class, $result[0]);
         $this->assertEquals(1, count($result));
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Sravnitelnaia::class, $result[0]->stepen_sravneniia);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Sravnitelnaya::class, $result[0]->stepen_sravneniia);
     }
 
     public function testBuild_Success_point2()
@@ -35,7 +35,7 @@ class NarechieTest extends \AotTest\AotDataStorage
         $result = $this->buildFactory($point);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Narechie\Base::class, $result[0]);
         $this->assertEquals(1, count($result));
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Null::class, $result[0]->stepen_sravneniia);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Null::class, $result[0]->stepen_sravneniia);
     }
 
     protected function buildFactory($point){

@@ -31,7 +31,7 @@ TEXT;
 
         $builder = \Aot\Sviaz\Rule\Builder::create()
             ->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE)
-            ->mainMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+            ->mainMorphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
             ->mainMorphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
             ->mainRole(RoleRegistry::VESCH)
             ->dependedChastRechi(ChastiRechiRegistry::GLAGOL)
@@ -69,7 +69,7 @@ TEXT;
         );
 
         $builder->dependedAndMainMorphologyMatching(
-            MorphologyRegistry::PADEJ
+            MorphologyRegistry::PADESZH
         );
 
 
@@ -90,7 +90,7 @@ TEXT;
             ->mainRole(RoleRegistry::OTNOSHENIE)
             ->dependedAfterMain()
             ->dependedChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE)
-            ->dependedMorphology(MorphologyRegistry::PADEJ_VINITELNIJ)
+            ->dependedMorphology(MorphologyRegistry::PADESZH_VINITELNIJ)
             ->dependedRole(RoleRegistry::VESCH);
 
         $rule = $builder->get();
@@ -107,10 +107,10 @@ TEXT;
 TEXT;
         $builder = \Aot\Sviaz\Rule\Builder::create()
             ->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE)
-            ->mainMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+            ->mainMorphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
             ->mainRole(RoleRegistry::VESCH)
             ->dependedChastRechi(ChastiRechiRegistry::PRILAGATELNOE)
-            ->dependedMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+            ->dependedMorphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
             ->dependedRole(RoleRegistry::SVOISTVO);
 
 
@@ -154,7 +154,7 @@ TEXT;
         );
 
         $builder->dependedAndMainMorphologyMatching(
-            MorphologyRegistry::PADEJ
+            MorphologyRegistry::PADESZH
         );
 
         $rule = $builder->get();
@@ -184,23 +184,23 @@ TEXT;
 существительное (* падеж) + существительное (* падеж)
 TEXT;
         $priznaki = [
-            'ImenitelniiImenitelnii' => [MorphologyRegistry::PADEJ_IMENITELNIJ,MorphologyRegistry::PADEJ_IMENITELNIJ],
-            'ImenitelniiRoditelnii' => [MorphologyRegistry::PADEJ_IMENITELNIJ,MorphologyRegistry::PADEJ_RODITELNIJ],
-            'ImenitelniiDatelnij' => [MorphologyRegistry::PADEJ_IMENITELNIJ,MorphologyRegistry::PADEJ_DATELNIJ],
-            'ImenitelniiTvoritelnij' => [MorphologyRegistry::PADEJ_IMENITELNIJ,MorphologyRegistry::PADEJ_TVORITELNIJ],
-            'RoditelniiRoditelnii' => [MorphologyRegistry::PADEJ_RODITELNIJ,MorphologyRegistry::PADEJ_RODITELNIJ],
-            'RoditelniiDatelnij' => [MorphologyRegistry::PADEJ_RODITELNIJ,MorphologyRegistry::PADEJ_DATELNIJ],
-            'RoditelniiTvoritelnij' => [MorphologyRegistry::PADEJ_RODITELNIJ,MorphologyRegistry::PADEJ_TVORITELNIJ],
-            'DatelnijRoditelnii' => [MorphologyRegistry::PADEJ_DATELNIJ,MorphologyRegistry::PADEJ_RODITELNIJ],
-            'DatelnijTvoritelnij' => [MorphologyRegistry::PADEJ_DATELNIJ,MorphologyRegistry::PADEJ_TVORITELNIJ],
-            'VinitelnijRoditelnii' => [MorphologyRegistry::PADEJ_VINITELNIJ,MorphologyRegistry::PADEJ_RODITELNIJ],
-            'VinitelnijDatelnij' => [MorphologyRegistry::PADEJ_VINITELNIJ,MorphologyRegistry::PADEJ_DATELNIJ],
-            'VinitelnijTvoritelnij' => [MorphologyRegistry::PADEJ_VINITELNIJ,MorphologyRegistry::PADEJ_TVORITELNIJ],
-            'TvoritelnijRoditelnii' => [MorphologyRegistry::PADEJ_TVORITELNIJ,MorphologyRegistry::PADEJ_RODITELNIJ],
-            'TvoritelnijDatelnij' => [MorphologyRegistry::PADEJ_TVORITELNIJ,MorphologyRegistry::PADEJ_DATELNIJ],
-            'PredlojnijRoditelnii' => [MorphologyRegistry::PADEJ_PREDLOZSHNIJ,MorphologyRegistry::PADEJ_RODITELNIJ],
-            'PredlojnijDatelnij' => [MorphologyRegistry::PADEJ_PREDLOZSHNIJ,MorphologyRegistry::PADEJ_DATELNIJ],
-            'PredlojnijTvoritelnij' => [MorphologyRegistry::PADEJ_PREDLOZSHNIJ,MorphologyRegistry::PADEJ_TVORITELNIJ],
+            'ImenitelniiImenitelnii' => [MorphologyRegistry::PADESZH_IMENITELNIJ,MorphologyRegistry::PADESZH_IMENITELNIJ],
+            'ImenitelniiRoditelnii' => [MorphologyRegistry::PADESZH_IMENITELNIJ,MorphologyRegistry::PADESZH_RODITELNIJ],
+            'ImenitelniiDatelnij' => [MorphologyRegistry::PADESZH_IMENITELNIJ,MorphologyRegistry::PADESZH_DATELNIJ],
+            'ImenitelniiTvoritelnij' => [MorphologyRegistry::PADESZH_IMENITELNIJ,MorphologyRegistry::PADESZH_TVORITELNIJ],
+            'RoditelniiRoditelnii' => [MorphologyRegistry::PADESZH_RODITELNIJ,MorphologyRegistry::PADESZH_RODITELNIJ],
+            'RoditelniiDatelnij' => [MorphologyRegistry::PADESZH_RODITELNIJ,MorphologyRegistry::PADESZH_DATELNIJ],
+            'RoditelniiTvoritelnij' => [MorphologyRegistry::PADESZH_RODITELNIJ,MorphologyRegistry::PADESZH_TVORITELNIJ],
+            'DatelnijRoditelnii' => [MorphologyRegistry::PADESZH_DATELNIJ,MorphologyRegistry::PADESZH_RODITELNIJ],
+            'DatelnijTvoritelnij' => [MorphologyRegistry::PADESZH_DATELNIJ,MorphologyRegistry::PADESZH_TVORITELNIJ],
+            'VinitelnijRoditelnii' => [MorphologyRegistry::PADESZH_VINITELNIJ,MorphologyRegistry::PADESZH_RODITELNIJ],
+            'VinitelnijDatelnij' => [MorphologyRegistry::PADESZH_VINITELNIJ,MorphologyRegistry::PADESZH_DATELNIJ],
+            'VinitelnijTvoritelnij' => [MorphologyRegistry::PADESZH_VINITELNIJ,MorphologyRegistry::PADESZH_TVORITELNIJ],
+            'TvoritelnijRoditelnii' => [MorphologyRegistry::PADESZH_TVORITELNIJ,MorphologyRegistry::PADESZH_RODITELNIJ],
+            'TvoritelnijDatelnij' => [MorphologyRegistry::PADESZH_TVORITELNIJ,MorphologyRegistry::PADESZH_DATELNIJ],
+            'PredlojnijRoditelnii' => [MorphologyRegistry::PADESZH_PREDLOZSHNIJ,MorphologyRegistry::PADESZH_RODITELNIJ],
+            'PredlojnijDatelnij' => [MorphologyRegistry::PADESZH_PREDLOZSHNIJ,MorphologyRegistry::PADESZH_DATELNIJ],
+            'PredlojnijTvoritelnij' => [MorphologyRegistry::PADESZH_PREDLOZSHNIJ,MorphologyRegistry::PADESZH_TVORITELNIJ],
 
 
         ];

@@ -24,7 +24,7 @@ class BuilderTest extends \AotTest\AotDataStorage
         $builder = \Aot\Sviaz\Rule\AssertedLink\Builder::create()
             ->check(\Aot\Sviaz\Rule\AssertedLink\Checker\Registry::DependedAfterMain);
 
-        $builder ->morphologyMatching(MorphologyRegistry::PADEJ);
+        $builder ->morphologyMatching(MorphologyRegistry::PADESZH);
 
         $rule = \Aot\Sviaz\Rule\Base::create(
             $this->getAssertedMemberBuilder_main()->get(),

@@ -6,7 +6,7 @@
  * Time: 14:31
  */
 
-namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Razryad;
+namespace Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog;
 
 
 class Dejstvitelnyj extends Base

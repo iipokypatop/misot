@@ -21,6 +21,7 @@ class ChastiRechiRegistry
     const MESTOIMENIE = 17;
 
     const PREDLOG = 19;
+    const SOYUZ = 20;
 
 
     public static function getNames()
@@ -37,6 +38,7 @@ class ChastiRechiRegistry
             static::MESTOIMENIE => 'местоимение',
 
             static::PREDLOG => 'предлог',
+            static::SOYUZ => 'союз',
         ];
     }
 
@@ -52,6 +54,7 @@ class ChastiRechiRegistry
 
 
             static::PREDLOG => Predlog::class,
+            static::SOYUZ  => Soyuz::class,
         ];
     }
 

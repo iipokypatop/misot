@@ -64,19 +64,19 @@ class BaseTest extends \AotTest\AotDataStorage
             ->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE)
             ->mainCheck(MemberCheckerRegistry::PredlogPeredSlovom)
             ->mainMorphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
-            ->mainMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+            ->mainMorphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
             ->mainMorphology(MorphologyRegistry::ROD_SREDNIJ)
             ->mainRole(RoleRegistry::SVOISTVO)
             ->dependedChastRechi(ChastiRechiRegistry::PRILAGATELNOE)
             ->dependedCheck(MemberCheckerRegistry::PredlogPeredSlovom)
-            ->dependedMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+            ->dependedMorphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
             ->dependedMorphology(MorphologyRegistry::ROD_MUZHSKOI)
             ->dependedRole(RoleRegistry::OTNOSHENIE);
 
         // $builder->s
 
         $builder->dependedAndMainMorphologyMatching(
-            MorphologyRegistry::PADEJ
+            MorphologyRegistry::PADESZH
         );
 
         $builder->dependedAndMainMorphologyMatching(
@@ -274,7 +274,7 @@ TEXT;
         $poiavilis[0]->vid = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj::create();
         $poiavilis[0]->vozvratnost = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Nevozvratnyj::create();
         $poiavilis[0]->vremya = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Proshedshee::create();
-        $poiavilis[0]->razryad = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Razryad\Null::create();
+        $poiavilis[0]->razryad = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::create();
 
         $oblaka[0] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($oblaka[0], 'text', 'облака');
@@ -352,7 +352,7 @@ TEXT;
         $vozdushnue[0]->razryad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
         //$vozdushnue[0]->rod = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::create();
         $vozdushnue[0]->rod = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Srednij::create();
-        $vozdushnue[0]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Null::create();
+        $vozdushnue[0]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Null::create();
 
         $vozdushnue[1] = $this->getMock(Prilagatelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($vozdushnue[1], 'text', 'воздушные');
@@ -361,7 +361,7 @@ TEXT;
         $vozdushnue[1]->padeszh = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Vinitelnij::create();
         $vozdushnue[1]->razryad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
         $vozdushnue[1]->rod = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::create();
-        $vozdushnue[1]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Null::create();
+        $vozdushnue[1]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Null::create();
 
         $zapiztaya[0] = $this->getMock(Zapiataya::class, ['_']);
 
@@ -373,7 +373,7 @@ TEXT;
         $serye[0]->padeszh = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij::create();
         $serye[0]->razryad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
         $serye[0]->rod = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::create();
-        $serye[0]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Null::create();
+        $serye[0]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Null::create();
 
         $serye[1] = $this->getMock(Prilagatelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($serye[1], 'text', 'серые');
@@ -382,7 +382,7 @@ TEXT;
         $serye[1]->padeszh = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Vinitelnij::create();
         $serye[1]->razryad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
         $serye[1]->rod = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::create();
-        $serye[1]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Null::create();
+        $serye[1]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Null::create();
 
         $zapiztaya[1] = $this->getMock(Zapiataya::class, ['_']);
 
@@ -396,7 +396,7 @@ TEXT;
         $rvanymi[0]->padeszh = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Tvoritelnij::create();
         $rvanymi[0]->razryad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
         $rvanymi[0]->rod = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::create();
-        $rvanymi[0]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Null::create();
+        $rvanymi[0]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Null::create();
 
 
         $krayami[0] = $this->getMock(Suschestvitelnoe::class, ['_']);
@@ -497,19 +497,19 @@ TEXT;
                         ChastiRechiRegistry::SUSCHESTVITELNOE, RoleRegistry::SVOISTVO
                     )
                         ->morphology(MorphologyRegistry::CHISLO_MNOZHESTVENNOE)
-                        ->morphology(MorphologyRegistry::PADEJ_TVORITELNIJ)
+                        ->morphology(MorphologyRegistry::PADESZH_TVORITELNIJ)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended::create(
                         ChastiRechiRegistry::PRILAGATELNOE,
                         RoleRegistry::OTNOSHENIE
                     )
-                        ->morphology(MorphologyRegistry::PADEJ_TVORITELNIJ)
+                        ->morphology(MorphologyRegistry::PADESZH_TVORITELNIJ)
                 )
                 ->link(
                     AssertedLinkBuilder::create()
                         ->morphologyMatching(
-                            MorphologyRegistry::PADEJ
+                            MorphologyRegistry::PADESZH
                         )
                         ->dependedBeforeMain()
                 )

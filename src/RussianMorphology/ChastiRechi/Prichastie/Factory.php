@@ -28,9 +28,9 @@ use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Proshedshee;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Nastoyaschee;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Null as NullVremya;
 
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad\Dejstvitelnyj;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad\Stradatelnyj;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad\Null as NullRazryad;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Dejstvitelnyj;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Stradatelnyj;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Null as NullRazryad;
 
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Datelnij;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Imenitelnij;
@@ -390,7 +390,7 @@ class Factory extends \Aot\RussianMorphology\Factory
 
     /**
      * @param $value
-     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad\Base []
+     * @return \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Base []
      */
     private function getRazryad($value) {
 

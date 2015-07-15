@@ -31,7 +31,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij::class, $result[0]->padeszh);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Muzhskoi::class, $result[0]->rod);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class, $result[0]->razryad);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Null::class, $result[0]->stepen_sravneniia);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Null::class, $result[0]->stepen_sravneniia);
     }
 
     public function testBuild_Success_Point_sravn()
@@ -46,7 +46,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Null::class, $result[0]->padeszh);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::class, $result[0]->rod);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class, $result[0]->razryad);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Sravnitelnaia::class, $result[0]->stepen_sravneniia);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Sravnitelnaya::class, $result[0]->stepen_sravneniia);
     }
 
     public function testBuild_Success_Point_shortForm()
@@ -61,7 +61,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Null::class, $result[0]->padeszh);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Srednij::class, $result[0]->rod);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class, $result[0]->razryad);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Null::class, $result[0]->stepen_sravneniia);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Null::class, $result[0]->stepen_sravneniia);
     }
 
     public function testBuild_Success_Point_prevosh_2alt()
@@ -77,7 +77,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij::class, $result[0]->padeszh);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Muzhskoi::class, $result[0]->rod);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class, $result[0]->razryad);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Prevoshodnaia::class, $result[0]->stepen_sravneniia);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Prevoshodnaya::class, $result[0]->stepen_sravneniia);
     }
 
     public function testBuild_Success_Point_sravn_falseAlt()
@@ -92,7 +92,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Null::class, $result[0]->padeszh);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::class, $result[0]->rod);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class, $result[0]->razryad);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniia\Sravnitelnaia::class, $result[0]->stepen_sravneniia);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Sravnitelnaya::class, $result[0]->stepen_sravneniia);
     }
 
 

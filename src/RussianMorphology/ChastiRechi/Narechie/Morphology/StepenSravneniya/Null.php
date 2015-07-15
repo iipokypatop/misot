@@ -3,10 +3,10 @@
  * Created by PhpStorm.
  * User: admin
  * Date: 09/07/15
- * Time: 04:03
+ * Time: 04:09
  */
 
-namespace Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Razryad;
+namespace Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya;
 
 
 class Null extends Base

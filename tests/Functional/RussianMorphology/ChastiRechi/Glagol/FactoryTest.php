@@ -32,7 +32,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj::class, $result[0]->vid);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Null::class, $result[0]->vozvratnost);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Proshedshee::class, $result[0]->vremya);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Razryad\Null::class, $result[0]->razryad);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::class, $result[0]->razryad);
 
     }
 
@@ -48,7 +48,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj::class, $result[0]->vid);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Null::class, $result[0]->vozvratnost);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Proshedshee::class, $result[0]->vremya);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Razryad\Null::class, $result[0]->razryad);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::class, $result[0]->razryad);
     }
 
     public function testBuild_Success3WithAlternatives()
@@ -63,7 +63,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj::class, $result[0]->vid);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Null::class, $result[0]->vozvratnost);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Proshedshee::class, $result[0]->vremya);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Razryad\Null::class, $result[0]->razryad);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::class, $result[0]->razryad);
 
     }
 

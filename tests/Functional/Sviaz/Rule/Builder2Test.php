@@ -27,7 +27,7 @@ class Builder2Test extends \AotTest\AotDataStorage
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Main::create(ChastiRechiRegistry::SUSCHESTVITELNOE, RoleRegistry::SVOISTVO)
                         ->text("text text text")
                         ->morphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
-                        ->morphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
                         ->morphology(MorphologyRegistry::ROD_SREDNIJ)
                         ->check(MemberCheckerRegistry::PredlogPeredSlovom)
                 )
@@ -38,13 +38,13 @@ class Builder2Test extends \AotTest\AotDataStorage
                     )
                         ->text(("bla bla bla"))
                         ->check(MemberCheckerRegistry::PredlogPeredSlovom)
-                        ->morphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
                         ->morphology(MorphologyRegistry::ROD_MUZHSKOI)
                 )
                 ->link(
                     AssertedLinkBuilder::create()
                         ->morphologyMatching(
-                            MorphologyRegistry::PADEJ
+                            MorphologyRegistry::PADESZH
                         )
                         ->check(
                             LinkCheckerRegistry::NetSuschestvitelnogoVImenitelnomPadeszhe
@@ -57,7 +57,7 @@ class Builder2Test extends \AotTest\AotDataStorage
                 ChastiRechiRegistry::SUSCHESTVITELNOE
             )
                 ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_AFTER_DEPENDED)
-                ->morphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+                ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
         );
 
         $rule = $builder->get();

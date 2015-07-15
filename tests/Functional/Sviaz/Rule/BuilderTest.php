@@ -25,13 +25,13 @@ class BuilderTest extends \AotTest\AotDataStorage
             ->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE)
             ->mainCheck(MemberCheckerRegistry::PredlogPeredSlovom)
             ->mainMorphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
-            ->mainMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+            ->mainMorphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
             ->mainMorphology(MorphologyRegistry::ROD_SREDNIJ)
             ->mainRole(RoleRegistry::SVOISTVO)
             ->dependedText("text text text")
             ->dependedChastRechi(ChastiRechiRegistry::PRILAGATELNOE)
             ->dependedCheck(MemberCheckerRegistry::PredlogPeredSlovom)
-            ->dependedMorphology(MorphologyRegistry::PADEJ_IMENITELNIJ)
+            ->dependedMorphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
             ->dependedMorphology(MorphologyRegistry::ROD_MUZHSKOI)
             ->dependedRole(RoleRegistry::OTNOSHENIE)
             ->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE);
@@ -44,7 +44,7 @@ class BuilderTest extends \AotTest\AotDataStorage
 
 
         $builder->dependedAndMainMorphologyMatching(
-            MorphologyRegistry::PADEJ
+            MorphologyRegistry::PADESZH
         );
 
         $builder->dependedAndMainMorphologyMatching(

@@ -13,26 +13,26 @@ use Aot\RussianMorphology\Slovo;
 /**
  * Class Base
  * @package Aot\RussianMorphology\ChastiRechi\Narechie
- * @property Morphology\StepenSravneniia\Base $stepen_sravneniia
+ * @property Morphology\StepenSravneniya\Base $stepen_sravneniia
  */
 class Base extends Slovo
 {
     public function getMorphology()
     {
         return [
-            'stepen_sravneniia' => Morphology\StepenSravneniia\Base::class,
+            'stepen_sravneniia' => Morphology\StepenSravneniya\Base::class,
         ];
     }
 
     /**
      * Narechie constructor.
      * @param $text
-     * @param Morphology\StepenSravneniia\Base $stepen_sravneniia
+     * @param Morphology\StepenSravneniya\Base $stepen_sravneniia
      * @return static
      */
     public static function create(
         $text,
-        Morphology\StepenSravneniia\Base $stepen_sravneniia
+        Morphology\StepenSravneniya\Base $stepen_sravneniia
     )
     {
         $ob = new static($text);

@@ -187,7 +187,7 @@ TEXT;
             )
                 ->text("text text");
 
-        $builder->morphology(MorphologyRegistry::PADEJ_DATELNIJ);
+        $builder->morphology(MorphologyRegistry::PADESZH_DATELNIJ);
         $builder->check(MemberCheckerRegistry::PredlogPeredSlovom);
 
         return $builder;

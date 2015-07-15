@@ -18,7 +18,7 @@ use Aot\RussianMorphology\Slovo;
  * @property Morphology\Padeszh\Base $padeszh
  * @property Morphology\Razryad\Base $razryad
  * @property Morphology\Rod\Base $rod
- * @property Morphology\StepenSravneniia\Base $stepen_sravneniia
+ * @property Morphology\StepenSravneniya\Base $stepen_sravneniia
  */
 class Base extends Slovo
 {
@@ -30,7 +30,7 @@ class Base extends Slovo
             'padeszh' => Morphology\Padeszh\Base::class,
             'razryad' => Morphology\Razryad\Base::class,
             'rod' => Morphology\Rod\Base::class,
-            'stepen_sravneniia' => Morphology\StepenSravneniia\Base::class,
+            'stepen_sravneniia' => Morphology\StepenSravneniya\Base::class,
         ];
     }
 
@@ -42,7 +42,7 @@ class Base extends Slovo
      * @param Morphology\Padeszh\Base $padeszh
      * @param Morphology\Razryad\Base $razryad
      * @param Morphology\Rod\Base $rod
-     * @param Morphology\StepenSravneniia\Base $stepen_sravneniia
+     * @param Morphology\StepenSravneniya\Base $stepen_sravneniia
      * @return static
      */
     public static function create(
@@ -52,7 +52,7 @@ class Base extends Slovo
         Morphology\Padeszh\Base $padeszh,
         Morphology\Razryad\Base $razryad,
         Morphology\Rod\Base $rod,
-        Morphology\StepenSravneniia\Base $stepen_sravneniia
+        Morphology\StepenSravneniya\Base $stepen_sravneniia
 
     )
     {

@@ -13,9 +13,9 @@ use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Edinstvennoe;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Mnozhestvennoe;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Null as NullChislo;
 
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Razryad\Dejstvitelnyj;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Razryad\Stradatelnyj;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Razryad\Null as NullRazryad;
+use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Dejstvitelnyj;
+use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Stradatelnyj;
+use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null as NullRazryad;
 
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Nesovershennyj;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj;
@@ -289,7 +289,7 @@ class Factory extends \Aot\RussianMorphology\Factory
 
     /**
      * @param $param
-     * @return \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Razryad\Base []
+     * @return \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Base []
      */
     private function getRazryad($param)
     {
