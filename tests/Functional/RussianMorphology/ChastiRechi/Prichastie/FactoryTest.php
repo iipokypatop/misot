@@ -6,7 +6,7 @@ namespace AotTest\Functional\RussianMorphology\ChastiRechi\Prichastie;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Factory;
 use Aot\RussianMorphology\FactoryException;
 
-class FactoryTest /*extends \AotTest\AotDataStorage*/
+class FactoryTest extends \AotTest\AotDataStorage
 {
     public function testLaunch()
     {
