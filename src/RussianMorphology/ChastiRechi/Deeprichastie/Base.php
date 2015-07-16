@@ -30,7 +30,7 @@ class Base extends Slovo
     }
 
     /**
-     * Glagol constructor.
+     * Deeprichastie constructor.
      * @param $text
      * @param Morphology\Vid\Base $vid
      * @param Morphology\Perehodnost\Base $perehodnost

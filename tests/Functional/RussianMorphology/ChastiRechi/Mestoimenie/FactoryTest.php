@@ -142,7 +142,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     public function testBuild_ChisloFailing()
     {
         $point = $this->getPoint(); // берем точку тестовую
-        // подменяем падеж на несуществующий
+        // подменяем число на несуществующий
         $point->dw->parameters->{NUMBER_ID}->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);
@@ -158,7 +158,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     public function testBuild_LitsoFailing()
     {
         $point = $this->getPoint(); // берем точку тестовую
-        // подменяем падеж на несуществующий
+        // подменяем лицо на несуществующий
         $point->dw->parameters->{PERSON_ID}->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);
@@ -173,7 +173,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     public function testBuild_RodFailing()
     {
         $point = $this->getPoint(); // берем точку тестовую
-        // подменяем падеж на несуществующий
+        // подменяем род на несуществующий
         $point->dw->parameters->{GENUS_ID}->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);
@@ -190,7 +190,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $point = $this->getPoint(); // берем точку тестовую
         // создаем новый аттрибут
         $point->dw->parameters->{\OldAotConstants::RANK_PRONOUNS()} = new MorphAttribute();
-        // подменяем падеж на несуществующий
+        // подменяем разряд на несуществующий
         $point->dw->parameters->{\OldAotConstants::RANK_PRONOUNS()}->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);
