@@ -20,27 +20,26 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Factory::class, $factory);
     }
 
-    public function testWDW(){
-        $const = new \Constants();
-        $const->defineConstants();
-        $syntax_parser = new \SyntaxParserManager();
-        $text = 'человек';
-        $syntax_parser->reg_parser->parse_text($text);
-        $syntax_parser->create_dictionary_word();
-        $wdw = [];
-        foreach ($syntax_parser->reg_parser->get_sentences() as $sentence) {
-            $wdw[] = $syntax_parser->create_sentence_space($sentence);
-        }
-
-        echo $wdw_s = serialize($wdw);
-        print_r(unserialize($wdw_s));
+    public function _testWDW(){
+//        $const = new \Constants();
+//        $const->defineConstants();
+//        $syntax_parser = new \SyntaxParserManager();
+//        $text = 'человек';
+//        $syntax_parser->reg_parser->parse_text($text);
+//        $syntax_parser->create_dictionary_word();
+//        $wdw = [];
+//        foreach ($syntax_parser->reg_parser->get_sentences() as $sentence) {
+//            $wdw[] = $syntax_parser->create_sentence_space($sentence);
+//        }
+//
+//        echo $wdw_s = serialize($wdw);
+//        print_r(unserialize($wdw_s));
     }
 
     public function testBuild_Success()
     {
         $point = $this->getPoint(); // берем точку тестовую
         $result = $this->buildFactory($point);
-
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Base::class, $result[0]);
         $this->assertEquals(1, count($result));
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\Sovershennyj::class, $result[0]->vid);
@@ -278,45 +277,5 @@ JSON;
 JSON;
 
         return json_decode($json_p);
-    }
-
-    public function deepr()
-    {
-        return [
-            [1, 2, 1],
-            [2, 1, 1],
-            [2, 1, 3]
-        ];
-    }
-
-    /**
-     * @param $x
-     * @param $y
-     * @dataProvider deepr
-     */
-    public function testDeepr($expectedResult, $x, $y)
-    {
-        $a = new AA();
-        if($expectedResult === 1)
-        {
-            $res = $a->foo($x, $y);
-            $this->assertEquals(1, $res);
-        }
-        elseif( $expectedResult === 2){
-            $res = $a->foo($x, $y);
-            $this->assertEquals(2, $res);
-        }
-    }
-}
-
-class AA
-{
-    public function foo($x, $y)
-    {
-        if ($x > $y) {
-            return 1;
-        } else {
-            return 2;
-        }
     }
 }

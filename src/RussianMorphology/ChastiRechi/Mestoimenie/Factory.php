@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: admin
- * Date: 15/07/15
- * Time: 17:32
- */
-
 namespace Aot\RussianMorphology\ChastiRechi\Mestoimenie;
 
 
@@ -57,7 +50,7 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $text = $dw->initial_form;
         $words = [];
-        if (isset($word->word) && $dw->id_word_class === -1) {
+        if (isset($word->word) && $dw->id_word_class === PRONOUN_CLASS_ID) {
 
             # число
             $chislo = $this->getChislo($dw->parameters);
@@ -159,7 +152,6 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     protected function getPadeszh($parameters)
     {
-
         if (empty(get_object_vars($parameters)[CASE_ID])) {
             return [NullPadeszh::create()];
         }

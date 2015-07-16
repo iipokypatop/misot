@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: admin
- * Date: 14/07/15
- * Time: 19:51
- */
-
 namespace Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology;
 
 

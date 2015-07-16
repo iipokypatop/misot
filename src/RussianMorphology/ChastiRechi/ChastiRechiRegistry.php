@@ -51,6 +51,7 @@ class ChastiRechiRegistry
             static::PRICHASTIE => Prichastie\Base::class,
             static::DEEPRICHASTIE => Deeprichastie\Base::class,
             static::NARECHIE => Narechie\Base::class,
+            static::MESTOIMENIE => Mestoimenie\Base::class,
 
 
             static::PREDLOG => Predlog::class,
