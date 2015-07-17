@@ -1,6 +1,6 @@
 <?php
 namespace AotTest\Functional\Sviaz\Rule\Preprocessors;
-use Constants;
+use D_Constants;
 use MivarTest\Base;
 //use RussianMorphology\ChastiRechi\Suschestvitelnoe\Factory;
 //use Sviaz\Sequence;

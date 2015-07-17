@@ -23,7 +23,7 @@ class FactoryTest extends AotDataStorage
     }
 
     public function testWDW(){
-        $const = new \Constants();
+        $const = new \D_Constants();
         $const->defineConstants();
         $syntax_parser = new \SyntaxParserManager();
         $text = 'оно';
