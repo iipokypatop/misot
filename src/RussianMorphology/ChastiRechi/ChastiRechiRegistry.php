@@ -9,9 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi;
 
 
-
 use Aot\RussianMorphology\ChastiRechi\Predlog\Predlog;
-use Aot\RussianMorphology\ChastiRechi\Soyuz\Soyuz;
 
 class ChastiRechiRegistry
 {
