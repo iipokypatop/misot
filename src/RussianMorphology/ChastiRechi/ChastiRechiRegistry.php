@@ -9,7 +9,6 @@
 namespace Aot\RussianMorphology\ChastiRechi;
 
 
-use Aot\RussianMorphology\ChastiRechi\Predlog\Predlog;
 
 class ChastiRechiRegistry
 {
@@ -55,7 +54,7 @@ class ChastiRechiRegistry
             static::CHISLITELNOE => Chislitelnoe\Base::class,
 
 
-            static::PREDLOG => Predlog::class,
+            static::PREDLOG => Predlog\Base::class,
         ];
     }
 }

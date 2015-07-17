@@ -12,7 +12,7 @@ namespace AotTest\Functional\Sviaz\Processor;
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Base as Glagol;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
-use Aot\RussianMorphology\ChastiRechi\Predlog\Predlog;
+use Aot\RussianMorphology\ChastiRechi\Predlog\Base;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base as Prilagatelnoe;
 use Aot\RussianMorphology\ChastiRechi\Soyuz\Soyuz;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base as Suschestvitelnoe;
@@ -250,7 +250,7 @@ RULE;
 Над горами появились облака – сначала легкие и воздушные, затем серые, с рваными краями
 TEXT;
         //$nad[0] = $this->getSafeMockLocal1(Predlog::class, ['__set', 'getMorphology', '__get', 'getMorphologyByClass_TEMPORARY']);
-        $nad[0] = $this->getMock(Predlog::class, ['_']);
+        $nad[0] = $this->getMock(Base::class, ['_']);
         PHPUnitHelper::setProtectedProperty($nad[0], 'text', 'Над');
 
         # $gorami[0] = $this->getSafeMockLocal1(Suschestvitelnoe::class);
@@ -478,7 +478,7 @@ TEXT;
         $zapiztaya[1] = $this->getMock(Zapiataya::class, ['_']);
 
         #     $s[0] = $this->getSafeMockLocal1(Predlog::class);
-        $s[0] = $this->getMock(Predlog::class, ['_']);
+        $s[0] = $this->getMock(Base::class, ['_']);
 
         PHPUnitHelper::setProtectedProperty($s[0], 'text', 'с');
 
@@ -522,7 +522,7 @@ TEXT;
     }
 
     /**
-     * @return Prilagatelnoe|Glagol|Suschestvitelnoe|Zapiataya|Predlog|Soyuz | \PHPUnit_Framework_MockObject_MockObject
+     * @return Prilagatelnoe|Glagol|Suschestvitelnoe|Zapiataya|Base|Soyuz | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getSafeMockLocal1()
     {
