@@ -215,6 +215,7 @@ RULE;
 
         $link_container = $processor->go(
             $this->getNormalizedMatrix1(),
+
             array_merge([
                 \Aot\Sviaz\Rule\Container::getRule1(),
                 \Aot\Sviaz\Rule\Container::getRule2(),
@@ -237,7 +238,7 @@ RULE;
                     $link->getDependedSequenceMember()->getSlovo()->getText();
             }
 
-            //echo join(" ", $data) . "\n";
+            ;//echo join(" ", $data) . "\n";
         }
 
     }
@@ -493,14 +494,14 @@ TEXT;
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main::create(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
                         ChastiRechiRegistry::SUSCHESTVITELNOE, RoleRegistry::SVOISTVO
                     )
                         ->morphology(MorphologyRegistry::CHISLO_MNOZHESTVENNOE)
                         ->morphology(MorphologyRegistry::PADESZH_TVORITELNIJ)
                 )
                 ->depended(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended::create(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::PRILAGATELNOE,
                         RoleRegistry::OTNOSHENIE
                     )

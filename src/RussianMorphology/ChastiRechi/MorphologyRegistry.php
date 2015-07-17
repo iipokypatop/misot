@@ -103,7 +103,7 @@ class MorphologyRegistry
     const NARITCATELNOST = 20000;
     const NARITCATELNOST_IMIA_NARITCATELNOE = 20001;
     const NARITCATELNOST_IMIA_SOBSTVENNOE = 20002;
- 
+
     public static function getNames()
     {
         return [
@@ -163,7 +163,7 @@ class MorphologyRegistry
 
             static::VOZVRATNOST => 'возвратность',
             static::VOZVRATNOST_VOZVRATNYJ => 'возвратный',
-            static::VOZVRATNOST_NEVOZVRATNYJ => '',
+            static::VOZVRATNOST_NEVOZVRATNYJ => 'невозвратный',
 
             static::ZALOG => 'залог',
             static::ZALOG_DEJSTVITELNYJ => 'действительный',
@@ -457,6 +457,20 @@ class MorphologyRegistry
                 array_values($variants)
             );
         }
+        return $tmp;
+    }
+
+    public static function getChastRechiPriznaki()
+    {
+        $tmp = [];
+        foreach (static::getClasses() as $priznak => $variants) {
+            foreach ($variants as $priznak_id => $classes) {
+                foreach ($classes as $chast_rechi_id => $class_name) {
+                    $tmp[$chast_rechi_id][$priznak][] = $priznak_id;
+                }
+            }
+        }
+
         return $tmp;
     }
 

@@ -181,7 +181,7 @@ TEXT;
     public function getAssertedMemberBuilder_main()
     {
         $builder =
-            \Aot\Sviaz\Rule\AssertedMember\Builder\Main::create(
+            \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE,
                 RoleRegistry::OTNOSHENIE
             )
@@ -199,7 +199,7 @@ TEXT;
     public function getAssertedMemberBuilder_depended()
     {
         $builder =
-            \Aot\Sviaz\Rule\AssertedMember\Builder\Depended::create(
+            \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                 ChastiRechiRegistry::PRILAGATELNOE,
                 RoleRegistry::OTNOSHENIE
             )
