@@ -10,10 +10,11 @@ namespace AotTest\Functional\RussianMorphology\ChastiRechi\Mestoimenie;
 
 
 use Aot\RussianMorphology\ChastiRechi\Mestoimenie\Factory;
+use AotTest\AotDataStorage;
 use MivarTest\PHPUnitHelper;
 use MorphAttribute;
 
-class FactoryTest extends \AotTest\AotDataStorage
+class FactoryTest extends AotDataStorage
 {
     public function testLaunch()
     {
@@ -21,7 +22,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Factory::class, $factory);
     }
 
-    public function _testWDW(){
+    public function testWDW(){
         $const = new \Constants();
         $const->defineConstants();
         $syntax_parser = new \SyntaxParserManager();
@@ -34,9 +35,9 @@ class FactoryTest extends \AotTest\AotDataStorage
         }
 
 //        print_r($wdw);
-        $wdw_s = json_encode($wdw, JSON_PRETTY_PRINT | JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE);
+//        $wdw_s = json_encode($wdw, JSON_PRETTY_PRINT | JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE);
 //        $wdw_uns = json_decode($wdw_s);
-        print_r($wdw_s);
+//        print_r($wdw_s);
     }
 
 
