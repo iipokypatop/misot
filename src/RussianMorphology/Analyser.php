@@ -8,7 +8,10 @@
 
 namespace Aot\RussianMorphology;
 
-
+/**
+ * Class Analyser
+ * @package Aot\RussianMorphology
+ */
 class Analyser
 {
     const SPELL_ANALYSIS_OK = 1;

@@ -8,6 +8,11 @@ namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe;
  * Date: 18.06.2015
  * Time: 18:44
  */
+
+/**
+ * Class Analyser
+ * @package Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe
+ */
 class Analyser extends \Aot\RussianMorphology\Analyser
 {
     /**
@@ -21,7 +26,7 @@ class Analyser extends \Aot\RussianMorphology\Analyser
      */
     public function run($text)
     {
-        parent::run($text);
+       /* parent::run($text);
         die("here1");
         $similar_word_forms = [];
         foreach ($this->protocol->similar_word_forms as $text) {
@@ -41,7 +46,7 @@ class Analyser extends \Aot\RussianMorphology\Analyser
         $this->analyzeOdushevlyonnost();
         $this->analyzeNaritcatelnost();
 
-        return $this->protocol;
+        return $this->protocol;*/
     }
 
     protected function analyzeChislo()

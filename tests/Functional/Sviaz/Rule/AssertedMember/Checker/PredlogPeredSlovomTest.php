@@ -18,8 +18,8 @@ class PredlogPeredSlovomTest extends \AotTest\AotDataStorage
         /** @var  $Suschestvitelnoe \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base */
         $Suschestvitelnoe = $this->getSafeMock(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class);
 
-        /** @var  $predlog \Aot\RussianMorphology\ChastiRechi\Predlog */
-        $predlog = $this->getSafeMock(\Aot\RussianMorphology\ChastiRechi\Predlog::class);
+        /** @var  $predlog \Aot\RussianMorphology\ChastiRechi\Predlog\Base */
+        $predlog = $this->getSafeMock(\Aot\RussianMorphology\ChastiRechi\Predlog\Base::class);
 
 
         $member[] = \Aot\Sviaz\SequenceMember\Word\Base::create($predlog);
@@ -45,8 +45,8 @@ class PredlogPeredSlovomTest extends \AotTest\AotDataStorage
         /** @var  $Suschestvitelnoe \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base */
         $Suschestvitelnoe = $this->getSafeMock(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class);
 
-        /** @var  $Soyuz \Aot\RussianMorphology\ChastiRechi\Soyuz */
-        $Soyuz = $this->getSafeMock(\Aot\RussianMorphology\ChastiRechi\Soyuz::class);
+        /** @var  $Soyuz \Aot\RussianMorphology\ChastiRechi\Soyuz\Soyuz */
+        $Soyuz = $this->getSafeMock(\Aot\RussianMorphology\ChastiRechi\Soyuz\Soyuz::class);
 
 
         $member[] = \Aot\Sviaz\SequenceMember\Word\Base::create($Soyuz);

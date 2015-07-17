@@ -21,6 +21,7 @@ use Aot\Sviaz\Rule\AssertedMember\Main;
 use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 
 
+abstract
 class Base
 {
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Base */
@@ -88,7 +89,6 @@ class Base
         );
 
         return $this;
-
     }
 
     /**
@@ -102,4 +102,6 @@ class Base
 
         return $member;
     }
+
+
 }

@@ -19,11 +19,11 @@ use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 
 class Builder2
 {
-    /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Main */
+    /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base */
     protected $asserted_main_builder;
 
 
-    /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Depended */
+    /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base */
     protected $asserted_depended_builder;
 
 

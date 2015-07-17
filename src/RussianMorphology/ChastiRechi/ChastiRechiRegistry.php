@@ -9,6 +9,8 @@
 namespace Aot\RussianMorphology\ChastiRechi;
 
 
+use Aot\RussianMorphology\ChastiRechi\Predlog\Predlog;
+
 class ChastiRechiRegistry
 {
     const SUSCHESTVITELNOE = 10;
@@ -51,8 +53,9 @@ class ChastiRechiRegistry
             static::PRICHASTIE => Prichastie\Base::class,
             static::NARECHIE => Narechie\Base::class,
             static::DEEPRICHASTIE => Deeprichastie\Base::class,
-
-
+            static::MESTOIMENIE => Mestoimenie\Base::class,
+            static::CHISLITELNOE => Chislitelnoe\Base::class,
+            
             static::PREDLOG => Predlog::class,
             static::SOYUZ  => Soyuz::class,
         ];

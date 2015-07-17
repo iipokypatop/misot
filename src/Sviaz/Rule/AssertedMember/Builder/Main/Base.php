@@ -6,26 +6,21 @@
  * Time: 13:54
  */
 
-namespace Aot\Sviaz\Rule\AssertedMember\Builder;
+namespace Aot\Sviaz\Rule\AssertedMember\Builder\Main;
 
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
-
-
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
-
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
-
 use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 
-
-class Depended extends Base
+class Base extends \Aot\Sviaz\Rule\AssertedMember\Builder\Base
 {
     /**
      * @param int $chast_rechi_id
      * @param int $role_id
-     * @return \Aot\Sviaz\Rule\AssertedMember\Builder\Depended
+     * @return \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base
      */
     public static function create($chast_rechi_id, $role_id)
     {
@@ -44,7 +39,7 @@ class Depended extends Base
 
         $ob->chast_rechi_id = $chast_rechi_id;
 
-        $ob->member = \Aot\Sviaz\Rule\AssertedMember\Depended::create();
+        $ob->member = \Aot\Sviaz\Rule\AssertedMember\Main::create();
 
         $ob->member->assertChastRechi(
             ChastiRechiRegistry::getClasses()[$chast_rechi_id]
@@ -58,7 +53,7 @@ class Depended extends Base
     }
 
     /**
-     * @return \Aot\Sviaz\Rule\AssertedMember\Depended
+     * @return \Aot\Sviaz\Rule\AssertedMember\Main
      */
     public function get()
     {

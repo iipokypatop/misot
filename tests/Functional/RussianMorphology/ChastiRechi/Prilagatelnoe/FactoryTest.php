@@ -100,12 +100,12 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         $point = $this->getPoint_falsePartOfSpeech(); // берем точку тестовую
         $result = $this->buildFactory($point);
-        if( !empty($result))
-        {
+        if (!empty($result)) {
             $this->fail('Должно быть пустым');
         }
 
     }
+
     private function buildFactory($point)
     {
         $dw = new \Dw(
