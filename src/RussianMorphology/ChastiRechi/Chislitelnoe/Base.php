@@ -14,7 +14,7 @@ use Aot\RussianMorphology\Slovo;
 /**
  * Class Base
  * @package Aot\RussianMorphology\ChastiRechi\Chislitelnoe
- * @property Morphology\Vid\Base $vid
+ * @property Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid2\Base $vid
  * @property Morphology\Tip\Base $tip
  * @property Morphology\Podvid\Base $podvid
  * @property Morphology\Chislo\Base $chislo
@@ -26,7 +26,7 @@ class Base extends Slovo
     public function getMorphology()
     {
         return [
-            'vid' => Morphology\Vid\Base::class,
+            'vid' => Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid2\Base::class,
             'tip' => Morphology\Tip\Base::class,
             'podvid' => Morphology\Podvid\Base::class,
             'chislo' => Morphology\Chislo\Base::class,
@@ -38,7 +38,7 @@ class Base extends Slovo
     /**
      * Chislitelnoe constructor.
      * @param $text
-     * @param Morphology\Vid\Base $vid
+     * @param Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid2\Base $vid
      * @param Morphology\Tip\Base $tip
      * @param Morphology\Podvid\Base $podvid
      * @param Morphology\Chislo\Base $chislo
@@ -48,7 +48,7 @@ class Base extends Slovo
      */
     public static function create(
         $text,
-        Morphology\Vid\Base $vid,
+        Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid2\Base $vid,
         Morphology\Tip\Base $tip,
         Morphology\Podvid\Base $podvid,
         Morphology\Chislo\Base $chislo,

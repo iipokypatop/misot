@@ -37,12 +37,34 @@ use Aot\Sviaz\Rule\AssertedMember\Builder\View;
                                                 <?= $mainView->getField(View::FIELD_CHAST_RECHI)->draw() ?>
                                         <tr>
                                             <td>
-                                                <?= $mainView->getField(View::FIELD_ROLE)->draw() ?>                                        <tr>
+                                                <?= $mainView->getField(View::FIELD_ROLE)->draw() ?>
+                                        <tr>
                                             <td>
                                                 <?= $mainView->getField(View::FIELD_MORPH)->draw() ?>
                                     </table>
                                 </td>
-                                <td>123</td>
+                                <td>
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <?= $dependedView->getField(View::FIELD_TEXT_TYPE_NO)->draw() ?>
+                                        <tr>
+                                            <td>
+                                                <?= $dependedView->getField(View::FIELD_TEXT_TYPE_TEXT)->draw() ?>
+                                        <tr>
+                                            <td>
+                                                <?= $dependedView->getField(View::FIELD_TEXT_TYPE_TEXT_GROUP)->draw() ?>
+                                        <tr>
+                                            <td>
+                                                <?= $dependedView->getField(View::FIELD_CHAST_RECHI)->draw() ?>
+                                        <tr>
+                                            <td>
+                                                <?= $dependedView->getField(View::FIELD_ROLE)->draw() ?>
+                                        <tr>
+                                            <td>
+                                                <?= $dependedView->getField(View::FIELD_MORPH)->draw() ?>
+                                    </table>
+                                </td>
                                 <td>123</td>
                             </tr>
                         </table>

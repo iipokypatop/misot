@@ -94,6 +94,9 @@ class NormalizedMatrix implements \Iterator
         }
     }
 
+    /**
+     * @return string
+     */
     public function getPrettyDump()
     {
         $dump = [];

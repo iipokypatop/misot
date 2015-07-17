@@ -8,6 +8,11 @@ namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe;
  * Date: 18.06.2015
  * Time: 18:44
  */
+
+/**
+ * Class Analyser
+ * @package Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe
+ */
 class Analyser extends \Aot\RussianMorphology\Analyser
 {
     /**
