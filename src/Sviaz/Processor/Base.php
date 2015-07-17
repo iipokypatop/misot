@@ -34,14 +34,13 @@ class Base
      */
     public function go(\Aot\Text\NormalizedMatrix $normalized_matrix, array $rules)
     {
-        assert('!empty($rules)');
+        assert(!empty($rules));
 
         foreach ($rules as $rule) {
-            assert('$rule instanceof \Aot\Sviaz\Rule\Base');
+            assert(is_a($rule, RuleBase::class, true));
         }
 
         $get_raw_sequences = $this->getRawSequences($normalized_matrix);
-
 
         $sviazi = [];
 
@@ -53,7 +52,6 @@ class Base
         }
 
         return $sviazi;
-
     }
 
 
@@ -67,7 +65,7 @@ class Base
         assert(!empty($rules));
 
         foreach ($rules as $_rule) {
-            assert(is_a($_rule, \Aot\Sviaz\Rule\Base::class));
+            assert(is_a($_rule, RuleBase::class));
         }
 
         $sviazi = [];

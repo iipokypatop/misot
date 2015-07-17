@@ -26,7 +26,7 @@ class Analyser extends \Aot\RussianMorphology\Analyser
      */
     public function run($text)
     {
-        parent::run($text);
+       /* parent::run($text);
         die("here1");
         $similar_word_forms = [];
         foreach ($this->protocol->similar_word_forms as $text) {
@@ -46,7 +46,7 @@ class Analyser extends \Aot\RussianMorphology\Analyser
         $this->analyzeOdushevlyonnost();
         $this->analyzeNaritcatelnost();
 
-        return $this->protocol;
+        return $this->protocol;*/
     }
 
     protected function analyzeChislo()
