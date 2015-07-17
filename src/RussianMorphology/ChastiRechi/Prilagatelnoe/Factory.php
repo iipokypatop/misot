@@ -222,7 +222,7 @@ class Factory extends \Aot\RussianMorphology\Factory
             } else             
                 $padeszh[] = NullPadeszh::create();
             }
-        }
+
 
         return $padeszh;
     }
