@@ -71,74 +71,75 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $text = $dw->initial_form;
         $words = [];
-        if (isset($word->word) && $dw->id_word_class === VERB_CLASS_ID) {
+        if (isset($word->word) && intval($dw->id_word_class) === VERB_CLASS_ID) {
 
             # вид
-            if (!empty($dw->parameters->{VIEW_ID})) {
-                $vid = $this->getVid($dw->parameters->{VIEW_ID});
+            if (!empty($dw->parameters[VIEW_ID])) {
+                $vid = $this->getVid($dw->parameters[VIEW_ID]);
             } else {
-                throw new FactoryException("vid not defined", 24);
+                //throw new FactoryException("vid not defined", 24);
+                $vid[] = NullVid::create();
             }
 
             # переходность
-            if (!empty($dw->parameters->{TRANSIVITY_ID})) {
-                $perehodnost = $this->getPerehodnost($dw->parameters->{TRANSIVITY_ID});
+            if (!empty($dw->parameters[TRANSIVITY_ID])) {
+                $perehodnost = $this->getPerehodnost($dw->parameters[TRANSIVITY_ID]);
             } else {
                 $perehodnost[] = Neperehodnyj::create();
             }
 
             # возвратность
-            if (!empty($dw->parameters->{\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()})) {
-                $vozvratnost = $this->getVozvratnost($dw->parameters->{\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()});
+            if (!empty($dw->parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()])) {
+                $vozvratnost = $this->getVozvratnost($dw->parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()]);
             } else {
                 $vozvratnost[] = NullVozvratnost::create();
             }
 
             # разряд
-            if (!empty($dw->parameters->{DISCHARGE_COMMUNION_ID})) {
-                $razryad = $this->getRazryad($dw->parameters->{DISCHARGE_COMMUNION_ID});
+            if (!empty($dw->parameters[DISCHARGE_COMMUNION_ID])) {
+                $razryad = $this->getRazryad($dw->parameters[DISCHARGE_COMMUNION_ID]);
             } else {
                 $razryad[] = NullRazryad::create();
             }
 
             # спряжение
-            if (!empty($dw->parameters->{\OldAotConstants::CONJUGATION()})) {
-                $spryazhenie = $this->getSpryazhenie($dw->parameters->{\OldAotConstants::CONJUGATION()});
+            if (!empty($dw->parameters[\OldAotConstants::CONJUGATION()])) {
+                $spryazhenie = $this->getSpryazhenie($dw->parameters[\OldAotConstants::CONJUGATION()]);
             } else {
                 $spryazhenie[] = NullSpryazhenie::create();
             }
 
             # число
-            if (!empty($dw->parameters->{NUMBER_ID})) {
-                $chislo = $this->getChislo($dw->parameters->{NUMBER_ID});
+            if (!empty($dw->parameters[NUMBER_ID])) {
+                $chislo = $this->getChislo($dw->parameters[NUMBER_ID]);
             } else {
                 $chislo[] = NullChislo::create();
             }
 
             # наклонение
-            if (!empty($dw->parameters->{MOOD_ID})) {
-                $naklonenie = $this->getNaklonenie($dw->parameters->{MOOD_ID});
+            if (!empty($dw->parameters[MOOD_ID])) {
+                $naklonenie = $this->getNaklonenie($dw->parameters[MOOD_ID]);
             } else {
                 $naklonenie[] = NullNaklonenie::create();
             }
 
             # время
-            if (!empty($dw->parameters->{TIME_ID})) {
-                $vremya = $this->getVremya($dw->parameters->{TIME_ID});
+            if (!empty($dw->parameters[TIME_ID])) {
+                $vremya = $this->getVremya($dw->parameters[TIME_ID]);
             } else {
                 $vremya[] = NullVremya::create();
             }
 
             # лицо
-            if (!empty($dw->parameters->{PERSON_ID})) {
-                $litso = $this->getLitso($dw->parameters->{PERSON_ID});
+            if (!empty($dw->parameters[PERSON_ID])) {
+                $litso = $this->getLitso($dw->parameters[PERSON_ID]);
             } else {
                 $litso[] = NullLitso::create();
             }
 
             # род
-            if (!empty($dw->parameters->{GENUS_ID})) {
-                $rod = $this->getRod($dw->parameters->{GENUS_ID});
+            if (!empty($dw->parameters[GENUS_ID])) {
+                $rod = $this->getRod($dw->parameters[GENUS_ID]);
             } else {
                 $rod[] = NullRod::create();
             }
@@ -188,9 +189,9 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $chislo = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === NUMBER_SINGULAR_ID) {
+            if (intval($val) === NUMBER_SINGULAR_ID) {
                 $chislo[] = Edinstvennoe::create();
-            } elseif ($val === NUMBER_PLURAL_ID) {
+            } elseif (intval($val) === NUMBER_PLURAL_ID) {
                 $chislo[] = Mnozhestvennoe::create();
             } else {
                 $chislo[] = NullChislo::create();
@@ -208,9 +209,9 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $vid = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === VIEW_PERFECTIVE_ID) {
+            if (intval($val) === VIEW_PERFECTIVE_ID) {
                 $vid[] = Sovershennyj::create();
-            } elseif ($val === VIEW_IMPERFECT_ID) {
+            } elseif (intval($val) === VIEW_IMPERFECT_ID) {
                 $vid[] = Nesovershennyj::create();
             } else {
                 $vid[] = NullVid::create();
@@ -228,9 +229,9 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $perehodnost = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === \OldAotConstants::TRANSITIVE()) {
+            if (intval($val) === \OldAotConstants::TRANSITIVE()) {
                 $perehodnost[] = Perehodnyj::create();
-            } elseif ($val === \OldAotConstants::INTRANSITIVE()) {
+            } elseif (intval($val) === \OldAotConstants::INTRANSITIVE()) {
                 $perehodnost[] = Neperehodnyj::create();
             } else {
                 $perehodnost[] = NullPerehodnost::create();
@@ -248,9 +249,9 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $vozvratnost = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === \OldAotConstants::RETRIEVABLE()) {
+            if (intval($val) === \OldAotConstants::RETRIEVABLE()) {
                 $vozvratnost[] = Vozvratnyj::create();
-            } elseif ($val === \OldAotConstants::IRRETRIEVABLE()) {
+            } elseif (intval($val) === \OldAotConstants::IRRETRIEVABLE()) {
                 $vozvratnost[] = Nevozvratnyj::create();
             } else {
                 $vozvratnost[] = NullVozvratnost::create();
@@ -268,9 +269,9 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $razryad = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === COMMUNION_VALID_ID) {
+            if (intval($val) === COMMUNION_VALID_ID) {
                 $razryad[] = Dejstvitelnyj::create();
-            } elseif ($val === COMMUNION_PASSIVE_ID) {
+            } elseif (intval($val) === COMMUNION_PASSIVE_ID) {
                 $razryad[] = Stradatelnyj::create();
             } else {
                 $razryad[] = NullRazryad::create();
@@ -288,9 +289,9 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $spryazhenie = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === \OldAotConstants::CONJUGATION_1()) {
+            if (intval($val) === \OldAotConstants::CONJUGATION_1()) {
                 $spryazhenie[] = Pervoe::create();
-            } elseif ($val === \OldAotConstants::CONJUGATION_2()) {
+            } elseif (intval($val) === \OldAotConstants::CONJUGATION_2()) {
                 $spryazhenie[] = Vtoroe::create();
             } else {
                 $spryazhenie[] = NullSpryazhenie::create();
@@ -309,11 +310,11 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $naklonenie = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === \OldAotConstants::MOOD_INDICATIVE()) {
+            if (intval($val) === \OldAotConstants::MOOD_INDICATIVE()) {
                 $naklonenie[] = Izyavitelnoe::create();
-            } elseif ($val === \OldAotConstants::MOOD_IMPERATIVE()) {
+            } elseif (intval($val) === \OldAotConstants::MOOD_IMPERATIVE()) {
                 $naklonenie[] = Povelitelnoe::create();
-            } elseif ($val === \OldAotConstants::MOOD_SUBJUNCTIVE()) {
+            } elseif (intval($val) === \OldAotConstants::MOOD_SUBJUNCTIVE()) {
                 $naklonenie[] = Yslovnoe::create();
             } else {
                 $naklonenie[] = NullNaklonenie::create();
@@ -331,11 +332,11 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $vremya = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === TIME_SIMPLE_ID) {
+            if (intval($val) === TIME_SIMPLE_ID) {
                 $vremya[] = Nastoyaschee::create();
-            } elseif ($val === TIME_FUTURE_ID) {
+            } elseif (intval($val) === TIME_FUTURE_ID) {
                 $vremya[] = Buduschee::create();
-            } elseif ($val === TIME_PAST_ID) {
+            } elseif (intval($val) === TIME_PAST_ID) {
                 $vremya[] = Proshedshee::create();
             } else {
                 $vremya[] = NullVremya::create();
@@ -353,11 +354,11 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $rod = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === GENUS_MASCULINE_ID) {
+            if (intval($val) === GENUS_MASCULINE_ID) {
                 $rod[] = Muzhskoi::create();
-            } elseif ($val === GENUS_NEUTER_ID) {
+            } elseif (intval($val) === GENUS_NEUTER_ID) {
                 $rod[] = Srednij::create();
-            } elseif ($val === GENUS_FEMININE_ID) {
+            } elseif (intval($val) === GENUS_FEMININE_ID) {
                 $rod[] = Zhenskii::create();
             } else {
                 $rod[] = NullRod::create();
@@ -374,11 +375,11 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $litso = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === PERSON_RIFST_ID) {
+            if (intval($val) === PERSON_RIFST_ID) {
                 $litso[] = PervoeLitso::create();
-            } elseif ($val === PERSON_SECOND_ID) {
+            } elseif (intval($val) === PERSON_SECOND_ID) {
                 $litso[] = VtoroeLitso::create();
-            } elseif ($val === PERSON_THIRD_ID) {
+            } elseif (intval($val) === PERSON_THIRD_ID) {
                 $litso[] = TretieLitso::create();
             } else {
                 $litso[] = NullLitso::create();

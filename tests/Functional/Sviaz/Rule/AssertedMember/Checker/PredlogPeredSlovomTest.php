@@ -45,8 +45,8 @@ class PredlogPeredSlovomTest extends \AotTest\AotDataStorage
         /** @var  $Suschestvitelnoe \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base */
         $Suschestvitelnoe = $this->getSafeMock(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class);
 
-        /** @var  $Soyuz \Aot\RussianMorphology\ChastiRechi\Soyuz\Soyuz */
-        $Soyuz = $this->getSafeMock(\Aot\RussianMorphology\ChastiRechi\Soyuz\Soyuz::class);
+        /** @var  $Soyuz \Aot\RussianMorphology\ChastiRechi\Soyuz\Base */
+        $Soyuz = $this->getSafeMock(\Aot\RussianMorphology\ChastiRechi\Soyuz\Base::class);
 
 
         $member[] = \Aot\Sviaz\SequenceMember\Word\Base::create($Soyuz);

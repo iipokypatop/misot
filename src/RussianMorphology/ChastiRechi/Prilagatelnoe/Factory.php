@@ -50,45 +50,46 @@ class Factory extends \Aot\RussianMorphology\Factory
         $text = $dw->initial_form;
         $words = [];
 
-        if (isset($word->word) && $dw->id_word_class === ADJECTIVE_CLASS_ID) {
+        if (isset($word->word) && intval($dw->id_word_class) === ADJECTIVE_CLASS_ID) {
             # число
-            if (!empty($dw->parameters->{NUMBER_ID})) {
-                $chislo = $this->getChislo($dw->parameters->{NUMBER_ID});
+
+            if (!empty($dw->parameters[NUMBER_ID])) {
+                $chislo = $this->getChislo($dw->parameters[NUMBER_ID]);
             } else {
                 $chislo[] = NullChislo::create();
             }
 
             # род
-            if (!empty($dw->parameters->{GENUS_ID})) {
-                $rod = $this->getRod($dw->parameters->{GENUS_ID});
+            if (!empty($dw->parameters[GENUS_ID])) {
+                $rod = $this->getRod($dw->parameters[GENUS_ID]);
             } else {
                 $rod[] = NullRod::create();
             }
 
             # разряд
-            if (!empty($dw->parameters->{\OldAotConstants::RANK_ADJECTIVES()})) {
-                $razryad = $this->getRazryad($dw->parameters->{\OldAotConstants::RANK_ADJECTIVES()});
+            if (!empty($dw->parameters[\OldAotConstants::RANK_ADJECTIVES()])) {
+                $razryad = $this->getRazryad($dw->parameters[\OldAotConstants::RANK_ADJECTIVES()]);
             } else {
                 $razryad[] = NullRazryad::create();
             }
 
             # форма
-            if (!empty($dw->parameters->{\OldAotConstants::WORD_FORM()})) {
-                $forma = $this->getForma($dw->parameters->{\OldAotConstants::WORD_FORM()});
+            if (!empty($dw->parameters[\OldAotConstants::WORD_FORM()])) {
+                $forma = $this->getForma($dw->parameters[\OldAotConstants::WORD_FORM()]);
             } else {
                 $forma[] = NullForma::create();
             }
 
             # степень сравнения
-            if (!empty($dw->parameters->{DEGREE_COMPOSITION_ID})) {
-                $stepen_sravneniia = $this->getStepenSravneniia($dw->parameters->{DEGREE_COMPOSITION_ID});
+            if (!empty($dw->parameters[DEGREE_COMPOSITION_ID])) {
+                $stepen_sravneniia = $this->getStepenSravneniia($dw->parameters[DEGREE_COMPOSITION_ID]);
             } else {
                 $stepen_sravneniia[] = NullStepenSravneniia::create();
             }
 
             # падеж
-            if (!empty($dw->parameters->{CASE_ID})) {
-                $padeszh = $this->getPadeszh($dw->parameters->{CASE_ID});
+            if (!empty($dw->parameters[CASE_ID])) {
+                $padeszh = $this->getPadeszh($dw->parameters[CASE_ID]);
             } else {
                 $padeszh[] = NullPadeszh::create();
             }
@@ -122,9 +123,9 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $chislo = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === NUMBER_SINGULAR_ID) {
+            if (intval($val) ===NUMBER_SINGULAR_ID) {
                 $chislo[] = Edinstvennoe::create();
-            } elseif ($val === NUMBER_PLURAL_ID) {
+            } elseif (intval($val) ===NUMBER_PLURAL_ID) {
                 $chislo[] = Mnozhestvennoe::create();
             } else {
                 $chislo[] = NullChislo::create();
@@ -138,11 +139,11 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $rod = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === GENUS_MASCULINE_ID) {
+            if (intval($val) ===GENUS_MASCULINE_ID) {
                 $rod[] = Muzhskoi::create();
-            } elseif ($val === GENUS_NEUTER_ID) {
+            } elseif (intval($val) ===GENUS_NEUTER_ID) {
                 $rod[] = Srednij::create();
-            } elseif ($val === GENUS_FEMININE_ID) {
+            } elseif (intval($val) ===GENUS_FEMININE_ID) {
                 $rod[] = Zhenskij::create();
             } else {
                 $rod[] = NullRod::create();
@@ -155,11 +156,11 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $razryad = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === \OldAotConstants::QUALIFYING_ADJECTIVE()) {
+            if (intval($val) ===\OldAotConstants::QUALIFYING_ADJECTIVE()) {
                 $razryad[] = Kachestvennoe::create();
-            } elseif ($val === \OldAotConstants::RELATIVE_ADJECTIVE()) {
+            } elseif (intval($val) ===\OldAotConstants::RELATIVE_ADJECTIVE()) {
                 $razryad[] = Otnositelnoe::create();
-            } elseif ($val === \OldAotConstants::POSSESSIVE_ADJECTIVE()) {
+            } elseif (intval($val) ===\OldAotConstants::POSSESSIVE_ADJECTIVE()) {
                 $razryad[] = Pritiazhatelnoe::create();
             } else {
                 $razryad[] = NullRazryad::create();
@@ -173,9 +174,9 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $forma = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === \OldAotConstants::SHORT_WORD_FORM()) {
+            if (intval($val) ===\OldAotConstants::SHORT_WORD_FORM()) {
                 $forma[] = Kratkaya::create();
-            } elseif ($val === \OldAotConstants::FULL_WORD_FORM()) {
+            } elseif (intval($val) ===\OldAotConstants::FULL_WORD_FORM()) {
                 $forma[] = Polnaya::create();
             } else {
                 $forma[] = NullForma::create();
@@ -188,11 +189,11 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $stepen_sravneniia = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === \OldAotConstants::POSITIVE_DEGREE_COMPARISON()) {
+            if (intval($val) ===\OldAotConstants::POSITIVE_DEGREE_COMPARISON()) {
                 $stepen_sravneniia[] = Polozhitelnaya::create();
-            } elseif ($val === DEGREE_SUPERLATIVE_ID) {
+            } elseif (intval($val) ===DEGREE_SUPERLATIVE_ID) {
                 $stepen_sravneniia[] = Prevoshodnaya::create();
-            } elseif ($val === \OldAotConstants::COMPARATIVE_DEGREE_COMPARISON()) {
+            } elseif (intval($val) ===\OldAotConstants::COMPARATIVE_DEGREE_COMPARISON()) {
                 $stepen_sravneniia[] = Sravnitelnaya::create();
             } else {
                 $stepen_sravneniia[] = NullStepenSravneniia::create();
@@ -207,21 +208,21 @@ class Factory extends \Aot\RussianMorphology\Factory
         $padeszh = [];
 
         foreach ($param->id_value_attr as $val) {
-            if ($val === CASE_SUBJECTIVE_ID) {
+            if (intval($val) ===CASE_SUBJECTIVE_ID) {
                 $padeszh[] = Imenitelnij::create();
-            } elseif ($val === CASE_GENITIVE_ID) {
+            } elseif (intval($val) ===CASE_GENITIVE_ID) {
                 $padeszh[] = Roditelnij::create();
-            } elseif ($val === CASE_DATIVE_ID) {
+            } elseif (intval($val) ===CASE_DATIVE_ID) {
                 $padeszh[] = Datelnij::create();
-            } elseif ($val === CASE_ACCUSATIVE_ID) {
+            } elseif (intval($val) ===CASE_ACCUSATIVE_ID) {
                 $padeszh[] = Vinitelnij::create();
-            } elseif ($val === CASE_INSTRUMENTAL_ID) {
+            } elseif (intval($val) ===CASE_INSTRUMENTAL_ID) {
                 $padeszh[] = Tvoritelnij::create();
-            } elseif ($val === CASE_PREPOSITIONAL_ID) {
+            } elseif (intval($val) ===CASE_PREPOSITIONAL_ID) {
                 $padeszh[] = Predlozshnij::create();
-            } else             
+            } else
                 $padeszh[] = NullPadeszh::create();
-            }
+        }
 
 
         return $padeszh;

@@ -15,7 +15,7 @@ use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 
 use Aot\RussianMorphology\ChastiRechi\Predlog\Base as Predlog;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base as Prilagatelnoe;
-use Aot\RussianMorphology\ChastiRechi\Soyuz\Soyuz;
+use Aot\RussianMorphology\ChastiRechi\Soyuz\Base;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base as Suschestvitelnoe;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base as SuschestvitelnoePadeszhBase;
 use Aot\RussianSyntacsis\Punctuaciya\Zapiataya;
@@ -342,7 +342,7 @@ TEXT;
         $legkie[3]->rod = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij::create();
         $legkie[3]->sklonenie = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::create();
 
-        $i[0] = $this->getMock(Soyuz::class, ['_']);
+        $i[0] = $this->getMock(Base::class, ['_']);
         PHPUnitHelper::setProtectedProperty($i[0], 'text', 'и');
 
 
@@ -428,7 +428,7 @@ TEXT;
     }
 
     /**
-     * @return Prilagatelnoe|Glagol|Suschestvitelnoe|Zapiataya|Predlog|Soyuz | \PHPUnit_Framework_MockObject_MockObject
+     * @return Prilagatelnoe|Glagol|Suschestvitelnoe|Zapiataya|Predlog|Base | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getSafeMockLocal1()
     {
@@ -480,7 +480,7 @@ TEXT;
      * @param bool|true $callAutoload
      * @param bool|false $cloneArguments
      * @param bool|false $callOriginalMethods
-     * @return Prilagatelnoe|Glagol|Suschestvitelnoe|Zapiataya|Predlog|Soyuz | \PHPUnit_Framework_MockObject_MockObject
+     * @return Prilagatelnoe|Glagol|Suschestvitelnoe|Zapiataya|Predlog|Base | \PHPUnit_Framework_MockObject_MockObject
      */
 
     public function getMock($originalClassName, $methods = array(), array $arguments = array(), $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false)
