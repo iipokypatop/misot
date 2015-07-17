@@ -5,12 +5,6 @@ namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe;
 use Aot\RussianMorphology\Slovo;
 
 /**
- * Created by PhpStorm.
- * User: p.semenyuk
- * Date: 17.06.2015
- * Time: 22:11
- */
-/**
  * Class Base
  * @package Aot\RussianMorphology\ChastiRechi\Prilagatelnoe
  * @property Morphology\Chislo\Base $chislo

@@ -1,6 +1,7 @@
 <?php
 
-namespace Aot\RussianMorphology\ChastiRechi;
+namespace Aot\RussianMorphology\ChastiRechi\Predlog;
+
 use Aot\RussianMorphology\Slovo;
 
 /**

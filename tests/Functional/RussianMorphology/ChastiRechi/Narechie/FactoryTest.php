@@ -38,7 +38,8 @@ class NarechieTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Null::class, $result[0]->stepen_sravneniia);
     }
 
-    protected function buildFactory($point){
+    protected function buildFactory($point)
+    {
         $dw = new \Dw(
             $point->dw->id_word_form,
             $point->dw->initial_form,
@@ -60,7 +61,8 @@ class NarechieTest extends \AotTest\AotDataStorage
      * Возвращает точку
      * @return object
      */
-    protected function getPoint(){
+    protected function getPoint()
+    {
         // слово - лучше
         $json_p = <<<JSON
 {
@@ -112,7 +114,8 @@ JSON;
         return json_decode($json_p);
     }
 
-    protected function getPoint2(){
+    protected function getPoint2()
+    {
         // слово - тихо
         $json_p = <<<JSON
 {

@@ -12,9 +12,9 @@ namespace AotTest\Functional\Sviaz\Processor;
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Base as Glagol;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
-use Aot\RussianMorphology\ChastiRechi\Predlog;
+use Aot\RussianMorphology\ChastiRechi\Predlog\Predlog;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base as Prilagatelnoe;
-use Aot\RussianMorphology\ChastiRechi\Soyuz;
+use Aot\RussianMorphology\ChastiRechi\Soyuz\Soyuz;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base as Suschestvitelnoe;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base as SuschestvitelnoePadeszhBase;
 use Aot\RussianSyntacsis\Punctuaciya\Zapiataya;
@@ -215,7 +215,6 @@ RULE;
 
         $link_container = $processor->go(
             $this->getNormalizedMatrix1(),
-
             array_merge([
                 \Aot\Sviaz\Rule\Container::getRule1(),
                 \Aot\Sviaz\Rule\Container::getRule2(),
@@ -238,7 +237,7 @@ RULE;
                     $link->getDependedSequenceMember()->getSlovo()->getText();
             }
 
-            ;//echo join(" ", $data) . "\n";
+           # echo join(" ", $data) . "\n";
         }
 
     }

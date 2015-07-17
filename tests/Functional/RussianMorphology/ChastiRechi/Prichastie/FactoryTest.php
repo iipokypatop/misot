@@ -33,133 +33,128 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Dejstvitelnyj::class, $result[0]->razryad);
     }
 
-    public function testBuild_wo_chislo(){
+    public function testBuild_wo_chislo()
+    {
         # убираем число
         $point_wo_chislo = $this->getPoint();
         unset($point_wo_chislo->dw->parameters->{NUMBER_ID});
-        try{
+        try {
             $this->buildFactory($point_wo_chislo);
             $this->fail("Не должно было тут быть!");
-        }
-        catch(\Exception $e){
-            $this->assertInstanceOf(FactoryException::class, $e);
+        } catch (FactoryException $e) {
             $this->assertEquals("chislo not defined", $e->getMessage());
             $this->assertEquals(24, $e->getCode());
         }
     }
 
-    public function testBuild_wo_perehodnost(){
+    public function testBuild_wo_perehodnost()
+    {
         # убираем переходность
         $point_wo_perehodnost = $this->getPoint();
         unset($point_wo_perehodnost->dw->parameters->{TRANSIVITY_ID});
-        try{
+        try {
             $this->buildFactory($point_wo_perehodnost);
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->fail("Не должно было тут быть!");
         }
     }
 
-    public function testBuild_wo_padeszh(){
+    public function testBuild_wo_padeszh()
+    {
         # убираем падеж
         $point_wo_padeszh = $this->getPoint();
         unset($point_wo_padeszh->dw->parameters->{CASE_ID});
-        try{
+        try {
             $this->buildFactory($point_wo_padeszh);
             $this->fail("Не должно было тут быть!");
-        }
-        catch(\Exception $e){
-            $this->assertInstanceOf(FactoryException::class, $e);
+        } catch (FactoryException $e) {
             $this->assertEquals("padeszh not defined", $e->getMessage());
             $this->assertEquals(24, $e->getCode());
         }
     }
 
-    public function testBuild_wo_vid(){
+    public function testBuild_wo_vid()
+    {
         # убираем вид
         $point_wo_vid = $this->getPoint();
         unset($point_wo_vid->dw->parameters->{VIEW_ID});
-        try{
+        try {
             $this->buildFactory($point_wo_vid);
             $this->fail("Не должно было тут быть!");
-        }
-        catch(\Exception $e){
-            $this->assertInstanceOf(FactoryException::class, $e);
+        } catch (FactoryException $e) {
             $this->assertEquals("vid not defined", $e->getMessage());
             $this->assertEquals(24, $e->getCode());
         }
     }
 
-    public function testBuild_wo_vozvratnost(){
+    public function testBuild_wo_vozvratnost()
+    {
         # убираем возвратность
         $point_wo_vozvratnost = $this->getPoint();
         unset($point_wo_vozvratnost->dw->parameters->{\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()});
-        try{
+        try {
             $this->buildFactory($point_wo_vozvratnost);
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->fail("Не должно было тут быть!");
         }
     }
 
-    public function testBuild_wo_vremya(){
+    public function testBuild_wo_vremya()
+    {
         # убираем время
         $point_wo_vremya = $this->getPoint();
         unset($point_wo_vremya->dw->parameters->{TIME_ID});
-        try{
+        try {
             $this->buildFactory($point_wo_vremya);
             $this->fail("Не должно было тут быть!");
-        }
-        catch(\Exception $e){
-            $this->assertInstanceOf(FactoryException::class, $e);
+        } catch (FactoryException $e) {
             $this->assertEquals("vremya not defined", $e->getMessage());
             $this->assertEquals(24, $e->getCode());
         }
     }
 
-    public function testBuild_wo_razryad(){
+    public function testBuild_wo_razryad()
+    {
         # убираем разряд
         $point_wo_razryad = $this->getPoint();
         unset($point_wo_razryad->dw->parameters->{DISCHARGE_COMMUNION_ID});
-        try{
+        try {
             $this->buildFactory($point_wo_razryad);
             $this->fail("Не должно было тут быть!");
-        }
-        catch(\Exception $e){
-            $this->assertInstanceOf(FactoryException::class, $e);
+        } catch (FactoryException $e) {
             $this->assertEquals("razryad not defined", $e->getMessage());
             $this->assertEquals(24, $e->getCode());
         }
     }
 
-    public function testBuild_wo_forma(){
+    public function testBuild_wo_forma()
+    {
         # убираем форму
         $point_wo_forma = $this->getPoint();
         unset($point_wo_forma->dw->parameters->{\OldAotConstants::WORD_FORM()});
-        try{
+        try {
             $this->buildFactory($point_wo_forma);
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->fail("Не должно было тут быть!");
         }
     }
 
-    public function testBuild_wo_rod(){
+    public function testBuild_wo_rod()
+    {
         # убираем род +++ и единственное число +++
-        $point_wo_rod =  $this->getPoint();
+        $point_wo_rod = $this->getPoint();
         unset($point_wo_rod->dw->parameters->{GENUS_ID});
-        try{
+        try {
             $this->buildFactory($point_wo_rod);
             $this->fail("Не должно было тут быть!");
-        }
-        catch(\Exception $e){
-            $this->assertInstanceOf(FactoryException::class, $e);
+        } catch (FactoryException $e) {
             $this->assertEquals("rod not defined", $e->getMessage());
             $this->assertEquals(24, $e->getCode());
         }
     }
 
-    protected function buildFactory($point){
+    protected function buildFactory($point)
+    {
         $dw = new \Dw(
             $point->dw->id_word_form,
             $point->dw->initial_form,
@@ -181,7 +176,8 @@ class FactoryTest extends \AotTest\AotDataStorage
      * Возвращает точку
      * @return object
      */
-    protected function getPoint(){
+    protected function getPoint()
+    {
         $json_p = <<<JSON
 {
         "kw": 0,

@@ -3,7 +3,6 @@
 namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod;
 
 
-
 /**
  * Created by PhpStorm.
  * User: p.semenyuk

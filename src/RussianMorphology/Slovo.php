@@ -29,7 +29,7 @@ abstract class Slovo
         return [];
     }
 
-    public  function __get($name)
+    public function __get($name)
     {
         if (array_key_exists($name, static::getMorphology())) {
             return $this->storage[$name];
@@ -76,7 +76,7 @@ abstract class Slovo
 
         $values = [];
         foreach ($this->storage as $name => $value) {
-            if ( $value instanceof $classname ) {
+            if ($value instanceof $classname) {
                 $values[] = $value;
             }
         }
@@ -85,7 +85,7 @@ abstract class Slovo
         /// TEMPORARY start
         foreach ($this as $name => $value) {
 
-            if ( $value instanceof $classname ) {
+            if ($value instanceof $classname) {
                 $values[] = $value;
             }
         }

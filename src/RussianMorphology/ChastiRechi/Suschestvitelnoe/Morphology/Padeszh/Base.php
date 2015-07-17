@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh;
 
 
-abstract  class Base extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
+abstract class Base extends \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base
 {
 
 }

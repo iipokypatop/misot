@@ -1,6 +1,7 @@
 <?php
 
 namespace Aot\RussianMorphology;
+
 use Dw;
 use Word;
 
