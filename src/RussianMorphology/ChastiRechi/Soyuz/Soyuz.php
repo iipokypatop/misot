@@ -1,7 +1,8 @@
 <?php
 
 
-namespace Aot\RussianMorphology\ChastiRechi;
+namespace Aot\RussianMorphology\ChastiRechi\Soyuz;
+
 use Aot\RussianMorphology\Slovo;
 
 /**

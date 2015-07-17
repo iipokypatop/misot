@@ -31,10 +31,9 @@ class Factory extends \Aot\RussianMorphology\Factory
         $words = [];
         if (isset($word->word) && $dw->id_word_class === ADVERB_CLASS_ID) {
             # степень сравнения
-            if(!empty($dw->parameters->{DEGREE_COMPOSITION_ID})){
+            if (!empty($dw->parameters->{DEGREE_COMPOSITION_ID})) {
                 $stepen_sravneniia = $this->getStepenSravneniia($dw->parameters->{DEGREE_COMPOSITION_ID});
-            }
-            else{
+            } else {
                 $stepen_sravneniia[] = Null::create();
             }
             foreach ($stepen_sravneniia as $val_stepen_sravneniia) {
@@ -49,7 +48,7 @@ class Factory extends \Aot\RussianMorphology\Factory
 
     /**
      * @param $param
-     * @return \Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Base []
+     * @return \Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniia\Base []
      */
     private function getStepenSravneniia($param)
     {
