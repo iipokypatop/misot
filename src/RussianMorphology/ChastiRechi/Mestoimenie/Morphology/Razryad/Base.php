@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad;
 
 
-class Base extends \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Base
+class Base extends \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Base
 {
 
 }
