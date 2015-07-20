@@ -34,26 +34,26 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     public function build(Dw $dw, Word $word)
     {
-        $text = $dw->initial_form;
+        $text = $dw->word_form;
         $words = [];
-        if (isset($word->word) && $dw->id_word_class === PARTICIPLE_CLASS_ID) {
+        if (isset($word->word) && intval($dw->id_word_class) === PARTICIPLE_CLASS_ID) {
             # вид
-            if (!empty($dw->parameters->{VIEW_ID})) {
-                $vid = $this->getVid($dw->parameters->{VIEW_ID});
+            if (!empty($dw->parameters[VIEW_ID])) {
+                $vid = $this->getVid($dw->parameters[VIEW_ID]);
             } else {
                 throw new FactoryException("vid not defined", 24);
             }
 
             # переходность
-            if (!empty($dw->parameters->{TRANSIVITY_ID})) {
-                $perehodnost = $this->getPerehodnost($dw->parameters->{TRANSIVITY_ID});
+            if (!empty($dw->parameters[TRANSIVITY_ID])) {
+                $perehodnost = $this->getPerehodnost($dw->parameters[TRANSIVITY_ID]);
             } else {
                 $perehodnost[] = Neperehodnyj::create();
             }
 
             # возвратность
-            if (!empty($dw->parameters->{\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()})) {
-                $vozvratnost = $this->getVozvratnost($dw->parameters->{\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()});
+            if (!empty($dw->parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()])) {
+                $vozvratnost = $this->getVozvratnost($dw->parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()]);
             } else {
                 $vozvratnost[] = NullVozvratnost::create();
             }
@@ -77,9 +77,9 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $vid = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === VIEW_PERFECTIVE_ID) {
+            if (intval($val) === VIEW_PERFECTIVE_ID) {
                 $vid[] = Sovershennyj::create();
-            } elseif ($val === VIEW_IMPERFECT_ID) {
+            } elseif (intval($val) === VIEW_IMPERFECT_ID) {
                 $vid[] = Nesovershennyj::create();
             } else {
                 $vid[] = NullVid::create();
@@ -93,9 +93,9 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $perehodnost = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === \OldAotConstants::TRANSITIVE()) {
+            if (intval($val) === \OldAotConstants::TRANSITIVE()) {
                 $perehodnost[] = Perehodnyj::create();
-            } elseif ($val === \OldAotConstants::INTRANSITIVE()) {
+            } elseif (intval($val) === \OldAotConstants::INTRANSITIVE()) {
                 $perehodnost[] = Neperehodnyj::create();
             } else {
                 $perehodnost[] = NullPerehodnost::create();
@@ -109,9 +109,9 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $vozvratnost = [];
         foreach ($param->id_value_attr as $val) {
-            if ($val === \OldAotConstants::RETRIEVABLE()) {
+            if (intval($val) === \OldAotConstants::RETRIEVABLE()) {
                 $vozvratnost[] = Vozvratnyj::create();
-            } elseif ($val === \OldAotConstants::IRRETRIEVABLE()) {
+            } elseif (intval($val) === \OldAotConstants::IRRETRIEVABLE()) {
                 $vozvratnost[] = Nevozvratnyj::create();
             } else {
                 $vozvratnost[] = NullVozvratnost::create();

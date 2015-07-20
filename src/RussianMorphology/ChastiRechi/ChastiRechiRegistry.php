@@ -9,7 +9,6 @@
 namespace Aot\RussianMorphology\ChastiRechi;
 
 
-
 class ChastiRechiRegistry
 {
     const SUSCHESTVITELNOE = 10;
@@ -54,9 +53,26 @@ class ChastiRechiRegistry
             static::DEEPRICHASTIE => Deeprichastie\Base::class,
             static::MESTOIMENIE => Mestoimenie\Base::class,
             static::CHISLITELNOE => Chislitelnoe\Base::class,
-            
-            static::PREDLOG => Predlog::class,
-            static::SOYUZ  => Soyuz::class,
+
+            static::PREDLOG => Predlog\Base::class,
+            static::SOYUZ => Soyuz\Base::class,
+        ];
+    }
+
+    /**
+     * @return \Aot\RussianMorphology\Factory[]
+     */
+    public static function getFactories()
+    {
+        return [
+            static::SUSCHESTVITELNOE => Suschestvitelnoe\Factory::get(),
+            static::PRILAGATELNOE => Prilagatelnoe\Factory::get(),
+            static::GLAGOL => Glagol\Factory::get(),
+            static::PRICHASTIE => Prichastie\Factory::get(),
+            static::NARECHIE => Narechie\Factory::get(),
+            static::DEEPRICHASTIE => Deeprichastie\Factory::get(),
+            static::MESTOIMENIE => Mestoimenie\Factory::get(),
+            static::CHISLITELNOE => Chislitelnoe\Factory::get(),
         ];
     }
 

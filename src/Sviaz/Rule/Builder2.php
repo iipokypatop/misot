@@ -19,11 +19,11 @@ use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 
 class Builder2
 {
-    /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Main */
+    /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base */
     protected $asserted_main_builder;
 
 
-    /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Depended */
+    /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base */
     protected $asserted_depended_builder;
 
 
@@ -74,6 +74,18 @@ class Builder2
 
     public function get()
     {
+        if (empty($this->asserted_main_builder)) {
+            throw new \RuntimeException("no main builder");
+        }
+
+        if (empty($this->asserted_depended_builder)) {
+            throw new \RuntimeException("no depended builder");
+        }
+
+        if (empty($this->link_builder)) {
+            throw new \RuntimeException("no link builder");
+        }
+
         $rule = \Aot\Sviaz\Rule\Base::create(
             $this->asserted_main_builder->get(),
             $this->asserted_depended_builder->get()
@@ -84,7 +96,6 @@ class Builder2
                 $this->asserted_member_builder->get()
             );
         }
-
 
         $this->link_builder->get(
             $rule

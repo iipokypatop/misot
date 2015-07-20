@@ -19,7 +19,14 @@ class GroupIdRegistry
     public static function getWordVariants()
     {
         return [
-            static::BIT => ['быть','был','была','есть','есть','есть','есть','есть','будь','будьте','есть','были','было'] // нижний регистр
+            static::BIT => ['быть', 'был', 'была', 'есть', 'есть', 'есть', 'есть', 'есть', 'будь', 'будьте', 'есть', 'были', 'было'] // нижний регистр
+        ];
+    }
+
+    public static function getNames()
+    {
+        return [
+            static::BIT => 'глагол быть',
         ];
     }
 }

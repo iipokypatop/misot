@@ -41,7 +41,7 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     public function build(Dw $dw, Word $word)
     {
-        $text = $dw->initial_form;
+        $text = $dw->word_form;
         $words = [];
 
         // проверить что dw - существительное. если нет то эксептион
@@ -55,7 +55,7 @@ class Factory extends \Aot\RussianMorphology\Factory
         Morphology\Rod\Base $rod,
         Morphology\Sklonenie\Base $sklonenie
          */
-        if (isset($word->word) && $dw->id_word_class === NOUN_CLASS_ID) {
+        if (isset($word->word) && intval($dw->id_word_class) === NOUN_CLASS_ID) {
             foreach ($dw->parameters as $value) {
                 /** @var $value MorphAttribute */
                 # одушевленность
@@ -79,22 +79,28 @@ class Factory extends \Aot\RussianMorphology\Factory
                 }
             }
             if (!isset($odushevlyonnost)) {
-                throw new \RuntimeException("odushevlyonnost not defined");
+                //throw new \RuntimeException("odushevlyonnost not defined");
+                $odushevlyonnost[] = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Null::create();
             }
             if (!isset($rod)) {
-                throw new \RuntimeException("rod not defined");
+                $rod[] = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Null::create();
+                //throw new \RuntimeException("rod not defined");
             }
             if (!isset($chislo)) {
-                throw new \RuntimeException("chislo not defined");
+                $chislo[] = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Null::create();
+                //throw new \RuntimeException("chislo not defined");
             }
             if (!isset($sklonenie)) {
-                throw new \RuntimeException("sklonenie not defined");
+                //throw new \RuntimeException("sklonenie not defined");
+                $sklonenie[] = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::create();
             }
             if (!isset($naritcatelnost)) {
-                throw new \RuntimeException("naritcatelnost not defined");
+//                throw new \RuntimeException("naritcatelnost not defined");
+                $naritcatelnost[] = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\Null::create();
             }
             if (!isset($padeszh)) {
-                throw new \RuntimeException("padeszh not defined");
+                $padeszh[] = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Null::create();
+                // throw new \RuntimeException("padeszh not defined");
             }
 
 
@@ -138,7 +144,7 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $odushevlyonnost = [];
         foreach ($value->id_value_attr as $val) {
-            if ($val === ANIMALITY_ANIMATE_ID) {
+            if (intval($val) === ANIMALITY_ANIMATE_ID) {
                 $odushevlyonnost[] = Odushevlyonnoe::create();
             } elseif (current($value->id_value_attr) === ANIMALITY_INANIMATE_ID) {
                 $odushevlyonnost[] = Neodushevlyonnoe::create();
@@ -161,11 +167,11 @@ class Factory extends \Aot\RussianMorphology\Factory
 
         $rod = [];
         foreach ($value->id_value_attr as $val) {
-            if ($val === GENUS_MASCULINE_ID) {
+            if (intval($val) === GENUS_MASCULINE_ID) {
                 $rod[] = Muzhskoi::create();
-            } elseif ($val === GENUS_NEUTER_ID) {
+            } elseif (intval($val) === GENUS_NEUTER_ID) {
                 $rod[] = Srednij::create();
-            } elseif ($val === GENUS_FEMININE_ID) {
+            } elseif (intval($val) === GENUS_FEMININE_ID) {
                 $rod[] = Zhenskii::create();
             } else {
                 $rod[] = Morphology\Rod\Null::create();
@@ -183,9 +189,9 @@ class Factory extends \Aot\RussianMorphology\Factory
 
         $chislo = [];
         foreach ($value->id_value_attr as $val) {
-            if ($val === NUMBER_SINGULAR_ID) {
+            if (intval($val) === NUMBER_SINGULAR_ID) {
                 $chislo[] = Edinstvennoe::create();
-            } elseif ($val === NUMBER_PLURAL_ID) {
+            } elseif (intval($val) === NUMBER_PLURAL_ID) {
                 $chislo[] = Mnozhestvennoe::create();
             } else {
                 $chislo[] = Morphology\Chislo\Null::create();
@@ -205,11 +211,11 @@ class Factory extends \Aot\RussianMorphology\Factory
 
         $sklonenie = [];
         foreach ($value->id_value_attr as $val) {
-            if ($val === \OldAotConstants::DECLENSION_1) {
+            if (intval($val) === \OldAotConstants::DECLENSION_1) {
                 $sklonenie[] = Pervoe::create();
-            } elseif ($val === \OldAotConstants::DECLENSION_2) {
+            } elseif (intval($val) === \OldAotConstants::DECLENSION_2) {
                 $sklonenie[] = Vtoroe::create();
-            } elseif ($val === \OldAotConstants::DECLENSION_3) {
+            } elseif (intval($val) === \OldAotConstants::DECLENSION_3) {
                 $sklonenie[] = Tretie::create();
             } else {
                 $sklonenie[] = Morphology\Sklonenie\Null::create();
@@ -228,17 +234,17 @@ class Factory extends \Aot\RussianMorphology\Factory
 
         $padeszh = [];
         foreach ($value->id_value_attr as $val) {
-            if ($val === CASE_SUBJECTIVE_ID) {
+            if (intval($val) === CASE_SUBJECTIVE_ID) {
                 $padeszh[] = Imenitelnij::create();
-            } elseif ($val === CASE_GENITIVE_ID) {
+            } elseif (intval($val) === CASE_GENITIVE_ID) {
                 $padeszh[] = Roditelnij::create();
-            } elseif ($val === CASE_DATIVE_ID) {
+            } elseif (intval($val) === CASE_DATIVE_ID) {
                 $padeszh[] = Datelnij::create();
-            } elseif ($val === CASE_ACCUSATIVE_ID) {
+            } elseif (intval($val) === CASE_ACCUSATIVE_ID) {
                 $padeszh[] = Vinitelnij::create();
-            } elseif ($val === CASE_INSTRUMENTAL_ID) {
+            } elseif (intval($val) === CASE_INSTRUMENTAL_ID) {
                 $padeszh[] = Tvoritelnij::create();
-            } elseif ($val === CASE_PREPOSITIONAL_ID) {
+            } elseif (intval($val) === CASE_PREPOSITIONAL_ID) {
                 $padeszh[] = Predlozshnij::create();
             } else {
                 $padeszh[] = Morphology\Padeszh\Null::create();
@@ -258,9 +264,9 @@ class Factory extends \Aot\RussianMorphology\Factory
 
         $naritcatelnost = [];
         foreach ($value->id_value_attr as $val) {
-            if ($val === \OldAotConstants::SELF) {
+            if (intval($val) === \OldAotConstants::SELF) {
                 $naritcatelnost = ImiaNaritcatelnoe::create();
-            } elseif ($val === \OldAotConstants::NOMINAL) {
+            } elseif (intval($val) === \OldAotConstants::NOMINAL) {
                 $naritcatelnost = ImiaSobstvennoe::create();
             } else $naritcatelnost = Morphology\Naritcatelnost\Null::create();
         }

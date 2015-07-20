@@ -52,10 +52,10 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     public function build(Dw $dw, Word $word)
     {
-        $text = $dw->initial_form;
+        $text = $dw->word_form;
         $words = [];
 
-        if (isset($word->word) && $dw->id_word_class === NUMERAL_CLASS_ID) {
+        if (isset($word->word) && intval($dw->id_word_class) === NUMERAL_CLASS_ID) {
 
             # вид
             $vid = $this->getVid($dw->parameters);
@@ -106,18 +106,18 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     private function getVid($parameters)
     {
-        if (empty(get_object_vars($parameters)[TYPE_OF_NUMERAL_ID])) {
+        if (empty($parameters[TYPE_OF_NUMERAL_ID])) {
             return [NullVid::create()];
         }
 
-        $param = get_object_vars($parameters)[TYPE_OF_NUMERAL_ID];
+        $param = $parameters[TYPE_OF_NUMERAL_ID];
 
         $vid = [];
 
         foreach ($param->id_value_attr as $val) {
-            if ($val === QUANTITATIVE_ID) {
+            if (intval($val) === QUANTITATIVE_ID) {
                 $vid[] = Kolichestvenniy::create();
-            } elseif ($val === ORDINAL_ID) {
+            } elseif (intval($val) === ORDINAL_ID) {
                 $vid[] = Poryadkoviy::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -134,20 +134,20 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     private function getTip($parameters)
     {
-        if (empty(get_object_vars($parameters)[-1])) {
+        if (empty($parameters[-1])) {
             return [NullTip::create()];
         }
 
-        $param = get_object_vars($parameters)[-1];
+        $param = $parameters[-1];
 
         $tip = [];
 
         foreach ($param->id_value_attr as $val) {
-            if ($val === -1) {
+            if (intval($val) === -1) {
                 $tip[] = Celiy::create();
-            } elseif ($val === -1) {
+            } elseif (intval($val) === -1) {
                 $tip[] = Sobiratelniy::create();
-            } elseif ($val === -1) {
+            } elseif (intval($val) === -1) {
                 $tip[] = Drobniy::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -164,18 +164,18 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     private function getPodvid($parameters)
     {
-        if (empty(get_object_vars($parameters)[-1])) {
+        if (empty($parameters[-1])) {
             return [NullPodvid::create()];
         }
 
-        $param = get_object_vars($parameters)[-1];
+        $param = $parameters[-1];
 
         $podvid = [];
 
         foreach ($param->id_value_attr as $val) {
-            if ($val === -1) {
+            if (intval($val) === -1) {
                 $podvid[] = Prostoy::create();
-            } elseif ($val === -1) {
+            } elseif (intval($val) === -1) {
                 $podvid[] = Sostavnoy::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -191,18 +191,18 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     private function getChislo($parameters)
     {
-        if (empty(get_object_vars($parameters)[NUMBER_ID])) {
+        if (empty($parameters[NUMBER_ID])) {
             return [NullChislo::create()];
         }
 
-        $param = get_object_vars($parameters)[NUMBER_ID];
+        $param = $parameters[NUMBER_ID];
 
         $chislo = [];
 
         foreach ($param->id_value_attr as $val) {
-            if ($val === NUMBER_SINGULAR_ID) {
+            if (intval($val) === NUMBER_SINGULAR_ID) {
                 $chislo[] = Edinstvennoe::create();
-            } elseif ($val === NUMBER_PLURAL_ID) {
+            } elseif (intval($val) === NUMBER_PLURAL_ID) {
                 $chislo[] = Mnozhestvennoe::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -218,20 +218,20 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     private function getRod($parameters)
     {
-        if (empty(get_object_vars($parameters)[GENUS_ID])) {
+        if (empty($parameters[GENUS_ID])) {
             return [NullRod::create()];
         }
 
-        $param = get_object_vars($parameters)[GENUS_ID];
+        $param = $parameters[GENUS_ID];
 
         $rod = [];
 
         foreach ($param->id_value_attr as $val) {
-            if ($val === GENUS_MASCULINE_ID) {
+            if (intval($val) === GENUS_MASCULINE_ID) {
                 $rod[] = Muzhskoy::create();
-            } elseif ($val === GENUS_NEUTER_ID) {
+            } elseif (intval($val) === GENUS_NEUTER_ID) {
                 $rod[] = Sredniy::create();
-            } elseif ($val === GENUS_FEMININE_ID) {
+            } elseif (intval($val) === GENUS_FEMININE_ID) {
                 $rod[] = Zhenskiy::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -246,26 +246,26 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     private function getPadeszh($parameters)
     {
-        if (empty(get_object_vars($parameters)[CASE_ID])) {
+        if (empty($parameters[CASE_ID])) {
             return [NullPadeszh::create()];
         }
 
-        $param = get_object_vars($parameters)[CASE_ID];
+        $param = $parameters[CASE_ID];
 
         $padeszh = [];
 
         foreach ($param->id_value_attr as $val) {
-            if ($val === CASE_SUBJECTIVE_ID) {
+            if (intval($val) === CASE_SUBJECTIVE_ID) {
                 $padeszh[] = Imenitelnij::create();
-            } elseif ($val === CASE_GENITIVE_ID) {
+            } elseif (intval($val) === CASE_GENITIVE_ID) {
                 $padeszh[] = Roditelnij::create();
-            } elseif ($val === CASE_DATIVE_ID) {
+            } elseif (intval($val) === CASE_DATIVE_ID) {
                 $padeszh[] = Datelnij::create();
-            } elseif ($val === CASE_ACCUSATIVE_ID) {
+            } elseif (intval($val) === CASE_ACCUSATIVE_ID) {
                 $padeszh[] = Vinitelnij::create();
-            } elseif ($val === CASE_INSTRUMENTAL_ID) {
+            } elseif (intval($val) === CASE_INSTRUMENTAL_ID) {
                 $padeszh[] = Tvoritelnij::create();
-            } elseif ($val === CASE_PREPOSITIONAL_ID) {
+            } elseif (intval($val) === CASE_PREPOSITIONAL_ID) {
                 $padeszh[] = Predlozshnij::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));

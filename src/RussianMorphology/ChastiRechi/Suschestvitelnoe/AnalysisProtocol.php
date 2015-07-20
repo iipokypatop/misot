@@ -8,7 +8,10 @@
 
 namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe;
 
-
+/**
+ * Class AnalysisProtocol
+ * @package Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe
+ */
 class AnalysisProtocol extends \Aot\RussianMorphology\AnalysisProtocol
 {
     /**

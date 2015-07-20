@@ -24,7 +24,7 @@ class Builder2Test extends \AotTest\AotDataStorage
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main::create(ChastiRechiRegistry::SUSCHESTVITELNOE, RoleRegistry::SVOISTVO)
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::SUSCHESTVITELNOE, RoleRegistry::SVOISTVO)
                         ->text("text text text")
                         ->morphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
                         ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
@@ -32,7 +32,7 @@ class Builder2Test extends \AotTest\AotDataStorage
                         ->check(MemberCheckerRegistry::PredlogPeredSlovom)
                 )
                 ->depended(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended::create(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::PRILAGATELNOE,
                         RoleRegistry::OTNOSHENIE
                     )

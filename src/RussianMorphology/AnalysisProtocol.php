@@ -8,7 +8,10 @@
 
 namespace Aot\RussianMorphology;
 
-
+/**
+ * Class AnalysisProtocol
+ * @package Aot\RussianMorphology
+ */
 class AnalysisProtocol
 {
     public $text;

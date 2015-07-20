@@ -18,6 +18,25 @@ class Matrix
 
     protected $sentence_matrix = [];
 
+
+    protected function __construct(array $slova)
+    {
+        foreach ($slova as $value) {
+
+            if (empty($value)) {
+                continue;
+            }
+
+            if (is_array($value) && $value[0] instanceof \Aot\RussianMorphology\Slovo) {
+                $this->appendWordsForm($value);
+            }
+
+            if ($value instanceof \Aot\RussianSyntacsis\Punctuaciya\Base) {
+                $this->appendPunctuation($value);
+            }
+        }
+    }
+
     /**
      * @param Slovo[] $word_forms
      */
@@ -57,4 +76,12 @@ class Matrix
 
         $this->registry[] = $ob;
     }
+
+
+    public static function create($slova)
+    {
+        return new static($slova);
+    }
+
+
 }

@@ -117,7 +117,7 @@ class Builder
         foreach ($this->link['morphology_matchings'] as $morphology_matching) {
 
             if (empty(MorphologyRegistry::getBaseClasses()[$morphology_matching][$asserted_main_class_id])) {
-                throw new \RuntimeException("unsupported morphology for main chast_rechi = {$asserted_depended_class_id}, morphology_id = " . var_export($morphology_matching, 1));
+                throw new \RuntimeException("unsupported morphology for main chast_rechi = {$asserted_main_class_id}, morphology_id = " . var_export($morphology_matching, 1));
             }
 
             if (empty(MorphologyRegistry::getBaseClasses()[$morphology_matching][$asserted_depended_class_id])) {

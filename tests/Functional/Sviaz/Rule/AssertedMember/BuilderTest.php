@@ -50,7 +50,7 @@ class BuilderTest extends \AotTest\AotDataStorage
     public function testMorphologyOk()
     {
         $builder =
-            \Aot\Sviaz\Rule\AssertedMember\Builder\Main::create(
+            \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE,
                 RoleRegistry::OTNOSHENIE
             );
@@ -67,7 +67,7 @@ class BuilderTest extends \AotTest\AotDataStorage
     public function testMorphology_throws_exception()
     {
         $builder =
-            \Aot\Sviaz\Rule\AssertedMember\Builder\Main::create(
+            \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE,
                 RoleRegistry::OTNOSHENIE
             );
