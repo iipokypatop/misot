@@ -69,7 +69,7 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     public function build(Dw $dw, Word $word)
     {
-        $text = $dw->initial_form;
+        $text = $dw->word_form;
         $words = [];
         if (isset($word->word) && intval($dw->id_word_class) === VERB_CLASS_ID) {
 

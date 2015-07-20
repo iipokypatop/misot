@@ -41,7 +41,7 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     public function build(Dw $dw, Word $word)
     {
-        $text = $dw->initial_form;
+        $text = $dw->word_form;
         $words = [];
 
         // проверить что dw - существительное. если нет то эксептион

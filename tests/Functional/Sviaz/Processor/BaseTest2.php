@@ -9,12 +9,15 @@
 namespace AotTest\Functional\Sviaz\Processor;
 
 
+use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
+use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
+
 class BaseTest2 extends \AotTest\AotDataStorage
 {
     public function testLauch()
     {
         $words = preg_split('/\s+/', preg_replace('/[^а-яА-Я ]/u', '', <<<TEXT
-После установки JSitemap вам не придётся ждать момента, когда поисковик просмотрит весь ваш сайт вместо этого вся информация сразу сможет отправиться в базы поисковиков.
+когда поисковик просмотрит весь ваш сайт
 TEXT
         ));
 
@@ -34,7 +37,21 @@ TEXT
                 \Aot\Sviaz\Rule\Container::getRule3(),
                 \Aot\Sviaz\Rule\Container::getRule4(),
                 \Aot\Sviaz\Rule\Container::getRule5(),
-            ], \Aot\Sviaz\Rule\Container::getRuleSuch1()
+                \Aot\Sviaz\Rule\Container::getRule6(),
+                \Aot\Sviaz\Rule\Container::getRule7(),
+                \Aot\Sviaz\Rule\Container::getRule8(),
+                \Aot\Sviaz\Rule\Container::getRule9(),
+                \Aot\Sviaz\Rule\Container::getRule10(),
+                \Aot\Sviaz\Rule\Container::getRule11(),
+                \Aot\Sviaz\Rule\Container::getRule12(),
+                \Aot\Sviaz\Rule\Container::getRule13(),
+                \Aot\Sviaz\Rule\Container::getRule14(),
+                \Aot\Sviaz\Rule\Container::getRule17(),
+                \Aot\Sviaz\Rule\Container::getRule15(),
+
+            ],
+                \Aot\Sviaz\Rule\Container::getRuleSuch1(),
+                \Aot\Sviaz\Rule\Container::getRuleSuchPadej()
             )
         );
 
@@ -44,12 +61,12 @@ TEXT
 
             foreach ($links as $link) {
                 $data[] =
-                    $link->getMainSequenceMember()->getSlovo()->getText()
+                    $link->getMainSequenceMember()->getSlovo()->getText() . "(" . ChastiRechiRegistry::getIdByClass(get_class($link->getMainSequenceMember()->getSlovo())) . ")"
                     . "->" .
-                    $link->getDependedSequenceMember()->getSlovo()->getText();
+                    $link->getDependedSequenceMember()->getSlovo()->getText() . "(" . ChastiRechiRegistry::getIdByClass(get_class($link->getDependedSequenceMember()->getSlovo())) . ")";
             }
 
-             echo join(" ", $data) . "\n";
+            echo join(" ", $data) . "\n";
         }
 
     }
