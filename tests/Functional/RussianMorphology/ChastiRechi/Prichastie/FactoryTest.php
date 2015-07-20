@@ -5,6 +5,7 @@ namespace AotTest\Functional\RussianMorphology\ChastiRechi\Prichastie;
 
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Factory;
 use Aot\RussianMorphology\FactoryException;
+use MorphAttribute;
 
 class FactoryTest extends \AotTest\AotDataStorage
 {
@@ -25,7 +26,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Chislo\Edinstvennoe::class, $result[0]->chislo);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Forma\Polnaya::class, $result[0]->forma);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Imenitelnij::class, $result[0]->padeszh);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Perehodnost\Perehodnij::class, $result[0]->perehodnost);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Perehodnost\Neperehodnij::class, $result[0]->perehodnost);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Muzhskoi::class, $result[0]->rod);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vid\Nesovershennyj::class, $result[0]->vid);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vozvratnost\Nevozvratnyj::class, $result[0]->vozvratnost);
@@ -37,7 +38,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         # убираем число
         $point_wo_chislo = $this->getPoint();
-        unset($point_wo_chislo->dw->parameters->{NUMBER_ID});
+        unset($point_wo_chislo->dw->parameters[NUMBER_ID]);
         try {
             $this->buildFactory($point_wo_chislo);
             $this->fail("Не должно было тут быть!");
@@ -51,7 +52,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         # убираем переходность
         $point_wo_perehodnost = $this->getPoint();
-        unset($point_wo_perehodnost->dw->parameters->{TRANSIVITY_ID});
+        unset($point_wo_perehodnost->dw->parameters[TRANSIVITY_ID]);
         try {
             $this->buildFactory($point_wo_perehodnost);
         } catch (\Exception $e) {
@@ -63,7 +64,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         # убираем падеж
         $point_wo_padeszh = $this->getPoint();
-        unset($point_wo_padeszh->dw->parameters->{CASE_ID});
+        unset($point_wo_padeszh->dw->parameters[CASE_ID]);
         try {
             $this->buildFactory($point_wo_padeszh);
             $this->fail("Не должно было тут быть!");
@@ -77,7 +78,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         # убираем вид
         $point_wo_vid = $this->getPoint();
-        unset($point_wo_vid->dw->parameters->{VIEW_ID});
+        unset($point_wo_vid->dw->parameters[VIEW_ID]);
         try {
             $this->buildFactory($point_wo_vid);
             $this->fail("Не должно было тут быть!");
@@ -91,7 +92,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         # убираем возвратность
         $point_wo_vozvratnost = $this->getPoint();
-        unset($point_wo_vozvratnost->dw->parameters->{\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()});
+        unset($point_wo_vozvratnost->dw->parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()]);
         try {
             $this->buildFactory($point_wo_vozvratnost);
         } catch (\Exception $e) {
@@ -103,7 +104,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         # убираем время
         $point_wo_vremya = $this->getPoint();
-        unset($point_wo_vremya->dw->parameters->{TIME_ID});
+        unset($point_wo_vremya->dw->parameters[TIME_ID]);
         try {
             $this->buildFactory($point_wo_vremya);
             $this->fail("Не должно было тут быть!");
@@ -117,7 +118,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         # убираем разряд
         $point_wo_razryad = $this->getPoint();
-        unset($point_wo_razryad->dw->parameters->{DISCHARGE_COMMUNION_ID});
+        unset($point_wo_razryad->dw->parameters[DISCHARGE_COMMUNION_ID]);
         try {
             $this->buildFactory($point_wo_razryad);
             $this->fail("Не должно было тут быть!");
@@ -131,7 +132,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         # убираем форму
         $point_wo_forma = $this->getPoint();
-        unset($point_wo_forma->dw->parameters->{\OldAotConstants::WORD_FORM()});
+        unset($point_wo_forma->dw->parameters[\OldAotConstants::WORD_FORM()]);
         try {
             $this->buildFactory($point_wo_forma);
         } catch (\Exception $e) {
@@ -143,7 +144,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         # убираем род +++ и единственное число +++
         $point_wo_rod = $this->getPoint();
-        unset($point_wo_rod->dw->parameters->{GENUS_ID});
+        unset($point_wo_rod->dw->parameters[GENUS_ID]);
         try {
             $this->buildFactory($point_wo_rod);
             $this->fail("Не должно было тут быть!");
@@ -173,138 +174,17 @@ class FactoryTest extends \AotTest\AotDataStorage
     }
 
     /**
-     * Возвращает точку
+     * читающий
      * @return object
      */
     protected function getPoint()
     {
-        $json_p = <<<JSON
-{
-        "kw": 0,
-        "ks": 0,
-        "dw": {
-            "id_word_form": "559e9e4664db1",
-            "initial_form": "читать",
-            "name_word_class": "причастие",
-            "id_word_class": 5,
-            "parameters": {
-                "11": {
-                    "id_morph_attr": 11,
-                    "name": "одуш-неодуш",
-                    "id_value_attr": {
-                        "27": 27
-                    },
-                    "short_value": {
-                        "неодуш": "неодуш"
-                    },
-                    "value": {
-                        "неодушевленное": "неодушевленное"
-                    }
-                },
-                "5": {
-                    "id_morph_attr": 5,
-                    "name": "время",
-                    "id_value_attr": {
-                        "11": 11
-                    },
-                    "short_value": {
-                        "наст": "наст"
-                    },
-                    "value": {
-                        "настоящее": "настоящее"
-                    }
-                },
-                "16": {
-                    "id_morph_attr": 16,
-                    "name": "разряд причастия",
-                    "id_value_attr": {
-                        "44": 44
-                    },
-                    "short_value": {
-                        "действ": "действ"
-                    },
-                    "value": {
-                        "действительное": "действительное"
-                    }
-                },
-                "6": {
-                    "id_morph_attr": 6,
-                    "name": "число",
-                    "id_value_attr": {
-                        "14": 14
-                    },
-                    "short_value": {
-                        "ед.ч.": "ед.ч."
-                    },
-                    "value": {
-                        "единственное число": "единственное число"
-                    }
-                },
-                "8": {
-                    "id_morph_attr": 8,
-                    "name": "род",
-                    "id_value_attr": {
-                        "19": 19
-                    },
-                    "short_value": {
-                        "м.р.": "м.р."
-                    },
-                    "value": {
-                        "мужской род": "мужской род"
-                    }
-                },
-                "13": {
-                    "id_morph_attr": 13,
-                    "name": "падеж",
-                    "id_value_attr": {
-                        "32": 32,
-                        "33": 33
-                    },
-                    "short_value": {
-                        "и.п.": "и.п."
-                    },
-                    "value": {
-                        "именительный": "именительный"
-                    }
-                },
-                "3": {
-                    "id_morph_attr": 3,
-                    "name": "переходность",
-                    "id_value_attr": {
-                        "6": 6
-                    },
-                    "short_value": {
-                        "перех": "перех"
-                    },
-                    "value": {
-                        "переходный": "переходный"
-                    }
-                },
-                "1": {
-                    "id_morph_attr": 1,
-                    "name": "вид",
-                    "id_value_attr": {
-                        "3": 3
-                    },
-                    "short_value": {
-                        "несов": "несов"
-                    },
-                    "value": {
-                        "несовершенный": "несовершенный"
-                    }
-                }
-            }
-        },
-        "ps": "attribute",
-        "O": "attribute_noun",
-        "Oz": "559e9e4664d1c",
-        "direction": "y",
-        "id_sentence": "559e9e46641b03.16380905",
-        "denial": ""
-        }
-JSON;
-
-        return json_decode($json_p);
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:2;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:16:"читающий";s:11:"id_sentence";s:23:"55ad0077a87f44.13996828";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"f2349b6c-34a9-11e2-9f8b-ff43d750e408";s:9:"word_form";s:16:"читающий";s:12:"initial_form";s:12:"читать";s:13:"id_word_class";s:1:"5";s:15:"name_word_class";s:18:"причастие";s:10:"parameters";a:8:{i:16;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"16";s:4:"name";s:21:"разряд прич";s:17:"number_morph_attr";s:1:"1";s:13:"id_value_attr";a:1:{i:44;s:2:"44";}s:11:"short_value";a:1:{s:10:"дейст";s:10:"дейст";}s:5:"value";a:1:{s:28:"действительное";s:28:"действительное";}}i:1;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"1";s:4:"name";s:6:"вид";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:3;s:1:"3";}s:11:"short_value";a:1:{s:10:"несов";s:10:"несов";}s:5:"value";a:1:{s:26:"несовершенный";s:26:"несовершенный";}}i:9;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"9";s:4:"name";s:24:"возвратность";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:23;s:2:"23";}s:11:"short_value";a:1:{s:12:"невозв";s:12:"невозв";}s:5:"value";a:1:{s:24:"невозвратный";s:24:"невозвратный";}}i:5;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"5";s:4:"name";s:10:"время";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:11;s:2:"11";}s:11:"short_value";a:1:{s:8:"наст";s:8:"наст";}s:5:"value";a:1:{s:18:"настоящее";s:18:"настоящее";}}i:17;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"17";s:4:"name";s:10:"форма";s:17:"number_morph_attr";s:1:"5";s:13:"id_value_attr";a:1:{i:46;s:2:"46";}s:11:"short_value";a:1:{s:8:"полн";s:8:"полн";}s:5:"value";a:1:{s:23:"полная форма";s:23:"полная форма";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"6";s:13:"id_value_attr";a:1:{i:14;s:2:"14";}s:11:"short_value";a:1:{s:8:"ед.ч.";s:8:"ед.ч.";}s:5:"value";a:1:{s:24:"единственное";s:24:"единственное";}}i:8;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"8";s:4:"name";s:6:"род";s:17:"number_morph_attr";s:1:"7";s:13:"id_value_attr";a:1:{i:19;s:2:"19";}s:11:"short_value";a:1:{s:6:"м.р.";s:6:"м.р.";}s:5:"value";a:1:{s:21:"мужской род";s:21:"мужской род";}}i:13;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"13";s:4:"name";s:10:"падеж";s:17:"number_morph_attr";s:1:"8";s:13:"id_value_attr";a:1:{i:32;s:2:"32";}s:11:"short_value";a:1:{s:6:"и.п.";s:6:"и.п.";}s:5:"value";a:1:{s:24:"именительный";s:24:"именительный";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        $point->dw->parameters[13] = new MorphAttribute();
+        $point->dw->parameters[13]->id_value_attr = ['32' => 32, '33' => 33];
+        return $point;
     }
 
 

@@ -10,6 +10,7 @@ namespace AotTest\Functional\RussianMorphology\ChastiRechi\Prilagatelnoe;
 
 
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Factory;
+use MorphAttribute;
 
 class FactoryTest extends \AotTest\AotDataStorage
 {
@@ -27,7 +28,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base::class, $result[0]);
         $this->assertEquals(1, count($result));
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Edinstvennoe::class, $result[0]->chislo);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Null::class, $result[0]->forma);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::class, $result[0]->forma);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij::class, $result[0]->padeszh);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Muzhskoi::class, $result[0]->rod);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class, $result[0]->razryad);
@@ -61,7 +62,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Null::class, $result[0]->padeszh);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Srednij::class, $result[0]->rod);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class, $result[0]->razryad);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Null::class, $result[0]->stepen_sravneniia);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Polozhitelnaya::class, $result[0]->stepen_sravneniia);
     }
 
     public function testBuild_Success_Point_prevosh_2alt()
@@ -73,7 +74,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base::class, $result[1]);
         $this->assertEquals(2, count($result));
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Edinstvennoe::class, $result[0]->chislo);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Null::class, $result[0]->forma);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::class, $result[0]->forma);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij::class, $result[0]->padeszh);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Muzhskoi::class, $result[0]->rod);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class, $result[0]->razryad);
@@ -83,16 +84,15 @@ class FactoryTest extends \AotTest\AotDataStorage
     public function testBuild_Success_Point_sravn_falseAlt()
     {
         $point = $this->getPoint_sravn_falseAlt(); // берем точку тестовую
-        $result = $this->buildFactory($point);
+        try{
 
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base::class, $result[0]);
-        $this->assertEquals(1, count($result));
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Null::class, $result[0]->chislo);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Null::class, $result[0]->forma);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Null::class, $result[0]->padeszh);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::class, $result[0]->rod);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class, $result[0]->razryad);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Sravnitelnaya::class, $result[0]->stepen_sravneniia);
+            $result = $this->buildFactory($point);
+            $this->fail("Не должно было тут быть!");
+        }
+        catch(\RuntimeException $e)
+        {
+            $this->assertEquals("Unsupported value exception = 26", $e->getMessage());
+        }
     }
 
 
@@ -125,454 +125,79 @@ class FactoryTest extends \AotTest\AotDataStorage
         return Factory::get()->build($dw, $word);
     }
 
-    // обычное прилагательное
+    /**
+     * большой
+     * @return mixed
+     */
     private function getPoint_norm()
     {
-        $json_p = <<<JSON
-{
-        "kw": 0,
-        "ks": 0,
-        "dw": {
-            "id_word_form": "55a4e7141a0ef",
-            "initial_form": "большой",
-            "name_word_class": "прилагательное",
-            "id_word_class": 3,
-            "parameters": {
-                "8": {
-                    "id_morph_attr": 8,
-                    "name": "род",
-                    "id_value_attr": {
-                        "19": 19
-                    },
-                    "short_value": {
-                        "м.р.": "м.р."
-                    },
-                    "value": {
-                        "мужской род": "мужской род"
-                    }
-                },
-                "6": {
-                    "id_morph_attr": 6,
-                    "name": "число",
-                    "id_value_attr": {
-                        "14": 14
-                    },
-                    "short_value": {
-                        "ед.ч.": "ед.ч."
-                    },
-                    "value": {
-                        "единственное число": "единственное число"
-                    }
-                },
-                "13": {
-                    "id_morph_attr": 13,
-                    "name": "падеж",
-                    "id_value_attr": {
-                        "32": 32
-                    },
-                    "short_value": {
-                        "и.п.": "и.п."
-                    },
-                    "value": {
-                        "именительный": "именительный"
-                    }
-                },
-                "11": {
-                    "id_morph_attr": 11,
-                    "name": "одуш-неодуш",
-                    "id_value_attr": {
-                        "27": 27
-                    },
-                    "short_value": {
-                        "неодуш": "неодуш"
-                    },
-                    "value": {
-                        "неодушевленное": "неодушевленное"
-                    }
-                }
-            }
-        },
-        "ps": "attribute",
-        "O": "attribute_noun",
-        "Oz": "55a4e71419edd",
-        "direction": "y",
-        "id_sentence": "55a4e714192687.89169073",
-        "denial": ""
-    }
-JSON;
-
-        return json_decode($json_p);
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:6;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:14:"большой";s:11:"id_sentence";s:23:"55ad018a5e7460.27070203";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"edf42e6e-2c0c-11e2-b2e9-3f2c36681b6a";s:9:"word_form";s:14:"большой";s:12:"initial_form";s:14:"большой";s:13:"id_word_class";s:1:"3";s:15:"name_word_class";s:28:"прилагательное";s:10:"parameters";a:4:{i:17;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"17";s:4:"name";s:10:"форма";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:46;s:2:"46";}s:11:"short_value";a:1:{s:8:"полн";s:8:"полн";}s:5:"value";a:1:{s:23:"полная форма";s:23:"полная форма";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:14;s:2:"14";}s:11:"short_value";a:1:{s:8:"ед.ч.";s:8:"ед.ч.";}s:5:"value";a:1:{s:24:"единственное";s:24:"единственное";}}i:8;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"8";s:4:"name";s:6:"род";s:17:"number_morph_attr";s:1:"5";s:13:"id_value_attr";a:1:{i:19;s:2:"19";}s:11:"short_value";a:1:{s:6:"м.р.";s:6:"м.р.";}s:5:"value";a:1:{s:21:"мужской род";s:21:"мужской род";}}i:13;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"13";s:4:"name";s:10:"падеж";s:17:"number_morph_attr";s:1:"6";s:13:"id_value_attr";a:1:{i:32;s:2:"32";}s:11:"short_value";a:1:{s:6:"и.п.";s:6:"и.п.";}s:5:"value";a:1:{s:24:"именительный";s:24:"именительный";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        return $point;
     }
 
-    // сравнительное прилагательное
+    /**
+     * тише
+     * @return mixed
+     */
     private function getPoint_sravn()
     {
-        $json_p = <<<JSON
-{
-        "kw": 1,
-        "ks": 0,
-        "dw": {
-            "id_word_form": "55a501bb296c4",
-            "initial_form": "большой",
-            "name_word_class": "прилагательное",
-            "id_word_class": 3,
-            "parameters": {
-                "15": {
-                    "id_morph_attr": 15,
-                    "name": "степень сравнения",
-                    "id_value_attr": {
-                        "42": 42
-                    },
-                    "short_value": {
-                        "сравн": "сравн"
-                    },
-                    "value": {
-                        "сравнительная степень": "сравнительная степень"
-                    }
-                },
-                "11": {
-                    "id_morph_attr": 11,
-                    "name": "одуш-неодуш",
-                    "id_value_attr": {
-                        "27": 27
-                    },
-                    "short_value": {
-                        "неодуш": "неодуш"
-                    },
-                    "value": {
-                        "неодушевленное": "неодушевленное"
-                    }
-                }
-            }
-        },
-        "ps": "adjunct",
-        "O": "adjunct_verb",
-        "Oz": "55a501bb295ae",
-        "direction": "y",
-        "id_sentence": "55a501bb28dad6.78469914",
-        "denial": ""
-    }
-JSON;
-
-        return json_decode($json_p);
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:1;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:8:"тише";s:11:"id_sentence";s:23:"55ad01e8577178.86807493";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"1a06c2dc-2d6b-11e2-ac8e-6b1c9f627c4c";s:9:"word_form";s:8:"тише";s:12:"initial_form";s:10:"тихий";s:13:"id_word_class";s:1:"3";s:15:"name_word_class";s:28:"прилагательное";s:10:"parameters";a:1:{i:15;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"15";s:4:"name";s:33:"степень сравнения";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:42;s:2:"42";}s:11:"short_value";a:1:{s:10:"сравн";s:10:"сравн";}s:5:"value";a:1:{s:41:"сравнительная степень";s:41:"сравнительная степень";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        return $point;
     }
 
-    // сравнительное прилагательное с невалидной альтернативой
+    /**
+     * тише
+     * сравнительное прилагательное с невалидной альтернативой
+     * @return mixed
+     */
     private function getPoint_sravn_falseAlt()
     {
-        $json_p = <<<JSON
-{
-        "kw": 1,
-        "ks": 0,
-        "dw": {
-            "id_word_form": "55a501bb296c4",
-            "initial_form": "большой",
-            "name_word_class": "прилагательное",
-            "id_word_class": 3,
-            "parameters": {
-                "15": {
-                    "id_morph_attr": 15,
-                    "name": "степень сравнения",
-                    "id_value_attr": {
-                        "42": 42
-                    },
-                    "short_value": {
-                        "сравн": "сравн"
-                    },
-                    "value": {
-                        "сравнительная степень": "сравнительная степень"
-                    }
-                },
-                "11": {
-                    "id_morph_attr": 11,
-                    "name": "одуш-неодуш",
-                    "id_value_attr": {
-                        "26": 26,
-                        "27": 27
-                    },
-                    "short_value": {
-                        "неодуш": "неодуш"
-                    },
-                    "value": {
-                        "неодушевленное": "неодушевленное"
-                    }
-                }
-            }
-        },
-        "ps": "adjunct",
-        "O": "adjunct_verb",
-        "Oz": "55a501bb295ae",
-        "direction": "y",
-        "id_sentence": "55a501bb28dad6.78469914",
-        "denial": ""
-    }
-JSON;
-
-        return json_decode($json_p);
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:1;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:8:"тише";s:11:"id_sentence";s:23:"55ad01e8577178.86807493";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"1a06c2dc-2d6b-11e2-ac8e-6b1c9f627c4c";s:9:"word_form";s:8:"тише";s:12:"initial_form";s:10:"тихий";s:13:"id_word_class";s:1:"3";s:15:"name_word_class";s:28:"прилагательное";s:10:"parameters";a:1:{i:15;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"15";s:4:"name";s:33:"степень сравнения";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:42;s:2:"42";}s:11:"short_value";a:1:{s:10:"сравн";s:10:"сравн";}s:5:"value";a:1:{s:41:"сравнительная степень";s:41:"сравнительная степень";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        $point->dw->parameters[15]->id_value_attr = ['26' => 26, '27' => 27];
+        return $point;
     }
 
-    // прилагательное в краткой форме
+    /**
+     * тихо - прилагательное в краткой форме
+     * @return mixed
+     */
     private function getPoint_shortForm()
     {
-        $json_p = <<<JSON
-{
-        "kw": 0,
-        "ks": 0,
-        "dw": {
-            "id_word_form": "55a501fe0e9a1",
-            "initial_form": "тихий",
-            "name_word_class": "прилагательное",
-            "id_word_class": 3,
-            "parameters": {
-                "17": {
-                    "id_morph_attr": 17,
-                    "name": "форма",
-                    "id_value_attr": {
-                        "47": 47
-                    },
-                    "short_value": {
-                        "кр": "кр"
-                    },
-                    "value": {
-                        "краткая форма": "краткая форма"
-                    }
-                },
-                "8": {
-                    "id_morph_attr": 8,
-                    "name": "род",
-                    "id_value_attr": {
-                        "20": 20
-                    },
-                    "short_value": {
-                        "с.р.": "с.р."
-                    },
-                    "value": {
-                        "средний род": "средний род"
-                    }
-                },
-                "6": {
-                    "id_morph_attr": 6,
-                    "name": "число",
-                    "id_value_attr": {
-                        "14": 14
-                    },
-                    "short_value": {
-                        "ед.ч.": "ед.ч."
-                    },
-                    "value": {
-                        "единственное число": "единственное число"
-                    }
-                },
-                "11": {
-                    "id_morph_attr": 11,
-                    "name": "одуш-неодуш",
-                    "id_value_attr": {
-                        "27": 27
-                    },
-                    "short_value": {
-                        "неодуш": "неодуш"
-                    },
-                    "value": {
-                        "неодушевленное": "неодушевленное"
-                    }
-                }
-            }
-        },
-        "ps": "adjunct",
-        "O": "adjunct_verb",
-        "Oz": "55a501fe0e6ee",
-        "direction": "y",
-        "id_sentence": "55a501fe0dac79.47855019",
-        "denial": ""
-    }
-JSON;
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:1;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:8:"тихо";s:11:"id_sentence";s:23:"55ad02ac99ab01.48590573";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"1a06c2dc-2d6b-11e2-bcbf-539839b39787";s:9:"word_form";s:8:"тихо";s:12:"initial_form";s:10:"тихий";s:13:"id_word_class";s:1:"3";s:15:"name_word_class";s:28:"прилагательное";s:10:"parameters";a:4:{i:15;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"15";s:4:"name";s:33:"степень сравнения";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:41;s:2:"41";}s:11:"short_value";a:1:{s:10:"полож";s:10:"полож";}s:5:"value";a:1:{s:41:"положительная степень";s:41:"положительная степень";}}i:17;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"17";s:4:"name";s:10:"форма";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:47;s:2:"47";}s:11:"short_value";a:1:{s:4:"кр";s:4:"кр";}s:5:"value";a:1:{s:25:"краткая форма";s:25:"краткая форма";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:14;s:2:"14";}s:11:"short_value";a:1:{s:8:"ед.ч.";s:8:"ед.ч.";}s:5:"value";a:1:{s:24:"единственное";s:24:"единственное";}}i:8;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"8";s:4:"name";s:6:"род";s:17:"number_morph_attr";s:1:"5";s:13:"id_value_attr";a:1:{i:20;s:2:"20";}s:11:"short_value";a:1:{s:6:"с.р.";s:6:"с.р.";}s:5:"value";a:1:{s:21:"средний род";s:21:"средний род";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        return $point;
 
-        return json_decode($json_p);
     }
 
-    // прилагательное в превосходной форме с альтернативами
+    /**
+     * сильнейший
+     * @return mixed
+     */
     private function getPoint_prevosh_2alt()
     {
-        $json_p = <<<JSON
-{
-        "kw": 0,
-        "ks": 0,
-        "dw": {
-            "id_word_form": "55a5034310861",
-            "initial_form": "красивый",
-            "name_word_class": "прилагательное",
-            "id_word_class": 3,
-            "parameters": {
-                "15": {
-                    "id_morph_attr": 15,
-                    "name": "степень сравнения",
-                    "id_value_attr": {
-                        "43": 43
-                    },
-                    "short_value": {
-                        "прев": "прев"
-                    },
-                    "value": {
-                        "превосходная": "превосходная"
-                    }
-                },
-                "8": {
-                    "id_morph_attr": 8,
-                    "name": "род",
-                    "id_value_attr": {
-                        "19": 19
-                    },
-                    "short_value": {
-                        "м.р.": "м.р."
-                    },
-                    "value": {
-                        "мужской род": "мужской род"
-                    }
-                },
-                "6": {
-                    "id_morph_attr": 6,
-                    "name": "число",
-                    "id_value_attr": {
-                        "14": 14
-                    },
-                    "short_value": {
-                        "ед.ч.": "ед.ч."
-                    },
-                    "value": {
-                        "единственное число": "единственное число"
-                    }
-                },
-                "13": {
-                    "id_morph_attr": 13,
-                    "name": "падеж",
-                    "id_value_attr": {
-                        "32": 32,
-                        "35": 35
-                    },
-                    "short_value": {
-                        "и.п.": "и.п."
-                    },
-                    "value": {
-                        "именительный": "именительный"
-                    }
-                },
-                "11": {
-                    "id_morph_attr": 11,
-                    "name": "одуш-неодуш",
-                    "id_value_attr": {
-                        "27": 27
-                    },
-                    "short_value": {
-                        "неодуш": "неодуш"
-                    },
-                    "value": {
-                        "неодушевленное": "неодушевленное"
-                    }
-                }
-            }
-        },
-        "ps": "attribute",
-        "O": "attribute_noun",
-        "Oz": "55a50343106bd",
-        "direction": "y",
-        "id_sentence": "55a503430feff2.79238495",
-        "denial": ""
-    }
-JSON;
-
-        return json_decode($json_p);
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:2;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:20:"сильнейший";s:11:"id_sentence";s:23:"55ad040f612a94.27530797";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"5c14cafe-2d69-11e2-bf9f-d3cf0a64751c";s:9:"word_form";s:20:"сильнейший";s:12:"initial_form";s:20:"сильнейший";s:13:"id_word_class";s:1:"3";s:15:"name_word_class";s:28:"прилагательное";s:10:"parameters";a:4:{i:17;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"17";s:4:"name";s:10:"форма";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:46;s:2:"46";}s:11:"short_value";a:1:{s:8:"полн";s:8:"полн";}s:5:"value";a:1:{s:23:"полная форма";s:23:"полная форма";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:14;s:2:"14";}s:11:"short_value";a:1:{s:8:"ед.ч.";s:8:"ед.ч.";}s:5:"value";a:1:{s:24:"единственное";s:24:"единственное";}}i:8;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"8";s:4:"name";s:6:"род";s:17:"number_morph_attr";s:1:"5";s:13:"id_value_attr";a:1:{i:19;s:2:"19";}s:11:"short_value";a:1:{s:6:"м.р.";s:6:"м.р.";}s:5:"value";a:1:{s:21:"мужской род";s:21:"мужской род";}}i:13;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"13";s:4:"name";s:10:"падеж";s:17:"number_morph_attr";s:1:"6";s:13:"id_value_attr";a:1:{i:32;s:2:"32";}s:11:"short_value";a:1:{s:6:"и.п.";s:6:"и.п.";}s:5:"value";a:1:{s:24:"именительный";s:24:"именительный";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        $point->dw->parameters[15] = new MorphAttribute();
+        $point->dw->parameters[15]->id_value_attr = ['43' => 43];
+        $point->dw->parameters[13]->id_value_attr = ['32' => 32, '35' => 35];
+        return $point;
     }
 
     // глагол
     private function getPoint_falsePartOfSpeech()
     {
-        $json_p = <<<JSON
-{
-        "kw": 0,
-        "ks": 0,
-        "dw": {
-            "id_word_form": "55a5034310861",
-            "initial_form": "красивый",
-            "name_word_class": "прилагательное",
-            "id_word_class": 1,
-            "parameters": {
-                "15": {
-                    "id_morph_attr": 15,
-                    "name": "степень сравнения",
-                    "id_value_attr": {
-                        "43": 43
-                    },
-                    "short_value": {
-                        "прев": "прев"
-                    },
-                    "value": {
-                        "превосходная": "превосходная"
-                    }
-                },
-                "8": {
-                    "id_morph_attr": 8,
-                    "name": "род",
-                    "id_value_attr": {
-                        "19": 19
-                    },
-                    "short_value": {
-                        "м.р.": "м.р."
-                    },
-                    "value": {
-                        "мужской род": "мужской род"
-                    }
-                },
-                "6": {
-                    "id_morph_attr": 6,
-                    "name": "число",
-                    "id_value_attr": {
-                        "14": 14
-                    },
-                    "short_value": {
-                        "ед.ч.": "ед.ч."
-                    },
-                    "value": {
-                        "единственное число": "единственное число"
-                    }
-                },
-                "13": {
-                    "id_morph_attr": 13,
-                    "name": "падеж",
-                    "id_value_attr": {
-                        "32": 32,
-                        "35": 35
-                    },
-                    "short_value": {
-                        "и.п.": "и.п."
-                    },
-                    "value": {
-                        "именительный": "именительный"
-                    }
-                },
-                "11": {
-                    "id_morph_attr": 11,
-                    "name": "одуш-неодуш",
-                    "id_value_attr": {
-                        "27": 27
-                    },
-                    "short_value": {
-                        "неодуш": "неодуш"
-                    },
-                    "value": {
-                        "неодушевленное": "неодушевленное"
-                    }
-                }
-            }
-        },
-        "ps": "attribute",
-        "O": "attribute_noun",
-        "Oz": "55a50343106bd",
-        "direction": "y",
-        "id_sentence": "55a503430feff2.79238495",
-        "denial": ""
-    }
-JSON;
-
-        return json_decode($json_p);
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:1;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:8:"тихо";s:11:"id_sentence";s:23:"55ad02ac99ab01.48590573";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"1a06c2dc-2d6b-11e2-bcbf-539839b39787";s:9:"word_form";s:8:"тихо";s:12:"initial_form";s:10:"тихий";s:13:"id_word_class";s:1:"3";s:15:"name_word_class";s:28:"прилагательное";s:10:"parameters";a:4:{i:15;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"15";s:4:"name";s:33:"степень сравнения";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:41;s:2:"41";}s:11:"short_value";a:1:{s:10:"полож";s:10:"полож";}s:5:"value";a:1:{s:41:"положительная степень";s:41:"положительная степень";}}i:17;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"17";s:4:"name";s:10:"форма";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:47;s:2:"47";}s:11:"short_value";a:1:{s:4:"кр";s:4:"кр";}s:5:"value";a:1:{s:25:"краткая форма";s:25:"краткая форма";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:14;s:2:"14";}s:11:"short_value";a:1:{s:8:"ед.ч.";s:8:"ед.ч.";}s:5:"value";a:1:{s:24:"единственное";s:24:"единственное";}}i:8;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"8";s:4:"name";s:6:"род";s:17:"number_morph_attr";s:1:"5";s:13:"id_value_attr";a:1:{i:20;s:2:"20";}s:11:"short_value";a:1:{s:6:"с.р.";s:6:"с.р.";}s:5:"value";a:1:{s:21:"средний род";s:21:"средний род";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        $point->dw->id_word_class = 1;
+        return $point;
     }
 }

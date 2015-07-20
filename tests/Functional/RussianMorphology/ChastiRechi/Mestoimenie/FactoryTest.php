@@ -22,24 +22,6 @@ class FactoryTest extends AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Factory::class, $factory);
     }
 
-    public function _testWDW(){
-        $const = new \D_Constants();
-        $const->defineConstants();
-        $syntax_parser = new \SyntaxParserManager();
-        $text = 'оно';
-        $syntax_parser->reg_parser->parse_text($text);
-        $syntax_parser->create_dictionary_word();
-        $wdw = [];
-        foreach ($syntax_parser->reg_parser->get_sentences() as $sentence) {
-            $wdw[] = $syntax_parser->create_sentence_space($sentence);
-        }
-
-//        print_r($wdw);
-//        $wdw_s = json_encode($wdw, JSON_PRETTY_PRINT | JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE);
-//        $wdw_uns = json_decode($wdw_s);
-//        print_r($wdw_s);
-    }
-
 
     public function testBuild_Success()
     {
@@ -71,9 +53,9 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint3(); // берем точку тестовую
         // убираем падеж
-        unset($point->dw->parameters->{13});
+        unset($point->dw->parameters[13]);
         // убираем число
-        unset($point->dw->parameters->{6});
+        unset($point->dw->parameters[6]);
         $result = $this->buildFactory($point);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Base::class, $result[0]);
         $this->assertEquals(1, count($result));
@@ -128,7 +110,7 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         // подменяем падеж на несуществующий
-        $point->dw->parameters->{CASE_ID}->id_value_attr = [111 => 111];
+        $point->dw->parameters[CASE_ID]->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);
             $this->fail("Не должно было тут быть!");
@@ -144,7 +126,7 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         // подменяем число на несуществующий
-        $point->dw->parameters->{NUMBER_ID}->id_value_attr = [111 => 111];
+        $point->dw->parameters[NUMBER_ID]->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);
             $this->fail("Не должно было тут быть!");
@@ -160,7 +142,7 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         // подменяем лицо на несуществующий
-        $point->dw->parameters->{PERSON_ID}->id_value_attr = [111 => 111];
+        $point->dw->parameters[PERSON_ID]->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);
             $this->fail("Не должно было тут быть!");
@@ -175,7 +157,7 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         // подменяем род на несуществующий
-        $point->dw->parameters->{GENUS_ID}->id_value_attr = [111 => 111];
+        $point->dw->parameters[GENUS_ID]->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);
             $this->fail("Не должно было тут быть!");
@@ -190,9 +172,9 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         // создаем новый аттрибут
-        $point->dw->parameters->{\OldAotConstants::RANK_PRONOUNS()} = new MorphAttribute();
+        $point->dw->parameters[\OldAotConstants::RANK_PRONOUNS()] = new MorphAttribute();
         // подменяем разряд на несуществующий
-        $point->dw->parameters->{\OldAotConstants::RANK_PRONOUNS()}->id_value_attr = [111 => 111];
+        $point->dw->parameters[\OldAotConstants::RANK_PRONOUNS()]->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);
             $this->fail("Не должно было тут быть!");
@@ -228,94 +210,10 @@ class FactoryTest extends AotDataStorage
      */
     private function getPoint()
     {
-        $json_p = <<<JSON
-{
-                    "kw": 0,
-                    "ks": 0,
-                    "id_sentence": "55a6dd7621c619.06223093",
-                    "dw": {
-                        "id_word_form": "e9aa76c2-2f10-11e2-b6c7-2710c1e7728c",
-                        "word_form": "он",
-                        "initial_form": "он",
-                        "id_word_class": 4,
-                        "name_word_class": "местоимение",
-                        "parameters": {
-                            "7": {
-                                "id_morph_attr": "7",
-                                "name": "лицо",
-                                "number_morph_attr": "2",
-                                "id_value_attr": {
-                                    "18": 18
-                                },
-                                "short_value": {
-                                    "3-е": "3-е"
-                                },
-                                "value": {
-                                    "3 лицо": "3 лицо"
-                                }
-                            },
-                            "13": {
-                                "id_morph_attr": "13",
-                                "name": "падеж",
-                                "number_morph_attr": "3",
-                                "id_value_attr": {
-                                    "32": 32
-                                },
-                                "short_value": {
-                                    "и.п.": "и.п."
-                                },
-                                "value": {
-                                    "именительный": "именительный"
-                                }
-                            },
-                            "6": {
-                                "id_morph_attr": "6",
-                                "name": "число",
-                                "number_morph_attr": "4",
-                                "id_value_attr": {
-                                    "14": 14
-                                },
-                                "short_value": {
-                                    "ед.ч.": "ед.ч."
-                                },
-                                "value": {
-                                    "единственное": "единственное"
-                                }
-                            },
-                            "8": {
-                                "id_morph_attr": "8",
-                                "name": "род",
-                                "number_morph_attr": "5",
-                                "id_value_attr": {
-                                    "19": 19
-                                },
-                                "short_value": {
-                                    "м.р.": "м.р."
-                                },
-                                "value": {
-                                    "мужской род": "мужской род"
-                                }
-                            },
-                            "25": {
-                                "id_morph_attr": "25",
-                                "name": "тип местоимения",
-                                "number_morph_attr": "6",
-                                "id_value_attr": {
-                                    "70": 70
-                                },
-                                "short_value": {
-                                    "одуш": "одуш"
-                                },
-                                "value": {
-                                    "личное (одуш)": "личное (одуш)"
-                                }
-                            }
-                        }
-                    }
-                }
-JSON;
-
-        return json_decode($json_p);
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:1;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:4:"он";s:11:"id_sentence";s:23:"55acee270a9f88.63302289";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"e9aa76c2-2f10-11e2-b6c7-2710c1e7728c";s:9:"word_form";s:4:"он";s:12:"initial_form";s:4:"он";s:13:"id_word_class";s:1:"4";s:15:"name_word_class";s:22:"местоимение";s:10:"parameters";a:5:{i:7;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"7";s:4:"name";s:8:"лицо";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:18;s:2:"18";}s:11:"short_value";a:1:{s:4:"3-е";s:4:"3-е";}s:5:"value";a:1:{s:10:"3 лицо";s:10:"3 лицо";}}i:13;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"13";s:4:"name";s:10:"падеж";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:32;s:2:"32";}s:11:"short_value";a:1:{s:6:"и.п.";s:6:"и.п.";}s:5:"value";a:1:{s:24:"именительный";s:24:"именительный";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:14;s:2:"14";}s:11:"short_value";a:1:{s:8:"ед.ч.";s:8:"ед.ч.";}s:5:"value";a:1:{s:24:"единственное";s:24:"единственное";}}i:8;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"8";s:4:"name";s:6:"род";s:17:"number_morph_attr";s:1:"5";s:13:"id_value_attr";a:1:{i:19;s:2:"19";}s:11:"short_value";a:1:{s:6:"м.р.";s:6:"м.р.";}s:5:"value";a:1:{s:21:"мужской род";s:21:"мужской род";}}i:25;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"25";s:4:"name";s:29:"тип местоимения";s:17:"number_morph_attr";s:1:"6";s:13:"id_value_attr";a:1:{i:70;s:2:"70";}s:11:"short_value";a:1:{s:8:"одуш";s:8:"одуш";}s:5:"value";a:1:{s:23:"личное (одуш)";s:23:"личное (одуш)";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        return $point;
     }
 
 
@@ -325,104 +223,11 @@ JSON;
      */
     private function getPoint2()
     {
-        $json_p = <<<JSON
-{
-                    "kw": 0,
-                    "ks": 0,
-                    "count_dw": 2,
-                    "id_sentence": "55a6dd7621c619.06223093",
-                    "w": {
-                        "kw": 0,
-                        "word": "ее",
-                        "id_sentence": "55a77bb85188f3.25946494",
-                        "data": false,
-                        "name_fio": false,
-                        "stop": false,
-                        "cut": false
-                    },
-                    "dw": {
-                        "id_word_form": "e9c4b0a0-2f10-11e2-8636-7703a1d85872",
-                        "word_form": "ее",
-                        "initial_form": "она",
-                        "id_word_class": 4,
-                        "name_word_class": "местоимение",
-                        "parameters": {
-                            "7": {
-                                "id_morph_attr": "7",
-                                "name": "лицо",
-                                "number_morph_attr": "2",
-                                "id_value_attr": {
-                                    "18": 18
-                                },
-                                "short_value": {
-                                    "3-е": "3-е"
-                                },
-                                "value": {
-                                    "3 лицо": "3 лицо"
-                                }
-                            },
-                            "13": {
-                                "id_morph_attr": "13",
-                                "name": "падеж",
-                                "number_morph_attr": "3",
-                                "id_value_attr": {
-                                    "33": 33
-                                },
-                                "short_value": {
-                                    "р.п.": "р.п."
-                                },
-                                "value": {
-                                    "родительный": "родительный"
-                                }
-                            },
-                            "6": {
-                                "id_morph_attr": "6",
-                                "name": "число",
-                                "number_morph_attr": "4",
-                                "id_value_attr": {
-                                    "14": 14
-                                },
-                                "short_value": {
-                                    "ед.ч.": "ед.ч."
-                                },
-                                "value": {
-                                    "единственное": "единственное"
-                                }
-                            },
-                            "8": {
-                                "id_morph_attr": "8",
-                                "name": "род",
-                                "number_morph_attr": "5",
-                                "id_value_attr": {
-                                    "21": 21
-                                },
-                                "short_value": {
-                                    "ж.р.": "ж.р."
-                                },
-                                "value": {
-                                    "женский род": "женский род"
-                                }
-                            },
-                            "25": {
-                                "id_morph_attr": "25",
-                                "name": "тип местоимения",
-                                "number_morph_attr": "6",
-                                "id_value_attr": {
-                                    "70": 70
-                                },
-                                "short_value": {
-                                    "одуш": "одуш"
-                                },
-                                "value": {
-                                    "личное (одуш)": "личное (одуш)"
-                                }
-                            }
-                        }
-                    }
-                }
-JSON;
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:2;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:4:"ее";s:11:"id_sentence";s:23:"55aceefe04a283.38623597";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"e9c4b0a0-2f10-11e2-8636-7703a1d85872";s:9:"word_form";s:4:"ее";s:12:"initial_form";s:6:"она";s:13:"id_word_class";s:1:"4";s:15:"name_word_class";s:22:"местоимение";s:10:"parameters";a:5:{i:7;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"7";s:4:"name";s:8:"лицо";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:18;s:2:"18";}s:11:"short_value";a:1:{s:4:"3-е";s:4:"3-е";}s:5:"value";a:1:{s:10:"3 лицо";s:10:"3 лицо";}}i:13;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"13";s:4:"name";s:10:"падеж";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:33;s:2:"33";}s:11:"short_value";a:1:{s:6:"р.п.";s:6:"р.п.";}s:5:"value";a:1:{s:22:"родительный";s:22:"родительный";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:14;s:2:"14";}s:11:"short_value";a:1:{s:8:"ед.ч.";s:8:"ед.ч.";}s:5:"value";a:1:{s:24:"единственное";s:24:"единственное";}}i:8;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"8";s:4:"name";s:6:"род";s:17:"number_morph_attr";s:1:"5";s:13:"id_value_attr";a:1:{i:21;s:2:"21";}s:11:"short_value";a:1:{s:6:"ж.р.";s:6:"ж.р.";}s:5:"value";a:1:{s:21:"женский род";s:21:"женский род";}}i:25;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"25";s:4:"name";s:29:"тип местоимения";s:17:"number_morph_attr";s:1:"6";s:13:"id_value_attr";a:1:{i:70;s:2:"70";}s:11:"short_value";a:1:{s:8:"одуш";s:8:"одуш";}s:5:"value";a:1:{s:23:"личное (одуш)";s:23:"личное (одуш)";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        return $point;
 
-        return json_decode($json_p);
     }
 
     /**
@@ -431,90 +236,11 @@ JSON;
      */
     private function getPoint3()
     {
-        $json_p = <<<JSON
-{
-                    "kw": 0,
-                    "ks": 0,
-                    "count_dw": 1,
-                    "id_sentence": "55a77ce9be6f76.19607984",
-                    "w": {
-                        "kw": 0,
-                        "word": "я",
-                        "data": false,
-                        "name_fio": false,
-                        "stop": false,
-                        "cut": false
-                    },
-                    "dw": {
-                        "id_word_form": "efc1b8ae-2f10-11e2-a59d-b318a7eaeb89",
-                        "word_form": "я",
-                        "initial_form": "я",
-                        "id_word_class": 4,
-                        "name_word_class": "местоимение",
-                        "parameters": {
-                            "7": {
-                                "id_morph_attr": "7",
-                                "name": "лицо",
-                                "number_morph_attr": "2",
-                                "id_value_attr": {
-                                    "16": 16
-                                },
-                                "short_value": {
-                                    "1-е": "1-е"
-                                },
-                                "value": {
-                                    "1 лицо": "1 лицо"
-                                }
-                            },
-                            "13": {
-                                "id_morph_attr": "13",
-                                "name": "падеж",
-                                "number_morph_attr": "3",
-                                "id_value_attr": {
-                                    "32": 32
-                                },
-                                "short_value": {
-                                    "и.п.": "и.п."
-                                },
-                                "value": {
-                                    "именительный": "именительный"
-                                }
-                            },
-                            "6": {
-                                "id_morph_attr": "6",
-                                "name": "число",
-                                "number_morph_attr": "4",
-                                "id_value_attr": {
-                                    "14": 14
-                                },
-                                "short_value": {
-                                    "ед.ч.": "ед.ч."
-                                },
-                                "value": {
-                                    "единственное": "единственное"
-                                }
-                            },
-                            "25": {
-                                "id_morph_attr": "25",
-                                "name": "тип местоимения",
-                                "number_morph_attr": "6",
-                                "id_value_attr": {
-                                    "70": 70
-                                },
-                                "short_value": {
-                                    "одуш": "одуш"
-                                },
-                                "value": {
-                                    "личное (одуш)": "личное (одуш)"
-                                }
-                            }
-                        }
-                    },
-                    "key_point": 0
-                }
-JSON;
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:1;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:2:"я";s:11:"id_sentence";s:23:"55acef2a9b70c2.64230191";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"efc1b8ae-2f10-11e2-a59d-b318a7eaeb89";s:9:"word_form";s:2:"я";s:12:"initial_form";s:2:"я";s:13:"id_word_class";s:1:"4";s:15:"name_word_class";s:22:"местоимение";s:10:"parameters";a:4:{i:7;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"7";s:4:"name";s:8:"лицо";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:16;s:2:"16";}s:11:"short_value";a:1:{s:4:"1-е";s:4:"1-е";}s:5:"value";a:1:{s:10:"1 лицо";s:10:"1 лицо";}}i:13;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"13";s:4:"name";s:10:"падеж";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:32;s:2:"32";}s:11:"short_value";a:1:{s:6:"и.п.";s:6:"и.п.";}s:5:"value";a:1:{s:24:"именительный";s:24:"именительный";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:14;s:2:"14";}s:11:"short_value";a:1:{s:8:"ед.ч.";s:8:"ед.ч.";}s:5:"value";a:1:{s:24:"единственное";s:24:"единственное";}}i:25;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"25";s:4:"name";s:29:"тип местоимения";s:17:"number_morph_attr";s:1:"6";s:13:"id_value_attr";a:1:{i:70;s:2:"70";}s:11:"short_value";a:1:{s:8:"одуш";s:8:"одуш";}s:5:"value";a:1:{s:23:"личное (одуш)";s:23:"личное (одуш)";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        return $point;
 
-        return json_decode($json_p);
     }
 
 
@@ -524,89 +250,11 @@ JSON;
      */
     private function getPoint4()
     {
-        $json_p = <<<JSON
-{
-                    "kw": 0,
-                    "ks": 0,
-                    "count_dw": 1,
-                    "id_sentence": "55a77e6cbc0ce5.00192305",
-                    "w": {
-                        "kw": 0,
-                        "word": "ты",
-                        "data": false,
-                        "name_fio": false,
-                        "stop": false,
-                        "cut": false
-                    },
-                    "dw": {
-                        "id_word_form": "eda94794-2f10-11e2-9a2f-ff4953d40a50",
-                        "word_form": "ты",
-                        "initial_form": "ты",
-                        "id_word_class": 4,
-                        "name_word_class": "местоимение",
-                        "parameters": {
-                            "7": {
-                                "id_morph_attr": "7",
-                                "name": "лицо",
-                                "number_morph_attr": "2",
-                                "id_value_attr": {
-                                    "17": 17
-                                },
-                                "short_value": {
-                                    "2-е": "2-е"
-                                },
-                                "value": {
-                                    "2 лицо": "2 лицо"
-                                }
-                            },
-                            "13": {
-                                "id_morph_attr": "13",
-                                "name": "падеж",
-                                "number_morph_attr": "3",
-                                "id_value_attr": {
-                                    "32": 32
-                                },
-                                "short_value": {
-                                    "и.п.": "и.п."
-                                },
-                                "value": {
-                                    "именительный": "именительный"
-                                }
-                            },
-                            "6": {
-                                "id_morph_attr": "6",
-                                "name": "число",
-                                "number_morph_attr": "4",
-                                "id_value_attr": {
-                                    "14": 14
-                                },
-                                "short_value": {
-                                    "ед.ч.": "ед.ч."
-                                },
-                                "value": {
-                                    "единственное": "единственное"
-                                }
-                            },
-                            "25": {
-                                "id_morph_attr": "25",
-                                "name": "тип местоимения",
-                                "number_morph_attr": "6",
-                                "id_value_attr": {
-                                    "70": 70
-                                },
-                                "short_value": {
-                                    "одуш": "одуш"
-                                },
-                                "value": {
-                                    "личное (одуш)": "личное (одуш)"
-                                }
-                            }
-                        }
-                    }
-                }
-JSON;
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:1;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:4:"ты";s:11:"id_sentence";s:23:"55acef4b33a066.20942810";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"eda94794-2f10-11e2-9a2f-ff4953d40a50";s:9:"word_form";s:4:"ты";s:12:"initial_form";s:4:"ты";s:13:"id_word_class";s:1:"4";s:15:"name_word_class";s:22:"местоимение";s:10:"parameters";a:4:{i:7;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"7";s:4:"name";s:8:"лицо";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:17;s:2:"17";}s:11:"short_value";a:1:{s:4:"2-е";s:4:"2-е";}s:5:"value";a:1:{s:10:"2 лицо";s:10:"2 лицо";}}i:13;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"13";s:4:"name";s:10:"падеж";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:32;s:2:"32";}s:11:"short_value";a:1:{s:6:"и.п.";s:6:"и.п.";}s:5:"value";a:1:{s:24:"именительный";s:24:"именительный";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:14;s:2:"14";}s:11:"short_value";a:1:{s:8:"ед.ч.";s:8:"ед.ч.";}s:5:"value";a:1:{s:24:"единственное";s:24:"единственное";}}i:25;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"25";s:4:"name";s:29:"тип местоимения";s:17:"number_morph_attr";s:1:"6";s:13:"id_value_attr";a:1:{i:70;s:2:"70";}s:11:"short_value";a:1:{s:8:"одуш";s:8:"одуш";}s:5:"value";a:1:{s:23:"личное (одуш)";s:23:"личное (одуш)";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        return $point;
 
-        return json_decode($json_p);
     }
 
 
@@ -617,75 +265,11 @@ JSON;
      */
     private function getPoint5()
     {
-        $json_p = <<<JSON
-{
-                    "kw": 0,
-                    "ks": 0,
-                    "count_dw": 3,
-                    "id_sentence": "55a77f067ff211.74154567",
-                    "w": {
-                        "kw": 0,
-                        "word": "твоих",
-                        "data": false,
-                        "name_fio": false,
-                        "stop": false,
-                        "cut": false
-                    },
-                    "dw": {
-                        "id_word_form": "ed13136e-2f10-11e2-8dee-dbb7ab3963d5",
-                        "word_form": "твоих",
-                        "initial_form": "твой",
-                        "id_word_class": 4,
-                        "name_word_class": "местоимение",
-                        "parameters": {
-                            "13": {
-                                "id_morph_attr": "13",
-                                "name": "падеж",
-                                "number_morph_attr": "3",
-                                "id_value_attr": {
-                                    "33": 33
-                                },
-                                "short_value": {
-                                    "р.п.": "р.п."
-                                },
-                                "value": {
-                                    "родительный": "родительный"
-                                }
-                            },
-                            "6": {
-                                "id_morph_attr": "6",
-                                "name": "число",
-                                "number_morph_attr": "4",
-                                "id_value_attr": {
-                                    "15": 15
-                                },
-                                "short_value": {
-                                    "мн.ч.": "мн.ч."
-                                },
-                                "value": {
-                                    "множественное": "множественное"
-                                }
-                            },
-                            "25": {
-                                "id_morph_attr": "25",
-                                "name": "тип местоимения",
-                                "number_morph_attr": "6",
-                                "id_value_attr": {
-                                    "69": 69
-                                },
-                                "short_value": {
-                                    "прил": "прил"
-                                },
-                                "value": {
-                                    "местоимение-прилагательное": "местоимение-прилагательное"
-                                }
-                            }
-                        }
-                    }
-                }
-JSON;
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:3;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:10:"твоих";s:11:"id_sentence";s:23:"55acef69167a83.93045825";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"ed13136e-2f10-11e2-8dee-dbb7ab3963d5";s:9:"word_form";s:10:"твоих";s:12:"initial_form";s:8:"твой";s:13:"id_word_class";s:1:"4";s:15:"name_word_class";s:22:"местоимение";s:10:"parameters";a:3:{i:13;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"13";s:4:"name";s:10:"падеж";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:33;s:2:"33";}s:11:"short_value";a:1:{s:6:"р.п.";s:6:"р.п.";}s:5:"value";a:1:{s:22:"родительный";s:22:"родительный";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:15;s:2:"15";}s:11:"short_value";a:1:{s:8:"мн.ч.";s:8:"мн.ч.";}s:5:"value";a:1:{s:26:"множественное";s:26:"множественное";}}i:25;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"25";s:4:"name";s:29:"тип местоимения";s:17:"number_morph_attr";s:1:"6";s:13:"id_value_attr";a:1:{i:69;s:2:"69";}s:11:"short_value";a:1:{s:8:"прил";s:8:"прил";}s:5:"value";a:1:{s:51:"местоимение-прилагательное";s:51:"местоимение-прилагательное";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        return $point;
 
-        return json_decode($json_p);
     }
 
 
@@ -695,103 +279,10 @@ JSON;
      */
     private function getPoint6()
     {
-        $json_p = <<<JSON
-{
-                    "kw": 0,
-                    "ks": 0,
-                    "count_dw": 2,
-                    "id_sentence": "55a7ad281b8938.72815476",
-                    "w": {
-                        "kw": 0,
-                        "word": "оно",
-                        "data": false,
-                        "name_fio": false,
-                        "stop": false,
-                        "cut": false
-                    },
-                    "dw": {
-                        "id_word_form": "e9f45fa8-2f10-11e2-a62a-9f539fd691a9",
-                        "word_form": "оно",
-                        "initial_form": "оно",
-                        "id_word_class": 4,
-                        "name_word_class": "местоимение",
-                        "parameters": {
-                            "7": {
-                                "id_morph_attr": "7",
-                                "name": "лицо",
-                                "number_morph_attr": "2",
-                                "id_value_attr": {
-                                    "18": 18
-                                },
-                                "short_value": {
-                                    "3-е": "3-е"
-                                },
-                                "value": {
-                                    "3 лицо": "3 лицо"
-                                }
-                            },
-                            "13": {
-                                "id_morph_attr": "13",
-                                "name": "падеж",
-                                "number_morph_attr": "3",
-                                "id_value_attr": {
-                                    "32": 32
-                                },
-                                "short_value": {
-                                    "и.п.": "и.п."
-                                },
-                                "value": {
-                                    "именительный": "именительный"
-                                }
-                            },
-                            "6": {
-                                "id_morph_attr": "6",
-                                "name": "число",
-                                "number_morph_attr": "4",
-                                "id_value_attr": {
-                                    "14": 14
-                                },
-                                "short_value": {
-                                    "ед.ч.": "ед.ч."
-                                },
-                                "value": {
-                                    "единственное": "единственное"
-                                }
-                            },
-                            "8": {
-                                "id_morph_attr": "8",
-                                "name": "род",
-                                "number_morph_attr": "5",
-                                "id_value_attr": {
-                                    "20": 20
-                                },
-                                "short_value": {
-                                    "с.р.": "с.р."
-                                },
-                                "value": {
-                                    "средний род": "средний род"
-                                }
-                            },
-                            "25": {
-                                "id_morph_attr": "25",
-                                "name": "тип местоимения",
-                                "number_morph_attr": "6",
-                                "id_value_attr": {
-                                    "70": 70
-                                },
-                                "short_value": {
-                                    "одуш": "одуш"
-                                },
-                                "value": {
-                                    "личное (одуш)": "личное (одуш)"
-                                }
-                            }
-                        }
-                    }
-                }
-JSON;
-
-        return json_decode($json_p);
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:2;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:6:"оно";s:11:"id_sentence";s:23:"55acef956fe1b4.30930019";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"e9f45fa8-2f10-11e2-a62a-9f539fd691a9";s:9:"word_form";s:6:"оно";s:12:"initial_form";s:6:"оно";s:13:"id_word_class";s:1:"4";s:15:"name_word_class";s:22:"местоимение";s:10:"parameters";a:5:{i:7;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"7";s:4:"name";s:8:"лицо";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:18;s:2:"18";}s:11:"short_value";a:1:{s:4:"3-е";s:4:"3-е";}s:5:"value";a:1:{s:10:"3 лицо";s:10:"3 лицо";}}i:13;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"13";s:4:"name";s:10:"падеж";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:32;s:2:"32";}s:11:"short_value";a:1:{s:6:"и.п.";s:6:"и.п.";}s:5:"value";a:1:{s:24:"именительный";s:24:"именительный";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:14;s:2:"14";}s:11:"short_value";a:1:{s:8:"ед.ч.";s:8:"ед.ч.";}s:5:"value";a:1:{s:24:"единственное";s:24:"единственное";}}i:8;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"8";s:4:"name";s:6:"род";s:17:"number_morph_attr";s:1:"5";s:13:"id_value_attr";a:1:{i:20;s:2:"20";}s:11:"short_value";a:1:{s:6:"с.р.";s:6:"с.р.";}s:5:"value";a:1:{s:21:"средний род";s:21:"средний род";}}i:25;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:2:"25";s:4:"name";s:29:"тип местоимения";s:17:"number_morph_attr";s:1:"6";s:13:"id_value_attr";a:1:{i:70;s:2:"70";}s:11:"short_value";a:1:{s:8:"одуш";s:8:"одуш";}s:5:"value";a:1:{s:23:"личное (одуш)";s:23:"личное (одуш)";}}}}s:9:"key_point";i:1;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        return $point;
     }
 
 
@@ -818,7 +309,7 @@ JSON;
     {
         $point = $this->getPoint(); // берем точку тестовую
         if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Null::class){
-            unset($point->dw->parameters->{CASE_ID});
+            unset($point->dw->parameters[CASE_ID]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getPadeszh', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
             $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Null::class, $result[0]);
@@ -826,7 +317,7 @@ JSON;
         }
         else{
             // подменяем падеж
-            $point->dw->parameters->{CASE_ID}->id_value_attr = [$padeszh => $padeszh];
+            $point->dw->parameters[CASE_ID]->id_value_attr = [$padeszh => $padeszh];
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getPadeszh', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
             $this->assertInstanceOf($expectedResult, $result[0]);
@@ -870,9 +361,9 @@ JSON;
         }
         else{
             // создаем новый аттрибут
-            $point->dw->parameters->{\OldAotConstants::RANK_PRONOUNS()} = new MorphAttribute();
+            $point->dw->parameters[\OldAotConstants::RANK_PRONOUNS()] = new MorphAttribute();
             // задаем значение разряда
-            $point->dw->parameters->{\OldAotConstants::RANK_PRONOUNS()}->id_value_attr = [$razryad => $razryad];
+            $point->dw->parameters[\OldAotConstants::RANK_PRONOUNS()]->id_value_attr = [$razryad => $razryad];
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getRazryad', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
             $this->assertInstanceOf($expectedResult, $result[0]);

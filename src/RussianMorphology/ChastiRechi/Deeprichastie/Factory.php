@@ -41,7 +41,7 @@ class Factory extends \Aot\RussianMorphology\Factory
             if (!empty($dw->parameters[VIEW_ID])) {
                 $vid = $this->getVid($dw->parameters[VIEW_ID]);
             } else {
-                throw new FactoryException("vid not defined", 24);
+                $vid[] = NullVid::create();
             }
 
             # переходность

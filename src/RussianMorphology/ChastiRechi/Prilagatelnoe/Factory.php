@@ -123,12 +123,13 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $chislo = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) ===NUMBER_SINGULAR_ID) {
+            if (intval($val) === NUMBER_SINGULAR_ID) {
                 $chislo[] = Edinstvennoe::create();
-            } elseif (intval($val) ===NUMBER_PLURAL_ID) {
+            } elseif (intval($val) === NUMBER_PLURAL_ID) {
                 $chislo[] = Mnozhestvennoe::create();
-            } else {
-                $chislo[] = NullChislo::create();
+            }
+            else{
+                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
             }
         }
 
@@ -139,14 +140,15 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $rod = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) ===GENUS_MASCULINE_ID) {
+            if (intval($val) === GENUS_MASCULINE_ID) {
                 $rod[] = Muzhskoi::create();
-            } elseif (intval($val) ===GENUS_NEUTER_ID) {
+            } elseif (intval($val) === GENUS_NEUTER_ID) {
                 $rod[] = Srednij::create();
-            } elseif (intval($val) ===GENUS_FEMININE_ID) {
+            } elseif (intval($val) === GENUS_FEMININE_ID) {
                 $rod[] = Zhenskij::create();
-            } else {
-                $rod[] = NullRod::create();
+            }
+            else{
+                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
             }
         }
         return $rod;
@@ -156,14 +158,15 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $razryad = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) ===\OldAotConstants::QUALIFYING_ADJECTIVE()) {
+            if (intval($val) === \OldAotConstants::QUALIFYING_ADJECTIVE()) {
                 $razryad[] = Kachestvennoe::create();
-            } elseif (intval($val) ===\OldAotConstants::RELATIVE_ADJECTIVE()) {
+            } elseif (intval($val) === \OldAotConstants::RELATIVE_ADJECTIVE()) {
                 $razryad[] = Otnositelnoe::create();
-            } elseif (intval($val) ===\OldAotConstants::POSSESSIVE_ADJECTIVE()) {
+            } elseif (intval($val) === \OldAotConstants::POSSESSIVE_ADJECTIVE()) {
                 $razryad[] = Pritiazhatelnoe::create();
-            } else {
-                $razryad[] = NullRazryad::create();
+            }
+            else{
+                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
             }
         }
 
@@ -174,12 +177,13 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $forma = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) ===\OldAotConstants::SHORT_WORD_FORM()) {
+            if (intval($val) === \OldAotConstants::SHORT_WORD_FORM()) {
                 $forma[] = Kratkaya::create();
-            } elseif (intval($val) ===\OldAotConstants::FULL_WORD_FORM()) {
+            } elseif (intval($val) === \OldAotConstants::FULL_WORD_FORM()) {
                 $forma[] = Polnaya::create();
-            } else {
-                $forma[] = NullForma::create();
+            }
+            else{
+                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
             }
         }
         return $forma;
@@ -189,14 +193,15 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $stepen_sravneniia = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) ===\OldAotConstants::POSITIVE_DEGREE_COMPARISON()) {
+            if (intval($val) === \OldAotConstants::POSITIVE_DEGREE_COMPARISON()) {
                 $stepen_sravneniia[] = Polozhitelnaya::create();
-            } elseif (intval($val) ===DEGREE_SUPERLATIVE_ID) {
+            } elseif (intval($val) === DEGREE_SUPERLATIVE_ID) {
                 $stepen_sravneniia[] = Prevoshodnaya::create();
-            } elseif (intval($val) ===\OldAotConstants::COMPARATIVE_DEGREE_COMPARISON()) {
+            } elseif (intval($val) === \OldAotConstants::COMPARATIVE_DEGREE_COMPARISON()) {
                 $stepen_sravneniia[] = Sravnitelnaya::create();
-            } else {
-                $stepen_sravneniia[] = NullStepenSravneniia::create();
+            }
+            else{
+                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
             }
         }
 
@@ -208,20 +213,21 @@ class Factory extends \Aot\RussianMorphology\Factory
         $padeszh = [];
 
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) ===CASE_SUBJECTIVE_ID) {
+            if (intval($val) === CASE_SUBJECTIVE_ID) {
                 $padeszh[] = Imenitelnij::create();
-            } elseif (intval($val) ===CASE_GENITIVE_ID) {
+            } elseif (intval($val) === CASE_GENITIVE_ID) {
                 $padeszh[] = Roditelnij::create();
-            } elseif (intval($val) ===CASE_DATIVE_ID) {
+            } elseif (intval($val) === CASE_DATIVE_ID) {
                 $padeszh[] = Datelnij::create();
-            } elseif (intval($val) ===CASE_ACCUSATIVE_ID) {
+            } elseif (intval($val) === CASE_ACCUSATIVE_ID) {
                 $padeszh[] = Vinitelnij::create();
-            } elseif (intval($val) ===CASE_INSTRUMENTAL_ID) {
+            } elseif (intval($val) === CASE_INSTRUMENTAL_ID) {
                 $padeszh[] = Tvoritelnij::create();
-            } elseif (intval($val) ===CASE_PREPOSITIONAL_ID) {
+            } elseif (intval($val) === CASE_PREPOSITIONAL_ID) {
                 $padeszh[] = Predlozshnij::create();
-            } else
-                $padeszh[] = NullPadeszh::create();
+            } else{
+                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
+            }
         }
 
 

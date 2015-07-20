@@ -11,6 +11,7 @@ namespace AotTest\Functional\RussianMorphology\ChastiRechi\Narechie;
 
 use Aot\RussianMorphology\ChastiRechi\Narechie\Factory;
 use Aot\RussianMorphology\FactoryException;
+use MorphAttribute;
 
 class NarechieTest extends \AotTest\AotDataStorage
 {
@@ -58,86 +59,30 @@ class NarechieTest extends \AotTest\AotDataStorage
     }
 
     /**
+     * лучше
      * Возвращает точку
      * @return object
      */
     protected function getPoint()
     {
-        // слово - лучше
-        $json_p = <<<JSON
-{
-        "kw": 1,
-        "ks": 0,
-        "dw": {
-            "id_word_form": "559ffb37ef2e9",
-            "initial_form": "хороший",
-            "name_word_class": "наречие",
-            "id_word_class": 12,
-            "parameters": {
-                "15": {
-                    "id_morph_attr": 15,
-                    "name": "степень сравнения",
-                    "id_value_attr": {
-                        "42": 42
-                    },
-                    "short_value": {
-                        "сравн": "сравн"
-                    },
-                    "value": {
-                        "сравнительная степень": "сравнительная степень"
-                    }
-                },
-                "11": {
-                    "id_morph_attr": 11,
-                    "name": "одуш-неодуш",
-                    "id_value_attr": {
-                        "27": 27
-                    },
-                    "short_value": {
-                        "неодуш": "неодуш"
-                    },
-                    "value": {
-                        "неодушевленное": "неодушевленное"
-                    }
-                }
-            }
-        },
-        "ps": "adjunct",
-        "O": "adjunct_verb",
-        "Oz": "559ffb37ef1c0",
-        "direction": "y",
-        "id_sentence": "559ffb37ee4942.53244756",
-        "denial": ""
-    }
-JSON;
-
-        return json_decode($json_p);
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:1;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:10:"лучше";s:11:"id_sentence";s:23:"55acfef1e32074.93903197";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"1a2abeee-2d75-11e2-a975-1b3aaa47306f";s:9:"word_form";s:10:"лучше";s:12:"initial_form";s:10:"лучше";s:13:"id_word_class";s:2:"12";s:15:"name_word_class";s:14:"наречие";s:10:"parameters";a:0:{}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        $point->dw->parameters[15] = new MorphAttribute();
+        $point->dw->parameters[15]->id_value_attr = [ '42' => 42 ];
+        return $point;
     }
 
+    /**
+     * быстро
+     * @return mixed
+     */
     protected function getPoint2()
     {
-        // слово - тихо
-        $json_p = <<<JSON
-{
-        "kw": 0,
-        "ks": 0,
-        "dw": {
-            "id_word_form": "55a501fe0e773",
-            "initial_form": "тихо",
-            "name_word_class": "наречие",
-            "id_word_class": 12,
-            "parameters": null
-        },
-        "ps": "adjunct",
-        "O": "adjunct_verb",
-        "Oz": "55a501fe0e654",
-        "direction": "y",
-        "id_sentence": "55a501fe0dac79.47855019",
-        "denial": ""
-    }
-JSON;
-
-        return json_decode($json_p);
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:1;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:12:"быстро";s:11:"id_sentence";s:23:"55acffb26da731.45366072";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"06eaa240-2d75-11e2-99a3-7b51ba0f2d5d";s:9:"word_form";s:12:"быстро";s:12:"initial_form";s:12:"быстро";s:13:"id_word_class";s:2:"12";s:15:"name_word_class";s:14:"наречие";s:10:"parameters";a:0:{}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        return $point;
     }
 
 }

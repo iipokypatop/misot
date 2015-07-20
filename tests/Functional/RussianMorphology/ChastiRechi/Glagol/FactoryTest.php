@@ -31,7 +31,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Neperehodnyj::class, $result[0]->perehodnost);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Muzhskoi::class, $result[0]->rod);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj::class, $result[0]->vid);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Null::class, $result[0]->vozvratnost);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Nevozvratnyj::class, $result[0]->vozvratnost);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Proshedshee::class, $result[0]->vremya);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::class, $result[0]->razryad);
 
@@ -47,7 +47,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Perehodnyj::class, $result[0]->perehodnost);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Muzhskoi::class, $result[0]->rod);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj::class, $result[0]->vid);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Null::class, $result[0]->vozvratnost);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Nevozvratnyj::class, $result[0]->vozvratnost);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Proshedshee::class, $result[0]->vremya);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::class, $result[0]->razryad);
     }
@@ -59,10 +59,10 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertEquals(2, count($result));
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Base::class, $result[0]);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Edinstvennoe::class, $result[0]->chislo);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Neperehodnyj::class, $result[0]->perehodnost);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Perehodnyj::class, $result[0]->perehodnost);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Muzhskoi::class, $result[0]->rod);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj::class, $result[0]->vid);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Null::class, $result[0]->vozvratnost);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Nevozvratnyj::class, $result[0]->vozvratnost);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Proshedshee::class, $result[0]->vremya);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::class, $result[0]->razryad);
 
@@ -72,11 +72,11 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         # убираем число
         $point_wo_vid = $this->getPoint1();
-        unset($point_wo_vid->dw->parameters->{VIEW_ID});
+        unset($point_wo_vid->dw->parameters[VIEW_ID]);
         try {
             $this->buildFactory($point_wo_vid);
             $this->fail("Не должно было тут быть!");
-        } catch (\Exception $e) {
+        } catch (FactoryException $e) {
             $this->assertInstanceOf(FactoryException::class, $e);
             $this->assertEquals("vid not defined", $e->getMessage());
             $this->assertEquals(24, $e->getCode());
@@ -102,375 +102,66 @@ class FactoryTest extends \AotTest\AotDataStorage
         return Factory::get()->build($dw, $word);
     }
 
+    /**
+     * пошел
+     * @return mixed
+     */
     protected function getPoint1()
     {
-        $json = <<<JSON
-
-{
-        "kw": 1,
-        "ks": 0,
-        "dw": {
-            "id_word_form": "55a3b15f556fd",
-            "initial_form": "пойти",
-            "name_word_class": "глагол",
-            "id_word_class": 1,
-            "parameters": {
-                "5": {
-                    "id_morph_attr": 5,
-                    "name": "время",
-                    "id_value_attr": {
-                        "12": 12
-                    },
-                    "short_value": {
-                        "прош": "прош"
-                    },
-                    "value": {
-                        "прошедшее": "прошедшее"
-                    }
-                },
-                "8": {
-                    "id_morph_attr": 8,
-                    "name": "род",
-                    "id_value_attr": {
-                        "19": 19
-                    },
-                    "short_value": {
-                        "м.р.": "м.р."
-                    },
-                    "value": {
-                        "мужской род": "мужской род"
-                    }
-                },
-                "6": {
-                    "id_morph_attr": 6,
-                    "name": "число",
-                    "id_value_attr": {
-                        "14": 14
-                    },
-                    "short_value": {
-                        "ед.ч.": "ед.ч."
-                    },
-                    "value": {
-                        "единственное число": "единственное число"
-                    }
-                },
-                "1": {
-                    "id_morph_attr": 1,
-                    "name": "вид",
-                    "id_value_attr": {
-                        "2": 2
-                    },
-                    "short_value": {
-                        "сов": "сов"
-                    },
-                    "value": {
-                        "совершенный": "совершенный"
-                    }
-                }
-            }
-        },
-        "ps": "predicate",
-        "O": "subject_predicate",
-        "Oz": "55a3b15f55583",
-        "direction": "y",
-        "id_sentence": "55a3b15f345c10.07241727",
-        "denial": ""
-    }
-JSON;
-
-        return json_decode($json);
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:1;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:10:"пошел";s:11:"id_sentence";s:23:"55acf31b7c06d4.91529153";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"14181a56-33ba-11e2-9510-0771fd1be6a1";s:9:"word_form";s:10:"пошел";s:12:"initial_form";s:10:"пойти";s:13:"id_word_class";s:1:"1";s:15:"name_word_class";s:12:"глагол";s:10:"parameters";a:8:{i:1;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"1";s:4:"name";s:6:"вид";s:17:"number_morph_attr";s:1:"1";s:13:"id_value_attr";a:1:{i:2;s:1:"2";}s:11:"short_value";a:1:{s:6:"сов";s:6:"сов";}s:5:"value";a:1:{s:22:"совершенный";s:22:"совершенный";}}i:2;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"2";s:4:"name";s:18:"спряжение";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:4;s:1:"4";}s:11:"short_value";a:1:{s:4:"1-е";s:4:"1-е";}s:5:"value";a:1:{s:4:"1-е";s:4:"1-е";}}i:3;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"3";s:4:"name";s:24:"переходность";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:7;s:1:"7";}s:11:"short_value";a:1:{s:14:"неперех";s:14:"неперех";}s:5:"value";a:1:{s:24:"непереходный";s:24:"непереходный";}}i:4;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"4";s:4:"name";s:20:"наклонение";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:8;s:1:"8";}s:11:"short_value";a:1:{s:14:"изъявит";s:14:"изъявит";}s:5:"value";a:1:{s:26:"изъявительное";s:26:"изъявительное";}}i:5;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"5";s:4:"name";s:10:"время";s:17:"number_morph_attr";s:1:"5";s:13:"id_value_attr";a:1:{i:12;s:2:"12";}s:11:"short_value";a:1:{s:8:"прош";s:8:"прош";}s:5:"value";a:1:{s:18:"прошедшее";s:18:"прошедшее";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"6";s:13:"id_value_attr";a:1:{i:14;s:2:"14";}s:11:"short_value";a:1:{s:8:"ед.ч.";s:8:"ед.ч.";}s:5:"value";a:1:{s:24:"единственное";s:24:"единственное";}}i:8;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"8";s:4:"name";s:6:"род";s:17:"number_morph_attr";s:1:"8";s:13:"id_value_attr";a:1:{i:19;s:2:"19";}s:11:"short_value";a:1:{s:6:"м.р.";s:6:"м.р.";}s:5:"value";a:1:{s:21:"мужской род";s:21:"мужской род";}}i:9;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"9";s:4:"name";s:24:"возвратность";s:17:"number_morph_attr";s:1:"9";s:13:"id_value_attr";a:1:{i:23;s:2:"23";}s:11:"short_value";a:1:{s:12:"невозв";s:12:"невозв";}s:5:"value";a:1:{s:24:"невозвратный";s:24:"невозвратный";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        return $point;
     }
 
+    /**
+     * решил
+     * @return mixed
+     */
     protected function getPoint2()
     {
-        $json = <<<JSON
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:1;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:10:"решил";s:11:"id_sentence";s:23:"55acf3f6cbe917.10826198";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"a30ee8a8-3481-11e2-ae0e-c3132a8aeb21";s:9:"word_form";s:10:"решил";s:12:"initial_form";s:12:"решить";s:13:"id_word_class";s:1:"1";s:15:"name_word_class";s:12:"глагол";s:10:"parameters";a:8:{i:1;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"1";s:4:"name";s:6:"вид";s:17:"number_morph_attr";s:1:"1";s:13:"id_value_attr";a:1:{i:2;s:1:"2";}s:11:"short_value";a:1:{s:6:"сов";s:6:"сов";}s:5:"value";a:1:{s:22:"совершенный";s:22:"совершенный";}}i:2;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"2";s:4:"name";s:18:"спряжение";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:5;s:1:"5";}s:11:"short_value";a:1:{s:4:"2-е";s:4:"2-е";}s:5:"value";a:1:{s:4:"2-е";s:4:"2-е";}}i:3;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"3";s:4:"name";s:24:"переходность";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:6;s:1:"6";}s:11:"short_value";a:1:{s:10:"перех";s:10:"перех";}s:5:"value";a:1:{s:20:"переходный";s:20:"переходный";}}i:4;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"4";s:4:"name";s:20:"наклонение";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:8;s:1:"8";}s:11:"short_value";a:1:{s:14:"изъявит";s:14:"изъявит";}s:5:"value";a:1:{s:26:"изъявительное";s:26:"изъявительное";}}i:5;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"5";s:4:"name";s:10:"время";s:17:"number_morph_attr";s:1:"5";s:13:"id_value_attr";a:1:{i:12;s:2:"12";}s:11:"short_value";a:1:{s:8:"прош";s:8:"прош";}s:5:"value";a:1:{s:18:"прошедшее";s:18:"прошедшее";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"6";s:13:"id_value_attr";a:1:{i:14;s:2:"14";}s:11:"short_value";a:1:{s:8:"ед.ч.";s:8:"ед.ч.";}s:5:"value";a:1:{s:24:"единственное";s:24:"единственное";}}i:8;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"8";s:4:"name";s:6:"род";s:17:"number_morph_attr";s:1:"8";s:13:"id_value_attr";a:1:{i:19;s:2:"19";}s:11:"short_value";a:1:{s:6:"м.р.";s:6:"м.р.";}s:5:"value";a:1:{s:21:"мужской род";s:21:"мужской род";}}i:9;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"9";s:4:"name";s:24:"возвратность";s:17:"number_morph_attr";s:1:"9";s:13:"id_value_attr";a:1:{i:23;s:2:"23";}s:11:"short_value";a:1:{s:12:"невозв";s:12:"невозв";}s:5:"value";a:1:{s:24:"невозвратный";s:24:"невозвратный";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        return $point;
 
-{
-        "kw": 1,
-        "ks": 0,
-        "dw": {
-            "id_word_form": "55a3b258d076c",
-            "initial_form": "решить",
-            "name_word_class": "глагол",
-            "id_word_class": 1,
-            "parameters": {
-                "5": {
-                    "id_morph_attr": 5,
-                    "name": "время",
-                    "id_value_attr": {
-                        "12": 12
-                    },
-                    "short_value": {
-                        "прош": "прош"
-                    },
-                    "value": {
-                        "прошедшее": "прошедшее"
-                    }
-                },
-                "8": {
-                    "id_morph_attr": 8,
-                    "name": "род",
-                    "id_value_attr": {
-                        "19": 19
-                    },
-                    "short_value": {
-                        "м.р.": "м.р."
-                    },
-                    "value": {
-                        "мужской род": "мужской род"
-                    }
-                },
-                "6": {
-                    "id_morph_attr": 6,
-                    "name": "число",
-                    "id_value_attr": {
-                        "14": 14
-                    },
-                    "short_value": {
-                        "ед.ч.": "ед.ч."
-                    },
-                    "value": {
-                        "единственное число": "единственное число"
-                    }
-                },
-                "3": {
-                    "id_morph_attr": 3,
-                    "name": "переходность",
-                    "id_value_attr": {
-                        "6": 6
-                    },
-                    "short_value": {
-                        "перех": "перех"
-                    },
-                    "value": {
-                        "переходный": "переходный"
-                    }
-                },
-                "1": {
-                    "id_morph_attr": 1,
-                    "name": "вид",
-                    "id_value_attr": {
-                        "2": 2
-                    },
-                    "short_value": {
-                        "сов": "сов"
-                    },
-                    "value": {
-                        "совершенный": "совершенный"
-                    }
-                }
-            }
-        },
-        "ps": "predicate",
-        "O": "subject_predicate",
-        "Oz": "55a3b258d04dd",
-        "direction": "y",
-        "id_sentence": "55a3b258cf5e73.53032849",
-        "denial": ""
-    }
-JSON;
-
-        return json_decode($json);
     }
 
-
+    /**
+     * пойти
+     * @return mixed
+     */
     protected function getPoint3()
     {
-        $json = <<<JSON
-{
-        "kw": 2,
-        "ks": 0,
-        "dw": {
-            "id_word_form": "55a3b258d08c7",
-            "initial_form": "пойти",
-            "name_word_class": "глагол",
-            "id_word_class": 1,
-            "parameters": {
-                "1": {
-                    "id_morph_attr": 1,
-                    "name": "вид",
-                    "id_value_attr": {
-                        "2": 2
-                    },
-                    "short_value": {
-                        "сов": "сов"
-                    },
-                    "value": {
-                        "совершенный": "совершенный"
-                    }
-                }
-            }
-        },
-        "ps": "predicate",
-        "O": "complex_predicates",
-        "Oz": "55a3b258d0570",
-        "direction": "y",
-        "id_sentence": "55a3b258cf5e73.53032849",
-        "denial": ""
-    }
-JSON;
-
-        return json_decode($json);
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:1;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:10:"пойти";s:11:"id_sentence";s:23:"55acf4e2918fd2.51800003";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"1415b7fc-33ba-11e2-bf49-9b95eb498456";s:9:"word_form";s:10:"пойти";s:12:"initial_form";s:10:"пойти";s:13:"id_word_class";s:1:"1";s:15:"name_word_class";s:12:"глагол";s:10:"parameters";a:5:{i:1;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"1";s:4:"name";s:6:"вид";s:17:"number_morph_attr";s:1:"1";s:13:"id_value_attr";a:1:{i:2;s:1:"2";}s:11:"short_value";a:1:{s:6:"сов";s:6:"сов";}s:5:"value";a:1:{s:22:"совершенный";s:22:"совершенный";}}i:2;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"2";s:4:"name";s:18:"спряжение";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:4;s:1:"4";}s:11:"short_value";a:1:{s:4:"1-е";s:4:"1-е";}s:5:"value";a:1:{s:4:"1-е";s:4:"1-е";}}i:3;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"3";s:4:"name";s:24:"переходность";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:6;s:1:"6";}s:11:"short_value";a:1:{s:10:"перех";s:10:"перех";}s:5:"value";a:1:{s:20:"переходный";s:20:"переходный";}}i:4;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"4";s:4:"name";s:20:"наклонение";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:8;s:1:"8";}s:11:"short_value";a:1:{s:14:"изъявит";s:14:"изъявит";}s:5:"value";a:1:{s:26:"изъявительное";s:26:"изъявительное";}}i:9;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"9";s:4:"name";s:24:"возвратность";s:17:"number_morph_attr";s:1:"9";s:13:"id_value_attr";a:1:{i:23;s:2:"23";}s:11:"short_value";a:1:{s:12:"невозв";s:12:"невозв";}s:5:"value";a:1:{s:24:"невозвратный";s:24:"невозвратный";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        return $point;
     }
 
+    /**
+     * решился + вид
+     * @return mixed
+     */
     protected function getPoint4()
     {
-        $json = <<<JSON
-
-{
-        "kw": 1,
-        "ks": 0,
-        "dw": {
-            "id_word_form": "55a3b312df8e4",
-            "initial_form": "решиться",
-            "name_word_class": "глагол",
-            "id_word_class": 1,
-            "parameters": {
-                "5": {
-                    "id_morph_attr": 5,
-                    "name": "время",
-                    "id_value_attr": {
-                        "12": 12
-                    },
-                    "short_value": {
-                        "прош": "прош"
-                    },
-                    "value": {
-                        "прошедшее": "прошедшее"
-                    }
-                },
-                "8": {
-                    "id_morph_attr": 8,
-                    "name": "род",
-                    "id_value_attr": {
-                        "19": 19
-                    },
-                    "short_value": {
-                        "м.р.": "м.р."
-                    },
-                    "value": {
-                        "мужской род": "мужской род"
-                    }
-                },
-                "6": {
-                    "id_morph_attr": 6,
-                    "name": "число",
-                    "id_value_attr": {
-                        "14": 14
-                    },
-                    "short_value": {
-                        "ед.ч.": "ед.ч."
-                    },
-                    "value": {
-                        "единственное число": "единственное число"
-                    }
-                },
-                "1": {
-                    "id_morph_attr": 1,
-                    "name": "вид",
-                    "id_value_attr": {
-                        "2": 2,
-                        "3": 3
-                    },
-                    "short_value": {
-                        "сов": "сов"
-                    },
-                    "value": {
-                        "совершенный": "совершенный"
-                    }
-                }
-            }
-        },
-        "ps": "predicate",
-        "O": "subject_predicate",
-        "Oz": "55a3b312df705",
-        "direction": "y",
-        "id_sentence": "55a3b312dec015.13555078",
-        "denial": ""
-    }
-JSON;
-
-        return json_decode($json);
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:1;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:14:"решился";s:11:"id_sentence";s:23:"55acf571d9d674.84407444";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"a4879c34-3481-11e2-aee2-6b20e4d4014e";s:9:"word_form";s:14:"решился";s:12:"initial_form";s:16:"решиться";s:13:"id_word_class";s:1:"1";s:15:"name_word_class";s:12:"глагол";s:10:"parameters";a:8:{i:1;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"1";s:4:"name";s:6:"вид";s:17:"number_morph_attr";s:1:"1";s:13:"id_value_attr";a:1:{i:2;s:1:"2";}s:11:"short_value";a:1:{s:6:"сов";s:6:"сов";}s:5:"value";a:1:{s:22:"совершенный";s:22:"совершенный";}}i:2;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"2";s:4:"name";s:18:"спряжение";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:4;s:1:"4";}s:11:"short_value";a:1:{s:4:"1-е";s:4:"1-е";}s:5:"value";a:1:{s:4:"1-е";s:4:"1-е";}}i:3;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"3";s:4:"name";s:24:"переходность";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:6;s:1:"6";}s:11:"short_value";a:1:{s:10:"перех";s:10:"перех";}s:5:"value";a:1:{s:20:"переходный";s:20:"переходный";}}i:4;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"4";s:4:"name";s:20:"наклонение";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:8;s:1:"8";}s:11:"short_value";a:1:{s:14:"изъявит";s:14:"изъявит";}s:5:"value";a:1:{s:26:"изъявительное";s:26:"изъявительное";}}i:5;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"5";s:4:"name";s:10:"время";s:17:"number_morph_attr";s:1:"5";s:13:"id_value_attr";a:1:{i:12;s:2:"12";}s:11:"short_value";a:1:{s:8:"прош";s:8:"прош";}s:5:"value";a:1:{s:18:"прошедшее";s:18:"прошедшее";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"6";s:13:"id_value_attr";a:1:{i:14;s:2:"14";}s:11:"short_value";a:1:{s:8:"ед.ч.";s:8:"ед.ч.";}s:5:"value";a:1:{s:24:"единственное";s:24:"единственное";}}i:8;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"8";s:4:"name";s:6:"род";s:17:"number_morph_attr";s:1:"8";s:13:"id_value_attr";a:1:{i:19;s:2:"19";}s:11:"short_value";a:1:{s:6:"м.р.";s:6:"м.р.";}s:5:"value";a:1:{s:21:"мужской род";s:21:"мужской род";}}i:9;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"9";s:4:"name";s:24:"возвратность";s:17:"number_morph_attr";s:1:"9";s:13:"id_value_attr";a:1:{i:23;s:2:"23";}s:11:"short_value";a:1:{s:12:"невозв";s:12:"невозв";}s:5:"value";a:1:{s:24:"невозвратный";s:24:"невозвратный";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        $point->dw->parameters[1]->id_value_attr = ['2' => 2, '3' => 3];
+        return $point;
     }
 
+    /**
+     * решился
+     * @return mixed
+     */
     protected function getPoint5()
     {
-        $json = <<<JSON
-
-
-{
-        "kw": 1,
-        "ks": 0,
-        "dw": {
-            "id_word_form": "55a3b312df8e4",
-            "initial_form": "решиться",
-            "name_word_class": "глагол",
-            "id_word_class": 1,
-            "parameters": {
-                "5": {
-                    "id_morph_attr": 5,
-                    "name": "время",
-                    "id_value_attr": {
-                        "12": 12
-                    },
-                    "short_value": {
-                        "прош": "прош"
-                    },
-                    "value": {
-                        "прошедшее": "прошедшее"
-                    }
-                },
-                "8": {
-                    "id_morph_attr": 8,
-                    "name": "род",
-                    "id_value_attr": {
-                        "19": 19
-                    },
-                    "short_value": {
-                        "м.р.": "м.р."
-                    },
-                    "value": {
-                        "мужской род": "мужской род"
-                    }
-                },
-                "6": {
-                    "id_morph_attr": 6,
-                    "name": "число",
-                    "id_value_attr": {
-                        "14": 14
-                    },
-                    "short_value": {
-                        "ед.ч.": "ед.ч."
-                    },
-                    "value": {
-                        "единственное число": "единственное число"
-                    }
-                },
-                "1": {
-                    "id_morph_attr": 1,
-                    "name": "вид",
-                    "id_value_attr": {
-                        "2": 2
-                    },
-                    "short_value": {
-                        "сов": "сов"
-                    },
-                    "value": {
-                        "совершенный": "совершенный"
-                    }
-                }
-            }
-        },
-        "ps": "predicate",
-        "O": "subject_predicate",
-        "Oz": "55a3b312df705",
-        "direction": "y",
-        "id_sentence": "55a3b312dec015.13555078",
-        "denial": ""
-    }
-JSON;
-
-        return json_decode($json);
+        $ser = 'O:8:"PointWdw":6:{s:2:"kw";i:0;s:2:"ks";i:0;s:8:"count_dw";i:1;s:1:"w";O:4:"Word":7:{s:2:"kw";i:0;s:4:"word";s:14:"решился";s:11:"id_sentence";s:23:"55acf571d9d674.84407444";s:4:"data";b:0;s:8:"name_fio";b:0;s:4:"stop";b:0;s:3:"cut";b:0;}s:2:"dw";O:2:"Dw":6:{s:12:"id_word_form";s:36:"a4879c34-3481-11e2-aee2-6b20e4d4014e";s:9:"word_form";s:14:"решился";s:12:"initial_form";s:16:"решиться";s:13:"id_word_class";s:1:"1";s:15:"name_word_class";s:12:"глагол";s:10:"parameters";a:8:{i:1;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"1";s:4:"name";s:6:"вид";s:17:"number_morph_attr";s:1:"1";s:13:"id_value_attr";a:1:{i:2;s:1:"2";}s:11:"short_value";a:1:{s:6:"сов";s:6:"сов";}s:5:"value";a:1:{s:22:"совершенный";s:22:"совершенный";}}i:2;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"2";s:4:"name";s:18:"спряжение";s:17:"number_morph_attr";s:1:"2";s:13:"id_value_attr";a:1:{i:4;s:1:"4";}s:11:"short_value";a:1:{s:4:"1-е";s:4:"1-е";}s:5:"value";a:1:{s:4:"1-е";s:4:"1-е";}}i:3;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"3";s:4:"name";s:24:"переходность";s:17:"number_morph_attr";s:1:"3";s:13:"id_value_attr";a:1:{i:6;s:1:"6";}s:11:"short_value";a:1:{s:10:"перех";s:10:"перех";}s:5:"value";a:1:{s:20:"переходный";s:20:"переходный";}}i:4;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"4";s:4:"name";s:20:"наклонение";s:17:"number_morph_attr";s:1:"4";s:13:"id_value_attr";a:1:{i:8;s:1:"8";}s:11:"short_value";a:1:{s:14:"изъявит";s:14:"изъявит";}s:5:"value";a:1:{s:26:"изъявительное";s:26:"изъявительное";}}i:5;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"5";s:4:"name";s:10:"время";s:17:"number_morph_attr";s:1:"5";s:13:"id_value_attr";a:1:{i:12;s:2:"12";}s:11:"short_value";a:1:{s:8:"прош";s:8:"прош";}s:5:"value";a:1:{s:18:"прошедшее";s:18:"прошедшее";}}i:6;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"6";s:4:"name";s:10:"число";s:17:"number_morph_attr";s:1:"6";s:13:"id_value_attr";a:1:{i:14;s:2:"14";}s:11:"short_value";a:1:{s:8:"ед.ч.";s:8:"ед.ч.";}s:5:"value";a:1:{s:24:"единственное";s:24:"единственное";}}i:8;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"8";s:4:"name";s:6:"род";s:17:"number_morph_attr";s:1:"8";s:13:"id_value_attr";a:1:{i:19;s:2:"19";}s:11:"short_value";a:1:{s:6:"м.р.";s:6:"м.р.";}s:5:"value";a:1:{s:21:"мужской род";s:21:"мужской род";}}i:9;O:14:"MorphAttribute":6:{s:13:"id_morph_attr";s:1:"9";s:4:"name";s:24:"возвратность";s:17:"number_morph_attr";s:1:"9";s:13:"id_value_attr";a:1:{i:23;s:2:"23";}s:11:"short_value";a:1:{s:12:"невозв";s:12:"невозв";}s:5:"value";a:1:{s:24:"невозвратный";s:24:"невозвратный";}}}}s:9:"key_point";i:0;}';
+        $point = unserialize($ser);
+        $point->id_sentence = '11111';
+        return $point;
     }
 
 
