@@ -442,18 +442,7 @@ TEXT;
     {
         $mixed = $this->getWordsAndPunctuation1();
 
-        $matrix = new \Aot\Text\Matrix;
-
-        foreach ($mixed as $value) {
-
-            if (is_array($value) && $value[0] instanceof \Aot\RussianMorphology\Slovo) {
-                $matrix->appendWordsForm($value);
-            }
-
-            if ($value instanceof \Aot\RussianSyntacsis\Punctuaciya\Base) {
-                $matrix->appendPunctuation($value);
-            }
-        }
+        $matrix =  \Aot\Text\Matrix::create($mixed);
 
         return $matrix;
     }

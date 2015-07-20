@@ -20,7 +20,7 @@ class MatrixTest extends \AotTest\AotDataStorage
     {
         $mixed = $this->getWordsAndPunctuation();
 
-        $matrix = new \Aot\Text\Matrix;
+        $matrix = \Aot\Text\Matrix::create();
 
         foreach ($mixed as $value) {
 
