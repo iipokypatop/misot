@@ -73,7 +73,6 @@ class Factory extends \Aot\RussianMorphology\Factory
                         foreach ($padeszh as $val_padeszh) {
                             foreach ($rod as $val_rod) {
                                 foreach ($sklonenie as $val_sklonenie) {
-
                                     $words[] = Base::create(
                                         $text,
                                         $val_chislo,
@@ -88,15 +87,9 @@ class Factory extends \Aot\RussianMorphology\Factory
                         }
                     }
                 }
-
             }
         }
         return $words;
-    }
-
-    protected function getAnalyser()
-    {
-        return new Analyser;
     }
 
     /**
@@ -109,12 +102,12 @@ class Factory extends \Aot\RussianMorphology\Factory
             return [Morphology\Odushevlyonnost\Null::create()];
         }
 
-        $param = $parameters[TYPE_OF_NUMERAL_ID];
+        $param = $parameters[ANIMALITY_ID];
 
         $odushevlyonnost = [];
 
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === ANIMALITY_ID) {
+            if (intval($val) === ANIMALITY_ANIMATE_ID) {
                 $odushevlyonnost[] = Odushevlyonnoe::create();
             } elseif (intval($val) === ANIMALITY_INANIMATE_ID) {
                 $odushevlyonnost[] = Neodushevlyonnoe::create();
@@ -257,10 +250,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         $param = $parameters[\OldAotConstants::SELF_NOMINAL];
         $naritcatelnost = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === \OldAotConstants::SELF) {
-                $naritcatelnost = ImiaNaritcatelnoe::create();
-            } elseif (intval($val) === \OldAotConstants::NOMINAL) {
-                $naritcatelnost = ImiaSobstvennoe::create();
+            if (intval($val) === \OldAotConstants::NOMINAL()) {
+                $naritcatelnost[] = ImiaNaritcatelnoe::create();
+            } elseif (intval($val) === \OldAotConstants::SELF()) {
+                $naritcatelnost[] = ImiaSobstvennoe::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
             }

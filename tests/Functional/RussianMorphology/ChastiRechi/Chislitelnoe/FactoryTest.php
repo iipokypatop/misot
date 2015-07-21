@@ -26,7 +26,7 @@ class FactoryTest extends AotDataStorage
         $const = new \D_Constants();
         $const->defineConstants();
         $syntax_parser = new \SyntaxParserManager();
-        $text = 'никого';
+        $text = 'человек';
         $syntax_parser->reg_parser->parse_text($text);
         $syntax_parser->create_dictionary_word();
         $wdw = [];
@@ -36,6 +36,7 @@ class FactoryTest extends AotDataStorage
 
         $space_kw = PHPUnitHelper::getProtectedProperty($wdw[0],'space_kw');
 //        $wdw_s = json_encode($space_kw[0], JSON_PRETTY_PRINT | JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE);
+        $space_kw[0][0]->dw->parameters[13]->id_value_attr = ['35' => 35, '32' => 32];
         $wdw_s = serialize($space_kw[0][0]);
 
         print_r($wdw_s);
