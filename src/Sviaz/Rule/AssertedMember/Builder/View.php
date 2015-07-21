@@ -121,7 +121,7 @@ abstract class View extends \Aot\View\Base implements Chargeable
 
         if (!empty($data[static::FIELD_MORPH])) {
 
-            var_export($data[static::FIELD_MORPH]);
+            //var_export($data[static::FIELD_MORPH]);
         }
     }
 

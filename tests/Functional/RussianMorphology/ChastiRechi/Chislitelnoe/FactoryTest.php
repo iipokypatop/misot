@@ -38,8 +38,8 @@ class FactoryTest extends AotDataStorage
 //        $wdw_s = json_encode($space_kw[0], JSON_PRETTY_PRINT | JSON_FORCE_OBJECT | JSON_UNESCAPED_UNICODE);
         $wdw_s = serialize($space_kw[0][0]);
 
-        print_r($wdw_s);
-        print_r(unserialize($wdw_s));
+//        print_r($wdw_s);
+//        print_r(unserialize($wdw_s));
     }
 
     public function testBuild_Success()

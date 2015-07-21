@@ -22,7 +22,7 @@ class Charger
 
     public static function charge($POST)
     {
-        var_export($POST);
+        //var_export($POST);
 
         if (empty($POST[Chargeable::OBJECT_CONTAINER])) {
             return;
@@ -50,6 +50,6 @@ class Charger
                 }
             }
         }
-        var_export($objects);
+        //var_export($objects);
     }
 }

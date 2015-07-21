@@ -18,8 +18,7 @@ class Matrix
 
     protected $sentence_matrix = [];
 
-
-    protected function __construct(array $slova)
+    protected function __construct(array $slova = [])
     {
         foreach ($slova as $value) {
 
@@ -42,11 +41,10 @@ class Matrix
      */
     public function appendWordsForm(array $word_forms)
     {
-
-        assert('!empty($word_forms)');
+        assert(!empty($word_forms));
 
         foreach ($word_forms as $word_form) {
-            assert('$word_form instanceof \Aot\RussianMorphology\Slovo');
+            assert(is_a($word_form, \Aot\RussianMorphology\Slovo::class, true));
             $this->register($word_form);
         }
 
@@ -78,7 +76,7 @@ class Matrix
     }
 
 
-    public static function create($slova)
+    public static function create(array $slova = [])
     {
         return new static($slova);
     }
