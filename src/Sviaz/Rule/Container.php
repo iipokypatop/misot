@@ -777,6 +777,311 @@ TEXT;
         return $rule;
     }
 
+    protected static function getRule_PerehGl_Susch()
+    {
+        <<<TEXT
+Переходные глаголы обязаны иметь после себя существительное в Вин. Падеже с предлогом или без.
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::GLAGOL,
+                        RoleRegistry::OTNOSHENIE
+                    )
+                        ->morphology(MorphologyRegistry::PEREHODNOST_PEREHODNII)
+                )
+                ->depended(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE,
+                        RoleRegistry::VESCH
+                    )
+                        ->morphology(MorphologyRegistry::PADESZH_VINITELNIJ)
+
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                        ->dependedAfterMain()
+                );
+
+        $builder->link(
+            AssertedLinkBuilder::create()
+        );
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    protected static function getRule_LichnoeMest_Pril(/*$padeszh, $rod, $chislo*/)
+    {
+        #TODO: местоимение должно стоять после или неважно?
+
+        <<<TEXT
+Если в предложении есть личное местоимение и прилагательное,
+совпадающее с ним в роде, числе и падеже,
+и между ними нет других местоимений или существительных,
+совпадающих в роде, числе и падеже, то между ними есть связь.
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::MESTOIMENIE,
+                        RoleRegistry::VESCH
+                    )
+                )
+                ->depended(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::PRILAGATELNOE,
+                        RoleRegistry::SVOISTVO
+                    )
+
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                        ->morphologyMatching(
+                            MorphologyRegistry::ROD
+                        )
+                        ->morphologyMatching(
+                            MorphologyRegistry::CHISLO
+                        )
+                        ->morphologyMatching(
+                            MorphologyRegistry::PADESZH
+                        )
+                );
+
+        $builder->member(
+            \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                ChastiRechiRegistry::SUSCHESTVITELNOE
+            )
+                ->notPresent()
+            #TODO:
+//                ->morphology($chislo)
+//                ->morphology($rod)
+//                ->morphology($padeszh)
+        );
+
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /*public static function getPadeszh_Rule_LichnoeMest_Pril()
+    {
+        $padeszhi = [
+            'Roditelnii' => MorphologyRegistry::PADESZH_RODITELNIJ,
+            'Datelnij' => MorphologyRegistry::PADESZH_DATELNIJ,
+            'Vinitelnij' => MorphologyRegistry::PADESZH_VINITELNIJ,
+            'Tvoritelnij' => MorphologyRegistry::PADESZH_TVORITELNIJ,
+            'Predlojnij' => MorphologyRegistry::PADESZH_PREDLOZSHNIJ
+        ];
+
+
+        $rules = [];
+        foreach ($padeszhi as $name => $padeszh) {
+            $rules[$name] = static::getRule_LichnoeMest_Pril($padeszh, $rod, $chislo);
+        }
+        return $rules;
+    }*/
+
+
+    /**
+     * 81
+     * @return static
+     */
+    public static function getRule_OtricMest_Gl(/*$padeszh, $rod, $chislo*/)
+    {
+
+        <<<TEXT
+Если в предложении есть отрицательное местоимение никто, ничто в именительном падеже
+и глагол в единственном числе и 3 лице настоящего, прошедшего или будущего времени
+с частицей «не», то между ними есть связь.
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::MESTOIMENIE,
+                        RoleRegistry::VESCH
+                    )
+                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        # TODO: добавить отрицательное местоимение
+//                        ->morphology(MorphologyRegistry::RAZRYAD_OTRICATELNOE)
+                )
+                ->depended(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::GLAGOL,
+                        RoleRegistry::OTNOSHENIE
+                    )
+                    ->morphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
+                    ->morphology(MorphologyRegistry::LITSO_TRETIE)
+
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                );
+
+        # TODO: добавить частицу
+        /*$builder->member(
+            \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                ChastiRechiRegistry::CHASTICA
+            )
+                ->present()
+        );*/
+
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 82
+     * @return static
+     */
+    public static function getRule_OtricMest_Prich(/*$padeszh, $rod, $chislo*/)
+    {
+
+        <<<TEXT
+Если в предложении есть отрицательное местоимение никто, ничто в именительном падеже
+и краткое страдательное  причастие в единственном числе и 3 лице настоящего,
+прошедшего или будущего времени, с частицей «не».
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::MESTOIMENIE,
+                        RoleRegistry::VESCH
+                    )
+                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                # TODO: добавить отрицательное местоимение
+//                        ->morphology(MorphologyRegistry::RAZRYAD_OTRICATELNOE)
+                )
+                ->depended(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::PRICHASTIE,
+                        RoleRegistry::OTNOSHENIE
+                    )
+                        ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
+                        ->morphology(MorphologyRegistry::ZALOG_STRADATELNYJ)
+                        ->morphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
+                        ->morphology(MorphologyRegistry::LITSO_TRETIE)
+
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                );
+
+        # TODO: добавить частицу
+        /*$builder->member(
+            \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                ChastiRechiRegistry::CHASTICA
+            )
+                ->present()
+        );*/
+
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 83
+     * @return static
+     */
+    public static function getRule_PrityazhMest_Susch(/*$padeszh, $rod, $chislo*/)
+    {
+
+        <<<TEXT
+Если в предложении есть притяжательное местоимение 1 или 2 лица
+(мой, моя, моё, мои, наш, наша, наше, наши, твой, твоя, твое, твои, ваш, ваша, ваше, ваши)
+и существительное, совпадающее с ним в роде и падеже, то  между ними есть связь.
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE,
+                        RoleRegistry::VESCH
+                    )
+                )
+                ->depended(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::MESTOIMENIE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        ->morphology(MorphologyRegistry::RAZRYAD_PRITIAZHATELNOE)
+                    # TODO: вынести?
+//                        ->morphology(MorphologyRegistry::LITSO_PERVOE)
+//                        ->morphology(MorphologyRegistry::LITSO_VTOROE)
+
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                        ->morphologyMatching(MorphologyRegistry::ROD) // TODO: если единственное число
+                        ->morphologyMatching(MorphologyRegistry::CHISLO)
+                        ->morphologyMatching(MorphologyRegistry::PADESZH)
+                    # TODO: что насчет позиции?
+//                        ->dependedBeforeMain()
+                );
+
+
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 84
+     * @return static
+     */
+    public static function getRule_UkazMest_Susch(/*$padeszh, $rod, $chislo*/)
+    {
+
+        <<<TEXT
+Если в предложении есть указательное местоимение
+(тот, та, то, те, этот, эта, это, эти, таков, такова, таково, таковы, такой, такая, такое, такие и др.)
+и существительное, совпадающее с ним в роде (в единственном числе), числе и падеже, то между ними есть связь.
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE,
+                        RoleRegistry::VESCH
+                    )
+                )
+                ->depended(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::MESTOIMENIE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        # TODO: добавить разряд
+//                        ->morphology(MorphologyRegistry::RAZRYAD_UKAZATELNOE)
+
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                        ->morphologyMatching(MorphologyRegistry::ROD) // TODO: если единственное число
+                        ->morphologyMatching(MorphologyRegistry::CHISLO)
+                        ->morphologyMatching(MorphologyRegistry::PADESZH)
+                # TODO: что насчет позиции?
+//                        ->dependedBeforeMain()
+                );
+
+
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+
 
 }
 

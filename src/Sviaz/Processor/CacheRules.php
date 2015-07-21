@@ -21,20 +21,29 @@ class CacheRules
 
     public function put($array_objects)
     {
+        $hash = '';
         foreach ($array_objects as $object) {
             $id_object = spl_object_hash($object);
+            // $hash .= spl_object_hash($object);
             $this->storage[$id_object] = $object;
         }
     }
 
     public function get($array_objects)
     {
+//        $hash = '';
         foreach ($array_objects as $object) {
             $id_object = spl_object_hash($object);
+
+            // $hash .= spl_object_hash($object);
             if( empty($this->storage[$id_object]) ){
                 return false;
             }
         }
+//        if( empty($this->storage[$hash]) ){
+//            return false;
+//        }
+
         return true;
     }
 
