@@ -22,7 +22,7 @@ class FactoryTest extends AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Factory::class, $factory);
     }
 
-    public function testWDW(){
+    public function _testWDW(){
         $const = new \D_Constants();
         $const->defineConstants();
         $syntax_parser = new \SyntaxParserManager();
@@ -39,8 +39,8 @@ class FactoryTest extends AotDataStorage
         $space_kw[0][0]->dw->parameters[9]->id_value_attr = ['23' => 23, '22' => 22];
         $wdw_s = serialize($space_kw[0][0]);
 
-        print_r($wdw_s);
-        print_r(unserialize($wdw_s));
+//        print_r($wdw_s);
+//        print_r(unserialize($wdw_s));
     }
 
     public function testBuild_Success()

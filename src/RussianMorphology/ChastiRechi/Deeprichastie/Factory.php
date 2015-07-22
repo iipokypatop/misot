@@ -63,6 +63,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $words;
     }
 
+    /**
+     * @param array $parameters
+     * @return \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\Base[]
+     */
     private function getVid($parameters)
     {
         if (empty($parameters[VIEW_ID])) {
@@ -84,6 +88,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $vid;
     }
 
+    /**
+     * @param array $parameters
+     * @return \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Base[]
+     */
     private function getPerehodnost($parameters)
     {
         if (empty($parameters[TRANSIVITY_ID])) {
@@ -105,6 +113,10 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $perehodnost;
     }
 
+    /**
+     * @param array $parameters
+     * @return \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Base[]
+     */
     private function getVozvratnost($parameters)
     {
         if (empty($parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()])) {
