@@ -72,14 +72,13 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         # убираем число
         $point_wo_vid = $this->getPoint1();
-        unset($point_wo_vid->dw->parameters[VIEW_ID]);
+        $false_vid = 222;
+        $point_wo_vid->dw->parameters[VIEW_ID]->id_value_attr = [$false_vid => $false_vid];
         try {
             $this->buildFactory($point_wo_vid);
             $this->fail("Не должно было тут быть!");
-        } catch (FactoryException $e) {
-            $this->assertInstanceOf(FactoryException::class, $e);
-            $this->assertEquals("vid not defined", $e->getMessage());
-            $this->assertEquals(24, $e->getCode());
+        } catch (\RuntimeException $e) {
+            $this->assertEquals("Unsupported value exception = " . $false_vid, $e->getMessage());
         }
     }
 
