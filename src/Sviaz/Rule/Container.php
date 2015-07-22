@@ -18,6 +18,7 @@ use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use \Aot\Sviaz\Rule\AssertedLink\Builder as AssertedLinkBuilder;
+use Aot\Text\GroupIdRegistry;
 
 
 class Container
@@ -667,9 +668,9 @@ TEXT;
                         ->morphologyMatching(
                             MorphologyRegistry::CHISLO
                         )
-                       /*->morphologyMatching(
-                            MorphologyRegistry::PADESZH
-                        )*/
+                        /*->morphologyMatching(
+                             MorphologyRegistry::PADESZH
+                         )*/
                         ->dependedRightAfterMain()
                 );
 
@@ -777,7 +778,7 @@ TEXT;
         return $rule;
     }
 
-    protected static function getRule_PerehGl_Susch()
+    public static function getRule_PerehGl_Susch()
     {
         <<<TEXT
 Переходные глаголы обязаны иметь после себя существительное в Вин. Падеже с предлогом или без.
@@ -804,16 +805,12 @@ TEXT;
                         ->dependedAfterMain()
                 );
 
-        $builder->link(
-            AssertedLinkBuilder::create()
-        );
-
         $rule = $builder->get();
 
         return $rule;
     }
 
-    protected static function getRule_LichnoeMest_Pril(/*$padeszh, $rod, $chislo*/)
+    public static function getRule_LichnoeMest_Pril(/*$padeszh, $rod, $chislo*/)
     {
         #TODO: местоимение должно стоять после или неважно?
 
@@ -856,7 +853,7 @@ TEXT;
                 ChastiRechiRegistry::SUSCHESTVITELNOE
             )
                 ->notPresent()
-            #TODO:
+        #TODO:
 //                ->morphology($chislo)
 //                ->morphology($rod)
 //                ->morphology($padeszh)
@@ -907,35 +904,28 @@ TEXT;
                         RoleRegistry::VESCH
                     )
                         ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
-                        # TODO: добавить отрицательное местоимение
-//                        ->morphology(MorphologyRegistry::RAZRYAD_OTRICATELNOE)
+                        ->textGroupId(GroupIdRegistry::NIKTO)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::GLAGOL,
                         RoleRegistry::OTNOSHENIE
                     )
-                    ->morphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
-                    ->morphology(MorphologyRegistry::LITSO_TRETIE)
+                        ->morphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
+                        ->morphology(MorphologyRegistry::LITSO_TRETIE)
+                        ->check(MemberCheckerRegistry::ChasticaNePeredSlovom)
 
                 )
                 ->link(
                     AssertedLinkBuilder::create()
                 );
 
-        # TODO: добавить частицу
-        /*$builder->member(
-            \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
-                ChastiRechiRegistry::CHASTICA
-            )
-                ->present()
-        );*/
-
-
         $rule = $builder->get();
+
 
         return $rule;
     }
+
 
     /**
      * 82
@@ -957,8 +947,7 @@ TEXT;
                         RoleRegistry::VESCH
                     )
                         ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
-                # TODO: добавить отрицательное местоимение
-//                        ->morphology(MorphologyRegistry::RAZRYAD_OTRICATELNOE)
+                        ->textGroupId(GroupIdRegistry::NIKTO)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
@@ -968,21 +957,13 @@ TEXT;
                         ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
                         ->morphology(MorphologyRegistry::ZALOG_STRADATELNYJ)
                         ->morphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
-                        ->morphology(MorphologyRegistry::LITSO_TRETIE)
+                        //->morphology(MorphologyRegistry::LITSO_TRETIE)
+                        ->check(MemberCheckerRegistry::ChasticaNePeredSlovom)
 
                 )
                 ->link(
                     AssertedLinkBuilder::create()
                 );
-
-        # TODO: добавить частицу
-        /*$builder->member(
-            \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
-                ChastiRechiRegistry::CHASTICA
-            )
-                ->present()
-        );*/
-
 
         $rule = $builder->get();
 
@@ -1001,6 +982,7 @@ TEXT;
 (мой, моя, моё, мои, наш, наша, наше, наши, твой, твоя, твое, твои, ваш, ваша, ваше, ваши)
 и существительное, совпадающее с ним в роде и падеже, то  между ними есть связь.
 TEXT;
+
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
@@ -1015,20 +997,13 @@ TEXT;
                         RoleRegistry::SVOISTVO
                     )
                         ->morphology(MorphologyRegistry::RAZRYAD_PRITIAZHATELNOE)
-                    # TODO: вынести?
-//                        ->morphology(MorphologyRegistry::LITSO_PERVOE)
-//                        ->morphology(MorphologyRegistry::LITSO_VTOROE)
-
+                        ->textGroupId(GroupIdRegistry::PRITYAZHATELNIE_1_AND_2_LITSO)
                 )
                 ->link(
                     AssertedLinkBuilder::create()
-                        ->morphologyMatching(MorphologyRegistry::ROD) // TODO: если единственное число
-                        ->morphologyMatching(MorphologyRegistry::CHISLO)
+                        ->morphologyMatching(MorphologyRegistry::ROD)
                         ->morphologyMatching(MorphologyRegistry::PADESZH)
-                    # TODO: что насчет позиции?
-//                        ->dependedBeforeMain()
                 );
-
 
 
         $rule = $builder->get();
@@ -1055,19 +1030,20 @@ TEXT;
                         ChastiRechiRegistry::SUSCHESTVITELNOE,
                         RoleRegistry::VESCH
                     )
+                        ->morphology(MorphologyRegistry::Ukazatelnoe)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::MESTOIMENIE,
                         RoleRegistry::SVOISTVO
                     )
-                        # TODO: добавить разряд
+                # TODO: добавить разряд
 //                        ->morphology(MorphologyRegistry::RAZRYAD_UKAZATELNOE)
 
                 )
                 ->link(
                     AssertedLinkBuilder::create()
-                        ->morphologyMatching(MorphologyRegistry::ROD) // TODO: если единственное число
+                        ->morphologyMatching(MorphologyRegistry::ROD)// TODO: если единственное число
                         ->morphologyMatching(MorphologyRegistry::CHISLO)
                         ->morphologyMatching(MorphologyRegistry::PADESZH)
                 # TODO: что насчет позиции?
@@ -1075,13 +1051,9 @@ TEXT;
                 );
 
 
-
         $rule = $builder->get();
 
         return $rule;
     }
-
-
-
 }
 
