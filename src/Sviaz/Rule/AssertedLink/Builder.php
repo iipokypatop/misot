@@ -188,7 +188,7 @@ class Builder
      */
     public function dependedRightAfterMain()
     {
-        $this->check(LinkCheckerRegistry::DependedRightBeforeMain);
+        $this->check(LinkCheckerRegistry::DependedRightAfterMain);
 
         return $this;
     }
@@ -200,7 +200,7 @@ class Builder
      */
     public function dependedRightBeforeMain()
     {
-        $this->check(LinkCheckerRegistry::DependedRightAfterMain);
+        $this->check(LinkCheckerRegistry::DependedRightBeforeMain);
 
         return $this;
     }

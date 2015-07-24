@@ -19,7 +19,7 @@ class BaseTestRules extends \AotTest\AotDataStorage
     {
         return [
             // 'Поставил пылесос.'
-            [
+            /*[
                 'getRule_PerehGl_Susch',
                 [
                     'Человек поставил пылесос.'
@@ -93,6 +93,14 @@ class BaseTestRules extends \AotTest\AotDataStorage
                     'Она была накрашена.',
                     'Оно было покрашено.',
                     'Они были научены.'
+                ]
+            ],*/
+            //
+            [
+                'getRule_Susch_GlBit_GlInf',
+                [
+                    'Задача выжить.',
+                    'Задача была выжить.'
                 ]
             ],
 

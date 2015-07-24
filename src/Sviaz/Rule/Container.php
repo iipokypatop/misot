@@ -1351,5 +1351,52 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * 9
+     * @return static
+     */
+    public static function getRule_Susch_GlBit_GlInf()
+    {
+
+        // инфинитив = не привязанное к субъекту (лицу, числу, наклонению) и ко времени.
+        <<<TEXT
+Если  предложении есть существительное в именительном падеже, глагол-связка «быть»,
+совпадающий с существительным в роде и числе, а после него – глагол в инфинитиве,
+то между ними есть связь.
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE,
+                        RoleRegistry::VESCH
+                    )
+                    ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                )
+                ->depended(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::GLAGOL,
+                        RoleRegistry::OTNOSHENIE
+                    )
+                        ->morphology(MorphologyRegistry::LITSO_NULL)
+//                        ->morphology(MorphologyRegistry::NAKLONENIE_NULL)
+                        ->morphology(MorphologyRegistry::CHISLO_NULL)
+                        ->morphology(MorphologyRegistry::VREMYA_NULL)
+
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+//                        ->morphologyMatching(MorphologyRegistry::ROD)// TODO: если единственное число
+//                        ->morphologyMatching(MorphologyRegistry::CHISLO)
+//                        ->morphologyMatching(MorphologyRegistry::PADESZH)
+//                        ->dependedRightBeforeMain()
+                        ->dependedRightAfterMain()
+                );
+
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
 }
 

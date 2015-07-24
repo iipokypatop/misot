@@ -26,7 +26,7 @@ class FactoryTest extends AotDataStorage
         $const = new \D_Constants();
         $const->defineConstants();
         $syntax_parser = new \SyntaxParserManager();
-        $text = 'выживать';
+        $text = 'выжить';
         $syntax_parser->reg_parser->parse_text($text);
         $syntax_parser->create_dictionary_word();
         $wdw = [];

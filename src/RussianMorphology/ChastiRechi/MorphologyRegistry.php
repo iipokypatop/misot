@@ -27,6 +27,7 @@ class MorphologyRegistry
     const CHISLO = 3000;
     const CHISLO_EDINSTVENNOE = 3001;
     const CHISLO_MNOZHESTVENNOE = 3002;
+    const CHISLO_NULL = 3003;
 
     const SKLONENIE = 4000;
     const SKLONENIE_PERVOE = 4001;
@@ -90,16 +91,19 @@ class MorphologyRegistry
     const NAKLONENIE_IZYAVITELNOE = 16001;
     const NAKLONENIE_POVELITELNOE = 16002;
     const NAKLONENIE_YSLOVNOE = 16003;
+    const NAKLONENIE_NULL = 16004;
 
     const VREMYA = 17000;
     const VREMYA_BUDUSCHEE = 17001;
     const VREMYA_NASTOYASCHEE = 17002;
     const VREMYA_PROSHEDSHEE = 17003;
+    const VREMYA_NULL = 17004;
 
     const LITSO = 18000;
     const LITSO_PERVOE = 18001;
     const LITSO_TRETIE = 18002;
     const LITSO_VTOROE = 18003;
+    const LITSO_NULL = 18004;
 
     const ODUSHEVLYONNOST = 19000;
     const ODUSHEVLYONNOST_ODUSHEVLYONNOE = 19001;
@@ -142,6 +146,7 @@ class MorphologyRegistry
             static::CHISLO => 'число',
             static::CHISLO_EDINSTVENNOE => 'единственное число',
             static::CHISLO_MNOZHESTVENNOE => 'множественное число',
+            static::CHISLO_NULL => 'не задано',
 
             static::SKLONENIE => 'склонение',
             static::SKLONENIE_PERVOE => 'первое склонение',
@@ -201,6 +206,7 @@ class MorphologyRegistry
             static::NAKLONENIE_IZYAVITELNOE => 'изъявительное',
             static::NAKLONENIE_POVELITELNOE => 'повелительное',
             static::NAKLONENIE_YSLOVNOE => 'условное',
+            static::NAKLONENIE_NULL => 'не задано',
 
             static::VREMYA => 'время',
             static::VREMYA_BUDUSCHEE => 'будущее',
@@ -211,6 +217,7 @@ class MorphologyRegistry
             static::LITSO_PERVOE => 'первое',
             static::LITSO_VTOROE => 'второе',
             static::LITSO_TRETIE => 'третье',
+            static::LITSO_NULL => 'отсутствует',
 
             static::ODUSHEVLYONNOST => 'одушевленность',
             static::ODUSHEVLYONNOST_ODUSHEVLYONNOE => 'одушевленное',
@@ -332,6 +339,15 @@ class MorphologyRegistry
                     ChastiRechiRegistry::CHISLITELNOE => \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Mnozhestvennoe::class,
                     ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Chislo\Mnozhestvennoe::class,
                 ],
+
+                static::CHISLO_NULL => [
+                    ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Null::class,
+                    ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Null::class,
+                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Chislo\Null::class,
+                    ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Null::class,
+                    ChastiRechiRegistry::CHISLITELNOE => \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Null::class,
+                    ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Chislo\Null::class,
+                ],
             ],
             static::PEREHODNOST => [
                 static::PEREHODNOST_PEREHODNII => [
@@ -427,6 +443,9 @@ class MorphologyRegistry
                 static::NAKLONENIE_YSLOVNOE => [
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Yslovnoe::class,
                 ],
+                static::NAKLONENIE_NULL => [
+                    ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Null::class,
+                ],
             ],
             static::SPRYAZHENIE => [
                 static::SPRYAZHENIE_PERVOE => [
@@ -445,6 +464,9 @@ class MorphologyRegistry
                 ],
                 static::LITSO_TRETIE => [
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Tretie::class,
+                ],
+                static::LITSO_NULL => [
+                    ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Null::class,
                 ],
             ],
             static::VID => [
@@ -505,6 +527,10 @@ class MorphologyRegistry
                 static::VREMYA_BUDUSCHEE => [
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Buduschee::class,
                     ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Buduschee::class,
+                ],
+                static::VREMYA_NULL => [
+                    ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Null::class,
+                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Null::class,
                 ],
             ],
             static::NARITCATELNOST => [
