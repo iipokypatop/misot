@@ -74,7 +74,6 @@ class Base
         }
 
         $sviazi = [];
-
         foreach ($rules as $rule) {
 
             foreach ($sequence as $main_candidate) {
@@ -91,7 +90,7 @@ class Base
                         continue;
                     }
 
-                    if ( 1 /*!$this->cache->get([$rule, $main_candidate, $depended_candidate])*/) {
+                    if ( !$this->cache->get([$rule, $main_candidate, $depended_candidate]) ) {
 
                         $third = $rule->getAssertedMember();
 
@@ -159,9 +158,9 @@ class Base
                         }
 
                         $result = $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
-//                        $sviaz = null;
+                        $sviaz = null;
                         if ($result) {
-                            $sviazi[] = /*$sviaz =*/ \Aot\Sviaz\Base::create(
+                            $sviazi[] = $sviaz = \Aot\Sviaz\Base::create(
                                 $main_candidate,
                                 $depended_candidate,
                                 $rule->getAssertedMain()->getRoleClass(),
@@ -169,7 +168,7 @@ class Base
                             );
                         }
 
-//                        $this->cache->put([$rule, $main_candidate, $depended_candidate], $sviaz);
+                        $this->cache->put([$rule, $main_candidate, $depended_candidate], $sviaz);
                     }
                 }
             }
