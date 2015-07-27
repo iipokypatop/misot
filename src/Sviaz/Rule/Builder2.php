@@ -31,7 +31,7 @@ class Builder2
     protected $asserted_member_builder;
 
 
-    /** @var  \Aot\Sviaz\Rule\AssertedLink\Builder */
+    /** @var  \Aot\Sviaz\Rule\AssertedLink\Builder\Base */
     protected $link_builder;
 
 
@@ -64,7 +64,7 @@ class Builder2
         return $this;
     }
 
-    public function link(\Aot\Sviaz\Rule\AssertedLink\Builder $link_builder)
+    public function link(AssertedLink\Builder\Base $link_builder)
     {
         $this->link_builder = $link_builder;
 

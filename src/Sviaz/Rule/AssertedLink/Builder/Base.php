@@ -6,17 +6,18 @@
  * Time: 12:42
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink;
+namespace Aot\Sviaz\Rule\AssertedLink\Builder;
 
 
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
+
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 
-class Builder
+class Base
 {
     /** @var  \Aot\Sviaz\Rule\Base */
     protected $rule;
@@ -82,7 +83,7 @@ class Builder
     {
         $this->rule = $rule;
 
-        $link = Base::create($rule);
+        $link = \Aot\Sviaz\Rule\AssertedLink\Base::create($rule);
 
         foreach ($this->getMorphologyMatchings() as $asserted_matching) {
             $link->addAssertedMatching($asserted_matching);

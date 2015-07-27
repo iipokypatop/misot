@@ -1,9 +1,10 @@
 <?php
 
 use Aot\Sviaz\Rule\AssertedMember\Builder\View;
-/** @var $mainView \Aot\Sviaz\Rule\AssertedMember\Builder\Main\View */
 
+/** @var $mainView \Aot\Sviaz\Rule\AssertedMember\Builder\Main\View */
 /** @var $dependedView \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\View */
+/** @var $linkView \Aot\Sviaz\Rule\AssertedLink\Builder\View */
 
 
 ?><!DOCTYPE html>
@@ -25,51 +26,41 @@ use Aot\Sviaz\Rule\AssertedMember\Builder\View;
                                     <table>
                                         <tr>
                                             <td>
-                                                <?= $mainView->getField(View::FIELD_TEXT_TYPE_NO)->draw() ?>
+                                                <? /*= $mainView->getField(View::FIELD_TEXT_TYPE_NO)->draw() */ ?><!--
                                         <tr>
                                             <td>
-                                                <?= $mainView->getField(View::FIELD_TEXT_TYPE_TEXT)->draw() ?>
+                                                <? /*= $mainView->getField(View::FIELD_TEXT_TYPE_TEXT)->draw() */ ?>
                                         <tr>
                                             <td>
-                                                <?= $mainView->getField(View::FIELD_TEXT_TYPE_TEXT_GROUP)->draw() ?>
+                                                <? /*= $mainView->getField(View::FIELD_TEXT_TYPE_TEXT_GROUP)->draw() */ ?>
                                         <tr>
                                             <td>
-                                                <?= $mainView->getField(View::FIELD_CHAST_RECHI)->draw() ?>
+                                                <? /*= $mainView->getField(View::FIELD_CHAST_RECHI)->draw() */ ?>
                                         <tr>
                                             <td>
-                                                <?= $mainView->getField(View::FIELD_ROLE)->draw() ?>
+                                                <? /*= $mainView->getField(View::FIELD_ROLE)->draw() */ ?>
                                         <tr>
                                             <td>
-                                                <?= $mainView->getField(View::FIELD_MORPH)->draw() ?>
+                                                <? /*= $mainView->getField(View::FIELD_MORPH)->draw() */ ?>   <tr>
+                                            <td>
+                                                --><? /*= $mainView->getField(View::FIELD_CHECKERS)->draw() */ ?>
                                     </table>
                                 </td>
                                 <td>
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <?= $dependedView->getField(View::FIELD_TEXT_TYPE_NO)->draw() ?>
-                                        <tr>
-                                            <td>
-                                                <?= $dependedView->getField(View::FIELD_TEXT_TYPE_TEXT)->draw() ?>
-                                        <tr>
-                                            <td>
-                                                <?= $dependedView->getField(View::FIELD_TEXT_TYPE_TEXT_GROUP)->draw() ?>
-                                        <tr>
-                                            <td>
-                                                <?= $dependedView->getField(View::FIELD_CHAST_RECHI)->draw() ?>
-                                        <tr>
-                                            <td>
-                                                <?= $dependedView->getField(View::FIELD_ROLE)->draw() ?>
-                                        <tr>
-                                            <td>
-                                                <?= $dependedView->getField(View::FIELD_MORPH)->draw() ?>
-                                    </table>
+
                                 </td>
                                 <td>123</td>
                             </tr>
                         </table>
                     </td>
-                    <td>2</td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                            <tr>
+                                <td>
+                        </table>
+                    </td>
                     <td>3</td>
                 </tr>
                 <tr>

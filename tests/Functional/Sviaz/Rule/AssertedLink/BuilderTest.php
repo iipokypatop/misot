@@ -21,7 +21,7 @@ class BuilderTest extends \AotTest\AotDataStorage
 {
     public function testLaunch()
     {
-        $builder = \Aot\Sviaz\Rule\AssertedLink\Builder::create()
+        $builder = \Aot\Sviaz\Rule\AssertedLink\Builder\Base::create()
             ->check(\Aot\Sviaz\Rule\AssertedLink\Checker\Registry::DependedAfterMain);
 
         $builder ->morphologyMatching(MorphologyRegistry::PADESZH);
@@ -43,7 +43,7 @@ class BuilderTest extends \AotTest\AotDataStorage
 
     public function testFind_Throws_Exception()
     {
-        $builder = \Aot\Sviaz\Rule\AssertedLink\Builder::create();
+        $builder = \Aot\Sviaz\Rule\AssertedLink\Builder\Base::create();
 
         $id = -1;
 

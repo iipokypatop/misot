@@ -15,7 +15,7 @@ use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use Aot\Text\GroupIdRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Builder\Base as AssertedMemberBuilder;
-use \Aot\Sviaz\Rule\AssertedLink\Builder as AssertedLinkBuilder;
+use Aot\Sviaz\Rule\AssertedLink\Builder\Base as AssertedLinkBuilder;
 
 class Builder2Test extends \AotTest\AotDataStorage
 {

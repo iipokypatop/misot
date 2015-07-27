@@ -21,4 +21,11 @@ class Registry
             static::ChasticaNePeredSlovom => \Aot\Sviaz\Rule\AssertedMember\Checker\ChasticaNePeredSlovom::class,
         ];
     }
+
+    public static function getNames()
+    {
+        return [
+            static::PredlogPeredSlovom => 'предлог перед словом'
+        ];
+    }
 }
