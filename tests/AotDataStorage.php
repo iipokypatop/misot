@@ -15,7 +15,7 @@ use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use Aot\Text\GroupIdRegistry as GroupIdRegistry;
-
+use Aot\RussianMorphology\ChastiRechi\Predlog\Base as Predlog;
 
 /**
  * Created by PhpStorm.
@@ -55,7 +55,7 @@ TEXT;
 
         $zapiztaya = $this->getSafeMockLocal(Zapiataya::class);
 
-        $na[0] = $this->getSafeMockLocal(Suschestvitelnoe::class);
+        $na[0] = $this->getSafeMockLocal(Predlog::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($na[0], 'text', 'на');
 
         $elektoenergiu[0] = $this->getSafeMockLocal(Suschestvitelnoe::class);
@@ -88,7 +88,7 @@ TEXT;
     /**
      * @return Chastica|Deeprichastie|Glagol|Suschestvitelnoe|Zapiataya | \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getSafeMockLocal()
+    protected function getSafeMockLocal($class, array $except_methods = [])
     {
         return call_user_func_array([$this, 'getSafeMock'], func_get_args());
     }

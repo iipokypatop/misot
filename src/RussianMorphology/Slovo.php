@@ -109,7 +109,5 @@ abstract class Slovo
     {
         return $this->text;
     }
-
-
 }
 

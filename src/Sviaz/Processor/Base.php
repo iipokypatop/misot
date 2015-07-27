@@ -25,11 +25,35 @@ class Base
         $this->raw_member_builder = \Aot\Sviaz\Processor\RawMemberBuilder::create();
 
         $this->cache = \Aot\Sviaz\Processor\CacheRules::create();
+
+        $this->engines = [
+            \Aot\Sviaz\Preprocessors\Predlog::create()
+        ];
     }
 
     public static function create()
     {
         return new static();
+    }
+
+    /**
+     * @var \Aot\Sviaz\Preprocessors\Base[]
+     */
+    protected $engines;
+
+    /**
+     * @param \Aot\Sviaz\Sequence $sequence
+     * @return \Aot\Sviaz\Sequence
+     */
+    protected function preProcess(\Aot\Sviaz\Sequence $sequence)
+    {
+        $new_sequence = $sequence;
+
+        foreach ($this->engines as $engine) {
+            $new_sequence = $engine->run($new_sequence);
+        }
+
+        return $new_sequence;
     }
 
     /**
@@ -45,13 +69,16 @@ class Base
             assert(is_a($rule, RuleBase::class, true));
         }
 
-        $get_raw_sequences = $this->getRawSequences($normalized_matrix);
+        $get_raw_sequences = $this->raw_member_builder->getRawSequences($normalized_matrix);
 
         $sviazi = [];
 
         foreach ($get_raw_sequences as $raw_sequence) {
+
+            $sequence = $this->preProcess($raw_sequence);
+
             $sviazi[] = $this->applyRules(
-                $raw_sequence,
+                $sequence,
                 $rules
             );
         }
@@ -236,22 +263,4 @@ class Base
     }
 
 
-    protected function getRawSequences(\Aot\Text\NormalizedMatrix $normalized_matrix)
-    {
-        $sequences = [];
-
-        foreach ($normalized_matrix as $array) {
-
-            $sequences[] = $sequence = Sequence::create();
-
-            foreach ($array as $member) {
-
-                $raw_member = $this->raw_member_builder->build($member);
-
-                $sequence->append($raw_member);
-            }
-        }
-
-        return $sequences;
-    }
 }

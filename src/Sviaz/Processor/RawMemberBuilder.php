@@ -16,7 +16,7 @@ class RawMemberBuilder
 {
     /** @var  \Aot\Sviaz\Processor\ObjectRegistry */
     protected $registry;
-    /** @var \Aot\Sviaz\SequenceMember\Base[]  */
+    /** @var \Aot\Sviaz\SequenceMember\Base[] */
     protected $store = [];
 
     /**
@@ -36,7 +36,7 @@ class RawMemberBuilder
      * @param $ob
      * @return \Aot\Sviaz\SequenceMember\Base
      */
-    public function build($ob)
+    protected function build($ob)
     {
         $id = $this->registry->registerMember($ob);
 
@@ -58,5 +58,28 @@ class RawMemberBuilder
         }
 
         throw new \RuntimeException("unsupported object type ");
+    }
+
+    /**
+     * @param \Aot\Text\NormalizedMatrix $normalized_matrix
+     * @return \Aot\Sviaz\Sequence[]
+     */
+    public function getRawSequences(\Aot\Text\NormalizedMatrix $normalized_matrix)
+    {
+        $sequences = [];
+
+        foreach ($normalized_matrix as $array) {
+
+            $sequences[] = $sequence = \Aot\Sviaz\Sequence::create();
+
+            foreach ($array as $member) {
+
+                $raw_member = $this->build($member);
+
+                $sequence->append($raw_member);
+            }
+        }
+
+        return $sequences;
     }
 }

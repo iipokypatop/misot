@@ -9,7 +9,12 @@
 namespace Aot\Sviaz\Preprocessors;
 
 
-class Base
+abstract class Base
 {
+    abstract public function run(\Aot\Sviaz\Sequence $sequence);
 
+    public static function create()
+    {
+        return new static();
+    }
 }
