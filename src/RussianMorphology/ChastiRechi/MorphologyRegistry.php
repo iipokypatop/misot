@@ -146,7 +146,7 @@ class MorphologyRegistry
             static::CHISLO => 'число',
             static::CHISLO_EDINSTVENNOE => 'единственное число',
             static::CHISLO_MNOZHESTVENNOE => 'множественное число',
-            static::CHISLO_NULL => 'не задано',
+            static::CHISLO_NULL => '',
 
             static::SKLONENIE => 'склонение',
             static::SKLONENIE_PERVOE => 'первое склонение',
@@ -206,18 +206,19 @@ class MorphologyRegistry
             static::NAKLONENIE_IZYAVITELNOE => 'изъявительное',
             static::NAKLONENIE_POVELITELNOE => 'повелительное',
             static::NAKLONENIE_YSLOVNOE => 'условное',
-            static::NAKLONENIE_NULL => 'не задано',
+            static::NAKLONENIE_NULL => '',
 
             static::VREMYA => 'время',
             static::VREMYA_BUDUSCHEE => 'будущее',
             static::VREMYA_NASTOYASCHEE => 'настоящее',
             static::VREMYA_PROSHEDSHEE => 'прошедшее',
+            static::VREMYA_NULL => '',
 
             static::LITSO => 'лицо',
             static::LITSO_PERVOE => 'первое',
             static::LITSO_VTOROE => 'второе',
             static::LITSO_TRETIE => 'третье',
-            static::LITSO_NULL => 'отсутствует',
+            static::LITSO_NULL => '',
 
             static::ODUSHEVLYONNOST => 'одушевленность',
             static::ODUSHEVLYONNOST_ODUSHEVLYONNOE => 'одушевленное',

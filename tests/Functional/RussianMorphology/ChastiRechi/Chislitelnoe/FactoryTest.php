@@ -22,11 +22,11 @@ class FactoryTest extends AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Factory::class, $factory);
     }
 
-    public function testWDW(){
+    public function _testWDW(){
         $const = new \D_Constants();
         $const->defineConstants();
         $syntax_parser = new \SyntaxParserManager();
-        $text = 'выжить';
+        $text = 'Ученый';
         $syntax_parser->reg_parser->parse_text($text);
         $syntax_parser->create_dictionary_word();
         $wdw = [];
