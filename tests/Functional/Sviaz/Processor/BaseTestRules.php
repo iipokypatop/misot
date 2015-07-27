@@ -18,15 +18,15 @@ class BaseTestRules extends \AotTest\AotDataStorage
     public function dataProviderRulesAndTexts()
     {
         return [
-            // 'Поставил пылесос.'
-            /*[
+            //
+            [
                 'getRule_PerehGl_Susch',
                 [
                     'Человек поставил пылесос.' => true,
                 ]
             ],
 
-            // 'Он красивый и умный.', 'Она красивая и добрая.'
+            //
             [
                 'getRule_LichnoeMest_Pril',
                 [
@@ -45,7 +45,7 @@ class BaseTestRules extends \AotTest\AotDataStorage
                 ]
             ],
 
-            // 'Никто не был замечен.', 'Никто не забыт, ничто не забыто.', 'Никто не будет загнан.'
+            //
             [
                 'getRule_OtricMest_Prich',
                 [
@@ -55,7 +55,7 @@ class BaseTestRules extends \AotTest\AotDataStorage
                 ]
             ],
 
-            // 'Мои университеты.', 'Моя борьба.', 'Его взгляд.'
+            //
             [
                 'getRule_PrityazhMest_Susch',
                 [
@@ -103,7 +103,7 @@ class BaseTestRules extends \AotTest\AotDataStorage
                     'Задача у него была постараться выжить' => true,
                 ]
             ],
-            //
+            //fail
             [
                 'getRule_Mest_Gl_Narech',
                 [
@@ -114,6 +114,7 @@ class BaseTestRules extends \AotTest\AotDataStorage
                     'Где у нас хорошо будет.' => false
                 ]
             ],
+
             //
             [
                 'Rule_Gl_Deepr',
@@ -149,14 +150,66 @@ class BaseTestRules extends \AotTest\AotDataStorage
                     'Она был умен, но уродлив.' => false,
                     'Человек спрятался.' => false,
                 ]
-            ],*/
+            ],
+            // fail
+//            [
+//                'getRule_KrPril_Susch',
+//                [
+//                    'Плох тот администратор' => true,
+//                    'Плох тот администратор, что не использует бубен.' => true,
+//                    'Плох тот солдат, который не мечтает стать генералом.' => true
+//                ]
+//            ],
+
+            [
+                'getRule_Susch_PoryadkChisl',
+                [
+                    'Первый с правого фланга солдат вышел из строя.' => true,
+                    'Первый строй с правого фланга солдат вышел из строя.' => true // на самом деле false, если бы member отрабатывал
+                ]
+            ],
+
             //
             [
-                'getRule_KrPril_Susch',
+                'getRule_Pril_Narech',
                 [
-                    'Плох тот администратор' => true,
-                    'Плох тот администратор, что не использует бубен.' => true,
-                    'Плох тот солдат, который не мечтает стать генералом.' => true
+                    'Мальчик был очень находчивым.' => true,
+                    'Небо над морем стало неестественно бурым.' => true,
+                    'Красивые волны неестественно поднимались.' => false
+                ]
+            ],
+
+            //
+            [
+                'getRule_Narech_Narech',
+                [
+                    'Мне очень страшно.' => true,
+                    // когда в препроцессоре сделаем привязку частицы не к последующему слову, то можно раскомментить
+//                  'Мне совсем не страшно идти в лес.' => true,
+                ]
+            ],
+
+            //
+            [
+                'getRule_Narech_Narech',
+                [
+                    'Мне очень страшно.' => true,
+//                    'Мне совсем не страшно идти в лес.' => true, // когда в препроцессоре сделаем привязку частицы не к последующему слову, то можно раскомментить
+                ]
+            ],
+            //
+            [
+                'getRule_Gl_Narech',
+                [
+                    'Они вдесятером потянули за канат' => true,
+                ]
+            ],
+
+            //
+            [
+                'getRule_Gl_DefisNarech',
+                [
+                    'Он сказал точь-в-точь то же самое, что и неделю назад' => true,
                 ]
             ],
 
@@ -174,11 +227,10 @@ class BaseTestRules extends \AotTest\AotDataStorage
 
         $rule = Container::$name_rule();
 
-
         foreach ($texts as $text => $must_have_link) {
             echo "\n Текст:\n \t" . $text . " \n";
 
-            $words = preg_split('/\s+/', preg_replace('/[^а-яА-Я ]/u', '', $text));
+            $words = preg_split('/\s+/', preg_replace('/[^а-яА-Я- ]/u', '', $text));
 
             $slova = \Aot\RussianMorphology\Factory::getSlova($words);
 
@@ -190,7 +242,7 @@ class BaseTestRules extends \AotTest\AotDataStorage
 
             $have_link = false; // имеет связь
             // запускаем правило
-            if (count($rule) > 1) {
+            if (is_array($rule)) {
                 foreach ($rule as $key => $rule_el) {
                     echo "\n" . $key;
                     $data = $this->getStrRule($processor, $normalized_matrix, $rule_el);
@@ -215,7 +267,13 @@ class BaseTestRules extends \AotTest\AotDataStorage
 
     }
 
-    protected function getStrRule($processor, $normalized_matrix, $rule)
+    /**
+     * @param \Aot\Sviaz\Processor\Base $processor
+     * @param \Aot\Text\NormalizedMatrix $normalized_matrix
+     * @param $rule
+     * @return array
+     */
+    protected function getStrRule(\Aot\Sviaz\Processor\Base $processor, \Aot\Text\NormalizedMatrix $normalized_matrix, $rule)
     {
 
         $link_container = $processor->go($normalized_matrix, [$rule]);

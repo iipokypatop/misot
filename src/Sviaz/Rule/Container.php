@@ -9,15 +9,11 @@
 namespace Aot\Sviaz\Rule;
 
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Izyavitelnoe;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Povelitelnoe;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Yslovnoe;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
-use \Aot\Sviaz\Rule\AssertedLink\Builder as AssertedLinkBuilder;
+use Aot\Sviaz\Rule\AssertedLink\Builder\Base as AssertedLinkBuilder;
 use Aot\Text\GroupIdRegistry;
 
 
@@ -1159,7 +1155,7 @@ TEXT;
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
                         ChastiRechiRegistry::SUSCHESTVITELNOE,
                         RoleRegistry::VESCH
                     )
@@ -1167,7 +1163,7 @@ TEXT;
                         ->morphology($chislo)
                 )
                 ->depended(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::PRICHASTIE,
                         RoleRegistry::SVOISTVO
                     )
@@ -1176,7 +1172,7 @@ TEXT;
                         ->morphology($chislo)
                 )
                 ->member(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                    $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
                         ChastiRechiRegistry::GLAGOL
                     )
                         ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BEFORE_DEPENDED)
@@ -1184,28 +1180,11 @@ TEXT;
                         ->textGroupId(GroupIdRegistry::BIT)
 
                 );
-        if ($rod !== null) {
-            $builder->main(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
-                    ChastiRechiRegistry::SUSCHESTVITELNOE,
-                    RoleRegistry::VESCH
-                )
-                    ->morphology($rod)
-            )
-                ->depended(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
-                        ChastiRechiRegistry::PRICHASTIE,
-                        RoleRegistry::SVOISTVO
-                    )
-                        ->morphology($rod)
-                )
-                ->member(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
-                        ChastiRechiRegistry::GLAGOL
-                    )
-                        ->morphology($rod)
 
-                );
+        if ($rod !== null) {
+            $builder_main->morphology($rod);
+            $builder_depended->morphology($rod);
+            $builder_member->morphology($rod);
         }
 
 
@@ -1258,7 +1237,7 @@ TEXT;
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
                         ChastiRechiRegistry::MESTOIMENIE,
                         RoleRegistry::VESCH
                     )
@@ -1268,7 +1247,7 @@ TEXT;
                         ->morphology($chislo)
                 )
                 ->depended(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::PRICHASTIE,
                         RoleRegistry::SVOISTVO
                     )
@@ -1277,7 +1256,7 @@ TEXT;
                         ->morphology($chislo)
                 )
                 ->member(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                    $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
                         ChastiRechiRegistry::GLAGOL
                     )
                         ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BEFORE_DEPENDED)
@@ -1285,27 +1264,12 @@ TEXT;
                         ->textGroupId(GroupIdRegistry::BIT)
 
                 );
+
+
         if ($rod !== null) {
-            $builder->main(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
-                    ChastiRechiRegistry::MESTOIMENIE,
-                    RoleRegistry::VESCH
-                )
-                    ->morphology($rod)
-            )
-                ->depended(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
-                        ChastiRechiRegistry::PRICHASTIE,
-                        RoleRegistry::SVOISTVO
-                    )
-                        ->morphology($rod)
-                )
-                ->member(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
-                        ChastiRechiRegistry::GLAGOL
-                    )
-                        ->morphology($rod)
-                );
+            $builder_main->morphology($rod);
+            $builder_depended->morphology($rod);
+            $builder_member->morphology($rod);
         }
 
 
@@ -1360,7 +1324,7 @@ TEXT;
         $builder = \Aot\Sviaz\Rule\Builder2::create();
 
         $builder->main(
-            \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+            $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE,
                 RoleRegistry::VESCH
             )
@@ -1368,7 +1332,7 @@ TEXT;
                 ->morphology($chislo)
         )
             ->member(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
                     ChastiRechiRegistry::GLAGOL
                 )
                     ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BEFORE_DEPENDED)
@@ -1391,22 +1355,9 @@ TEXT;
             );
 
         if ($rod !== null) {
-            $builder->main(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
-                    ChastiRechiRegistry::SUSCHESTVITELNOE,
-                    RoleRegistry::VESCH
-                )
-                    ->morphology($rod)
-            )
-                ->member(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
-                        ChastiRechiRegistry::GLAGOL
-                    )
-                        ->morphology($rod)
-                );
-
+            $builder_main->morphology($rod);
+            $builder_member->morphology($rod);
         }
-
 
         $rule = $builder->get();
 
@@ -1459,7 +1410,7 @@ TEXT;
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
                         ChastiRechiRegistry::MESTOIMENIE,
                         RoleRegistry::VESCH
                     )
@@ -1468,7 +1419,7 @@ TEXT;
                         ->textGroupId(GroupIdRegistry::ETOVSE)
                 )
                 ->depended(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::NARECHIE,
                         RoleRegistry::SVOISTVO
                     )
@@ -1479,7 +1430,7 @@ TEXT;
 
 
         $builder->member(
-            \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+            $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
                 ChastiRechiRegistry::GLAGOL
             )
                 ->textGroupId(GroupIdRegistry::BIT)
@@ -1487,23 +1438,12 @@ TEXT;
 
         );
 
+
         if ($rod !== null) {
-            $builder->main(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
-                    ChastiRechiRegistry::MESTOIMENIE,
-                    RoleRegistry::VESCH
-                )
-                    ->morphology($rod)
-            );
-
-            $builder->member(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
-                    ChastiRechiRegistry::GLAGOL
-                )
-                    ->morphology($rod)
-
-            );
+            $builder_main->morphology($rod);
+            $builder_member->morphology($rod);
         }
+
 
         $rule = $builder->get();
 
@@ -1612,7 +1552,6 @@ TEXT;
             'MnozhestvennoeDatelnij' => [MorphologyRegistry::CHISLO_MNOZHESTVENNOE, null, MorphologyRegistry::PADESZH_DATELNIJ],
             'MnozhestvennoePredlozshnij' => [MorphologyRegistry::CHISLO_MNOZHESTVENNOE, null, MorphologyRegistry::PADESZH_PREDLOZSHNIJ],
             'MnozhestvennoeTvoritelnij' => [MorphologyRegistry::CHISLO_MNOZHESTVENNOE, null, MorphologyRegistry::PADESZH_TVORITELNIJ],
-
         ];
 
 
@@ -1649,7 +1588,7 @@ TEXT;
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
                         ChastiRechiRegistry::MESTOIMENIE,
                         RoleRegistry::VESCH
                     )
@@ -1657,7 +1596,7 @@ TEXT;
                         ->morphology($chislo)
                 )
                 ->depended(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::PRILAGATELNOE,
                         RoleRegistry::SVOISTVO
                     )
@@ -1665,7 +1604,7 @@ TEXT;
                         ->morphology($chislo)
                 )
                 ->member(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                    $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
                         ChastiRechiRegistry::GLAGOL
                     )
                         ->textGroupId(GroupIdRegistry::BIT)
@@ -1677,28 +1616,9 @@ TEXT;
                 );
 
         if ($rod !== null) {
-            $builder->main(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
-                    ChastiRechiRegistry::MESTOIMENIE,
-                    RoleRegistry::VESCH
-                )
-                    ->morphology($rod)
-            );
-
-            $builder->depended(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
-                    ChastiRechiRegistry::PRILAGATELNOE,
-                    RoleRegistry::SVOISTVO
-                )
-                    ->morphology($rod)
-            );
-            $builder->member(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
-                    ChastiRechiRegistry::GLAGOL
-                )
-                    ->morphology($rod)
-
-            );
+            $builder_main->morphology($rod);
+            $builder_depended->morphology($rod);
+            $builder_member->morphology($rod);
         }
 
         $rule = $builder->get();
@@ -1732,7 +1652,7 @@ TEXT;
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
                         ChastiRechiRegistry::SUSCHESTVITELNOE,
                         RoleRegistry::VESCH
                     )
@@ -1740,7 +1660,7 @@ TEXT;
                         ->morphology($chislo)
                 )
                 ->depended(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::PRILAGATELNOE,
                         RoleRegistry::SVOISTVO
                     )
@@ -1748,7 +1668,7 @@ TEXT;
                         ->morphology($chislo)
                 )
                 ->member(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                    $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
                         ChastiRechiRegistry::GLAGOL
                     )
                         ->textGroupId(GroupIdRegistry::BIT)
@@ -1760,28 +1680,9 @@ TEXT;
                 );
 
         if ($rod !== null) {
-            $builder->main(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
-                    ChastiRechiRegistry::SUSCHESTVITELNOE,
-                    RoleRegistry::VESCH
-                )
-                    ->morphology($rod)
-            );
-
-            $builder->depended(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
-                    ChastiRechiRegistry::PRILAGATELNOE,
-                    RoleRegistry::SVOISTVO
-                )
-                    ->morphology($rod)
-            );
-            $builder->member(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
-                    ChastiRechiRegistry::GLAGOL
-                )
-                    ->morphology($rod)
-
-            );
+            $builder_main->morphology($rod);
+            $builder_depended->morphology($rod);
+            $builder_member->morphology($rod);
         }
 
         $rule = $builder->get();
@@ -1791,10 +1692,10 @@ TEXT;
 
 
     /**
-     * 37
+     * 37 fail
      * @return static
      */
-    public static function getRule_KrPril_Susch()
+    /*public static function getRule_KrPril_Susch()
     {
 
         <<<TEXT
@@ -1802,19 +1703,19 @@ TEXT;
 между ними нет других существительных, совпадающих в роде и числе, то между ними есть связь.
 TEXT;
         return static::runChisloRodPadeszh('getByRodAndChisloForRule_KrPril_Susch');
-    }
+    }*/
 
 
     /**
      * 37
      * @return static
      */
-    protected static function getByRodAndChisloForRule_KrPril_Susch($chislo, $rod, $padeszh)
+    /*protected static function getByRodAndChisloForRule_KrPril_Susch($chislo, $rod, $padeszh)
     {
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
                         ChastiRechiRegistry::SUSCHESTVITELNOE,
                         RoleRegistry::VESCH
                     )
@@ -1822,23 +1723,23 @@ TEXT;
                         ->morphology($chislo)
                 )
                 ->depended(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::PRILAGATELNOE,
                         RoleRegistry::SVOISTVO
                     )
                         ->morphology($padeszh)
-                        ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
+//                        ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
                         ->morphology($chislo)
                 )
-                // TODO: не срабатывает
+                // TODO: не срабатывает, и обязательно дб member??
                 ->member(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                    $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
                         ChastiRechiRegistry::SUSCHESTVITELNOE
                     )
                         ->morphology($padeszh)
                         ->morphology($chislo)
                         ->notPresent()
-                        ->position(\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_NOT_PRESENT)
+                        ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BETWEEN_MAIN_AND_DEPENDED)
 
                 )
                 ->link(
@@ -1846,32 +1747,220 @@ TEXT;
                 );
 
         if ($rod !== null) {
-            $builder->main(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
-                    ChastiRechiRegistry::SUSCHESTVITELNOE,
-                    RoleRegistry::VESCH
-                )
-                    ->morphology($rod)
-            );
+            $builder_main->morphology($rod);
+            $builder_depended->morphology($rod);
+//            $builder_member->morphology($rod);
+        }
 
-            $builder->depended(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
-                    ChastiRechiRegistry::PRILAGATELNOE,
-                    RoleRegistry::SVOISTVO
+        $rule = $builder->get();
+
+        return $rule;
+    }*/
+
+
+    /**
+     * 39
+     * @return static
+     */
+    public static function getRule_Susch_PoryadkChisl()
+    {
+
+        <<<TEXT
+ Если в предложении есть существительное и порядковое числительное, и они совпадают в роде,
+числе и падеже и между ними нет других существительных в том же роде, числе и падеже, то между ними есть связь.
+TEXT;
+        return static::runChisloRodPadeszh('getByRodAndChisloForRule_Susch_PoryadkChisl');
+    }
+
+    /**
+     * 39
+     * @return static
+     */
+    protected static function getByRodAndChisloForRule_Susch_PoryadkChisl($chislo, $rod, $padeszh)
+    {
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE,
+                        RoleRegistry::VESCH
+                    )
+                        ->morphology($padeszh)
+                        ->morphology($chislo)
                 )
-                    ->morphology($rod)
-            );
-            $builder->member(
-                \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
-                    ChastiRechiRegistry::SUSCHESTVITELNOE
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::CHISLITELNOE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        ->morphology($padeszh)
+                        # TODO: из морфика число для числительного не приходит (по крайней мере не для всех)
+//                        ->morphology($chislo)
+                        ->morphology(MorphologyRegistry::VID_CHISLITELNOGO_PORYADKOVIY)
                 )
-                    ->morphology($rod)
-            );
+                // TODO: не срабатывает
+                ->member(
+                    $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE
+                    )
+                        ->morphology($padeszh)
+                        ->morphology($chislo)
+                        ->notPresent()
+                        ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BETWEEN_MAIN_AND_DEPENDED)
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                );
+
+        if ($rod !== null) {
+            $builder_main->morphology($rod);
+            $builder_depended->morphology($rod);
+            $builder_member->morphology($rod);
         }
 
         $rule = $builder->get();
 
         return $rule;
     }
+
+    /**
+     * 23
+     * @return static
+     */
+    public static function getRule_Pril_Narech()
+    {
+        <<<TEXT
+С прилагательными образуют связь следующие наречия:...
+Между прилагательным и таким наречием не бывает других слов.
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::PRILAGATELNOE,
+                        RoleRegistry::VESCH
+                    )
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::NARECHIE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        ->textGroupId(GroupIdRegistry::NARECH_FOR_PRIL_OR_NARECH)
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                    ->dependedRightBeforeMain()
+                );
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 24
+     * @return static
+     */
+    public static function getRule_Narech_Narech()
+    {
+        <<<TEXT
+С наречиями образуют связь следующие наречия:...
+Между наречиями и таким наречием не бывает других слов.
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::NARECHIE,
+                        RoleRegistry::VESCH
+                    )
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::NARECHIE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        ->textGroupId(GroupIdRegistry::NARECH_FOR_PRIL_OR_NARECH)
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                        ->dependedRightBeforeMain()
+                );
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 25
+     * @return static
+     */
+    public static function getRule_Gl_Narech()
+    {
+        <<<TEXT
+С глаголами образуют связь следующие наречия:...
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::GLAGOL,
+                        RoleRegistry::OTNOSHENIE
+                    )
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::NARECHIE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        ->textGroupId(GroupIdRegistry::NARECH_FOR_GL)
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                );
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 26
+     * @return static
+     */
+    public static function getRule_Gl_DefisNarech()
+    {
+        <<<TEXT
+С глаголами образуют связь следующие наречия, которые пишутся через дефис:...
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::GLAGOL,
+                        RoleRegistry::OTNOSHENIE
+                    )
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::NARECHIE,
+                        RoleRegistry::SVOISTVO
+                    )
+//                        ->textGroupId(GroupIdRegistry::DEFISNARECH_FOR_GL)
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+//                        ->dependedRightBeforeMain()
+                );
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+
+
 }
 
