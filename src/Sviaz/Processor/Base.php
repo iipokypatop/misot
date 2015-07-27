@@ -91,8 +91,7 @@ class Base
                         continue;
                     }
 
-                    if( !$this->cache->get([$rule, $main_candidate, $depended_candidate]) )
-                    {
+                    if (1 /*!$this->cache->get([$rule, $main_candidate, $depended_candidate])*/) {
                         //var_export($depended_candidate);die;
 
                         $third = $rule->getAssertedMember();
@@ -120,15 +119,16 @@ class Base
                                             $third->getPosition(),
                                             $sequence->getPosition($third_candidate)
                                         );
-                                    }
-                                    if (true === $result) {
-                                        break;
+
+                                        if (true === $result) {
+                                            break;
+                                        }
                                     }
                                 }
 
                             } else if (\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_NOT_PRESENT === $third->getPresence()) {
 
-                                $result = true;
+                                $result = false;
 
                                 foreach ($sequence as $third_candidate) {
                                     if ($third_candidate === $main_candidate) {
@@ -147,11 +147,16 @@ class Base
                                             $third->getPosition(),
                                             $sequence->getPosition($third_candidate)
                                         );
+
+                                        if (true === $result) {
+                                            $result = false;
+                                            break;
+                                        }
                                     }
-                                    if (true === $result) {
-                                        $result = false;
-                                        break;
-                                    }
+                                }
+
+                                if ($result === false) {
+                                    $result = true;
                                 }
                             }
                         }

@@ -18,7 +18,10 @@ var_export($_POST, 1),
 
 
 $mainView = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\View::create();
+
 $dependedView = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\View::create();
+
+$linkView = \Aot\Sviaz\Rule\AssertedLink\Builder\View::create();
 
 
 $id = null;

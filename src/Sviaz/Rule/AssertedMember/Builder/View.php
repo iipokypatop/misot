@@ -11,6 +11,8 @@ namespace Aot\Sviaz\Rule\AssertedMember\Builder;
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\View\Chargeable;
+use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
+
 
 abstract class View extends \Aot\View\Base implements Chargeable
 {
@@ -35,6 +37,8 @@ abstract class View extends \Aot\View\Base implements Chargeable
     const FIELD_ROLE = '400';
 
     const FIELD_MORPH = '500';
+
+    const FIELD_CHECKERS = '600';
 
 
     public function __construct()
@@ -94,7 +98,9 @@ abstract class View extends \Aot\View\Base implements Chargeable
 
 
         $this(static::FIELD_TEXT_TYPE_NO)->charge('checked', false);
+
         $this(static::FIELD_TEXT_TYPE_TEXT)->charge('checked', false);
+
         $this(static::FIELD_TEXT_TYPE_TEXT_GROUP)->charge('checked', false);
 
         if (static::FIELD_TEXT_TYPE_NO === $data[static::FIELD_TEXT_TYPE]) {
@@ -120,8 +126,14 @@ abstract class View extends \Aot\View\Base implements Chargeable
         }
 
         if (!empty($data[static::FIELD_MORPH])) {
-
             //var_export($data[static::FIELD_MORPH]);
+        }
+
+        if (!empty($data[static::FIELD_CHECKERS]) && is_array($data[static::FIELD_CHECKERS])) {
+            $this->fields[static::FIELD_CHECKERS]->charge('checked', array_combine(
+                array_keys($data[static::FIELD_CHECKERS]),
+                array_fill(0, count($data[static::FIELD_CHECKERS]), true)
+            ));
         }
     }
 
@@ -133,6 +145,7 @@ abstract class View extends \Aot\View\Base implements Chargeable
         $this->fields[static::FIELD_CHAST_RECHI] = \Aot\View\Field\Base::create();
         $this->fields[static::FIELD_ROLE] = \Aot\View\Field\Base::create();
         $this->fields[static::FIELD_MORPH] = \Aot\View\Field\Base::create();
+        $this->fields[static::FIELD_CHECKERS] = \Aot\View\Field\Base::create();
 
 
         $this(static::FIELD_TEXT_TYPE_NO)->charge('checked', true);
@@ -151,7 +164,6 @@ abstract class View extends \Aot\View\Base implements Chargeable
 HTML;
             }
         );
-
 
 
         $this->fields[static::FIELD_TEXT_TYPE_TEXT]->setView(
@@ -241,11 +253,11 @@ HTML;
 
                 $name = $this->getFieldName(static::FIELD_ROLE);
                 $id = "{$name}";
-
                 $selected_id = $field->getValue('selected_id') ?: '';
-                $options_data = \Aot\Sviaz\Role\Registry::getNames();
+
+
                 $options = [];
-                foreach ($options_data as $k => $v) {
+                foreach (\Aot\Sviaz\Role\Registry::getNames() as $k => $v) {
                     $selected = '';
                     if ($k === $selected_id) {
                         $selected = 'selected';
@@ -299,10 +311,27 @@ HTML;
             }
         );
 
+        $this->fields[static::FIELD_CHECKERS]->setView(
+            function (\Aot\View\Field\Base $field) {
 
+                $html[] = "<fieldset id=''>";
+                $html[] = "<legend>" . "функции слова" . "</legend>";
 
+                foreach (MemberCheckerRegistry::getClasses() as $class_id => $class) {
 
+                    $checked = $field->getValue("checked[{$class_id}]") ?: '';
 
+                    $name = $this->getFieldName(static::FIELD_CHECKERS, [$class_id]);
+                    $id = $name;
+                    $html[] = "<input id='{$id}' name='{$name}' type='checkbox' {$checked}/>";
+                    $html[] = "<label for='{$id}'>" . MemberCheckerRegistry::getNames()[$class_id] . "</label>";
+                }
+
+                $html[] = "</fieldset>";
+
+                return join("\n", $html);
+            }
+        );
     }
 
 
@@ -315,13 +344,10 @@ HTML;
     }
 
 
-
     public static function create()
     {
         return new static();
     }
-
-
 
 
     /**

@@ -19,4 +19,11 @@ class Registry
             static::PredlogPeredSlovom => \Aot\Sviaz\Rule\AssertedMember\Checker\PredlogPeredSlovom::class
         ];
     }
+
+    public static function getNames()
+    {
+        return [
+            static::PredlogPeredSlovom => 'предлог перед словом'
+        ];
+    }
 }

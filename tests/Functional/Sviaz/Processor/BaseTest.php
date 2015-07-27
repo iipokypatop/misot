@@ -25,7 +25,7 @@ use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use MivarTest\PHPUnitHelper;
 
-use \Aot\Sviaz\Rule\AssertedLink\Builder as AssertedLinkBuilder;
+use Aot\Sviaz\Rule\AssertedLink\Builder\Base as AssertedLinkBuilder;
 
 class BaseTest extends \AotTest\AotDataStorage
 {
@@ -510,7 +510,7 @@ TEXT;
                         ChastiRechiRegistry::SUSCHESTVITELNOE
                     )
                         ->text('облака')
-                        //->notPresent()
+                        ->notPresent()
                         ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_AFTER_MAIN)
                 );
 

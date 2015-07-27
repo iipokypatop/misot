@@ -34,7 +34,7 @@ class Registry
     /**
      * @param int $id
      * @param array $args
-     * @return \Aot\Sviaz\Rule\AssertedLink\Checker\Base|null
+     * @return \Aot\Sviaz\Rule\AssertedLink\Checker\Base
      */
     public static function getObjectById($id, array $args = [])
     {
