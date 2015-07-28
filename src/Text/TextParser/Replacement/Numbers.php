@@ -19,7 +19,7 @@ class Numbers extends Base
             "/(\\{\\%)?(\\d+([\\s\\,]*\\d+)*)/u",
         ];
     }
-    protected function putInRegistry($record)
+    protected function insertTemplate($record)
     {
         if( $record[1] === '{%' || trim($record[0]) === ''){
             return $record[0];
@@ -27,6 +27,7 @@ class Numbers extends Base
 
         $record[0] = preg_replace(["/(\\,)/","/(\\s)/"], [".", ""], $record[0]);
         $index = $this->registry->add($record[0]);
+        $this->logger->notice("R: Заменили по шаблону [{$record[0]}], индекс {$index}");
         return "{%" . $index . "%}";
     }
 }

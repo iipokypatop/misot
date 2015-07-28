@@ -18,7 +18,14 @@ class NoValid extends Base
     protected function getPatterns()
     {
         return [
-            "/[^а-яА-ЯёЁъЪ\\s\\:\\;\\-\"\\'\\`\\*\\%\\$\\,\\.\\(\\)\\{\\}\\[\\]\\d]/u",
+            "/([^" .
+            "а-яА-ЯёЁъЪ" .
+            "a-zA-Z" .
+            "\\?\\!\\,\\.\\:\\;" .
+            "\"\\'\\`\\‘\\‛\\’\\«\\»\\‹\\›\\„\\“\\‟\\”" .
+            "%$\\s\\d\\*\\-" .
+            "\\{\\}\\[\\]\\(\\)" .
+            "])/u",
         ];
     }
 
@@ -30,16 +37,16 @@ class NoValid extends Base
     {
         $arr = [];
         foreach ($this->getPatterns() as $pattern) {
-            $array = preg_split($pattern, $text, -1, PREG_SPLIT_OFFSET_CAPTURE);
-            print_r($array);
+            $array = preg_split($pattern, $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE);
+            $par = (preg_match($pattern, $array[0][0])) ? 2 : 1;
             foreach ($array as $key => $value) {
-                if ($value[0] === '') {
+                if (($key % 2) === $par) {
+                    $this->logger->warn("Убрали невалидный символ [{$value[0]}] на позиции [{$value[1]}]");
                     continue;
                 }
                 $arr[] = $value[0];
             }
         }
-
         return join('', $arr);
     }
 

@@ -43,15 +43,15 @@ class TextParser
     public function __construct()
     {
 
-        $logger = null;
-        $this->filterSpaces = Spaces::create($logger);
-        $this->filterNoValid = NoValid::create($logger);
+        $this->logger = Logger::create();
+        $this->filterSpaces = Spaces::create($this->logger);
+        $this->filterNoValid = NoValid::create($this->logger);
 
         $this->registry = Registry::create(); // реестр для хранения замен
-        $this->replaceFIO = FIO::create($this->registry);
-        $this->replaceHooks = Hooks::create($this->registry);
-        $this->replaceShort = Short::create($this->registry);
-        $this->replaceNumbers = Numbers::create($this->registry);
+        $this->replaceFIO = FIO::create($this->registry, $this->logger);
+        $this->replaceHooks = Hooks::create($this->registry, $this->logger);
+        $this->replaceShort = Short::create($this->registry, $this->logger);
+        $this->replaceNumbers = Numbers::create($this->registry, $this->logger);
     }
 
     public function execute($text)
@@ -78,6 +78,7 @@ class TextParser
         $text = $this->replaceNumbers->replace($text);
 
 //        print_r($this->registry);
+        print_r($this->logger);
         // разбиваем текст на предложения
         $sentences = preg_split(static::PATTERN_SENTENCE_DELIMITER, $text);
 

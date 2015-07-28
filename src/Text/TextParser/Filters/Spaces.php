@@ -18,8 +18,8 @@ class Spaces extends Base
     protected function getPatterns()
     {
         return [
-            '/\\s/',
 //            '/\\s/',
+            '/(\\s+)/',
         ];
 
     }
@@ -28,15 +28,20 @@ class Spaces extends Base
     {
         $arr = [];
         foreach ($this->getPatterns() as $pattern) {
-            $array = preg_split($pattern, $text, -1, PREG_SPLIT_OFFSET_CAPTURE);
+            $array = preg_split($pattern, $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE);
+            // определяем четность
+            $par = (preg_match($pattern, $array[0][0])) ? 2 : 1;
             foreach ($array as $key => $value) {
-                if ($value[0] === '') {
+                if (($key % 2) === $par) {
+                    $cnt_spaces = strlen($value[0]);
+                    if ($cnt_spaces > 1) {
+                        $this->logger->notice("Убрали пробел [{$cnt_spaces}] на позиции [{$value[1]}]");
+                    }
                     continue;
                 }
                 $arr[] = $value[0];
             }
         }
-
         return join(' ', $arr);
     }
 }
