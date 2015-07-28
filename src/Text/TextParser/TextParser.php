@@ -44,10 +44,10 @@ class TextParser
     {
 
         $logger = null;
-//        $this->filterSpaces = Spaces::create($logger);
-//        $this->filterNoValid = NoValid::create($logger);
+        $this->filterSpaces = Spaces::create($logger);
+        $this->filterNoValid = NoValid::create($logger);
 
-        $this->registry = Registry::create();
+        $this->registry = Registry::create(); // реестр для хранения замен
         $this->replaceFIO = FIO::create($this->registry);
         $this->replaceHooks = Hooks::create($this->registry);
         $this->replaceShort = Short::create($this->registry);
@@ -60,10 +60,10 @@ class TextParser
         $origin_text = $text;
 
         // чистим от лишних пробельных символов
-//        $text = $this->filterSpaces->filter($text);
+        $text = $this->filterSpaces->filter($text);
 
         // убираем невалидные символы
-//        $text = $this->filterNoValid->filter($text);
+        $text = $this->filterNoValid->filter($text);
 
         // ФИО
         $text = $this->replaceFIO->replace($text);
@@ -77,7 +77,7 @@ class TextParser
         // числительные
         $text = $this->replaceNumbers->replace($text);
 
-
+//        print_r($this->registry);
         // разбиваем текст на предложения
         $sentences = preg_split(static::PATTERN_SENTENCE_DELIMITER, $text);
 
@@ -105,11 +105,11 @@ class TextParser
         ///////////////
         echo "\n" . $origin_text;
         echo "\n" . $text . "\n";
-        print_r($this->registry);
-
-
-        print_r($sentences);
-        print_r($sentence_words);
+//        print_r($this->registry);
+//
+//
+//        print_r($sentences);
+//        print_r($sentence_words);
 
 
     }
@@ -123,12 +123,11 @@ class TextParser
                     if (empty($this->registry[$match[1]])) {
                         throw new RuntimeException('Неизвестный индекс');
                     }
-
                     $word = $this->registry[$match[1]];
                 }
-                $string_sentence[]= $word . " ";
+                $string_sentence[] = $word . " ";
             }
-            $string_sentence[]= ".";
+            $string_sentence[] = ".";
         }
 
         return join('', $string_sentence);

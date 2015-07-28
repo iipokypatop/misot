@@ -14,20 +14,19 @@ class Numbers extends Base
     protected function getPatterns()
     {
         return [
-            "/(\\{\\%)?(((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10})/u",
-            "/(\\{\\%)?(\\d+([\\s\\,]*\\d+)*)/u"
+//            "/(\\{\\%)?(((8|\\+7)[\\-]?)?(\\(?\\d{3}\\)?[\\-]?)?[\\d\\-]{7,10})/u", // без пробелов в номере
+            "/(\\{\\%)?(((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10})/u", // с пробелами в номере
+            "/(\\{\\%)?(\\d+([\\s\\,]*\\d+)*)/u",
         ];
     }
     protected function putInRegistry($record)
     {
-        if( $record[1] === '{%' ){
+        if( $record[1] === '{%' || trim($record[0]) === ''){
             return $record[0];
         }
 
         $record[0] = preg_replace(["/(\\,)/","/(\\s)/"], [".", ""], $record[0]);
-
-//        $this->registry[] = $record[0];
-//        $index = count($this->registry) - 1;
-        return "{%" . 111 . "%}";
+        $index = $this->registry->add($record[0]);
+        return "{%" . $index . "%}";
     }
 }

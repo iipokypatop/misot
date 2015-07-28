@@ -14,6 +14,16 @@ abstract class Base
 
     protected $logger;
 
+
+    /**
+     * @param $logger
+     * @return object Aot\Text\TextParser\Filters\Base
+     */
+    public static function create($logger)
+    {
+        return new static($logger);
+    }
+
     /**
      * Filter constructor.
      * @param $logger
@@ -23,16 +33,15 @@ abstract class Base
         $this->logger = $logger;
     }
 
-
-    public static function create($logger)
-    {
-        return new static($logger);
-    }
-
-
     /**
      * @param $text
      * @return string
      */
     abstract public function filter($text);
+
+
+    /**
+     * @return []
+     */
+    abstract protected function getPatterns();
 }

@@ -11,18 +11,32 @@ namespace Aot\Text\TextParser\Filters;
 
 class Spaces extends Base
 {
+
     /**
-     * @param $text
-     * @return string
+     * @return array
      */
+    protected function getPatterns()
+    {
+        return [
+            '/\\s/',
+//            '/\\s/',
+        ];
+
+    }
+
     public function filter($text)
     {
-        // $this->logger->notice замена чего на что на какой позиции
+        $arr = [];
+        foreach ($this->getPatterns() as $pattern) {
+            $array = preg_split($pattern, $text, -1, PREG_SPLIT_OFFSET_CAPTURE);
+            foreach ($array as $key => $value) {
+                if ($value[0] === '') {
+                    continue;
+                }
+                $arr[] = $value[0];
+            }
+        }
 
-        $array = preg_split('/\s+/', $text);
-
-        //$array = preg_match('/^\s+$/', $text);
-
-        //return preg_replace("/\\s+/", " ", $text);
+        return join(' ', $arr);
     }
 }

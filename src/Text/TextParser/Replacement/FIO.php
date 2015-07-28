@@ -14,7 +14,7 @@ class FIO extends Base
     protected function getPatterns()
     {
         return [
-            "/[А-Я][а-я]+\\s[А-Я]\\.\\s[А-Я]\\./u",
+            "/[А-Я][а-я]+\\s*[А-Я]\\.\\s*[А-Я]\\./u",
             "/[А-Я]\\.\\s*[А-Я]\\.\\s*[А-Я][а-я]+/u",
         ];
     }

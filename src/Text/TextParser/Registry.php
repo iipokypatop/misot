@@ -21,10 +21,12 @@ class Registry
 
     /**
      * @param $record
+     * @return int
      */
     public function add($record)
     {
         $this->registry[++$this->index] = $record;
+        return $this->index;
     }
 
     /**
@@ -39,4 +41,5 @@ class Registry
 
         return false;
     }
+
 }

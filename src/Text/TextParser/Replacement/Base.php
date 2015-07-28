@@ -11,15 +11,12 @@ namespace Aot\Text\TextParser\Replacement;
 
 abstract class Base
 {
-    protected $registry = [];
-    protected $index = 0;
-
-    protected $patterns = [];
+    protected $registry;
 
 
     /**
      * @param $registry
-     * @return object Aot\Text\TextParser\Replacement\Replace
+     * @return object Aot\Text\TextParser\Replacement\Base
      */
     static public function create($registry)
     {
@@ -52,9 +49,8 @@ abstract class Base
      */
     protected function putInRegistry($record)
     {
-//        $this->registry[++$this->index] = $record;
-
-        return "{%" . 111 . "%}";
+        $index = $this->registry->add($record[0]);
+        return "{%" . $index . "%}";
     }
 
 

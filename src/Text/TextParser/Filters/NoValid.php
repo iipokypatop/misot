@@ -12,17 +12,15 @@ namespace Aot\Text\TextParser\Filters;
 class NoValid extends Base
 {
 
-    protected $text = "/а-яА-ЯёЁъЪ\\s\\:\\;\\-\"\\'\\`\\*\\%\\$\\,\\.\\(\\)\\{\\}\\[\\]\\d/";
-
     /**
-     * @return string
+     * @return array
      */
-    public function getText()
+    protected function getPatterns()
     {
-        return $this->text;
+        return [
+            "/[^а-яА-ЯёЁъЪ\\s\\:\\;\\-\"\\'\\`\\*\\%\\$\\,\\.\\(\\)\\{\\}\\[\\]\\d]/u",
+        ];
     }
-
-
 
     /**
      * @param $text
@@ -30,12 +28,20 @@ class NoValid extends Base
      */
     public function filter($text)
     {
-        $valid = "/а-яА-ЯёЁъЪ\\s\\:\\;\\-\"\\'\\`\\*\\%\\$\\,\\.\\(\\)\\{\\}\\[\\]\\d/";
+        $arr = [];
+        foreach ($this->getPatterns() as $pattern) {
+            $array = preg_split($pattern, $text, -1, PREG_SPLIT_OFFSET_CAPTURE);
+            print_r($array);
+            foreach ($array as $key => $value) {
+                if ($value[0] === '') {
+                    continue;
+                }
+                $arr[] = $value[0];
+            }
+        }
 
-        //$this->logger->notice()
-        // notice
-        // warning
-        // error
-        return preg_replace("/[^".$valid."]/u", "", $text);
+        return join('', $arr);
     }
+
+
 }
