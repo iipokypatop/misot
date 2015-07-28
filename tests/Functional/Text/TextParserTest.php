@@ -22,7 +22,7 @@ class TextParserTest extends \AotTest\AotDataStorage
         и мне дали 16,26 рублей?';
         $parser = TextParser::create();
         $parser->execute($text);
-        $str = $parser->render();
-        echo $str;
+//        $str = $parser->render();
+//        echo $str;
     }
 }

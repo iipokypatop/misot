@@ -9,7 +9,7 @@
 namespace Aot\Text\TextParser\Filters;
 
 
-abstract class Filter
+abstract class Base
 {
 
     protected $logger;

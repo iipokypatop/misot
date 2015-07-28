@@ -9,7 +9,7 @@
 namespace Aot\Text\TextParser\Filters;
 
 
-class FilterSpaces extends Filter
+class Spaces extends Base
 {
     /**
      * @param $text

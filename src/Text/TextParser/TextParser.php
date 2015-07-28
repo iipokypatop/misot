@@ -9,12 +9,12 @@
 namespace Aot\Text\TextParser;
 
 
-use Aot\Text\TextParser\Filters\FilterNoValid;
-use Aot\Text\TextParser\Filters\FilterSpaces;
+use Aot\Text\TextParser\Filters\NoValid;
+use Aot\Text\TextParser\Filters\Spaces;
 use Aot\Text\TextParser\Replacement\FIO;
-use Aot\Text\TextParser\Replacement\ReplaceHooks;
-use Aot\Text\TextParser\Replacement\ReplaceNumbers;
-use Aot\Text\TextParser\Replacement\ReplaceShort;
+use Aot\Text\TextParser\Replacement\Hooks;
+use Aot\Text\TextParser\Replacement\Numbers;
+use Aot\Text\TextParser\Replacement\Short;
 use Symfony\Component\Yaml\Exception\RuntimeException;
 
 class TextParser
@@ -24,6 +24,15 @@ class TextParser
     protected $alerts = [];
     protected $sentences = [];
 
+    const PATTERN_SENTENCE_DELIMITER = "/\\.|\\!|\\?/";
+
+    protected $filterSpaces;
+    protected $filterNoValid;
+
+    protected $replaceFIO;
+    protected $replaceHooks;
+    protected $replaceShort;
+    protected $replaceNumbers;
 
 
     public static function create()
@@ -31,40 +40,42 @@ class TextParser
         return new static();
     }
 
-    const PATTERN_SENTENCE_DELIMITER = "/\\.|\\!|\\?/";
+    public function __construct()
+    {
+
+        $logger = null;
+//        $this->filterSpaces = Spaces::create($logger);
+//        $this->filterNoValid = NoValid::create($logger);
+
+        $this->registry = Registry::create();
+        $this->replaceFIO = FIO::create($this->registry);
+        $this->replaceHooks = Hooks::create($this->registry);
+        $this->replaceShort = Short::create($this->registry);
+        $this->replaceNumbers = Numbers::create($this->registry);
+    }
 
     public function execute($text)
     {
-        $logger = null;
 
         $origin_text = $text;
+
         // чистим от лишних пробельных символов
-        $filterSpaces = FilterSpaces::create($logger);
-        $text = $filterSpaces->filter($text);
+//        $text = $this->filterSpaces->filter($text);
 
         // убираем невалидные символы
-        $filterNoValid = FilterNoValid::create();
-        $text = $filterNoValid->filter($text);
+//        $text = $this->filterNoValid->filter($text);
 
         // ФИО
-        $replaceFIO = FIO::create($this->registry);
-        $text = $replaceFIO->replace($text);
-       /// $this->registry = $replaceFIO->getRegistry();
+        $text = $this->replaceFIO->replace($text);
 
         // скобки
-        $replaceHooks = ReplaceHooks::create($this->registry);
-        $text = $replaceHooks->replace($text);
-        //$this->registry = $replaceHooks->getRegistry();
+        $text = $this->replaceHooks->replace($text);
 
         // сокращения
-        $replaceShort = ReplaceShort::create($this->registry);
-        $text = $replaceShort->replace($text);
-        //$this->registry = $replaceShort->getRegistry();
+        $text = $this->replaceShort->replace($text);
 
         // числительные
-        $replaceNumbers = ReplaceNumbers::create($this->registry);
-        $text = $replaceNumbers->replace($text);
-        //$this->registry = $replaceNumbers->getRegistry();
+        $text = $this->replaceNumbers->replace($text);
 
 
         // разбиваем текст на предложения
@@ -76,13 +87,13 @@ class TextParser
             $sentence = trim(preg_replace(
                     [
                         "/\\s*\\,\\s*/u",
-                        "/\\{\\{/u",
-                        "/\\}\\}/u",
+                        "/\\{\\%/u",
+                        "/\\%\\}/u",
                     ],
                     [
                         " , ",
-                        " {{",
-                        "}} ",
+                        " {%",
+                        "%} ",
                     ],
                     $sentence
                 )

@@ -9,7 +9,13 @@
 namespace Aot\Text\TextParser\Replacement;
 
 
-class ReplaceHooks extends Replace
+class Hooks extends Base
 {
 
+    protected function getPatterns()
+    {
+        return [
+            "/[\\[\\]]/u"
+        ];
+    }
 }

@@ -9,7 +9,7 @@
 namespace Aot\Text\TextParser\Filters;
 
 
-class FilterNoValid extends Filter
+class NoValid extends Base
 {
 
     protected $text = "/а-яА-ЯёЁъЪ\\s\\:\\;\\-\"\\'\\`\\*\\%\\$\\,\\.\\(\\)\\{\\}\\[\\]\\d/";
