@@ -12,9 +12,23 @@ namespace Aot\Text\TextParser\Filters;
 abstract class Filter
 {
 
-    static public function create(){
-        return new static();
+    protected $logger;
+
+    /**
+     * Filter constructor.
+     * @param $logger
+     */
+    public function __construct($logger)
+    {
+        $this->logger = $logger;
     }
+
+
+    public static function create($logger)
+    {
+        return new static($logger);
+    }
+
 
     /**
      * @param $text

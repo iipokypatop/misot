@@ -17,6 +17,12 @@ class FilterSpaces extends Filter
      */
     public function filter($text)
     {
-        return preg_replace("/\\s+/", " ", $text);
+        // $this->logger->notice замена чего на что на какой позиции
+
+        $array = preg_split('/\s+/', $text);
+
+        //$array = preg_match('/^\s+$/', $text);
+
+        //return preg_replace("/\\s+/", " ", $text);
     }
 }

@@ -11,7 +11,7 @@ namespace Aot\Text\TextParser;
 
 use Aot\Text\TextParser\Filters\FilterNoValid;
 use Aot\Text\TextParser\Filters\FilterSpaces;
-use Aot\Text\TextParser\Replacement\ReplaceFIO;
+use Aot\Text\TextParser\Replacement\FIO;
 use Aot\Text\TextParser\Replacement\ReplaceHooks;
 use Aot\Text\TextParser\Replacement\ReplaceNumbers;
 use Aot\Text\TextParser\Replacement\ReplaceShort;
@@ -24,16 +24,22 @@ class TextParser
     protected $alerts = [];
     protected $sentences = [];
 
+
+
     public static function create()
     {
         return new static();
     }
 
-    public function execute($text){
+    const PATTERN_SENTENCE_DELIMITER = "/\\.|\\!|\\?/";
+
+    public function execute($text)
+    {
+        $logger = null;
 
         $origin_text = $text;
         // чистим от лишних пробельных символов
-        $filterSpaces = FilterSpaces::create();
+        $filterSpaces = FilterSpaces::create($logger);
         $text = $filterSpaces->filter($text);
 
         // убираем невалидные символы
@@ -41,33 +47,46 @@ class TextParser
         $text = $filterNoValid->filter($text);
 
         // ФИО
-        $replaceFIO = ReplaceFIO::create($this->registry);
+        $replaceFIO = FIO::create($this->registry);
         $text = $replaceFIO->replace($text);
-        $this->registry = $replaceFIO->getRegistry();
+       /// $this->registry = $replaceFIO->getRegistry();
 
         // скобки
         $replaceHooks = ReplaceHooks::create($this->registry);
         $text = $replaceHooks->replace($text);
-        $this->registry = $replaceHooks->getRegistry();
+        //$this->registry = $replaceHooks->getRegistry();
 
         // сокращения
         $replaceShort = ReplaceShort::create($this->registry);
         $text = $replaceShort->replace($text);
-        $this->registry = $replaceShort->getRegistry();
+        //$this->registry = $replaceShort->getRegistry();
 
         // числительные
         $replaceNumbers = ReplaceNumbers::create($this->registry);
         $text = $replaceNumbers->replace($text);
-        $this->registry = $replaceNumbers->getRegistry();
+        //$this->registry = $replaceNumbers->getRegistry();
 
 
         // разбиваем текст на предложения
-        $sentences = preg_split("/\\.|\\!|\\?/", $text);
+        $sentences = preg_split(static::PATTERN_SENTENCE_DELIMITER, $text);
 
         // разбиваем предложения на слова
         $sentence_words = [];
         foreach ($sentences as $key => $sentence) {
-            $sentence = trim(preg_replace(["/\\s*\\,\\s*/u","/\\{\\{/u","/\\}\\}/u"], [" , ", " {{", "}} "], $sentence));
+            $sentence = trim(preg_replace(
+                    [
+                        "/\\s*\\,\\s*/u",
+                        "/\\{\\{/u",
+                        "/\\}\\}/u",
+                    ],
+                    [
+                        " , ",
+                        " {{",
+                        "}} ",
+                    ],
+                    $sentence
+                )
+            );
             $sentence_words[$key] = preg_split("/\\s+/u", $sentence);
         }
         $this->sentences = $sentence_words;
@@ -84,25 +103,24 @@ class TextParser
 
     }
 
-    public function render(){
-        $string_sentence = '';
+    public function render()
+    {
+        $string_sentence = [];
         foreach ($this->sentences as $words_sentence) {
             foreach ($words_sentence as $word) {
-                if( preg_match("/\\{\\{(\\d+)\\}\\}/u", $word, $match) )
-                {
-                    if( empty($this->registry[$match[1]]) )
-                    {
+                if (preg_match("/\\{\\{(\\d+)\\}\\}/u", $word, $match)) {
+                    if (empty($this->registry[$match[1]])) {
                         throw new RuntimeException('Неизвестный индекс');
                     }
 
                     $word = $this->registry[$match[1]];
                 }
-                $string_sentence .= $word . " ";
+                $string_sentence[]= $word . " ";
             }
-            $string_sentence .= ".";
+            $string_sentence[]= ".";
         }
 
-        return $string_sentence;
+        return join('', $string_sentence);
 
     }
 }

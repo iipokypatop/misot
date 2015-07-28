@@ -11,23 +11,25 @@ namespace Aot\Text\TextParser\Replacement;
 
 use Aot\Text\TextParser\PatternsRegistry;
 
-Class Replace
+abstract class Replace
 {
     protected $registry = [];
+    protected $index = 0;
+
+
     protected $patterns = [];
 
+
     /**
-     * @param $registry
      * @return object Aot\Text\TextParser\Replacement\Replace
      */
-    static public function create($registry)
+    static public function create()
     {
-        return new static($registry);
+        return new static();
     }
 
-    public function __construct($registry)
+    public function __construct()
     {
-        $this->registry = $registry;
         $this->patterns = PatternsRegistry::getPatterns(static::class);
     }
 
@@ -35,9 +37,10 @@ Class Replace
      * @param $text
      * @return string
      */
-     public function replace($text){
+    public function replace($text)
+    {
         $text = preg_replace_callback(
-            $this->patterns,
+            $this->getPatterns(),
             [$this, 'putInRegistry'],
             $text
         );
@@ -46,21 +49,20 @@ Class Replace
     }
 
     /**
-     * @param $match
+     * @param $record
      * @return null
      */
-    protected function putInRegistry($match)
+    protected function putInRegistry($record)
     {
-        $this->registry[] = $match[0];
-        $index = count($this->registry) - 1;
-        return "{{" . $index . "}}";
+        $this->registry[++$this->index] = $record;
+
+        return "{%" . $this->index . "%}";
     }
 
+
     /**
-     * @return array
+     * @return []
      */
-    public function getRegistry()
-    {
-        return $this->registry;
-    }
+    abstract protected function getPatterns();
 }
+
