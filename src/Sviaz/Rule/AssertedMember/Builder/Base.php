@@ -91,16 +91,10 @@ abstract class Base
     }
 
     /**
-     * @return Base
+     * @return static
      */
     public function get()
     {
-        $member = $this->member;
-
-        //$this->member = null;
-
-        return $member;
+        return $this->member;
     }
-
-
 }

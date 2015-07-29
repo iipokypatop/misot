@@ -6,7 +6,7 @@
  * Time: 14:28
  */
 
-namespace Aot\Sviaz;
+namespace Aot\Sviaz\Podchinitrelnaya;
 
 
 class Registry
@@ -15,7 +15,6 @@ class Registry
     const SOGLASOVANIE = 1;
     const UPRAVLENIE = 2;
     const PRIMIKANIE = 3;
-
 
     public static function getClasses()
     {

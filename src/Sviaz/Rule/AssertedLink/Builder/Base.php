@@ -27,6 +27,7 @@ class Base
         'morphology_matchings' => [],
         'checkers' => [],
         'finders' => [],
+        'type_class_id' => null,
     ];
 
 
@@ -90,10 +91,14 @@ class Base
         }
 
         foreach ($this->link['checkers'] as $id) {
-
             $link_checker = LinkCheckerRegistry::getObjectById($id);
-
             $link->addChecker($link_checker);
+        }
+
+        if (null === $this->link['type_class_id']) {
+            $link->setTypeClass(\Aot\Sviaz\Podchinitrelnaya\Base::class);
+        } else {
+            $link->setTypeClass(\Aot\Sviaz\Podchinitrelnaya\Registry::getClasses()[$this->link['type_class_id']]);
         }
 
         return $link;
@@ -202,6 +207,24 @@ class Base
     public function dependedRightBeforeMain()
     {
         $this->check(LinkCheckerRegistry::DependedRightBeforeMain);
+
+        return $this;
+    }
+
+
+    /**
+     * @param int $type_class_id
+     * @return $this
+     */
+    public function type($type_class_id)
+    {
+        assert(is_int($type_class_id));
+
+        if (empty(\Aot\Sviaz\Podchinitrelnaya\Registry::getClasses()[$type_class_id])) {
+            throw new \RuntimeException("incorrect type_class " . var_export($type_class_id, 1));
+        }
+
+        $this->link['type_class_id'] = $type_class_id;
 
         return $this;
     }

@@ -1,0 +1,81 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: p.semenyuk
+ * Date: 29.07.2015
+ * Time: 16:06
+ */
+
+namespace Aot\Sviaz\Podchinitrelnaya;
+
+
+class Factory
+{
+    protected static $instances = null;
+
+    protected function __construct()
+    {
+    }
+
+    /**
+     * @return static
+     */
+    public static function get()
+    {
+        if (empty(static::$instances)) {
+            static::$instances = new static;
+        }
+
+        return static::$instances;
+    }
+
+    /**
+     * @param \Aot\Sviaz\SequenceMember\Base $main_sequence_member
+     * @param \Aot\Sviaz\SequenceMember\Base $depended_sequence_member
+     * @param \Aot\Sviaz\Rule\Base $rule
+     * @return Base
+     */
+    public function build(
+        \Aot\Sviaz\SequenceMember\Base $main_sequence_member,
+        \Aot\Sviaz\SequenceMember\Base $depended_sequence_member,
+        \Aot\Sviaz\Rule\Base $rule
+    )
+    {
+        $type_class = $rule->getLinks()[0]->getTypeClass();
+
+        if ($type_class === \Aot\Sviaz\Podchinitrelnaya\Soglasovanie::class) {
+
+            return \Aot\Sviaz\Podchinitrelnaya\Soglasovanie::create(
+                $main_sequence_member,
+                $depended_sequence_member,
+                $rule
+            );
+
+        } else if ($type_class === \Aot\Sviaz\Podchinitrelnaya\Upravlenie::class) {
+
+            return \Aot\Sviaz\Podchinitrelnaya\Upravlenie::create(
+                $main_sequence_member,
+                $depended_sequence_member,
+                $rule
+            );
+
+        } else if ($type_class === \Aot\Sviaz\Podchinitrelnaya\Primikanie::class) {
+
+            return \Aot\Sviaz\Podchinitrelnaya\Primikanie::create(
+                $main_sequence_member,
+                $depended_sequence_member,
+                $rule
+            );
+
+        } else if ($type_class === \Aot\Sviaz\Podchinitrelnaya\Base::class) {
+
+            return \Aot\Sviaz\Podchinitrelnaya\Base::create(
+                $main_sequence_member,
+                $depended_sequence_member,
+                $rule
+            );
+        }
+
+        throw new \RuntimeException("unsupported Sviaz class " . var_export($type_class, 1));
+    }
+}

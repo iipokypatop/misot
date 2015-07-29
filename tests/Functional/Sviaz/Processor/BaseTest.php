@@ -41,21 +41,14 @@ class BaseTest extends \AotTest\AotDataStorage
             [$rule]
         );
 
-        $link_container = array_filter($link_container);
+        $result = array_filter($link_container);
 
-        foreach ($link_container as $sequence_index => $links) {
-            $data = [];
-            $data [] = $sequence_index;
+        $pretty = $this->pretty(
+            $result
+        );
 
-            foreach ($links as $link) {
-                $data[] =
-                    $link->getMainSequenceMember()->getSlovo()->getText()
-                    . "->" .
-                    $link->getDependedSequenceMember()->getSlovo()->getText();
-            }
+        //echo join("\n", $pretty);
 
-            echo join(" ", $data) . "\n";
-        }
     }
 
     protected function getRule2()
@@ -131,6 +124,10 @@ class BaseTest extends \AotTest\AotDataStorage
             \Aot\Sviaz\Role\Svoistvo::create()
         );
 
+        $asserted_depended->setRoleClass(
+            \Aot\Sviaz\Role\Svoistvo::class
+        );
+
         return $asserted_depended;
     }
 
@@ -195,17 +192,23 @@ RULE;
 
     public function testFirst()
     {
-        #   $this->markTestSkipped();
+        //$this->markTestSkipped();
 
         $processor = \Aot\Sviaz\Processor\Base::create();
 
         $rule = $this->getRule1();
 
 
-        $processor->go(
+        $result = $processor->go(
             $this->getNormalizedMatrix1(),
             [$rule]
         );
+
+        $pretty = $this->pretty(
+            $result
+        );
+
+        //echo join("\n", $pretty);
     }
 
     public function testSecond()
@@ -214,7 +217,7 @@ RULE;
         $processor = \Aot\Sviaz\Processor\Base::create();
 
 
-        $link_container = $processor->go(
+        $result = $processor->go(
             $this->getNormalizedMatrix1(),
             array_merge([
                 \Aot\Sviaz\Rule\Container::getRule1(),
@@ -227,20 +230,11 @@ RULE;
             )
         );
 
-        foreach ($link_container as $sequence_index => $links) {
-            $data = [];
-            $data [] = $sequence_index;
+        $pretty = $this->pretty(
+            $result
+        );
 
-            foreach ($links as $link) {
-                $data[] =
-                    $link->getMainSequenceMember()->getSlovo()->getText()
-                    . "->" .
-                    $link->getDependedSequenceMember()->getSlovo()->getText();
-            }
-
-           # echo join(" ", $data) . "\n";
-        }
-
+        //echo join("\n", $pretty);
     }
 
     /**
@@ -442,7 +436,7 @@ TEXT;
     {
         $mixed = $this->getWordsAndPunctuation1();
 
-        $matrix =  \Aot\Text\Matrix::create($mixed);
+        $matrix = \Aot\Text\Matrix::create($mixed);
 
         return $matrix;
     }
@@ -519,28 +513,17 @@ TEXT;
 
         $processor = \Aot\Sviaz\Processor\Base::create();
 
-        $link_container = $processor->go(
+        $result = $processor->go(
             $this->getNormalizedMatrix1(),
             [$rule]
         );
 
-        $link_container = array_filter($link_container);
+        $result = array_filter($result);
 
-        foreach ($link_container as $sequence_index => $links) {
-            $data = [];
-            $data [] = $sequence_index;
+        $pretty = $this->pretty(
+            $result
+        );
 
-            foreach ($links as $link) {
-                $data[] =
-                    $link->getMainSequenceMember()->getSlovo()->getText()
-                    . "->" .
-                    $link->getDependedSequenceMember()->getSlovo()->getText();
-            }
-
-            //echo join(" ", $data) . "\n";
-        }
+        //echo join("\n", $pretty);
     }
-
-
-
 }

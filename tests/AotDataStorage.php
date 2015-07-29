@@ -25,6 +25,42 @@ use Aot\RussianMorphology\ChastiRechi\Predlog\Base as Predlog;
  */
 class AotDataStorage extends \MivarTest\Base
 {
+    /**
+     * @param \Aot\Sviaz\Podchinitrelnaya\Base[][] $sviazi
+     * @return string[]
+     */
+    public static function pretty(array $sviazi)
+    {
+        $result = [];
+
+        foreach ($sviazi as $index => $links) {
+            $data = [];
+            $data [] = $index;
+
+            foreach ($links as $link) {
+                /** @var \Aot\Sviaz\Podchinitrelnaya\Base $link */
+
+                $main = $link->getMainSequenceMember();
+                $depended = $link->getDependedSequenceMember();
+
+                if (
+                    $main instanceof \Aot\Sviaz\SequenceMember\Word\Base &&
+                    $depended instanceof \Aot\Sviaz\SequenceMember\Word\Base
+                ) {
+
+                    $data[] =
+                        $main->getSlovo()->getText() . "(" . ChastiRechiRegistry::getIdByMockClass(get_class($main->getSlovo())) . ")"
+                        . "->" .
+                        $depended->getSlovo()->getText() . "(" . ChastiRechiRegistry::getIdByMockClass(get_class($depended->getSlovo())) . ")";
+                }
+            }
+
+            $result[] = join(" ", $data);
+        }
+
+        return $result;
+    }
+
     protected function getWordsAndPunctuation()
     {
         <<<TEXT
@@ -100,7 +136,7 @@ TEXT;
     {
         $mixed = $this->getWordsAndPunctuation();
 
-        $matrix =  \Aot\Text\Matrix::create($mixed);
+        $matrix = \Aot\Text\Matrix::create($mixed);
 
         return $matrix;
     }
@@ -165,7 +201,7 @@ TEXT;
 
 
     /**
-     * @return \Aot\Sviaz\Rule\AssertedMember\Builder\Base
+     * @return \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base
      */
     public function getAssertedMemberBuilder_main()
     {
@@ -183,7 +219,7 @@ TEXT;
     }
 
     /**
-     * @return \Aot\Sviaz\Rule\AssertedMember\Builder\Base
+     * @return \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base
      */
     public function getAssertedMemberBuilder_depended()
     {
@@ -213,6 +249,4 @@ TEXT;
 
         return $builder;
     }
-
-
 }

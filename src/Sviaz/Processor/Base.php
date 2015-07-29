@@ -27,9 +27,8 @@ class Base
      */
     protected $pre_processing_engines;
 
-
     /**
-     * @var \Aot\Sviaz\PreProcessors\Base[]
+     * @var \Aot\Sviaz\PostProcessors\Base[]
      */
     protected $post_processing_engines;
 
@@ -42,7 +41,6 @@ class Base
         $this->pre_processing_engines = [
             \Aot\Sviaz\PreProcessors\Predlog::create()
         ];
-
 
         $this->post_processing_engines = [
 
@@ -70,8 +68,20 @@ class Base
         return $new_sequence;
     }
 
-    protected function postProcess($sviazi)
+    /**
+     * @param \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi
+     * @return \Aot\Sviaz\Podchinitrelnaya\Base[]
+     */
+    protected function postProcess(array $sviazi)
     {
+        if ([] === $sviazi) {
+            return [];
+        }
+
+        foreach ($sviazi as $sviaz) {
+            assert(is_a($sviaz, \Aot\Sviaz\Podchinitrelnaya\Base::class, true));
+        }
+
         $new_sviazi = $sviazi;
 
         foreach ($this->post_processing_engines as $engine) {
@@ -84,7 +94,7 @@ class Base
     /**
      * @param \Aot\Text\NormalizedMatrix $normalized_matrix
      * @param array $rules
-     * @return \Aot\Sviaz\Base[][]
+     * @return \Aot\Sviaz\Podchinitrelnaya\Base[]
      */
     public function go(\Aot\Text\NormalizedMatrix $normalized_matrix, array $rules)
     {
@@ -119,7 +129,7 @@ class Base
     /**
      * @param Sequence $sequence
      * @param RuleBase[] $rules
-     * @return \Aot\Sviaz\Base[]
+     * @return \Aot\Sviaz\Podchinitrelnaya\Base[]
      */
     protected function applyRules(\Aot\Sviaz\Sequence $sequence, array $rules)
     {
@@ -161,14 +171,15 @@ class Base
                         }
 
                         $result = $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
-                        $sviaz = null;
+
                         if ($result) {
-                            $sviazi[] = $sviaz = \Aot\Sviaz\Base::create(
+
+                            $sviazi[] = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
                                 $main_candidate,
                                 $depended_candidate,
-                                $rule->getAssertedMain()->getRoleClass(),
-                                $rule->getAssertedDepended()->getRoleClass()
+                                $rule
                             );
+
                             /*$this->cache->put([$rule, $main_candidate, $depended_candidate]);*/
                         }
                     }

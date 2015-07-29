@@ -21,13 +21,6 @@ class Base
     protected $asserted_text;
     protected $asserted_text_group_id;
 
-    /**
-     * @return string
-     */
-    public function getRoleClass()
-    {
-        return $this->role_class;
-    }
 
 
     /** @var string[] */
@@ -52,6 +45,14 @@ class Base
     public static function create(/** Rule\AssertedMember\Main $main_sequence_member re */)
     {
         return new static;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoleClass()
+    {
+        return $this->role_class;
     }
 
     public function getAssertedText()

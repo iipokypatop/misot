@@ -275,11 +275,12 @@ class BaseTestRules extends \AotTest\AotDataStorage
      */
     protected function getStrRule(\Aot\Sviaz\Processor\Base $processor, \Aot\Text\NormalizedMatrix $normalized_matrix, $rule)
     {
-
+        //todo переделать на $this->pretty()
         $link_container = $processor->go($normalized_matrix, [$rule]);
 
         $data = [];
         foreach ($link_container as $sequence_index => $links) {
+
 
             foreach ($links as $link) {
 
@@ -297,17 +298,19 @@ class BaseTestRules extends \AotTest\AotDataStorage
 
         }
 
+        $echo = [];
         if (!empty($data)) {
-            echo " \n Связи:\n";
+            $echo[]= " \n Связи:\n";
             foreach ($data as $str_link => $count_links) {
                 echo $str_link . " - count_links: $count_links \n";
             }
-            echo "\n";
+            $echo[] = "\n";
         } else {
-            echo " \n Связи:\n - \n";
+            $echo[] = " \n Связи:\n - \n";
         }
+
+        //echo join("\n", $echo);
+
         return $data;
     }
-
-
 }

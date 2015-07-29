@@ -32,7 +32,7 @@ TEXT
 
         $processor = \Aot\Sviaz\Processor\Base::create();
 
-        $link_container = $processor->go(
+        $result = $processor->go(
             $normalized_matrix,
             [
                 \Aot\Sviaz\Rule\Container::getRule_OtricMest_Gl(),
@@ -55,19 +55,10 @@ TEXT
 
         );
 
-        foreach ($link_container as $sequence_index => $links) {
-            $data = [];
-            $data [] = $sequence_index;
+        $pretty = $this->pretty(
+            $result
+        );
 
-            foreach ($links as $link) {
-                $data[] =
-                    $link->getMainSequenceMember()->getSlovo()->getText() . "(" . ChastiRechiRegistry::getIdByClass(get_class($link->getMainSequenceMember()->getSlovo())) . ")"
-                    . "->" .
-                    $link->getDependedSequenceMember()->getSlovo()->getText() . "(" . ChastiRechiRegistry::getIdByClass(get_class($link->getDependedSequenceMember()->getSlovo())) . ")";
-            }
-
-            echo join(" ", $data) . "\n";
-        }
-
+        //echo join("\n", $pretty);
     }
 }

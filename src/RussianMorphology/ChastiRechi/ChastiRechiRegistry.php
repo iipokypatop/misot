@@ -94,4 +94,18 @@ class ChastiRechiRegistry
 
         return null;
     }
+
+    /**
+     * @param $class
+     * @return int | null
+     */
+    public static function getIdByMockClass($class)
+    {
+        foreach (static::getClasses() as $id => $class_name) {
+            if (is_a($class, $class_name, true)) {
+                return $id;
+            }
+        }
+        return null;
+    }
 }

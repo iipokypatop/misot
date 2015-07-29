@@ -128,7 +128,5 @@ class Base
     {
         return $this->asserted_member->attempt($actual);
     }
-
-
 }
 

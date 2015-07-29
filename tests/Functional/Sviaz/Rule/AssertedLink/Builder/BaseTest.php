@@ -6,7 +6,7 @@
  * Time: 12:42
  */
 
-namespace AotTest\Functional\Sviaz\Rule\AssertedLink;
+namespace AotTest\Functional\Sviaz\Rule\AssertedLink\Builder;
 
 
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
@@ -16,8 +16,9 @@ use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Builder\Base as AssertedMemberBuilder;
+use Aot\Sviaz\Podchinitrelnaya\Registry as SviazRegistry;
 
-class BuilderTest extends \AotTest\AotDataStorage
+class BaseTest extends \AotTest\AotDataStorage
 {
     public function testLaunch()
     {
@@ -35,6 +36,8 @@ class BuilderTest extends \AotTest\AotDataStorage
         $link = $builder->check(
             \Aot\Sviaz\Rule\AssertedLink\Checker\Registry::NetSuschestvitelnogoVImenitelnomPadeszhe
         );
+
+        $link->type(SviazRegistry::PRIMIKANIE);
 
         $link = $builder->get($rule);
 
@@ -74,9 +77,5 @@ class BuilderTest extends \AotTest\AotDataStorage
                 $e->getMessage()
             );
         }
-
-
-
-
     }
 }

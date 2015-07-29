@@ -24,6 +24,31 @@ class Base
     /** @var \Aot\Sviaz\Rule\AssertedLink\Checker\Base[] */
     protected $asserted_checkers = [];
 
+    /** @var string */
+    protected $type_class = \Aot\Sviaz\Podchinitrelnaya\Base::class;
+
+    /**
+     * @return string
+     */
+    public function getTypeClass()
+    {
+        return $this->type_class;
+    }
+
+    /**
+     * @param string $type_class
+     */
+    public function setTypeClass($type_class)
+    {
+        assert(is_string($type_class));
+
+        if (!is_a($type_class, \Aot\Sviaz\Podchinitrelnaya\Base::class, true)) {
+            throw new \RuntimeException("incorrect type_class " . var_export($type_class, 1));
+        }
+
+        $this->type_class = $type_class;
+    }
+
     /**
      * Base constructor.
      * @param \Aot\Sviaz\Rule\Base $rule
