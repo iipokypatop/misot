@@ -180,7 +180,7 @@ class Base
                     return false;
                 }
 
-                if (!in_array(strtolower($actual->getSlovo()->getText()), GroupIdRegistry::getWordVariants()[$this->asserted_text_group_id])) {
+                if (!in_array(strtolower($actual->getSlovo()->getText()), GroupIdRegistry::getWordVariants()[$this->asserted_text_group_id], true)) {
                     return false;
                 }
             }

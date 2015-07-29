@@ -74,7 +74,7 @@ class Base
 
     public function attempt(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
     {
-        $result = false;
+        $result = true;
 
         foreach ($this->asserted_matchings as $asserted_matching) {
             $result = $asserted_matching->attempt($main_candidate, $depended_candidate);

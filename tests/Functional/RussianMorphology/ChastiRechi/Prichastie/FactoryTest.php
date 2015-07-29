@@ -4,7 +4,6 @@ namespace AotTest\Functional\RussianMorphology\ChastiRechi\Prichastie;
 
 
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Factory;
-use Aot\RussianMorphology\FactoryException;
 use MorphAttribute;
 
 class FactoryTest extends \AotTest\AotDataStorage
@@ -26,7 +25,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Chislo\Edinstvennoe::class, $result[0]->chislo);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Forma\Polnaya::class, $result[0]->forma);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Imenitelnij::class, $result[0]->padeszh);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Perehodnost\Neperehodnij::class, $result[0]->perehodnost);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Perehodnost\Null::class, $result[0]->perehodnost);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Muzhskoi::class, $result[0]->rod);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vid\Nesovershennyj::class, $result[0]->vid);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vozvratnost\Nevozvratnyj::class, $result[0]->vozvratnost);
@@ -34,125 +33,43 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Dejstvitelnyj::class, $result[0]->razryad);
     }
 
-    public function testBuild_wo_chislo()
+    public function dataProviderFalseParameter()
     {
-        # убираем число
-        $point_wo_chislo = $this->getPoint();
-        unset($point_wo_chislo->dw->parameters[NUMBER_ID]);
+        $false_value = 111;
+        return [
+            [NUMBER_ID, $false_value],
+            [TRANSIVITY_ID, $false_value],
+            [CASE_ID, $false_value],
+            [VIEW_ID, $false_value],
+            [\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE(), $false_value],
+            [TIME_ID, $false_value],
+            [DISCHARGE_COMMUNION_ID, $false_value],
+            [\OldAotConstants::WORD_FORM(), $false_value],
+            [GENUS_ID, $false_value]
+        ];
+    }
+
+
+    /**
+     * @param $parameter
+     * @param $false_value
+     * @dataProvider dataProviderFalseParameter
+     */
+    public function testFalseParameter($parameter, $false_value)
+    {
+        $point = $this->getPoint();
+        if( empty($point->dw->parameters[$parameter]) ){
+            $point->dw->parameters[$parameter] = new MorphAttribute();
+        }
+        $point->dw->parameters[$parameter]->id_value_attr = [$false_value => $false_value];
         try {
-            $this->buildFactory($point_wo_chislo);
+            $this->buildFactory($point);
             $this->fail("Не должно было тут быть!");
-        } catch (FactoryException $e) {
-            $this->assertEquals("chislo not defined", $e->getMessage());
-            $this->assertEquals(24, $e->getCode());
+        } catch (\RuntimeException $e) {
+            $this->assertEquals("Unsupported value exception = " . $false_value, $e->getMessage());
         }
     }
 
-    public function testBuild_wo_perehodnost()
-    {
-        # убираем переходность
-        $point_wo_perehodnost = $this->getPoint();
-        unset($point_wo_perehodnost->dw->parameters[TRANSIVITY_ID]);
-        try {
-            $this->buildFactory($point_wo_perehodnost);
-        } catch (\Exception $e) {
-            $this->fail("Не должно было тут быть!");
-        }
-    }
-
-    public function testBuild_wo_padeszh()
-    {
-        # убираем падеж
-        $point_wo_padeszh = $this->getPoint();
-        unset($point_wo_padeszh->dw->parameters[CASE_ID]);
-        try {
-            $this->buildFactory($point_wo_padeszh);
-            $this->fail("Не должно было тут быть!");
-        } catch (FactoryException $e) {
-            $this->assertEquals("padeszh not defined", $e->getMessage());
-            $this->assertEquals(24, $e->getCode());
-        }
-    }
-
-    public function testBuild_wo_vid()
-    {
-        # убираем вид
-        $point_wo_vid = $this->getPoint();
-        unset($point_wo_vid->dw->parameters[VIEW_ID]);
-        try {
-            $this->buildFactory($point_wo_vid);
-            $this->fail("Не должно было тут быть!");
-        } catch (FactoryException $e) {
-            $this->assertEquals("vid not defined", $e->getMessage());
-            $this->assertEquals(24, $e->getCode());
-        }
-    }
-
-    public function testBuild_wo_vozvratnost()
-    {
-        # убираем возвратность
-        $point_wo_vozvratnost = $this->getPoint();
-        unset($point_wo_vozvratnost->dw->parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()]);
-        try {
-            $this->buildFactory($point_wo_vozvratnost);
-        } catch (\Exception $e) {
-            $this->fail("Не должно было тут быть!");
-        }
-    }
-
-    public function testBuild_wo_vremya()
-    {
-        # убираем время
-        $point_wo_vremya = $this->getPoint();
-        unset($point_wo_vremya->dw->parameters[TIME_ID]);
-        try {
-            $this->buildFactory($point_wo_vremya);
-            $this->fail("Не должно было тут быть!");
-        } catch (FactoryException $e) {
-            $this->assertEquals("vremya not defined", $e->getMessage());
-            $this->assertEquals(24, $e->getCode());
-        }
-    }
-
-    public function testBuild_wo_razryad()
-    {
-        # убираем разряд
-        $point_wo_razryad = $this->getPoint();
-        unset($point_wo_razryad->dw->parameters[DISCHARGE_COMMUNION_ID]);
-        try {
-            $this->buildFactory($point_wo_razryad);
-            $this->fail("Не должно было тут быть!");
-        } catch (FactoryException $e) {
-            $this->assertEquals("razryad not defined", $e->getMessage());
-            $this->assertEquals(24, $e->getCode());
-        }
-    }
-
-    public function testBuild_wo_forma()
-    {
-        # убираем форму
-        $point_wo_forma = $this->getPoint();
-        unset($point_wo_forma->dw->parameters[\OldAotConstants::WORD_FORM()]);
-        try {
-            $this->buildFactory($point_wo_forma);
-        } catch (\Exception $e) {
-            $this->fail("Не должно было тут быть!");
-        }
-    }
-
-    public function testBuild_wo_rod()
-    {
-        # убираем род +++ и единственное число +++
-        $point_wo_rod = $this->getPoint();
-        unset($point_wo_rod->dw->parameters[GENUS_ID]);
-        try {
-            $this->buildFactory($point_wo_rod);
-            $this->fail("Не должно было тут быть!");
-        } catch (FactoryException $e) {
-            $this->assertEquals("rod not defined", $e->getMessage());
-            $this->assertEquals(24, $e->getCode());
-        }
-    }
 
     protected function buildFactory($point)
     {

@@ -161,16 +161,15 @@ class Base
                         }
 
                         $result = $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
-
+                        $sviaz = null;
                         if ($result) {
-
-                            $sviazi[] = \Aot\Sviaz\Base::create(
+                            $sviazi[] = $sviaz = \Aot\Sviaz\Base::create(
                                 $main_candidate,
                                 $depended_candidate,
                                 $rule->getAssertedMain()->getRoleClass(),
                                 $rule->getAssertedDepended()->getRoleClass()
                             );
-                            /*$this->cache->put([$rule, $main_candidate, $depended_candidate]);*/
+                            $this->cache->put([$rule, $main_candidate, $depended_candidate]);
                         }
                     }
                 }

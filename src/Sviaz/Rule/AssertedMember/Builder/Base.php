@@ -21,8 +21,7 @@ use Aot\Sviaz\Rule\AssertedMember\Main;
 use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 
 
-abstract
-class Base
+abstract class Base
 {
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Base */
     protected $member;

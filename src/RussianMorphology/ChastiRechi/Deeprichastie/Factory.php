@@ -37,26 +37,16 @@ class Factory extends \Aot\RussianMorphology\Factory
         $text = $dw->word_form;
         $words = [];
         if (isset($word->word) && intval($dw->id_word_class) === PARTICIPLE_CLASS_ID) {
+
             # вид
-            if (!empty($dw->parameters[VIEW_ID])) {
-                $vid = $this->getVid($dw->parameters[VIEW_ID]);
-            } else {
-                $vid[] = NullVid::create();
-            }
+            $vid = $this->getVid($dw->parameters);
 
             # переходность
-            if (!empty($dw->parameters[TRANSIVITY_ID])) {
-                $perehodnost = $this->getPerehodnost($dw->parameters[TRANSIVITY_ID]);
-            } else {
-                $perehodnost[] = Neperehodnyj::create();
-            }
+            $perehodnost = $this->getPerehodnost($dw->parameters);
 
             # возвратность
-            if (!empty($dw->parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()])) {
-                $vozvratnost = $this->getVozvratnost($dw->parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()]);
-            } else {
-                $vozvratnost[] = NullVozvratnost::create();
-            }
+            $vozvratnost = $this->getVozvratnost($dw->parameters);
+
             foreach ($vid as $val_vid) {
                 foreach ($perehodnost as $val_perehodnost) {
                     foreach ($vozvratnost as $val_vozvratnost) {
@@ -73,8 +63,17 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $words;
     }
 
-    private function getVid($param)
+    /**
+     * @param array $parameters
+     * @return \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\Base[]
+     */
+    private function getVid($parameters)
     {
+        if (empty($parameters[VIEW_ID])) {
+            return [NullVid::create()];
+        }
+
+        $param = $parameters[VIEW_ID];
         $vid = [];
         foreach ($param->id_value_attr as $val) {
             if (intval($val) === VIEW_PERFECTIVE_ID) {
@@ -82,15 +81,24 @@ class Factory extends \Aot\RussianMorphology\Factory
             } elseif (intval($val) === VIEW_IMPERFECT_ID) {
                 $vid[] = Nesovershennyj::create();
             } else {
-                $vid[] = NullVid::create();
+                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
             }
         }
 
         return $vid;
     }
 
-    private function getPerehodnost($param)
+    /**
+     * @param array $parameters
+     * @return \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Base[]
+     */
+    private function getPerehodnost($parameters)
     {
+        if (empty($parameters[TRANSIVITY_ID])) {
+            return [NullPerehodnost::create()];
+        }
+
+        $param = $parameters[TRANSIVITY_ID];
         $perehodnost = [];
         foreach ($param->id_value_attr as $val) {
             if (intval($val) === \OldAotConstants::TRANSITIVE()) {
@@ -98,15 +106,25 @@ class Factory extends \Aot\RussianMorphology\Factory
             } elseif (intval($val) === \OldAotConstants::INTRANSITIVE()) {
                 $perehodnost[] = Neperehodnyj::create();
             } else {
-                $perehodnost[] = NullPerehodnost::create();
+                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
             }
         }
 
         return $perehodnost;
     }
 
-    private function getVozvratnost($param)
+    /**
+     * @param array $parameters
+     * @return \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Base[]
+     */
+    private function getVozvratnost($parameters)
     {
+        if (empty($parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()])) {
+            return [NullVozvratnost::create()];
+        }
+
+        $param = $parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()];
+
         $vozvratnost = [];
         foreach ($param->id_value_attr as $val) {
             if (intval($val) === \OldAotConstants::RETRIEVABLE()) {
@@ -114,7 +132,7 @@ class Factory extends \Aot\RussianMorphology\Factory
             } elseif (intval($val) === \OldAotConstants::IRRETRIEVABLE()) {
                 $vozvratnost[] = Nevozvratnyj::create();
             } else {
-                $vozvratnost[] = NullVozvratnost::create();
+                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
             }
         }
 
