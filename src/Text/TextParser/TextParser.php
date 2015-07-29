@@ -78,7 +78,7 @@ class TextParser
         $text = $this->replaceNumbers->replace($text);
 
 //        print_r($this->registry);
-        print_r($this->logger);
+//        print_r($this->logger);
         // разбиваем текст на предложения
         $sentences = preg_split(static::PATTERN_SENTENCE_DELIMITER, $text);
 

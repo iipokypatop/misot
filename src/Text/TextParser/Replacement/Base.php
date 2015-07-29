@@ -51,8 +51,9 @@ abstract class Base
      */
     protected function insertTemplate($record)
     {
-        $index = $this->registry->add($record[0]);
-        $this->logger->notice("R: Заменили по шаблону [{$record[0]}], индекс {$index}");
+        $record = $record[0];
+        $index = $this->registry->add($record);
+        $this->logger->notice("R: Заменили по шаблону [{$record}], индекс {$index}");
         // add logger
         return "{%" . $index . "%}";
     }
