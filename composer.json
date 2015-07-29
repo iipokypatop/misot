@@ -11,10 +11,15 @@
   ],
   "require": {
     "phpunit/phpunit": "4.7.7",
+    "doctrine/orm": "2.5.*",
+    "doctrine/migrations": "dev-master",
+    "psr/log": "1.0.0",
+    "symfony/yaml": "2.7.*",
     "mivar-projects/loader": "dev-master",
     "mivar-projects/test-utils": "dev-master",
     "mivar-projects/text-libraries": "dev-master",
-    "txt/mivar_text_semantic": "dev-master"
+    "txt/mivar_text_semantic": "dev-master",
+    "mivar-projects/aot-db-api": "dev-master"
   },
   "repositories": [
     {
@@ -35,6 +40,10 @@
     },
     {
       "url": "git@git.mivar.pro:txt/mivar_text_semantic.git",
+      "type": "git"
+    },
+    {
+      "url": "git@gitlab.mivar.ru:mivar-projects/aot-db-api.git",
       "type": "git"
     }
   ],

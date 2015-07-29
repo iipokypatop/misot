@@ -22,6 +22,7 @@ class ChastiRechiRegistry
 
     const PREDLOG = 19;
     const SOYUZ = 20;
+    const CHASTICA = 21;
 
 
     public static function getNames()
@@ -39,6 +40,7 @@ class ChastiRechiRegistry
 
             static::PREDLOG => 'предлог',
             static::SOYUZ => 'союз',
+            static::CHASTICA => 'частица',
         ];
     }
 
@@ -56,6 +58,7 @@ class ChastiRechiRegistry
 
             static::PREDLOG => Predlog\Base::class,
             static::SOYUZ => Soyuz\Base::class,
+            static::CHASTICA => Chastica\Base::class,
         ];
     }
 
@@ -73,6 +76,7 @@ class ChastiRechiRegistry
             static::DEEPRICHASTIE => Deeprichastie\Factory::get(),
             static::MESTOIMENIE => Mestoimenie\Factory::get(),
             static::CHISLITELNOE => Chislitelnoe\Factory::get(),
+            static::CHASTICA => Chastica\Factory::get(),
         ];
     }
 

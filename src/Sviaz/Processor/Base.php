@@ -118,8 +118,7 @@ class Base
                         continue;
                     }
 
-                    if (1 /*!$this->cache->get([$rule, $main_candidate, $depended_candidate])*/) {
-                        //var_export($depended_candidate);die;
+                    if ( 1 /*!$this->cache->get([$rule, $main_candidate, $depended_candidate])*/) {
 
                         $third = $rule->getAssertedMember();
 
@@ -193,17 +192,17 @@ class Base
                         }
 
                         $result = $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
-
+//                        $sviaz = null;
                         if ($result) {
-
-                            $sviazi[] = \Aot\Sviaz\Base::create(
+                            $sviazi[] = /*$sviaz =*/ \Aot\Sviaz\Base::create(
                                 $main_candidate,
                                 $depended_candidate,
                                 $rule->getAssertedMain()->getRoleClass(),
                                 $rule->getAssertedDepended()->getRoleClass()
                             );
-                            $this->cache->put([$rule, $main_candidate, $depended_candidate]);
                         }
+
+//                        $this->cache->put([$rule, $main_candidate, $depended_candidate], $sviaz);
                     }
                 }
             }
@@ -263,4 +262,22 @@ class Base
     }
 
 
+    protected function getRawSequences(\Aot\Text\NormalizedMatrix $normalized_matrix)
+    {
+        $sequences = [];
+
+        foreach ($normalized_matrix as $array) {
+
+            $sequences[] = $sequence = Sequence::create();
+
+            foreach ($array as $member) {
+
+                $raw_member = $this->raw_member_builder->build($member);
+
+                $sequence->append($raw_member);
+            }
+        }
+
+        return $sequences;
+    }
 }
