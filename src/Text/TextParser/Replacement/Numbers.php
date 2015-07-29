@@ -14,20 +14,20 @@ class Numbers extends Base
     protected function getPatterns()
     {
         return [
-//            "/(\\{\\%)?(((8|\\+7)[\\-]?)?(\\(?\\d{3}\\)?[\\-]?)?[\\d\\-]{7,10})/u", // без пробелов в номере
-            "/(\\{\\%)?(((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10})/u", // с пробелами в номере
-            "/(\\{\\%)?(\\d+([\\s\\,]*\\d+)*)/u",
+            "/(\\{\\{)?(((8|\\+7)[\\-]?)?(\\(?\\d{3}\\)?[\\-]?)?[\\d\\-]{7,10})/u", // без пробелов в номере
+//            "/(\\{\\%)?(((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10})/u", // с пробелами в номере
+            "/(\\{\\{)?(\\d+([\\s\\,]*\\d+)*)/u",
         ];
     }
-    protected function insertTemplate($record)
+    protected function insertTemplate($preg_replace_matches)
     {
-        if( $record[1] === '{%' || trim($record[0]) === ''){
-            return $record[0];
+        if( $preg_replace_matches[1] === '{{' || trim($preg_replace_matches[0]) === ''){
+            return $preg_replace_matches[0];
         }
 
-        $record[0] = preg_replace(["/(\\,)/","/(\\s)/"], [".", ""], $record[0]);
-        $index = $this->registry->add($record[0]);
-        $this->logger->notice("R: Заменили по шаблону [{$record[0]}], индекс {$index}");
-        return "{%" . $index . "%}";
+        $preg_replace_matches[0] = preg_replace(["/(\\,)/","/(\\s)/"], [".", ""], $preg_replace_matches[0]);
+        $index = $this->registry->add($preg_replace_matches[0]);
+        $this->logger->notice("R: Заменили по шаблону [{$preg_replace_matches[0]}], индекс {$index}");
+        return $this->format($index);
     }
 }

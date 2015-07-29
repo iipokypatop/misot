@@ -14,9 +14,13 @@ abstract class Base
     protected $registry;
     protected $logger;
 
+    const START = '{{';
+    const END = '}}';
+
 
     /**
      * @param $registry
+     * @param $logger
      * @return object Aot\Text\TextParser\Replacement\Base
      */
     static public function create($registry, $logger)
@@ -46,16 +50,34 @@ abstract class Base
     }
 
     /**
-     * @param $record
+     * @param $preg_replace_matches
      * @return null
      */
-    protected function insertTemplate($record)
+    protected function insertTemplate($preg_replace_matches)
     {
-        $record = $record[0];
-        $index = $this->registry->add($record);
-        $this->logger->notice("R: Заменили по шаблону [{$record}], индекс {$index}");
-        // add logger
-        return "{%" . $index . "%}";
+        $preg_replace_matches = $preg_replace_matches[0];
+        $index = $this->registry->add($preg_replace_matches);
+        $this->logger->notice("R: Заменили по шаблону [{$preg_replace_matches}], индекс {$index}");
+
+
+        // если точка в конце, то дублируем её и вставляем после шаблона
+        if( preg_match("/\\.$/",$preg_replace_matches))
+        {
+            $preg_replace_matches = $preg_replace_matches[0];
+            $index = $this->registry->add($preg_replace_matches);
+            $this->logger->notice("R: Заменили по шаблону [{$preg_replace_matches}], индекс {$index}");
+            return $this->format($index, ['', '.']);
+        }
+
+        return $this->format($index);
+    }
+
+    protected function format($index, $sides = []){
+        if( empty($sides)){
+            return static::START . $index . static::END;
+        }
+
+        return $sides[0] . static::START . $index . static::END . $sides[1];
     }
 
     /**

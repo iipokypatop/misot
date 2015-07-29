@@ -25,7 +25,7 @@ class NoValid extends Base
             "\"\\'\\`\\‘\\‛\\’\\«\\»\\‹\\›\\„\\“\\‟\\”" .
             "%$\\s\\d\\*\\-" .
             "\\{\\}\\[\\]\\(\\)" .
-            "])/u",
+            "])/u" => '',
         ];
     }
 
@@ -36,7 +36,7 @@ class NoValid extends Base
     public function filter($text)
     {
         $arr = [];
-        foreach ($this->getPatterns() as $pattern) {
+        foreach ($this->getPatterns() as $pattern => $replacement) {
             $array = preg_split($pattern, $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE);
             $par = (preg_match($pattern, $array[0][0])) ? 2 : 1;
             foreach ($array as $key => $value) {

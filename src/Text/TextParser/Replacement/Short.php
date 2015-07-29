@@ -16,6 +16,11 @@ class Short extends Base
         /**
          * Регулярки для сокращений пишутся по шаблону:
          * (*Символы, указывающие на сокращение*)*сокращение*(*Символы, указывающие на сокращение*)
+         *
+         * TODO: Регулярки, заканчиваюшиеся на точку должны оставлять после замены точку, если дальше есть признак нового предложения(1):
+         * 2000г. А в другом году...-> 2000{%1%}.
+         * 1:
+         * (\s)+[А-Я]
          */
 
         return [
@@ -43,27 +48,23 @@ class Short extends Base
         ];
     }
 
-    protected function insertTemplate($record)
+    protected function insertTemplate($preg_replace_matches)
     {
-        if( count($record) === 3)
-        {
-            $record_replace = $record[0];
-            foreach ($record as $key => $match) {
-                if($key > 0){
+        print_r($preg_replace_matches);
+        if (count($preg_replace_matches) === 3) {
+            $record_replace = $preg_replace_matches[0];
+            foreach ($preg_replace_matches as $key => $match) {
+                if ($key > 0) {
                     $record_replace = str_replace($match, "", $record_replace);
                 }
             }
-            $index = $this->registry->add($record);
+            $index = $this->registry->add($preg_replace_matches);
             $this->logger->notice("R: Заменили по шаблону [{$record_replace}], индекс {$index}");
-            return $record[1] . "{%" . $index . "%}" . $record[2];
+            $preg_replace_matches[2] = ($preg_replace_matches[2] === '.') ? '' : $preg_replace_matches[2];
+            return $this->format($index, [$preg_replace_matches[1], $preg_replace_matches[2]]);
 
         }
-        else{
-            $record = $record[0];
-        }
-        $index = $this->registry->add($record);
-        $this->logger->notice("R: Заменили по шаблону [{$record}], индекс {$index}");
-        // add logger
-        return "{%" . $index . "%}";
+
+        return parent::insertTemplate($preg_replace_matches);
     }
 }

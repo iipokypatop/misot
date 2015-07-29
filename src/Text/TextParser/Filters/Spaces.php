@@ -19,7 +19,7 @@ class Spaces extends Base
     {
         return [
 //            '/\\s/',
-            '/(\\s+)/',
+            '/(\\s+)/' => '',
         ];
 
     }
@@ -27,7 +27,7 @@ class Spaces extends Base
     public function filter($text)
     {
         $arr = [];
-        foreach ($this->getPatterns() as $pattern) {
+        foreach ($this->getPatterns() as $pattern => $replacement) {
             $array = preg_split($pattern, $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE);
             // определяем четность
             $par = (preg_match($pattern, $array[0][0])) ? 2 : 1;

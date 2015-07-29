@@ -24,7 +24,7 @@ class TextParser
     protected $alerts = [];
     protected $sentences = [];
 
-    const PATTERN_SENTENCE_DELIMITER = "/\\.|\\!|\\?/";
+    const PATTERN_SENTENCE_DELIMITER = "/[\\.\\!\\?]\\s([А-ЯЁ])/u";
 
     protected $filterSpaces;
     protected $filterNoValid;
@@ -59,28 +59,30 @@ class TextParser
 
         $origin_text = $text;
 
+
         // чистим от лишних пробельных символов
         $text = $this->filterSpaces->filter($text);
 
         // убираем невалидные символы
         $text = $this->filterNoValid->filter($text);
 
-        // ФИО
-        $text = $this->replaceFIO->replace($text);
-
         // скобки
         $text = $this->replaceHooks->replace($text);
+
+        // ФИО
+        $text = $this->replaceFIO->replace($text);
 
         // сокращения
         $text = $this->replaceShort->replace($text);
 
         // числительные
         $text = $this->replaceNumbers->replace($text);
+        // \{\{111\}\} -> {{1111}}
 
 //        print_r($this->registry);
 //        print_r($this->logger);
         // разбиваем текст на предложения
-        $sentences = preg_split(static::PATTERN_SENTENCE_DELIMITER, $text);
+        $sentences = $this->splitInSentences($text);
 
         // разбиваем предложения на слова
         $sentence_words = [];
@@ -114,7 +116,8 @@ class TextParser
 
 
     }
-
+//{{DELIMITER}}
+// notice -> возможно продолжение предложения
     public function render()
     {
         $string_sentence = [];
@@ -133,5 +136,31 @@ class TextParser
 
         return join('', $string_sentence);
 
+    }
+
+    /**
+     * @param $text
+     * @return array
+     */
+    private function splitInSentences($text)
+    {
+        $sentences = preg_split(static::PATTERN_SENTENCE_DELIMITER, $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE);
+
+        print_r($sentences);
+        $arr_sentences = [];
+        $temp_char = '';
+        foreach ($sentences as $key => $value) {
+            // каждый четный элемент содержит первую букву следующего предложения
+            if (($key % 2) === 1) {
+                $temp_char = $value[0];
+                continue;
+            }
+            $arr_sentences[] = $temp_char . $value[0];
+
+
+        }
+        print_r($arr_sentences);
+        die('fff');
+        return $sentences;
     }
 }
