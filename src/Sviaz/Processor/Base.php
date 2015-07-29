@@ -11,6 +11,7 @@ namespace Aot\Sviaz\Processor;
 
 use Aot\Sviaz\Rule\Base as RuleBase;
 use Aot\Sviaz\Sequence;
+use Aot\Sviaz\SequenceMember\RawMemberBuilder;
 
 class Base
 {
@@ -20,14 +21,31 @@ class Base
     #/** @var  CacheRules */
     protected $cache;
 
+
+    /**
+     * @var \Aot\Sviaz\PreProcessors\Base[]
+     */
+    protected $pre_processing_engines;
+
+
+    /**
+     * @var \Aot\Sviaz\PreProcessors\Base[]
+     */
+    protected $post_processing_engines;
+
     public function __construct()
     {
-        $this->raw_member_builder = \Aot\Sviaz\Processor\RawMemberBuilder::create();
+        $this->raw_member_builder = \Aot\Sviaz\SequenceMember\RawMemberBuilder::create();
 
         $this->cache = \Aot\Sviaz\Processor\CacheRules::create();
 
-        $this->engines = [
-            \Aot\Sviaz\Preprocessors\Predlog::create()
+        $this->pre_processing_engines = [
+            \Aot\Sviaz\PreProcessors\Predlog::create()
+        ];
+
+
+        $this->post_processing_engines = [
+
         ];
     }
 
@@ -36,10 +54,6 @@ class Base
         return new static();
     }
 
-    /**
-     * @var \Aot\Sviaz\Preprocessors\Base[]
-     */
-    protected $engines;
 
     /**
      * @param \Aot\Sviaz\Sequence $sequence
@@ -49,11 +63,22 @@ class Base
     {
         $new_sequence = $sequence;
 
-        foreach ($this->engines as $engine) {
+        foreach ($this->pre_processing_engines as $engine) {
             $new_sequence = $engine->run($new_sequence);
         }
 
         return $new_sequence;
+    }
+
+    protected function postProcess($sviazi)
+    {
+        $new_sviazi = $sviazi;
+
+        foreach ($this->post_processing_engines as $engine) {
+            $new_sviazi = $engine->run($new_sviazi);
+        }
+
+        return $new_sviazi;
     }
 
     /**
@@ -71,19 +96,23 @@ class Base
 
         $get_raw_sequences = $this->raw_member_builder->getRawSequences($normalized_matrix);
 
-        $sviazi = [];
+        $sviazi_container = [];
 
         foreach ($get_raw_sequences as $raw_sequence) {
 
             $sequence = $this->preProcess($raw_sequence);
 
-            $sviazi[] = $this->applyRules(
+            $sviazi = $this->applyRules(
                 $sequence,
                 $rules
             );
+
+            $sviazi = $this->postProcess($sviazi);
+
+            $sviazi_container[] = $sviazi;
         }
 
-        return $sviazi;
+        return $sviazi_container;
     }
 
 
@@ -118,97 +147,238 @@ class Base
                         continue;
                     }
 
+
                     if ( 1 /*!$this->cache->get([$rule, $main_candidate, $depended_candidate])*/) {
+ 
 
-                        $third = $rule->getAssertedMember();
-
-                        $result = true;
-                        if (null !== $third) {
-                            if (\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_PRESENT === $third->getPresence()) {
-
-                                $result = false;
-
-                                foreach ($sequence as $third_candidate) {
-                                    if ($third_candidate === $main_candidate) {
-                                        continue;
-                                    }
-                                    if ($third_candidate === $depended_candidate) {
-                                        continue;
-                                    }
-
-                                    $result = $third->attempt($third_candidate);
-
-                                    if (true === $result) {
-                                        $result = $this->processPosition(
-                                            $sequence->getPosition($main_candidate),
-                                            $sequence->getPosition($depended_candidate),
-                                            $third->getPosition(),
-                                            $sequence->getPosition($third_candidate)
-                                        );
-
-                                        if (true === $result) {
-                                            break;
-                                        }
-                                    }
-                                }
-
-                            } else if (\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_NOT_PRESENT === $third->getPresence()) {
-
-                                $result = false;
-
-                                foreach ($sequence as $third_candidate) {
-                                    if ($third_candidate === $main_candidate) {
-                                        continue;
-                                    }
-                                    if ($third_candidate === $depended_candidate) {
-                                        continue;
-                                    }
-
-                                    $result = $third->attempt($third_candidate);
-
-                                    if (true === $result) {
-                                        $result = $this->processPosition(
-                                            $sequence->getPosition($main_candidate),
-                                            $sequence->getPosition($depended_candidate),
-                                            $third->getPosition(),
-                                            $sequence->getPosition($third_candidate)
-                                        );
-
-                                        if (true === $result) {
-                                            $result = false;
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                if ($result === false) {
-                                    $result = true;
-                                }
-                            }
-                        }
+                        $result = $this->processThird(
+                            $sequence,
+                            $main_candidate,
+                            $depended_candidate,
+                            $rule
+                        );
 
                         if (!$result) {
                             continue;
                         }
 
                         $result = $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
-//                        $sviaz = null;
+                        $sviaz = null;
                         if ($result) {
-                            $sviazi[] = /*$sviaz =*/ \Aot\Sviaz\Base::create(
+                            $sviazi[] = $sviaz = \Aot\Sviaz\Base::create(
                                 $main_candidate,
                                 $depended_candidate,
                                 $rule->getAssertedMain()->getRoleClass(),
                                 $rule->getAssertedDepended()->getRoleClass()
                             );
+                            $this->cache->put([$rule, $main_candidate, $depended_candidate]);
                         }
-
-//                        $this->cache->put([$rule, $main_candidate, $depended_candidate], $sviaz);
                     }
                 }
             }
         }
 
         return $sviazi;
+    }
+
+
+    protected function processThirdOld(
+        \Aot\Sviaz\Sequence $sequence,
+        \Aot\Sviaz\SequenceMember\Base $main_candidate,
+        \Aot\Sviaz\SequenceMember\Base $depended_candidate,
+        \Aot\Sviaz\Rule\AssertedMember\Member $third
+    )
+    {
+        $result = true;
+
+
+        if (\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_PRESENT === $third->getPresence()) {
+
+            $result = false;
+
+            foreach ($sequence as $third_candidate) {
+                if ($third_candidate === $main_candidate) {
+                    continue;
+                }
+                if ($third_candidate === $depended_candidate) {
+                    continue;
+                }
+
+                $result = $third->attempt($third_candidate);
+
+                if (true === $result) {
+                    $result = $this->processPosition(
+                        $sequence->getPosition($main_candidate),
+                        $sequence->getPosition($depended_candidate),
+                        $third->getPosition(),
+                        $sequence->getPosition($third_candidate)
+                    );
+
+                    if (true === $result) {
+                        break;
+                    }
+                }
+            }
+
+            // \find and locate
+
+        } else if (\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_NOT_PRESENT === $third->getPresence()) {
+
+            $result = false;
+
+            foreach ($sequence as $third_candidate) {
+                if ($third_candidate === $main_candidate) {
+                    continue;
+                }
+                if ($third_candidate === $depended_candidate) {
+                    continue;
+                }
+
+                $result = $third->attempt($third_candidate);
+
+                if (true === $result) {
+                    $result = $this->processPosition(
+                        $sequence->getPosition($main_candidate),
+                        $sequence->getPosition($depended_candidate),
+                        $third->getPosition(),
+                        $sequence->getPosition($third_candidate)
+                    );
+
+                    if (true === $result) {
+                        $result = false;
+                        break;
+                    }
+                }
+            }
+
+            if ($result === false) {
+                $result = true;
+            }
+        }
+
+        return $result;
+    }
+
+    protected function processThird(
+        \Aot\Sviaz\Sequence $sequence,
+        \Aot\Sviaz\SequenceMember\Base $main_candidate,
+        \Aot\Sviaz\SequenceMember\Base $depended_candidate,
+        \Aot\Sviaz\Rule\Base $rule
+    )
+    {
+        $result = true;
+
+        $third = $rule->getAssertedMember();
+
+        if (null === $third) {
+            return $result;
+        }
+
+        $result = false;
+
+        if (\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_PRESENT === $third->getPresence()) {
+
+            foreach ($sequence as $third_candidate) {
+                if ($third_candidate === $main_candidate) {
+                    continue;
+                }
+                if ($third_candidate === $depended_candidate) {
+                    continue;
+                }
+
+                $result = $third->attempt($third_candidate);
+
+                if (true === $result) {
+                    $result = $this->processPosition(
+                        $sequence->getPosition($main_candidate),
+                        $sequence->getPosition($depended_candidate),
+                        $third->getPosition(),
+                        $sequence->getPosition($third_candidate)
+                    );
+
+                    if (true === $result) {
+                        break;
+                    }
+                }
+            }
+
+            // \find and locate
+
+        } else if (\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_NOT_PRESENT === $third->getPresence()) {
+
+            foreach ($sequence as $third_candidate) {
+                if ($third_candidate === $main_candidate) {
+                    continue;
+                }
+                if ($third_candidate === $depended_candidate) {
+                    continue;
+                }
+
+                $result = $third->attempt($third_candidate);
+
+                if (true === $result) {
+                    $result = $this->processPosition(
+                        $sequence->getPosition($main_candidate),
+                        $sequence->getPosition($depended_candidate),
+                        $third->getPosition(),
+                        $sequence->getPosition($third_candidate)
+                    );
+
+                    if (true === $result) {
+                        $result = false;
+                        break;
+                    }
+                }
+            }
+
+            if ($result === false) {
+                $result = true;
+            }
+
+        } else {
+
+            throw new \RuntimeException("unsupported presence type " . var_export($third->getPresence(), 1));
+        }
+
+        return $result;
+    }
+
+
+    protected function thirdFindAndLocate(
+        \Aot\Sviaz\Sequence $sequence,
+        \Aot\Sviaz\SequenceMember\Base $main_candidate,
+        \Aot\Sviaz\SequenceMember\Base $depended_candidate,
+        \Aot\Sviaz\Rule\AssertedMember\Member $third
+    )
+    {
+        $result = false;
+
+        foreach ($sequence as $third_candidate) {
+            if ($third_candidate === $main_candidate) {
+                continue;
+            }
+            if ($third_candidate === $depended_candidate) {
+                continue;
+            }
+
+            $result = $third->attempt($third_candidate);
+
+            if (true === $result) {
+                $result = $this->processPosition(
+                    $sequence->getPosition($main_candidate),
+                    $sequence->getPosition($depended_candidate),
+                    $third->getPosition(),
+                    $sequence->getPosition($third_candidate)
+                );
+
+                if (true === $result) {
+                    $result = false;
+                    break;
+                }
+            }
+        }
+
+        return $result;
     }
 
 
@@ -262,22 +432,4 @@ class Base
     }
 
 
-    protected function getRawSequences(\Aot\Text\NormalizedMatrix $normalized_matrix)
-    {
-        $sequences = [];
-
-        foreach ($normalized_matrix as $array) {
-
-            $sequences[] = $sequence = Sequence::create();
-
-            foreach ($array as $member) {
-
-                $raw_member = $this->raw_member_builder->build($member);
-
-                $sequence->append($raw_member);
-            }
-        }
-
-        return $sequences;
-    }
 }

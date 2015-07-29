@@ -9,10 +9,6 @@
 namespace Aot\Sviaz\Rule;
 
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Izyavitelnoe;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Povelitelnoe;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Yslovnoe;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
@@ -24,6 +20,10 @@ use Aot\Text\GroupIdRegistry;
 class Container
 {
 
+    /**
+     * 2
+     * @return static
+     */
     public static function getRule1()
     {
         <<<TEXT
@@ -50,6 +50,10 @@ TEXT;
 
     }
 
+    /**
+     * 19
+     * @return static
+     */
     public static function getRule2()
     {
         <<<TEXT
@@ -80,26 +84,11 @@ TEXT;
         return $rule;
     }
 
-    public static function getRule3()
-    {
-        <<<TEXT
-Если после переходного глагола стоит существительное в винительном падеже,
-то между ними есть связь.!УТОЧНИТЬ!
-TEXT;
-        $builder = \Aot\Sviaz\Rule\Builder::create()
-            ->mainChastRechi(ChastiRechiRegistry::GLAGOL)
-            ->mainMorphology(MorphologyRegistry::PEREHODNOST_PEREHODNII)
-            ->mainRole(RoleRegistry::OTNOSHENIE)
-            ->dependedAfterMain()
-            ->dependedChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE)
-            ->dependedMorphology(MorphologyRegistry::PADESZH_VINITELNIJ)
-            ->dependedRole(RoleRegistry::VESCH);
 
-        $rule = $builder->get();
-
-        return $rule;
-    }
-
+    /**
+     * 12
+     * @return static
+     */
     public static function getRule4()
     {
         <<<TEXT
@@ -133,6 +122,11 @@ TEXT;
     }
 
 
+    /**
+     * 13
+     * TODO: правило описано не полно (и текст правила не совсем совпадает)
+     * @return static
+     */
     public static function getRule5()
     {
         <<<TEXT
@@ -218,6 +212,10 @@ TEXT;
     }
 
 
+    /**
+     * 3
+     * @return static
+     */
     public static function getRule6()
     {
         <<<TEXT
@@ -254,6 +252,10 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * 4
+     * @return static
+     */
     public static function getRule7()
     {
         <<<TEXT
@@ -308,6 +310,10 @@ TEXT;
 
     }
 
+    /**
+     * 5
+     * @return static
+     */
     public static function getRule8()
     {
         <<<TEXT
@@ -364,6 +370,10 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * 6
+     * @return static
+     */
     public static function getRule9()
     {
         <<<TEXT
@@ -427,6 +437,10 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * 7
+     * @return static
+     */
     public static function getRule10()
     {
         <<<TEXT
@@ -476,6 +490,10 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * 11
+     * @return static
+     */
     public static function getRule11()
     {
         <<<TEXT
@@ -522,6 +540,10 @@ TEXT;
     }
 
 
+    /**
+     * 12
+     * @return static
+     */
     public static function getRule12()
     {
         <<<TEXT
@@ -568,6 +590,10 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * 13
+     * @return static
+     */
     public static function getRule13()
     {
         <<<TEXT
@@ -608,6 +634,10 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * 14
+     * @return static
+     */
     public static function getRule14()
     {
         <<<TEXT
@@ -645,6 +675,11 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * 15
+     * @param $priznak
+     * @return static
+     */
     protected static function getRule16($priznak)
     {
         $builder =
@@ -710,6 +745,10 @@ TEXT;
         return $rules;
     }
 
+    /**
+     * 16
+     * @return static
+     */
     public static function getRule17()
     {
         <<<TEXT
@@ -742,6 +781,10 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * 17
+     * @return static
+     */
     public static function getRule15()
     {
         <<<TEXT
@@ -752,32 +795,38 @@ TEXT;
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::GLAGOL, RoleRegistry::OTNOSHENIE)
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::GLAGOL,
+                        RoleRegistry::OTNOSHENIE
+                    )
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::DEEPRICHASTIE,
                         RoleRegistry::SVOISTVO
                     )
-
+                )
+                ->member(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                        ChastiRechiRegistry::GLAGOL
+                    )
+                        ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BETWEEN_MAIN_AND_DEPENDED)
+                        ->notPresent()
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
                 );
 
-        $builder->member(
-            \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
-                ChastiRechiRegistry::GLAGOL
-            )
-                ->position(\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_NOT_PRESENT)
-        );
-
-        $builder->link(
-            AssertedLinkBuilder::create()
-        );
 
         $rule = $builder->get();
 
         return $rule;
     }
 
+    /**
+     * 33
+     * @return static
+     */
     public static function getRule_PerehGl_Susch()
     {
         <<<TEXT
@@ -810,10 +859,12 @@ TEXT;
         return $rule;
     }
 
-    public static function getRule_LichnoeMest_Pril(/*$padeszh, $rod, $chislo*/)
+    /**
+     * 80
+     * @return static
+     */
+    public static function getRule_LichnoeMest_Pril()
     {
-        #TODO: местоимение должно стоять после или неважно?
-
         <<<TEXT
 Если в предложении есть личное местоимение и прилагательное,
 совпадающее с ним в роде, числе и падеже,
@@ -848,47 +899,17 @@ TEXT;
                         )
                 );
 
-        $builder->member(
-            \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
-                ChastiRechiRegistry::SUSCHESTVITELNOE
-            )
-                ->notPresent()
-        #TODO:
-//                ->morphology($chislo)
-//                ->morphology($rod)
-//                ->morphology($padeszh)
-        );
-
 
         $rule = $builder->get();
 
         return $rule;
     }
 
-    /*public static function getPadeszh_Rule_LichnoeMest_Pril()
-    {
-        $padeszhi = [
-            'Roditelnii' => MorphologyRegistry::PADESZH_RODITELNIJ,
-            'Datelnij' => MorphologyRegistry::PADESZH_DATELNIJ,
-            'Vinitelnij' => MorphologyRegistry::PADESZH_VINITELNIJ,
-            'Tvoritelnij' => MorphologyRegistry::PADESZH_TVORITELNIJ,
-            'Predlojnij' => MorphologyRegistry::PADESZH_PREDLOZSHNIJ
-        ];
-
-
-        $rules = [];
-        foreach ($padeszhi as $name => $padeszh) {
-            $rules[$name] = static::getRule_LichnoeMest_Pril($padeszh, $rod, $chislo);
-        }
-        return $rules;
-    }*/
-
-
     /**
      * 81
      * @return static
      */
-    public static function getRule_OtricMest_Gl(/*$padeszh, $rod, $chislo*/)
+    public static function getRule_OtricMest_Gl()
     {
 
         <<<TEXT
@@ -957,6 +978,7 @@ TEXT;
                         ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
                         ->morphology(MorphologyRegistry::ZALOG_STRADATELNYJ)
                         ->morphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
+                        // у причастий нет лица!
                         //->morphology(MorphologyRegistry::LITSO_TRETIE)
                         ->check(MemberCheckerRegistry::ChasticaNePeredSlovom)
 
@@ -974,9 +996,10 @@ TEXT;
      * 83
      * @return static
      */
-    public static function getRule_PrityazhMest_Susch(/*$padeszh, $rod, $chislo*/)
+    public static function getRule_PrityazhMest_Susch()
     {
 
+        // TODO: + совпадение по числу
         <<<TEXT
 Если в предложении есть притяжательное местоимение 1 или 2 лица
 (мой, моя, моё, мои, наш, наша, наше, наши, твой, твоя, твое, твои, ваш, ваша, ваше, ваши)
@@ -996,12 +1019,14 @@ TEXT;
                         ChastiRechiRegistry::MESTOIMENIE,
                         RoleRegistry::SVOISTVO
                     )
-                        ->morphology(MorphologyRegistry::RAZRYAD_PRITIAZHATELNOE)
+                        // из морфика не приходит
+//                        ->morphology(MorphologyRegistry::RAZRYAD_PRITYAZHATELNOE)
                         ->textGroupId(GroupIdRegistry::PRITYAZHATELNIE_1_AND_2_LITSO)
                 )
                 ->link(
                     AssertedLinkBuilder::create()
-                        ->morphologyMatching(MorphologyRegistry::ROD)
+//                        ->morphologyMatching(MorphologyRegistry::ROD)
+                        ->morphologyMatching(MorphologyRegistry::CHISLO)
                         ->morphologyMatching(MorphologyRegistry::PADESZH)
                 );
 
@@ -1030,24 +1055,22 @@ TEXT;
                         ChastiRechiRegistry::SUSCHESTVITELNOE,
                         RoleRegistry::VESCH
                     )
-                        ->morphology(MorphologyRegistry::Ukazatelnoe)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::MESTOIMENIE,
                         RoleRegistry::SVOISTVO
                     )
-                # TODO: добавить разряд
+                        // из морфика не приходит
 //                        ->morphology(MorphologyRegistry::RAZRYAD_UKAZATELNOE)
+                        ->textGroupId(GroupIdRegistry::UKAZATELNIE_MESTOIMENIYA)
 
                 )
                 ->link(
                     AssertedLinkBuilder::create()
-                        ->morphologyMatching(MorphologyRegistry::ROD)// TODO: если единственное число
+//                        ->morphologyMatching(MorphologyRegistry::ROD)// TODO: если единственное число
                         ->morphologyMatching(MorphologyRegistry::CHISLO)
                         ->morphologyMatching(MorphologyRegistry::PADESZH)
-                # TODO: что насчет позиции?
-//                        ->dependedBeforeMain()
                 );
 
 
@@ -1055,5 +1078,889 @@ TEXT;
 
         return $rule;
     }
+
+    /**
+     * 79
+     * @return static
+     */
+    public static function getRule_GroupChisl_Susch()
+    {
+
+        <<<TEXT
+Если в предложении есть несколько числительных, стоящих подряд и образующих неразделимое целое,
+и существительное, совпадающее в роде и числе с последним в ряде числительных, то вместе
+они образуют неделимое целое и являются одним членом предложения.
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE,
+                        RoleRegistry::VESCH
+                    )
+                )
+                ->depended(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::CHISLITELNOE,
+                        RoleRegistry::SVOISTVO
+                    )
+
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+//                        ->morphologyMatching(MorphologyRegistry::ROD)
+//                        ->morphologyMatching(MorphologyRegistry::CHISLO)
+                );
+
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 7 rewrite
+     * @return static
+     */
+    public static function getSuschImenitPadeszh_Gl_Prich()
+    {
+        <<<TEXT
+Если в предложении есть существительное в именительном падеже и глагол «быть» в форме,
+совпадающей с существительным в роде и числе, а после него – краткое страдательное причастие,
+совпадающее с существительным в роде и числе, то между ними есть связь.
+TEXT;
+        $priznaki = [
+            'EdinstvennoeMuzhskoi' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_MUZHSKOI],
+            'EdinstvennoeZhenskii' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_ZHENSKII],
+            'EdinstvennoeSrednij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_SREDNIJ],
+            'Mnozhestvennoe' => [MorphologyRegistry::CHISLO_MNOZHESTVENNOE, null],
+        ];
+
+
+        $rules = [];
+        foreach ($priznaki as $name => $priznak) {
+
+            $rules[$name] = static::getRuleByRodAndChisloForSuschImenitPadeszh_Gl_Prich($priznak[0], $priznak[1]);
+        }
+        return $rules;
+    }
+
+    protected static function getRuleByRodAndChisloForSuschImenitPadeszh_Gl_Prich($chislo, $rod)
+    {
+        <<<TEXT
+Если в предложении есть существительное в именительном падеже и глагол «быть» в форме,
+совпадающей с существительным в роде и числе, а после него – краткое страдательное причастие,
+совпадающее с существительным в роде и числе, то между ними есть связь.
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE,
+                        RoleRegistry::VESCH
+                    )
+                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphology($chislo)
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::PRICHASTIE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        ->morphology(MorphologyRegistry::ZALOG_STRADATELNYJ)
+                        ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
+                        ->morphology($chislo)
+                )
+                ->member(
+                    $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                        ChastiRechiRegistry::GLAGOL
+                    )
+                        ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BEFORE_DEPENDED)
+                        ->morphology($chislo)
+                        ->textGroupId(GroupIdRegistry::BIT)
+
+                );
+
+        if ($rod !== null) {
+            $builder_main->morphology($rod);
+            $builder_depended->morphology($rod);
+            $builder_member->morphology($rod);
+        }
+
+
+        $builder->link(
+            AssertedLinkBuilder::create()
+        );
+
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 8
+     * @return static
+     */
+    public static function getLichnoeMestImenitPadeszh_Gl_Prich()
+    {
+        <<<TEXT
+Если в предложении есть личное местоимение в именительном падеже и глагол «быть» в форме,
+совпадающей с существительным в роде и числе, а после него – краткое страдательное причастие,
+совпадающее с существительным в роде и числе, то между ними есть связь.
+TEXT;
+        $priznaki = [
+            'EdinstvennoeMuzhskoi' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_MUZHSKOI],
+            'EdinstvennoeZhenskii' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_ZHENSKII],
+            'EdinstvennoeSrednij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_SREDNIJ],
+            'Mnozhestvennoe' => [MorphologyRegistry::CHISLO_MNOZHESTVENNOE, null],
+        ];
+
+
+        $rules = [];
+        foreach ($priznaki as $name => $priznak) {
+
+            $rules[$name] = static::getRuleByRodAndChisloForLichnoeMestImenitPadeszh_Gl_Prich($priznak[0], $priznak[1]);
+        }
+        return $rules;
+    }
+
+    protected static function getRuleByRodAndChisloForLichnoeMestImenitPadeszh_Gl_Prich($chislo, $rod)
+    {
+        <<<TEXT
+Если в предложении есть личное местоимение в именительном падеже и глагол «быть» в форме,
+совпадающей с существительным в роде и числе, а после него – краткое страдательное причастие,
+совпадающее с существительным в роде и числе, то между ними есть связь.
+TEXT;
+
+
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::MESTOIMENIE,
+                        RoleRegistry::VESCH
+                    )
+                        # не приходит из морфика
+                        # ->morphology(MorphologyRegistry::RAZRYAD_LICHNOE)
+                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphology($chislo)
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::PRICHASTIE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        ->morphology(MorphologyRegistry::ZALOG_STRADATELNYJ)
+                        ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
+                        ->morphology($chislo)
+                )
+                ->member(
+                    $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                        ChastiRechiRegistry::GLAGOL
+                    )
+                        ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BEFORE_DEPENDED)
+                        ->morphology($chislo)
+                        ->textGroupId(GroupIdRegistry::BIT)
+
+                );
+
+
+        if ($rod !== null) {
+            $builder_main->morphology($rod);
+            $builder_depended->morphology($rod);
+            $builder_member->morphology($rod);
+        }
+
+
+        $builder->link(
+            AssertedLinkBuilder::create()
+        );
+
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 9
+     * @return static
+     */
+    public static function getRule_Susch_GlBit_GlInf()
+    {
+
+        // инфинитив = не привязанное к субъекту (лицу, числу, наклонению) и ко времени.
+        <<<TEXT
+Если  предложении есть существительное в именительном падеже, глагол-связка «быть»,
+совпадающий с существительным в роде и числе, а после него – глагол в инфинитиве,
+то между ними есть связь.
+TEXT;
+        $priznaki = [
+            'EdinstvennoeMuzhskoi' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_MUZHSKOI],
+            'EdinstvennoeZhenskii' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_ZHENSKII],
+            'EdinstvennoeSrednij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_SREDNIJ],
+            'Mnozhestvennoe' => [MorphologyRegistry::CHISLO_MNOZHESTVENNOE, null],
+        ];
+
+
+        $rules = [];
+        foreach ($priznaki as $name => $priznak) {
+
+            $rules[$name] = static::getByRodAndChisloForRule_Susch_GlBit_GlInf($priznak[0], $priznak[1]);
+        }
+        return $rules;
+    }
+
+    protected static function getByRodAndChisloForRule_Susch_GlBit_GlInf($chislo, $rod)
+    {
+
+        // инфинитив = не привязанное к субъекту (лицу, числу, наклонению) и ко времени.
+        <<<TEXT
+Если  предложении есть существительное в именительном падеже, глагол-связка «быть»,
+совпадающий с существительным в роде и числе, а после него – глагол в инфинитиве,
+то между ними есть связь.
+TEXT;
+        $builder = \Aot\Sviaz\Rule\Builder2::create();
+
+        $builder->main(
+            $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                ChastiRechiRegistry::SUSCHESTVITELNOE,
+                RoleRegistry::VESCH
+            )
+                ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                ->morphology($chislo)
+        )
+            ->member(
+                $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                    ChastiRechiRegistry::GLAGOL
+                )
+                    ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BEFORE_DEPENDED)
+                    ->textGroupId(GroupIdRegistry::BIT)
+                    ->morphology($chislo)
+            )
+            ->depended(
+                \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                    ChastiRechiRegistry::GLAGOL,
+                    RoleRegistry::OTNOSHENIE
+                )
+                    ->morphology(MorphologyRegistry::LITSO_NULL)
+//                ->morphology(MorphologyRegistry::NAKLONENIE_NULL)
+                    ->morphology(MorphologyRegistry::CHISLO_NULL)
+                    ->morphology(MorphologyRegistry::VREMYA_NULL)
+            )
+            ->link(
+                AssertedLinkBuilder::create()
+                    ->dependedAfterMain()
+            );
+
+        if ($rod !== null) {
+            $builder_main->morphology($rod);
+            $builder_member->morphology($rod);
+        }
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+
+    /**
+     * 10
+     * @return static
+     */
+    public static function getRule_Mest_Gl_Narech()
+    {
+
+        // инфинитив = не привязанное к субъекту (лицу, числу, наклонению) и ко времени.
+        <<<TEXT
+Если  предложении есть существительное в именительном падеже, глагол-связка «быть»,
+совпадающий с существительным в роде и числе, а после него – глагол в инфинитиве,
+то между ними есть связь.
+TEXT;
+        $priznaki = [
+            'EdinstvennoeMuzhskoi' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_MUZHSKOI],
+            'EdinstvennoeZhenskii' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_ZHENSKII],
+            'EdinstvennoeSrednij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_SREDNIJ],
+            'Mnozhestvennoe' => [MorphologyRegistry::CHISLO_MNOZHESTVENNOE, null],
+        ];
+
+
+        $rules = [];
+        foreach ($priznaki as $name => $priznak) {
+
+            $rules[$name] = static::getByRodAndChisloForRule_Mest_Gl_Narech($priznak[0], $priznak[1]);
+        }
+        return $rules;
+    }
+
+
+    /**
+     * 10
+     * @return static
+     */
+    protected static function getByRodAndChisloForRule_Mest_Gl_Narech($chislo, $rod)
+    {
+        <<<TEXT
+Если в предложении есть  местоимения «всё» и «это» в именительном падеже,
+глагол «быть» по роду и числу совпадающий с местоимением и наречие,
+то между ними есть связь.
+TEXT;
+
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::MESTOIMENIE,
+                        RoleRegistry::VESCH
+                    )
+                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphology($chislo)
+                        ->textGroupId(GroupIdRegistry::ETOVSE)
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::NARECHIE,
+                        RoleRegistry::SVOISTVO
+                    )
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                );
+
+
+        $builder->member(
+            $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                ChastiRechiRegistry::GLAGOL
+            )
+                ->textGroupId(GroupIdRegistry::BIT)
+                ->morphology($chislo)
+
+        );
+
+
+        if ($rod !== null) {
+            $builder_main->morphology($rod);
+            $builder_member->morphology($rod);
+        }
+
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 18
+     * @return static
+     */
+    public static function Rule_Gl_Deepr()
+    {
+        <<<TEXT
+Если в предложении есть деепричастие и глагол в любой форме, то между ними есть связь.
+При этом глагол может быть как после деепричастия, так и перед ним.
+TEXT;
+
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::GLAGOL,
+                        RoleRegistry::OTNOSHENIE
+                    )
+                )
+                ->depended(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::DEEPRICHASTIE,
+                        RoleRegistry::SVOISTVO
+                    )
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                );
+
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * Прогон правил по роду и числу
+     * @param string $name_rule название правила
+     * @return array
+     */
+    protected static function runChisloRod($name_rule)
+    {
+
+        if (!method_exists(self::class, $name_rule)) {
+            throw new \RuntimeException('Правила ' . $name_rule .' не существует');
+        }
+
+        $priznaki = [
+            'EdinstvennoeMuzhskoi' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_MUZHSKOI],
+            'EdinstvennoeZhenskii' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_ZHENSKII],
+            'EdinstvennoeSrednij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_SREDNIJ],
+            'Mnozhestvennoe' => [MorphologyRegistry::CHISLO_MNOZHESTVENNOE, null],
+        ];
+
+
+        $rules = [];
+        foreach ($priznaki as $name => $priznak) {
+            $rules[$name] = static::$name_rule($priznak[0], $priznak[1]);
+        }
+        return $rules;
+    }
+
+    /**
+     * Прогон правил по роду, числу и падежу
+     * @param string $name_rule название правила
+     * @return array
+     */
+    protected static function runChisloRodPadeszh($name_rule)
+    {
+
+        if (!method_exists(self::class, $name_rule)) {
+            throw new \RuntimeException('Правила ' . $name_rule .' не существует');
+        }
+
+        $priznaki = [
+            'EdinstvennoeMuzhskoiImenitelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_MUZHSKOI, MorphologyRegistry::PADESZH_IMENITELNIJ],
+            'EdinstvennoeMuzhskoiRoditelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_MUZHSKOI, MorphologyRegistry::PADESZH_RODITELNIJ],
+            'EdinstvennoeMuzhskoiVinitelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_MUZHSKOI, MorphologyRegistry::PADESZH_VINITELNIJ],
+            'EdinstvennoeMuzhskoiDatelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_MUZHSKOI, MorphologyRegistry::PADESZH_DATELNIJ],
+            'EdinstvennoeMuzhskoiPredlozshnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_MUZHSKOI, MorphologyRegistry::PADESZH_PREDLOZSHNIJ],
+            'EdinstvennoeMuzhskoiTvoritelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_MUZHSKOI, MorphologyRegistry::PADESZH_TVORITELNIJ],
+
+            'EdinstvennoeZhenskiiImenitelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_ZHENSKII, MorphologyRegistry::PADESZH_IMENITELNIJ],
+            'EdinstvennoeZhenskiiRoditelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_ZHENSKII, MorphologyRegistry::PADESZH_RODITELNIJ],
+            'EdinstvennoeZhenskiiVinitelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_ZHENSKII, MorphologyRegistry::PADESZH_VINITELNIJ],
+            'EdinstvennoeZhenskiiDatelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_ZHENSKII, MorphologyRegistry::PADESZH_DATELNIJ],
+            'EdinstvennoeZhenskiiPredlozshnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_ZHENSKII, MorphologyRegistry::PADESZH_PREDLOZSHNIJ],
+            'EdinstvennoeZhenskiiTvoritelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_ZHENSKII, MorphologyRegistry::PADESZH_TVORITELNIJ],
+
+            'EdinstvennoeSrednijImenitelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_SREDNIJ, MorphologyRegistry::PADESZH_IMENITELNIJ],
+            'EdinstvennoeSrednijRoditelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_SREDNIJ, MorphologyRegistry::PADESZH_RODITELNIJ],
+            'EdinstvennoeSrednijVinitelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_SREDNIJ, MorphologyRegistry::PADESZH_VINITELNIJ],
+            'EdinstvennoeSrednijDatelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_SREDNIJ, MorphologyRegistry::PADESZH_DATELNIJ],
+            'EdinstvennoeSrednijPredlozshnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_SREDNIJ, MorphologyRegistry::PADESZH_PREDLOZSHNIJ],
+            'EdinstvennoeSrednijTvoritelnij' => [MorphologyRegistry::CHISLO_EDINSTVENNOE, MorphologyRegistry::ROD_SREDNIJ, MorphologyRegistry::PADESZH_TVORITELNIJ],
+
+            'MnozhestvennoeImenitelnij' => [MorphologyRegistry::CHISLO_MNOZHESTVENNOE, null, MorphologyRegistry::PADESZH_IMENITELNIJ],
+            'MnozhestvennoeRoditelnij' => [MorphologyRegistry::CHISLO_MNOZHESTVENNOE, null, MorphologyRegistry::PADESZH_RODITELNIJ],
+            'MnozhestvennoeVinitelnij' => [MorphologyRegistry::CHISLO_MNOZHESTVENNOE, null, MorphologyRegistry::PADESZH_VINITELNIJ],
+            'MnozhestvennoeDatelnij' => [MorphologyRegistry::CHISLO_MNOZHESTVENNOE, null, MorphologyRegistry::PADESZH_DATELNIJ],
+            'MnozhestvennoePredlozshnij' => [MorphologyRegistry::CHISLO_MNOZHESTVENNOE, null, MorphologyRegistry::PADESZH_PREDLOZSHNIJ],
+            'MnozhestvennoeTvoritelnij' => [MorphologyRegistry::CHISLO_MNOZHESTVENNOE, null, MorphologyRegistry::PADESZH_TVORITELNIJ],
+        ];
+
+
+        $rules = [];
+        foreach ($priznaki as $name => $priznak) {
+            $rules[$name] = static::$name_rule($priznak[0], $priznak[1], $priznak[2]);
+        }
+        return $rules;
+    }
+
+    /**
+     * 34
+     * @return static
+     */
+    public static function getRule_LichnoeMest_GlagBit_KrPril()
+    {
+
+        <<<TEXT
+Если в предложении есть личное местоимение в именительном падеже, глагол «быть»,
+согласующийся в числе, роде (в случае единственного числа) и лице с местоимением,
+а после него – прилагательное в краткой форме, совпадающее с ними в числе и роде
+(в случае единственного числа), то между ними есть связь.
+TEXT;
+        return static::runChisloRod('getByRodAndChisloForRule_LichnoeMest_GlagBit_KrPril');
+    }
+
+
+    /**
+     * 34 (без учета порядка, скорее всего он там неважен)
+     * @return static
+     */
+    protected static function getByRodAndChisloForRule_LichnoeMest_GlagBit_KrPril($chislo, $rod)
+    {
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::MESTOIMENIE,
+                        RoleRegistry::VESCH
+                    )
+                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphology($chislo)
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::PRILAGATELNOE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
+                        ->morphology($chislo)
+                )
+                ->member(
+                    $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                        ChastiRechiRegistry::GLAGOL
+                    )
+                        ->textGroupId(GroupIdRegistry::BIT)
+                        ->morphology($chislo)
+
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                );
+
+        if ($rod !== null) {
+            $builder_main->morphology($rod);
+            $builder_depended->morphology($rod);
+            $builder_member->morphology($rod);
+        }
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 35
+     * @return static
+     */
+    public static function getRule_Susch_GlagBit_KrPril()
+    {
+
+        <<<TEXT
+Если в предложении есть личное местоимение в именительном падеже, глагол «быть»,
+согласующийся в числе, роде (в случае единственного числа) и лице с местоимением,
+а после него – прилагательное в краткой форме, совпадающее с ними в числе и роде
+(в случае единственного числа), то между ними есть связь.
+TEXT;
+        return static::runChisloRod('getByRodAndChisloForRule_Susch_GlagBit_KrPril');
+    }
+
+
+    /**
+     * 35 (без учета порядка, скорее всего он там неважен)
+     * @return static
+     */
+    protected static function getByRodAndChisloForRule_Susch_GlagBit_KrPril($chislo, $rod)
+    {
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE,
+                        RoleRegistry::VESCH
+                    )
+                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphology($chislo)
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::PRILAGATELNOE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
+                        ->morphology($chislo)
+                )
+                ->member(
+                    $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                        ChastiRechiRegistry::GLAGOL
+                    )
+                        ->textGroupId(GroupIdRegistry::BIT)
+                        ->morphology($chislo)
+
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                );
+
+        if ($rod !== null) {
+            $builder_main->morphology($rod);
+            $builder_depended->morphology($rod);
+            $builder_member->morphology($rod);
+        }
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+
+    /**
+     * 37 fail
+     * @return static
+     */
+    /*public static function getRule_KrPril_Susch()
+    {
+
+        <<<TEXT
+Если в предложении есть краткое прилагательное и существительное, совпадающее с ним в роде и числе и
+между ними нет других существительных, совпадающих в роде и числе, то между ними есть связь.
+TEXT;
+        return static::runChisloRodPadeszh('getByRodAndChisloForRule_KrPril_Susch');
+    }*/
+
+
+    /**
+     * 37
+     * @return static
+     */
+    /*protected static function getByRodAndChisloForRule_KrPril_Susch($chislo, $rod, $padeszh)
+    {
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE,
+                        RoleRegistry::VESCH
+                    )
+                        ->morphology($padeszh)
+                        ->morphology($chislo)
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::PRILAGATELNOE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        ->morphology($padeszh)
+//                        ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
+                        ->morphology($chislo)
+                )
+                // TODO: не срабатывает, и обязательно дб member??
+                ->member(
+                    $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE
+                    )
+                        ->morphology($padeszh)
+                        ->morphology($chislo)
+                        ->notPresent()
+                        ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BETWEEN_MAIN_AND_DEPENDED)
+
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                );
+
+        if ($rod !== null) {
+            $builder_main->morphology($rod);
+            $builder_depended->morphology($rod);
+//            $builder_member->morphology($rod);
+        }
+
+        $rule = $builder->get();
+
+        return $rule;
+    }*/
+
+
+    /**
+     * 39
+     * @return static
+     */
+    public static function getRule_Susch_PoryadkChisl()
+    {
+
+        <<<TEXT
+ Если в предложении есть существительное и порядковое числительное, и они совпадают в роде,
+числе и падеже и между ними нет других существительных в том же роде, числе и падеже, то между ними есть связь.
+TEXT;
+        return static::runChisloRodPadeszh('getByRodAndChisloForRule_Susch_PoryadkChisl');
+    }
+
+    /**
+     * 39
+     * @return static
+     */
+    protected static function getByRodAndChisloForRule_Susch_PoryadkChisl($chislo, $rod, $padeszh)
+    {
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE,
+                        RoleRegistry::VESCH
+                    )
+                        ->morphology($padeszh)
+                        ->morphology($chislo)
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::CHISLITELNOE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        ->morphology($padeszh)
+                        # TODO: из морфика число для числительного не приходит (по крайней мере не для всех)
+//                        ->morphology($chislo)
+                        ->morphology(MorphologyRegistry::VID_CHISLITELNOGO_PORYADKOVIY)
+                )
+                // TODO: не срабатывает
+                ->member(
+                    $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE
+                    )
+                        ->morphology($padeszh)
+                        ->morphology($chislo)
+                        ->notPresent()
+                        ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BETWEEN_MAIN_AND_DEPENDED)
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                );
+
+        if ($rod !== null) {
+            $builder_main->morphology($rod);
+            $builder_depended->morphology($rod);
+            $builder_member->morphology($rod);
+        }
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 23
+     * @return static
+     */
+    public static function getRule_Pril_Narech()
+    {
+        <<<TEXT
+С прилагательными образуют связь следующие наречия:...
+Между прилагательным и таким наречием не бывает других слов.
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::PRILAGATELNOE,
+                        RoleRegistry::VESCH
+                    )
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::NARECHIE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        ->textGroupId(GroupIdRegistry::NARECH_FOR_PRIL_OR_NARECH)
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                    ->dependedRightBeforeMain()
+                );
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 24
+     * @return static
+     */
+    public static function getRule_Narech_Narech()
+    {
+        <<<TEXT
+С наречиями образуют связь следующие наречия:...
+Между наречиями и таким наречием не бывает других слов.
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::NARECHIE,
+                        RoleRegistry::VESCH
+                    )
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::NARECHIE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        ->textGroupId(GroupIdRegistry::NARECH_FOR_PRIL_OR_NARECH)
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                        ->dependedRightBeforeMain()
+                );
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 25
+     * @return static
+     */
+    public static function getRule_Gl_Narech()
+    {
+        <<<TEXT
+С глаголами образуют связь следующие наречия:...
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::GLAGOL,
+                        RoleRegistry::OTNOSHENIE
+                    )
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::NARECHIE,
+                        RoleRegistry::SVOISTVO
+                    )
+                        ->textGroupId(GroupIdRegistry::NARECH_FOR_GL)
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                );
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+    /**
+     * 26
+     * @return static
+     */
+    public static function getRule_Gl_DefisNarech()
+    {
+        <<<TEXT
+С глаголами образуют связь следующие наречия, которые пишутся через дефис:...
+TEXT;
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::GLAGOL,
+                        RoleRegistry::OTNOSHENIE
+                    )
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::NARECHIE,
+                        RoleRegistry::SVOISTVO
+                    )
+//                        ->textGroupId(GroupIdRegistry::DEFISNARECH_FOR_GL)
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+//                        ->dependedRightBeforeMain()
+                );
+
+        $rule = $builder->get();
+
+        return $rule;
+    }
+
+
+
 }
 

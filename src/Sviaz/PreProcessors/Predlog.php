@@ -6,7 +6,7 @@
  * Time: 14:49
  */
 
-namespace Aot\Sviaz\Preprocessors;
+namespace Aot\Sviaz\PreProcessors;
 
 
 class Predlog extends Base
@@ -27,7 +27,6 @@ class Predlog extends Base
                 if (!($current_member instanceof \Aot\Sviaz\SequenceMember\Word\Base &&
                     $current_member->getSlovo() instanceof \Aot\RussianMorphology\ChastiRechi\Predlog\Base)
                 ) {
-
                     $sequence->append($current_member);
                     continue;
                 }

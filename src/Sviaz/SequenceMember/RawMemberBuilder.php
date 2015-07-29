@@ -6,11 +6,11 @@
  * Time: 4:00
  */
 
-namespace Aot\Sviaz\Processor;
+namespace Aot\Sviaz\SequenceMember;
 
 
 use Aot\RussianMorphology\Slovo;
-use Aot\Sviaz\SequenceMember\Punctuation;
+
 
 class RawMemberBuilder
 {
@@ -50,7 +50,7 @@ class RawMemberBuilder
 
         } elseif ($ob instanceof Slovo) {
 
-            $this->store[$id] = \Aot\Sviaz\SequenceMember\Word\Base::create($ob);
+            $this->store[$id] = Word\Base::create($ob);
         }
 
         if (!empty($this->store[$id])) {

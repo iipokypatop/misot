@@ -6,7 +6,7 @@
  * Time: 13:32
  */
 
-namespace Aot\Sviaz\Preprocessors;
+namespace Aot\Sviaz\PreProcessors;
 
 
 abstract class Base

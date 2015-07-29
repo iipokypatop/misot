@@ -16,10 +16,10 @@ class PredlogTest extends \AotTest\AotDataStorage
 
     public function testRun()
     {
-        $predlog = \Aot\Sviaz\Preprocessors\Predlog::create();
+        $predlog = \Aot\Sviaz\PreProcessors\Predlog::create();
 
 
-        $raw_member_builder = \Aot\Sviaz\Processor\RawMemberBuilder::create();
+        $raw_member_builder = \Aot\Sviaz\SequenceMember\RawMemberBuilder::create();
 
         $raw_sequences = $raw_member_builder->getRawSequences(
             $this->getNormalizedMatrix()

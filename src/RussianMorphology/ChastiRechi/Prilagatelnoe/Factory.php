@@ -26,7 +26,7 @@ use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Null as N
 
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Kachestvennoe;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Otnositelnoe;
-use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Pritiazhatelnoe;
+use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Prityazhatelnoe;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null as NullRazryad;
 
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Muzhskoi;
@@ -167,7 +167,7 @@ class Factory extends \Aot\RussianMorphology\Factory
             } elseif (intval($val) === \OldAotConstants::RELATIVE_ADJECTIVE()) {
                 $razryad[] = Otnositelnoe::create();
             } elseif (intval($val) === \OldAotConstants::POSSESSIVE_ADJECTIVE()) {
-                $razryad[] = Pritiazhatelnoe::create();
+                $razryad[] = Prityazhatelnoe::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
             }
