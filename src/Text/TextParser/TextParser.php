@@ -20,11 +20,25 @@ use Symfony\Component\Yaml\Exception\RuntimeException;
 class TextParser
 {
 
+
     protected $registry = [];
     protected $alerts = [];
     protected $sentences = [];
+    protected $sentence_words = [];
 
-    const PATTERN_SENTENCE_DELIMITER = "/[\\.\\!\\?]\\s([А-ЯЁ])/u";
+    const PATTERN_SENTENCE_DELIMITER = "/([\\.\\!\\?])(\\s[А-ЯЁ]|$)/u";
+    const END_SENTENCE_TEMPLATE = " {{end_%s}}\n";
+
+    protected static $sentence_needle = [
+        "/\\s*\\,\\s*/u",
+        "/\\{\\{/u",
+        "/\\}\\}/u",
+    ];
+    protected static $sentence_replacement = [
+        " , ",
+        " {{",
+        "}} ",
+    ];
 
     protected $filterSpaces;
     protected $filterNoValid;
@@ -59,7 +73,6 @@ class TextParser
 
         $origin_text = $text;
 
-
         // чистим от лишних пробельных символов
         $text = $this->filterSpaces->filter($text);
 
@@ -77,42 +90,23 @@ class TextParser
 
         // числительные
         $text = $this->replaceNumbers->replace($text);
-        // \{\{111\}\} -> {{1111}}
 
-//        print_r($this->registry);
-//        print_r($this->logger);
         // разбиваем текст на предложения
-        $sentences = $this->splitInSentences($text);
+        $this->sentences = $this->splitInSentences($text);
+
 
         // разбиваем предложения на слова
-        $sentence_words = [];
-        foreach ($sentences as $key => $sentence) {
-            $sentence = trim(preg_replace(
-                    [
-                        "/\\s*\\,\\s*/u",
-                        "/\\{\\%/u",
-                        "/\\%\\}/u",
-                    ],
-                    [
-                        " , ",
-                        " {%",
-                        "%} ",
-                    ],
-                    $sentence
-                )
-            );
-            $sentence_words[$key] = preg_split("/\\s+/u", $sentence);
-        }
-        $this->sentences = $sentence_words;
+        $this->sentence_words = $this->splitInWords($this->sentences);
+
 
         ///////////////
-        echo "\n" . $origin_text;
-        echo "\n" . $text . "\n";
+//        echo "\n" . $origin_text;
+//        echo "\n" . $text . "\n";
 //        print_r($this->registry);
 //
 //
-//        print_r($sentences);
-//        print_r($sentence_words);
+//        print_r($this->sentences);
+//        print_r($this->sentence_words);
 
 
     }
@@ -139,28 +133,52 @@ class TextParser
     }
 
     /**
-     * @param $text
+     * @param string $text
      * @return array
      */
-    private function splitInSentences($text)
+    protected function splitInSentences($text)
     {
-        $sentences = preg_split(static::PATTERN_SENTENCE_DELIMITER, $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE);
-
-        print_r($sentences);
-        $arr_sentences = [];
-        $temp_char = '';
-        foreach ($sentences as $key => $value) {
-            // каждый четный элемент содержит первую букву следующего предложения
-            if (($key % 2) === 1) {
-                $temp_char = $value[0];
-                continue;
-            }
-            $arr_sentences[] = $temp_char . $value[0];
-
+        preg_match_all(static::PATTERN_SENTENCE_DELIMITER, $text, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
+        $shift_pos = 0; // смещение позиции
+        foreach ($matches as $match) {
+            $text = substr_replace(
+                $text,
+                sprintf(static::END_SENTENCE_TEMPLATE, $match[1][0]),
+                $match[1][1] + $shift_pos, strlen($match[1][0])
+            );
+            $shift_pos += strlen($match[1][0]) + 9; // +1 - тк пробел
 
         }
-        print_r($arr_sentences);
-        die('fff');
+        // разбиваем текст на предложения
+        $sentences = explode("\n", $text);
+        // чистим
+        foreach ($sentences as $key => $sentence) {
+            if( strpos($sentence, "}}.") !== FALSE )
+            {
+                $sentences[$key] = str_replace("}}.", "}}", $sentence);
+            }
+            $sentences[$key] = trim($sentences[$key]);
+            if( $sentences[$key] === '' ){
+                unset($sentences[$key]);
+            }
+        }
+
         return $sentences;
+    }
+
+    /**
+     * @param array $sentences
+     * @return array
+     */
+    protected function splitInWords(array $sentences)
+    {
+        // разбиваем предложения на слова
+        $sentence_words = [];
+        foreach ($sentences as $key => $sentence) {
+            $sentence = preg_replace( static::$sentence_needle, static::$sentence_replacement, $sentence);
+            $sentence_words[$key] = preg_split("/\\s+/u", $sentence);
+            $sentence_words[$key] = array_filter($sentence_words[$key]); // чистим от пустых элементов
+        }
+        return $sentence_words;
     }
 }

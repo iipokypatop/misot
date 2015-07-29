@@ -50,7 +50,7 @@ class Short extends Base
 
     protected function insertTemplate($preg_replace_matches)
     {
-        print_r($preg_replace_matches);
+//        print_r($preg_replace_matches);
         if (count($preg_replace_matches) === 3) {
             $record_replace = $preg_replace_matches[0];
             foreach ($preg_replace_matches as $key => $match) {
