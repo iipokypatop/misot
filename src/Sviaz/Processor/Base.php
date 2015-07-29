@@ -147,10 +147,8 @@ class Base
                         continue;
                     }
 
-
-                    if ( 1 /*!$this->cache->get([$rule, $main_candidate, $depended_candidate])*/) {
- 
-
+                    /*if (!$this->cache->get([$rule, $main_candidate, $depended_candidate])) {*/
+                    if (true) {
                         $result = $this->processThird(
                             $sequence,
                             $main_candidate,
@@ -171,7 +169,7 @@ class Base
                                 $rule->getAssertedMain()->getRoleClass(),
                                 $rule->getAssertedDepended()->getRoleClass()
                             );
-                            $this->cache->put([$rule, $main_candidate, $depended_candidate]);
+                            /*$this->cache->put([$rule, $main_candidate, $depended_candidate]);*/
                         }
                     }
                 }
@@ -430,6 +428,4 @@ class Base
 
         return false;
     }
-
-
 }

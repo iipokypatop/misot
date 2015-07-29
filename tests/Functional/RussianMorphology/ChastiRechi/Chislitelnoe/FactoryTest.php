@@ -23,6 +23,7 @@ class FactoryTest extends AotDataStorage
     }
 
     public function testWDW(){
+        $this->markTestSkipped();
         $const = new \D_Constants();
         $const->defineConstants();
         $syntax_parser = new \SyntaxParserManager();

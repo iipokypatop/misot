@@ -219,7 +219,7 @@ RULE;
             array_merge([
                 \Aot\Sviaz\Rule\Container::getRule1(),
                 \Aot\Sviaz\Rule\Container::getRule2(),
-                \Aot\Sviaz\Rule\Container::getRule3(),
+
                 \Aot\Sviaz\Rule\Container::getRule4(),
                 \Aot\Sviaz\Rule\Container::getRule5(),
                 //\Aot\Sviaz\Rule\Container::getRuleSuchestvitelnoeiSuchestvitelnoeDocOtLarisu(),
