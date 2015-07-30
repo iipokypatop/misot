@@ -13,34 +13,104 @@ use Aot\Text\TextParser\TextParser;
 
 class TextParserTest extends \AotTest\AotDataStorage
 {
+    use DataProvidersParseText;
+
+    public function testLaunch()
+    {
+        $parser = TextParser::create();
+        $this->assertInstanceOf(\Aot\Text\TextParser\TextParser::class, $parser);
+    }
 
     public function testNewParser()
     {
+        $this->markTestSkipped();
         $text = 'Вчера {{ФИО}},     5   дней до н.э., я   [видел] Путина-Сибиряка В.В.,     он  н.э.  ┌гулял на крас╨ной площади и тд, и Б. Н. Ельцина.
         Потом я пошел в магазин за водкой, которую я обещал Медведеву Д. А.,  и т.п.
         Потом я позвонил по т.8(495)963-56-22 снял в банке 1 000 000 рублей,
         и мне дали 16,26 рублей?';
+//        $text = 'Вчера {{ФИО}},     5   дней до н.э., я   [видел] Путина-Сибиряка В.В.';
         $parser = TextParser::create();
         $parser->execute($text);
-//        $str = $parser->render();
-//        echo $str;
+        $parser->render();
     }
 
     public function testNewParserShorts()
     {
-        $text = 'Я опоздал сегодня на 5с., я увидел всех и др. и пр.
-        Я пошел и купил б/у машину за 20 млн 2000г. Я был к.т.н. и толпа из тыс. разных чел!
-        Потом позвонил по т 5992333';
-//        $text = 'Купил б/у машину за 20 млн 2000г. Я был к.т.н. и толпа из тыс. разных чел.';
+        $this->markTestSkipped();
+//        $text = 'Я опоздал сегодня на 5с., я увидел всех и др. и пр.
+//        Я пошел и купил б/у машину за 20 млн 2000г. Я был к.т.н. и толпа из тыс. разных чел!
+//        Потом позвонил по т 5992333';
+        $text = 'На 171-ом разъезде уцелело двенадцать дворов';
         $parser = TextParser::create();
         $parser->execute($text);
+        $parser->render();
     }
 
-    public function testNewParserNormalText()
+
+    /**
+     * подсчет кол-ва предложений
+     * @param $text
+     * @param $expected_cnt_sentences
+     * @dataProvider dataProviderSentences
+     */
+    public function testCountSentences($text, $expected_cnt_sentences)
     {
-        $text = 'На 171-м разъезде уцелело двенадцать дворов, пожарный сарай да приземистый длинный пакгауз, выстроенный в н.в. из подогнанных валунов. В последнюю бомбежку рухнула водонапорная башня, и поезда перестали здесь останавливаться, Немцы прекратили налеты, но кружили над разъездом ежедневно, и командование на всякий случай держало там две зенитные счетверенки и т.д.
-Шел 1942 г. месяц май. На западе (в сырые ночи оттуда доносило тяжкий гул артиллерии) обе стороны, на два метра врывшись в землю, окончательно завязли в позиционной войне; на востоке немцы день и ночь бомбили канал и Мурманскую дорогу; на севере шла ожесточенная борьба за морские пути; на юге продолжал упорную борьбу блокированный Ленинград.';
         $parser = TextParser::create();
         $parser->execute($text);
+        $parser->render();
+        $cnt = count($parser->getSentences());
+        $this->assertEquals($expected_cnt_sentences, $cnt);
+    }
+
+
+    /**
+     * подсчет кол-ва слов в каждом предложении
+     * @param $sentence
+     * @param $expected_cnt_words
+     * @dataProvider dataProviderSentencesForCountWords
+     */
+    public function testCountWords($sentence, $expected_cnt_words)
+    {
+        $parser = TextParser::create();
+        $parser->execute($sentence);
+        $parser->render();
+        $cnt = 0;
+        foreach ($parser->getSentenceWords() as $words) {
+            $cnt += count($words);
+        }
+        $this->assertEquals($expected_cnt_words, $cnt);
+    }
+
+    /**
+     * тест количества замен
+     * @param $text
+     * @param $expected_cnt_replacing
+     * @dataProvider dataProviderSentencesForCountReplacing
+     */
+    public function testCountReplacing($text, $expected_cnt_replacing)
+    {
+
+        $parser = TextParser::create();
+        $parser->execute($text);
+        $parser->render();
+        $cnt = count($parser->getRegistry()->getRegistry());
+        $this->assertEquals($expected_cnt_replacing, $cnt);
+    }
+
+    /**
+     * тест замены, что должно было заменить, что не должно
+     *
+     * @param $text
+     * @param $expected_replacing
+     * @dataProvider dataProviderSentencesForRightReplacing
+     */
+    public function testRightReplacing($text, $expected_replacing)
+    {
+        $parser = TextParser::create();
+        $parser->execute($text);
+        $parser->render();
+        $diff = array_diff($parser->getRegistry()->getRegistry(), $expected_replacing);
+        $this->assertEquals(0, count($diff)); // не должно быть расхождений
+
     }
 }

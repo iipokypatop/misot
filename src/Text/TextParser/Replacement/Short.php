@@ -11,6 +11,8 @@ namespace Aot\Text\TextParser\Replacement;
 
 class Short extends Base
 {
+    const START_SHORT = "(^|[^а-яА-ЯЁё])";
+    const END_SHORT = "(.|$)";
     protected function getPatterns()
     {
         /**
@@ -24,47 +26,29 @@ class Short extends Base
          */
 
         return [
-            "/и\\s?т\\.?[пд]\\.?/u",
-            "/тел./u", //
-            "/см./u", // TODO
+            "/и\\s?т\\.?[пд]\\.?/u", // и тд и тп
+
+            "/". static::START_SHORT ."[Тт]ел\\.(.)/u", //
+            "/". static::START_SHORT ."[Сс]м\\.?(.|$)/u", // смотри (см.)
+            "/". static::START_SHORT ."см([^а-яА-Я]|$)/u", // сантиметр (см)
             "/[сю]\\.\\s?ш\\./u",
             "/[вз]\\.\\s?д\\./u",
-            "/н\\.?э\\.?/u",
+            "/". static::START_SHORT ."н\\.?э\\.?(.|$)/u", // н.э.
 
-            "/б\\/у/u",
-            "/гг?\\./u", // TODO
+            "/". static::START_SHORT ."б[\\/\\\\]у(\\.|\\s|$)/u",
+            "/([\\d\\s])гг?(\\.|\\s|$)/u", // г,гг
             "/с\\.[\\-\\s]*х\\./u",
-            "/букв\\./u",
-            "/тыс\\./u",
-            "/млн|млрд|трлн/u",
+            "/". static::START_SHORT ."[Бб]укв\\.(.|$)/u",
+            "/". static::START_SHORT ."[Тт]ыс\\.(.|$)/u",
+            "/". static::START_SHORT ."[МмТтр]лн(.|$)/u",
+            "/". static::START_SHORT ."[Мм]лрд(.|$)/u",
             "/([\\d\\s])[сгт]([^а-яА-ЯёЁ])/u", // секунда/грамм TODO
-            "/чел\\./u", //  TODO
-            "/экз\\./u", //  TODO
-            "/к\\.\\s?[тгиюмпфх]\\.\\s?н./u", //  TODO
-            "/[дп]р\\./u", //  TODO и др. и пр.
+            "/". static::START_SHORT ."[Чч]ел\\.(.|$)/u",
+            "/". static::START_SHORT ."[Ээ]кз\\.(.|$)/u",
+            "/". static::START_SHORT ."к\\.\\s?[тгиюмпфх]\\.\\s?н.".static::END_SHORT."/u", //  к.т.н., к.г.н.
 
 
-//            "/т\\./u", // TODO
+            "/([^а-яА-ЯЁё])[дп]р(\\.|$)/u", // и др. и пр.
         ];
-    }
-
-    protected function insertTemplate($preg_replace_matches)
-    {
-//        print_r($preg_replace_matches);
-        if (count($preg_replace_matches) === 3) {
-            $record_replace = $preg_replace_matches[0];
-            foreach ($preg_replace_matches as $key => $match) {
-                if ($key > 0) {
-                    $record_replace = str_replace($match, "", $record_replace);
-                }
-            }
-            $index = $this->registry->add($preg_replace_matches);
-            $this->logger->notice("R: Заменили по шаблону [{$record_replace}], индекс {$index}");
-            $preg_replace_matches[2] = ($preg_replace_matches[2] === '.') ? '' : $preg_replace_matches[2];
-            return $this->format($index, [$preg_replace_matches[1], $preg_replace_matches[2]]);
-
-        }
-
-        return parent::insertTemplate($preg_replace_matches);
     }
 }

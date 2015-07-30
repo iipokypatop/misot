@@ -42,4 +42,12 @@ class Registry
         return false;
     }
 
+    /**
+     * @return array
+     */
+    public function getRegistry()
+    {
+        return $this->registry;
+    }
+
 }
