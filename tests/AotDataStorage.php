@@ -249,4 +249,23 @@ TEXT;
 
         return $builder;
     }
+
+    /**
+     * @return \Aot\Sviaz\Sequence
+     */
+    public function getRawSequence()
+    {
+
+        $raw_member_builder = \Aot\Sviaz\SequenceMember\RawMemberBuilder::create();
+
+        $raw_sequences = $raw_member_builder->getRawSequences(
+            $this->getNormalizedMatrix()
+        );
+
+        /** @var \Aot\Sviaz\SequenceMember\Word\Base[] | \Aot\Sviaz\SequenceMember\Base[] $raw_sequence */
+        $raw_sequence = $raw_sequences[0];
+
+        return $raw_sequence;
+    }
+
 }

@@ -6,7 +6,7 @@
  * Time: 3:39
  */
 
-namespace Aot\Sviaz\Processor;
+namespace Aot;
 
 
 class ObjectRegistry

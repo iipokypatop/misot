@@ -38,7 +38,8 @@ class Factory
     public function build(
         \Aot\Sviaz\SequenceMember\Base $main_sequence_member,
         \Aot\Sviaz\SequenceMember\Base $depended_sequence_member,
-        \Aot\Sviaz\Rule\Base $rule
+        \Aot\Sviaz\Rule\Base $rule,
+        \Aot\Sviaz\Sequence $sequence
     )
     {
         $type_class = $rule->getLinks()[0]->getTypeClass();
@@ -48,7 +49,8 @@ class Factory
             return \Aot\Sviaz\Podchinitrelnaya\Soglasovanie::create(
                 $main_sequence_member,
                 $depended_sequence_member,
-                $rule
+                $rule,
+                $sequence
             );
 
         } else if ($type_class === \Aot\Sviaz\Podchinitrelnaya\Upravlenie::class) {
@@ -56,7 +58,8 @@ class Factory
             return \Aot\Sviaz\Podchinitrelnaya\Upravlenie::create(
                 $main_sequence_member,
                 $depended_sequence_member,
-                $rule
+                $rule,
+                $sequence
             );
 
         } else if ($type_class === \Aot\Sviaz\Podchinitrelnaya\Primikanie::class) {
@@ -64,7 +67,8 @@ class Factory
             return \Aot\Sviaz\Podchinitrelnaya\Primikanie::create(
                 $main_sequence_member,
                 $depended_sequence_member,
-                $rule
+                $rule,
+                $sequence
             );
 
         } else if ($type_class === \Aot\Sviaz\Podchinitrelnaya\Base::class) {
@@ -72,7 +76,8 @@ class Factory
             return \Aot\Sviaz\Podchinitrelnaya\Base::create(
                 $main_sequence_member,
                 $depended_sequence_member,
-                $rule
+                $rule,
+                $sequence
             );
         }
 

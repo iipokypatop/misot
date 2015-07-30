@@ -16,5 +16,9 @@ abstract class Base
         return new static();
     }
 
-    abstract public function run($sviazi);
+    /**
+     * @param \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi
+     * @return \Aot\Sviaz\Podchinitrelnaya\Base[]
+     */
+    abstract public function run(array $sviazi);
 }

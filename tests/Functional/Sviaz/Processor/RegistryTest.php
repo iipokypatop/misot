@@ -17,7 +17,7 @@ class RegistryTest extends \AotTest\AotDataStorage
     {
         $ob = new \stdClass;
 
-        $registry = \Aot\Sviaz\Processor\ObjectRegistry::create();
+        $registry = \Aot\ObjectRegistry::create();
 
         $registry->registerMember($ob);
 
@@ -31,7 +31,7 @@ class RegistryTest extends \AotTest\AotDataStorage
     {
         $ob = new \stdClass;
 
-        $registry = \Aot\Sviaz\Processor\ObjectRegistry::create();
+        $registry = \Aot\ObjectRegistry::create();
 
 
         try {
@@ -48,7 +48,7 @@ class RegistryTest extends \AotTest\AotDataStorage
     {
         $ob = new \stdClass;
 
-        $registry = \Aot\Sviaz\Processor\ObjectRegistry::create();
+        $registry = \Aot\ObjectRegistry::create();
 
 
         $registry->registerMember($ob);
@@ -64,7 +64,7 @@ class RegistryTest extends \AotTest\AotDataStorage
     public function testGetMemberByHas_throws_RuntimeException()
     {
 
-        $registry = \Aot\Sviaz\Processor\ObjectRegistry::create();
+        $registry = \Aot\ObjectRegistry::create();
 
 
         try {

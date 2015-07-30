@@ -72,6 +72,9 @@ class Builder2
     }
 
 
+    /**
+     * @return \Aot\Sviaz\Rule\Base
+     */
     public function get()
     {
         if (empty($this->asserted_main_builder)) {

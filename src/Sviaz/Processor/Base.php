@@ -39,11 +39,11 @@ class Base
         $this->cache = \Aot\Sviaz\Processor\CacheRules::create();
 
         $this->pre_processing_engines = [
-            \Aot\Sviaz\PreProcessors\Predlog::create()
+            \Aot\Sviaz\PreProcessors\Predlog::create(),
         ];
 
         $this->post_processing_engines = [
-
+            \Aot\Sviaz\PostProcessors\Duplicate::create(),
         ];
     }
 
@@ -104,11 +104,11 @@ class Base
             assert(is_a($rule, RuleBase::class, true));
         }
 
-        $get_raw_sequences = $this->raw_member_builder->getRawSequences($normalized_matrix);
+        $raw_sequences = $this->raw_member_builder->getRawSequences($normalized_matrix);
 
         $sviazi_container = [];
 
-        foreach ($get_raw_sequences as $raw_sequence) {
+        foreach ($raw_sequences as $raw_sequence) {
 
             $sequence = $this->preProcess($raw_sequence);
 
@@ -177,7 +177,8 @@ class Base
                             $sviazi[] = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
                                 $main_candidate,
                                 $depended_candidate,
-                                $rule
+                                $rule,
+                                $sequence
                             );
 
                             /*$this->cache->put([$rule, $main_candidate, $depended_candidate]);*/

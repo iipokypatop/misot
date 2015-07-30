@@ -18,15 +18,7 @@ class PredlogTest extends \AotTest\AotDataStorage
     {
         $predlog = \Aot\Sviaz\PreProcessors\Predlog::create();
 
-
-        $raw_member_builder = \Aot\Sviaz\SequenceMember\RawMemberBuilder::create();
-
-        $raw_sequences = $raw_member_builder->getRawSequences(
-            $this->getNormalizedMatrix()
-        );
-
-        /** @var \Aot\Sviaz\SequenceMember\Word\Base[] | \Aot\Sviaz\SequenceMember\Base[] $raw_sequence */
-        $raw_sequence = $raw_sequences[0];
+        $raw_sequence  = $this->getRawSequence();
 
         $this->assertInstanceOf(\Aot\Sviaz\SequenceMember\Word\Base::class, $raw_sequence[0]);
         $this->assertEquals('если', PHPUnitHelper::getProtectedProperty($raw_sequence[0]->getSlovo(), 'text'));
@@ -59,7 +51,7 @@ class PredlogTest extends \AotTest\AotDataStorage
         $this->assertEquals(9, count($raw_sequence));
 
 
-        $sequence = $predlog->run($raw_sequences[0]);
+        $sequence = $predlog->run($raw_sequence);
 
 
         $this->assertInstanceOf(\Aot\Sviaz\SequenceMember\Word\Base::class, $sequence[0]);

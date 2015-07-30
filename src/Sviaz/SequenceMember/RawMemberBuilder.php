@@ -14,7 +14,7 @@ use Aot\RussianMorphology\Slovo;
 
 class RawMemberBuilder
 {
-    /** @var  \Aot\Sviaz\Processor\ObjectRegistry */
+    /** @var  \Aot\ObjectRegistry */
     protected $registry;
     /** @var \Aot\Sviaz\SequenceMember\Base[] */
     protected $store = [];
@@ -24,7 +24,7 @@ class RawMemberBuilder
      */
     protected function __construct()
     {
-        $this->registry = \Aot\Sviaz\Processor\ObjectRegistry::create();
+        $this->registry = \Aot\ObjectRegistry::create();
     }
 
     public static function create()
