@@ -40,7 +40,8 @@ class TextParserTest extends \AotTest\AotDataStorage
 //        $text = 'Я опоздал сегодня на 5с., я увидел всех и др. и пр.
 //        Я пошел и купил б/у машину за 20 млн 2000г. Я был к.т.н. и толпа из тыс. разных чел!
 //        Потом позвонил по т 5992333';
-        $text = 'На 171-ом разъезде уцелело двенадцать дворов';
+//        $text = 'На 171-ом разъезде уцелело двенадцать дворов';
+        $text = '[На] "западе" (в сырые ночи оттуда доносило тяжкий гул "артиллерии") обе; стороны,а потом подумал';
         $parser = TextParser::create();
         $parser->execute($text);
         $parser->render();
@@ -110,6 +111,38 @@ class TextParserTest extends \AotTest\AotDataStorage
         $parser->execute($text);
         $parser->render();
         $diff = array_diff($parser->getRegistry()->getRegistry(), $expected_replacing);
+        $this->assertEquals(0, count($diff)); // не должно быть расхождений
+
+    }
+
+    /**
+     * тест на верную обратную подмену по шаблону
+     *
+     * @param $text
+     * @param $expected_replacing
+     * @dataProvider dataProviderSentencesForRightBackReplacing
+     */
+    public function testRightBackReplacing($text, $expected_replacing)
+    {
+        $parser = TextParser::create();
+        $parser->execute($text);
+        $parser->render();
+        $sentence_words = [];
+        foreach ($parser->getSentenceWords() as $sentence) {
+            $sentence_words = array_merge($sentence_words, $sentence);
+
+        }
+//        $string = '[';
+//        foreach ($sentence_words  as $word) {
+//            $string .= "'{$word}',";
+//        }
+//        echo preg_replace("/\\,$/u", "]", $string) . "\n";
+
+//        print_r($sentence_words);
+//
+//        print_r($expected_replacing);
+
+        $diff = array_diff($sentence_words, $expected_replacing);
         $this->assertEquals(0, count($diff)); // не должно быть расхождений
 
     }

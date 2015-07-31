@@ -31,14 +31,9 @@ class TextParser
     const END_TEMPLATE = '}}';
 
     protected static $sentence_needle = [
-        "/\\s*\\,\\s*/u",
+        "/\\s*[\\,\"\\'\\`\\‘\\‛\\’\\«\\»\\‹\\›\\„\\“\\‟\\”\\:\\;\\(\\)]\\s*/u",
         "/\\{\\{/u",
         "/\\}\\}/u",
-    ];
-    protected static $sentence_replacement = [
-        " , ",
-        " {{",
-        "}} ",
     ];
 
     protected $filterSpaces;
@@ -94,32 +89,14 @@ class TextParser
 
     public function render()
     {
-
         // разбиваем текст на предложения
         $this->sentences = $this->splitInSentences($this->processed_text);
-
 
         // разбиваем предложения на слова
         $this->sentence_words = $this->splitInWords($this->sentences);
 
-
-//        print_r($this->sentences);
-//        print_r($this->sentence_words);
-//        $string_sentence = [];
-//        foreach ($this->sentences as $words_sentence) {
-//            foreach ($words_sentence as $word) {
-//                if (preg_match("/\\{\\{(\\d+)\\}\\}/u", $word, $match)) {
-//                    if (empty($this->registry[$match[1]])) {
-//                        throw new RuntimeException('Неизвестный индекс');
-//                    }
-//                    $word = $this->registry[$match[1]];
-//                }
-//                $string_sentence[] = $word . " ";
-//            }
-//            $string_sentence[] = ".";
-//        }
-//
-//        return join('', $string_sentence);
+        // подменяем обратно замененные шаблоны на слова из реестра
+        $this->replacePatterns();
 
     }
 
@@ -165,11 +142,48 @@ class TextParser
         // разбиваем предложения на слова
         $sentence_words = [];
         foreach ($sentences as $key => $sentence) {
-            $sentence = preg_replace(static::$sentence_needle, static::$sentence_replacement, $sentence);
+            $sentence = preg_replace_callback(
+                static::$sentence_needle,
+                function($match){
+                    if( $match[0] === '{{'){
+                        return " " . $match[0];
+                    }
+                    elseif($match[0] === '}}'){
+
+                        return $match[0] . " ";
+                    }
+                    return " " .$match[0] . " ";
+                },
+                $sentence);
             $sentence_words[$key] = preg_split("/\\s+/u", $sentence);
             $sentence_words[$key] = array_filter($sentence_words[$key]); // чистим от пустых элементов
         }
         return $sentence_words;
+    }
+
+    /**
+     * Подменяем шаблоны обратно на заменненые слова
+     */
+    protected function replacePatterns()
+    {
+        $sentence_words = $this->getSentenceWords();
+        $registry = $this->getRegistry()->getRegistry();
+        if( empty($sentence_words) || empty($registry) ){
+            return;
+        }
+        foreach ($sentence_words as &$words) {
+            foreach ($words as &$word) {
+                if (preg_match("/\\{\\{(\\d+)\\}\\}/u", $word, $match)) {
+                    if ( !isset($registry[$match[1]]) ) {
+                        throw new \RuntimeException('Неизвестный индекс');
+                    }
+                    $word = $registry[$match[1]];
+                }
+            }
+            unset($word);
+        }
+        unset($words);
+        $this->sentence_words = $sentence_words;
     }
 
     /**
@@ -211,4 +225,6 @@ class TextParser
     {
         return $this->registry;
     }
+
+
 }
