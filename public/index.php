@@ -6,22 +6,27 @@
  * Time: 11:03
  */
 
+mb_internal_encoding('utf-8');
+
 header('Content-Type: text/html; charset=utf-8');
 
-require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/../Bootstrap.php";
 
 ini_set('display_errors', 1);
-
 error_reporting(E_ALL);
-
-
 
 if (empty($_GET['area'])) {
     die('undefined area');
 }
 
+$POST = [];
+$GET = [];
 
-switch ($_GET['area']) {
+$GET = isset($_GET['area']) ? $_GET['area'] : '';
+
+$area = strtolower($GET['area']);
+
+switch ($area) {
     case 'rule' :
         require __DIR__ . '/pages/rule/index.php';
         break;

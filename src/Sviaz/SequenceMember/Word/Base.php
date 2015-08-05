@@ -13,8 +13,6 @@ use Aot\Sviaz\SequenceMember\Base as SequenceMemberBase;
 
 class Base extends SequenceMemberBase
 {
-    /** @var  Slovo */
-    protected $slovo;
 
     /**
      * Word constructor.
@@ -28,13 +26,5 @@ class Base extends SequenceMemberBase
     public static function create(Slovo $slovo)
     {
         return new static($slovo);
-    }
-
-    /**
-     * @return Slovo
-     */
-    public function getSlovo()
-    {
-        return $this->slovo;
     }
 }

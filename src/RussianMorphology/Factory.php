@@ -38,28 +38,15 @@ abstract class Factory
 
     }
 
-    /**
-     * @param $text
-     * @return AnalysisProtocol
-     */
-    public function analyze($text)
-    {
-        $analyser = $this->getAnalyser();
-
-        $protocol = $analyser->run($text);
-
-        return $protocol;
-    }
-
-    protected function getAnalyser()
-    {
-        return new Analyser();
-    }
 
     protected function __clone()
     {
     }
 
+    /**
+     * @param array $words
+     * @return \Aot\RussianMorphology\Slovo[]
+     */
     public static function getSlova(array $words)
     {
         $const = new \D_Constants();
@@ -72,6 +59,9 @@ abstract class Factory
         $spaces = [];
         foreach ($syntax_parser->reg_parser->get_sentences() as $sentence) {
             $spaces[] = $syntax_parser->create_sentence_space($sentence);
+        }
+        if (empty($spaces[0])) {
+            return [];
         }
 
         /** @var \PointWdw[][] $wdw */

@@ -94,7 +94,7 @@ class Base
     /**
      * @param \Aot\Text\NormalizedMatrix $normalized_matrix
      * @param array $rules
-     * @return \Aot\Sviaz\Podchinitrelnaya\Base[]
+     * @return \Aot\Sviaz\Podchinitrelnaya\Base[][]
      */
     public function go(\Aot\Text\NormalizedMatrix $normalized_matrix, array $rules)
     {
@@ -108,7 +108,7 @@ class Base
 
         $sviazi_container = [];
 
-        foreach ($raw_sequences as $raw_sequence) {
+        foreach ($raw_sequences as $index => $raw_sequence) {
 
             $sequence = $this->preProcess($raw_sequence);
 
@@ -119,7 +119,7 @@ class Base
 
             $sviazi = $this->postProcess($sviazi);
 
-            $sviazi_container[] = $sviazi;
+            $sviazi_container[$index] = $sviazi;
         }
 
         return $sviazi_container;

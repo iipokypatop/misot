@@ -127,7 +127,6 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     protected function getRod($parameters)
     {
-
         if (empty($parameters[GENUS_ID])) {
             return [Morphology\Rod\Null::create()];
         }
@@ -142,8 +141,11 @@ class Factory extends \Aot\RussianMorphology\Factory
                 $rod[] = Srednij::create();
             } elseif (intval($val) === GENUS_FEMININE_ID) {
                 $rod[] = Zhenskii::create();
+            } elseif ($val === '') {
+                $rod[] = Morphology\Rod\Null::create();
             } else {
-                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
+
+                //throw new \RuntimeException('Unsupported value exception = ' . var_export($parameters, 1));
             }
         }
         return $rod;

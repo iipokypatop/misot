@@ -20,6 +20,10 @@ class Base
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Member */
     protected $asserted_member;
 
+    /** @var  \Aot\Sviaz\Rule\AssertedLink\Base[] */
+    protected $links = [];
+
+
     /**
      * @return \Aot\Sviaz\Rule\AssertedMember\Member
      */
@@ -36,8 +40,6 @@ class Base
         $this->asserted_member = $asserted_member;
     }
 
-    /** @var  \Aot\Sviaz\Rule\AssertedLink\Base[] */
-    protected $links = [];
 
     /**
      * Base constructor.

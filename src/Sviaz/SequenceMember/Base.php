@@ -9,9 +9,28 @@
 namespace Aot\Sviaz\SequenceMember;
 
 
+use Aot\RussianMorphology\Slovo;
+
 abstract class Base
 {
-    protected function __construct()
+    /**
+     * Word constructor.
+     * @param $slovo
+     */
+    protected function __construct(Slovo $slovo)
     {
+        $this->slovo = $slovo;
+    }
+
+
+    /** @var  Slovo */
+    protected $slovo;
+
+    /**
+     * @return Slovo
+     */
+    public function getSlovo()
+    {
+        return $this->slovo;
     }
 }

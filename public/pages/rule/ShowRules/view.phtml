@@ -1,0 +1,113 @@
+<?php
+/** @var array $post */
+/** @var \Aot\Sviaz\Podchinitrelnaya\Base[][] $sviazi_container */
+
+?>
+<? require $imports['ShowParseResult']['view'] ?>
+
+
+    <script>
+        var mergeForms2 = function mergeForms2() {
+            $("form[name='form[text_for_parse]']")
+                .find("input, textarea, select")
+                .attr('form', 'form[correct_sequence]');
+
+            $("form[name='form[rule_options]']")
+                .find("input, textarea, select")
+                .attr('form', 'form[correct_sequence]');
+
+            $("form[name='form[rules_form]']")
+                .find("input, textarea, select")
+                .attr('form', 'form[correct_sequence]');
+
+            return true;
+        }
+    </script>
+
+<? if (isset($sviazi_container)): ?>
+    <? $rules_count = [] ?>
+
+    <form name="form[correct_sequence]" id="form[correct_sequence]" action="index.php?area=rule&action=ShowRules"
+          method="post"
+          onsubmit="return mergeForms2()">
+        <table border="1">
+            <caption>Список сработавших правил</caption>
+            <tr>
+                <td></td>
+                <td>Σ</td>
+                <td title="номер последовательности">№</td>
+                <td>✔</td>
+
+                <td>номер правила</td>
+                <td>название правила</td>
+                <td>главное</td>
+                <td>зависимое</td>
+                <td>признаки главного</td>
+                <td>признаки зависимого</td>
+                <td>роль главного</td>
+                <td>роль зависимого</td>
+            </tr>
+            <? foreach ($sviazi_container as $sequence_index => $sviazi): ?>
+
+                <? $rules_count[$sequence_index] = count($sviazi) ?>
+                <? foreach ($sviazi as $index => $sviaz): ?>
+                    <? /** @var \Aot\Sviaz\Podchinitrelnaya\Base $sviaz */ ?>
+                    <? $main = $sviaz->getMainSequenceMember()->getSlovo() ?>
+                    <? $depended = $sviaz->getDependedSequenceMember()->getSlovo() ?>
+                    <tr>
+                        <? if ($index === 0): ?>
+                            <td rowspan="<?= $rules_count[$sequence_index] ?>">
+                                <input type="radio"
+                                       name="form[correct_sequence][id]"
+                                       value="<?= $sequence_index ?>"
+                                    <?= $sequence_index === $post['form']['correct_sequence']['id'] ? 'checked' : '' ?>
+                                    />
+                            </td>
+                            <td rowspan="<?= $rules_count[$sequence_index] ?>">
+                                <?= $rules_count[$sequence_index] ?>
+                            </td>
+                            <td rowspan="<?= $rules_count[$sequence_index] ?>">
+                                <?= $sequence_index ?>
+                            </td>
+                        <? endif ?>
+
+                        <td><input type="checkbox"/></td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td><?= $main->getText() ?></td>
+                        <td><?= $depended->getText() ?></td>
+                        <td><?= join(',', $main->getMorphologyShort()) ?></td>
+                        <td><?= join(',', $depended->getMorphologyShort()) ?></td>
+                        <td><?= $sviaz->getRule()->getAssertedMain()->getRoleClass() ?></td>
+                        <td><?= $sviaz->getRule()->getAssertedDepended()->getRoleClass() ?></td>
+                    </tr>
+                <? endforeach; ?>
+                <tr>
+                    <td colspan="100%"></td>
+                </tr>
+            <? endforeach; ?>
+
+        </table>
+
+        <table border="1">
+            <caption>Статистика сработавших правил</caption>
+            <tr>
+                <td>номер последовательности</td>
+                <td>количество правил</td>
+            </tr>
+            <? $rules_count_new = $rules_count; ?>
+            <? asort($rules_count_new) ?>
+            <? foreach ($rules_count_new as $sequence_index => $count) : ?>
+                <tr>
+                    <td><?= $sequence_index ?></td>
+                    <td><?= $count ?></td>
+                </tr>
+            <? endforeach ?>
+
+        </table>
+        <input type="hidden" value="ok" name="form[correct_sequence][submit]">
+        <button>сохранить</button>
+    </form>
+
+
+<? endif ?>

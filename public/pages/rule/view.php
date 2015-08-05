@@ -10,71 +10,12 @@ use Aot\Sviaz\Rule\AssertedMember\Builder\View;
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
-
+    <script src="https://yastatic.net/jquery/1.11.2/jquery.js"></script>
 </head>
 
 <body>
 <div>
-    <div>
-        <form method="post">
-            <table border="1" width="100%">
-                <tr>
-                    <td>
-                        <table border="1" width="100%">
-                            <tr>
-                                <td>
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <? /*= $mainView->getField(View::FIELD_TEXT_TYPE_NO)->draw() */ ?><!--
-                                        <tr>
-                                            <td>
-                                                <? /*= $mainView->getField(View::FIELD_TEXT_TYPE_TEXT)->draw() */ ?>
-                                        <tr>
-                                            <td>
-                                                <? /*= $mainView->getField(View::FIELD_TEXT_TYPE_TEXT_GROUP)->draw() */ ?>
-                                        <tr>
-                                            <td>
-                                                <? /*= $mainView->getField(View::FIELD_CHAST_RECHI)->draw() */ ?>
-                                        <tr>
-                                            <td>
-                                                <? /*= $mainView->getField(View::FIELD_ROLE)->draw() */ ?>
-                                        <tr>
-                                            <td>
-                                                <? /*= $mainView->getField(View::FIELD_MORPH)->draw() */ ?>   <tr>
-                                            <td>
-                                                --><? /*= $mainView->getField(View::FIELD_CHECKERS)->draw() */ ?>
-                                    </table>
-                                </td>
-                                <td>
-
-                                </td>
-                                <td>123</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                        <table>
-                            <tr>
-                                <td>
-                            <tr>
-                                <td>
-                        </table>
-                    </td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                </tr>
-            </table>
-
-            <button type="submit">ok</button>
-
-        </form>
-    </div>
-
+   <?require $body?>
 </div>
 
 </body>
