@@ -8,11 +8,11 @@
 
 $action = null;
 
-if (empty($GET['action'])) {
+if (empty($_GET['action'])) {
     die('unknown action');
 }
 
-$action = strtolower($GET['action']);
+$action = strtolower($_GET['action']);
 
 switch ($action) :
 

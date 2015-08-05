@@ -22,7 +22,7 @@ if (empty($_GET['area'])) {
 $POST = [];
 $GET = [];
 
-$GET = isset($_GET['area']) ? $_GET['area'] : '';
+$GET['area'] = isset($_GET['area']) ? $_GET['area'] : '';
 
 $area = strtolower($GET['area']);
 
