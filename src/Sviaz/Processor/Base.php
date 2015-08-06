@@ -196,13 +196,13 @@ class Base
         \Aot\Sviaz\Sequence $sequence,
         \Aot\Sviaz\SequenceMember\Base $main_candidate,
         \Aot\Sviaz\SequenceMember\Base $depended_candidate,
-        \Aot\Sviaz\Rule\AssertedMember\Member $third
+        \Aot\Sviaz\Rule\AssertedMember\Third $third
     )
     {
         $result = true;
 
 
-        if (\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_PRESENT === $third->getPresence()) {
+        if (\Aot\Sviaz\Rule\AssertedMember\Third::PRESENCE_PRESENT === $third->getPresence()) {
 
             $result = false;
 
@@ -232,7 +232,7 @@ class Base
 
             // \find and locate
 
-        } else if (\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_NOT_PRESENT === $third->getPresence()) {
+        } else if (\Aot\Sviaz\Rule\AssertedMember\Third::PRESENCE_NOT_PRESENT === $third->getPresence()) {
 
             $result = false;
 
@@ -278,7 +278,7 @@ class Base
     {
         $result = true;
 
-        $third = $rule->getAssertedMember();
+        $third = $rule->getAssertedThird();
 
         if (null === $third) {
             return $result;
@@ -286,7 +286,7 @@ class Base
 
         $result = false;
 
-        if (\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_PRESENT === $third->getPresence()) {
+        if (\Aot\Sviaz\Rule\AssertedMember\Third::PRESENCE_PRESENT === $third->getPresence()) {
 
             foreach ($sequence as $third_candidate) {
                 if ($third_candidate === $main_candidate) {
@@ -314,7 +314,7 @@ class Base
 
             // \find and locate
 
-        } else if (\Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_NOT_PRESENT === $third->getPresence()) {
+        } else if (\Aot\Sviaz\Rule\AssertedMember\Third::PRESENCE_NOT_PRESENT === $third->getPresence()) {
 
             foreach ($sequence as $third_candidate) {
                 if ($third_candidate === $main_candidate) {
@@ -358,7 +358,7 @@ class Base
         \Aot\Sviaz\Sequence $sequence,
         \Aot\Sviaz\SequenceMember\Base $main_candidate,
         \Aot\Sviaz\SequenceMember\Base $depended_candidate,
-        \Aot\Sviaz\Rule\AssertedMember\Member $third
+        \Aot\Sviaz\Rule\AssertedMember\Third $third
     )
     {
         $result = false;
@@ -406,11 +406,11 @@ class Base
         assert(is_int($third_position_expected));
         assert(is_int($third_position_actual));
 
-        if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_ANY) {
+        if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_ANY) {
 
             return true;
 
-        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BETWEEN_MAIN_AND_DEPENDED) {
+        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BETWEEN_MAIN_AND_DEPENDED) {
             if ($main_position > $depended_position) {
                 if ($main_position > $third_position_actual && $third_position_actual > $depended_position) {
                     return true;
@@ -420,19 +420,19 @@ class Base
                     return true;
                 }
             }
-        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_AFTER_MAIN) {
+        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_MAIN) {
             if ($third_position_actual > $main_position) {
                 return true;
             }
-        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BEFORE_MAIN) {
+        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BEFORE_MAIN) {
             if ($third_position_actual < $main_position) {
                 return true;
             }
-        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_AFTER_DEPENDED) {
+        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_DEPENDED) {
             if ($third_position_actual > $depended_position) {
                 return true;
             }
-        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BEFORE_DEPENDED) {
+        } else if ($third_position_expected === \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BEFORE_DEPENDED) {
             if ($third_position_actual < $depended_position) {
                 return true;
             }

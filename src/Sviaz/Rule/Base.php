@@ -17,23 +17,26 @@ class Base
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Depended */
     protected $asserted_depended;
 
-    /** @var  \Aot\Sviaz\Rule\AssertedMember\Member */
-    protected $asserted_member;
+    /** @var  \Aot\Sviaz\Rule\AssertedMember\Third */
+    protected $asserted_third;
+
+    /** @var  \AotPersistence\Entities\Rule */
+    protected $dao;
 
     /**
-     * @return \Aot\Sviaz\Rule\AssertedMember\Member
+     * @return \Aot\Sviaz\Rule\AssertedMember\Third
      */
-    public function getAssertedMember()
+    public function getAssertedThird()
     {
-        return $this->asserted_member;
+        return $this->asserted_third;
     }
 
     /**
-     * @param \Aot\Sviaz\Rule\AssertedMember\Member  $asserted_member
+     * @param \Aot\Sviaz\Rule\AssertedMember\Third $asserted_member
      */
-    public function assertMember(\Aot\Sviaz\Rule\AssertedMember\Member  $asserted_member)
+    public function assertThird(\Aot\Sviaz\Rule\AssertedMember\Third $asserted_member)
     {
-        $this->asserted_member = $asserted_member;
+        $this->asserted_third = $asserted_member;
     }
 
     /** @var  \Aot\Sviaz\Rule\AssertedLink\Base[] */
@@ -46,6 +49,8 @@ class Base
      */
     public function __construct(AssertedMember\Main $main, AssertedMember\Depended $depended)
     {
+        $this->dao = new \AotPersistence\Entities\Rule();
+
         $this->asserted_main = $main;
         $this->asserted_depended = $depended;
     }
@@ -58,6 +63,20 @@ class Base
     public static function create(AssertedMember\Main $main, AssertedMember\Depended $depended)
     {
         return new static($main, $depended);
+    }
+
+    /**
+     * @param \AotPersistence\Entities\Rule $dao
+     * @return static
+     */
+    public static function createByDao(\AotPersistence\Entities\Rule $dao)
+    {
+        $memberDao = new \AotPersistence\Entities\Member();
+        $main = AssertedMember\Main::createByDao($memberDao);
+        $depended = AssertedMember\Depended::createByDao($memberDao);
+        $ob = new static($main, $depended);
+        $ob->setDao($dao);
+        return $ob;
     }
 
     /**
@@ -126,7 +145,15 @@ class Base
 
     public function attemptMember(\Aot\Sviaz\SequenceMember\Base $actual)
     {
-        return $this->asserted_member->attempt($actual);
+        return $this->asserted_third->attempt($actual);
+    }
+
+    /**
+     * @param \AotPersistence\Entities\Rule $dao
+     */
+    protected function setDao($dao)
+    {
+        $this->dao = $dao;
     }
 }
 

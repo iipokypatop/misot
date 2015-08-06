@@ -27,6 +27,11 @@ class Base
     /** @var string */
     protected $type_class = \Aot\Sviaz\Podchinitrelnaya\Base::class;
 
+
+    /** @var  \AotPersistence\Entities\Link */
+    protected $dao;
+
+
     /**
      * @return string
      */
@@ -71,6 +76,19 @@ class Base
     public static function create(\Aot\Sviaz\Rule\Base $rule)
     {
         return new static($rule);
+    }
+
+    /**
+     * @param \AotPersistence\Entities\Link $dao
+     * @return static
+     */
+    public static function createByDao(\AotPersistence\Entities\Link $dao)
+    {
+        $ruleDao = new \AotPersistence\Entities\Rule();
+        $rule = \Aot\Sviaz\Rule\Base::createByDao($ruleDao);
+        $ob = new static($rule);
+        $ob->setDao($dao);
+        return $ob;
     }
 
     /**
@@ -124,5 +142,13 @@ class Base
     public function addChecker(\Aot\Sviaz\Rule\AssertedLink\Checker\Base $checker)
     {
         $this->asserted_checkers[] = $checker;
+    }
+
+    /**
+     * @param \AotPersistence\Entities\Link $dao
+     */
+    protected function setDao($dao)
+    {
+        $this->dao = $dao;
     }
 }

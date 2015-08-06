@@ -26,7 +26,7 @@ class BaseTest extends Base
 //
 //        $sequence = new Sequence();
 //
-//        $member = new Word();
+//        $third = new Word();
 //        $c = new  Constants;
 //        $c->defineConstants();
 //        $syntax_parser = new \SyntaxParserManager;
@@ -43,12 +43,12 @@ class BaseTest extends Base
 
 //        $suchestvitelnoe = Factory::get()->build();
 //
-//        $member->setSlovo();
+//        $third->setSlovo();
 //
-//        $sequence->append($member);
+//        $sequence->append($third);
 //
 //
-//        var_export( $member);
+//        var_export( $third);
 
 
 

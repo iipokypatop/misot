@@ -52,11 +52,11 @@ class Builder2Test extends \AotTest\AotDataStorage
                         ->dependedAfterMain()
                 );
 
-        $builder->member(
-            \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+        $builder->third(
+            \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE
             )
-                ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_AFTER_DEPENDED)
+                ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_DEPENDED)
                 ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
         );
 

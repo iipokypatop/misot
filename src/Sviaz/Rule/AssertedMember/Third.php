@@ -9,7 +9,7 @@
 namespace Aot\Sviaz\Rule\AssertedMember;
 
 
-class Member extends Base
+class Third extends Base
 {
     const POSITION_ANY = 1;
     const POSITION_BETWEEN_MAIN_AND_DEPENDED = 2;
@@ -25,6 +25,13 @@ class Member extends Base
     protected $position = self::POSITION_ANY;
 
     protected $presence = self::PRESENCE_PRESENT;
+
+    public static function createByDao(\AotPersistence\Entities\Third $dao)
+    {
+        $ob = parent::createByDao($dao);
+
+        return $ob;
+    }
 
 
     /**
@@ -77,4 +84,5 @@ class Member extends Base
             return false;
         }
     }
+
 }

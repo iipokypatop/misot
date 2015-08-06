@@ -499,13 +499,13 @@ TEXT;
                         )
                         ->dependedBeforeMain()
                 )
-                ->member(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+                ->third(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                         ChastiRechiRegistry::SUSCHESTVITELNOE
                     )
                         ->text('облака')
                         ->notPresent()
-                        ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_AFTER_MAIN)
+                        ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_MAIN)
                 );
 
 

@@ -165,7 +165,7 @@ class BaseTestRules extends \AotTest\AotDataStorage
                 'getRule_Susch_PoryadkChisl',
                 [
                     'Первый с правого фланга солдат вышел из строя.' => true,
-                    'Первый строй с правого фланга солдат вышел из строя.' => true // на самом деле false, если бы member отрабатывал
+                    'Первый строй с правого фланга солдат вышел из строя.' => true // на самом деле false, если бы third отрабатывал
                 ]
             ],
 

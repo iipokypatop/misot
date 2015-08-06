@@ -37,6 +37,9 @@ class Base
     /** @var  string */
     protected $role_class;
 
+    /** @var  \AotPersistence\Entities\Member */
+    protected $dao;
+
     protected function __construct()
     {
 
@@ -45,6 +48,16 @@ class Base
     public static function create(/** Rule\AssertedMember\Main $main_sequence_member re */)
     {
         return new static;
+    }
+    /**
+     * @param \AotPersistence\Entities\Member $dao
+     * @return static
+     */
+    public static function createByDao(\AotPersistence\Entities\Member $dao)
+    {
+        $ob = new static;
+        $ob->setDao($dao);
+        return $ob;
     }
 
     /**
@@ -210,5 +223,21 @@ class Base
         }
 
         throw new \RuntimeException("unsupported sequence_member type " . get_class($actual));
+    }
+
+    /**
+     * @return \AotPersistence\Entities\Member
+     */
+    public function getDao()
+    {
+        return $this->dao;
+    }
+
+    /**
+     * @param \AotPersistence\Entities\Member $dao
+     */
+    public function setDao($dao)
+    {
+        $this->dao = $dao;
     }
 }

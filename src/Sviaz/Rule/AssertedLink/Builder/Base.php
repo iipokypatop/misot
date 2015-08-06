@@ -96,6 +96,7 @@ class Base
         }
 
         if (null === $this->link['type_class_id']) {
+           // @todo temporary!
             $link->setTypeClass(\Aot\Sviaz\Podchinitrelnaya\Base::class);
         } else {
             $link->setTypeClass(\Aot\Sviaz\Podchinitrelnaya\Registry::getClasses()[$this->link['type_class_id']]);

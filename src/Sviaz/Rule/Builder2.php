@@ -27,8 +27,8 @@ class Builder2
     protected $asserted_depended_builder;
 
 
-    /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Member */
-    protected $asserted_member_builder;
+    /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Third */
+    protected $asserted_third_builder;
 
 
     /** @var  \Aot\Sviaz\Rule\AssertedLink\Builder\Base */
@@ -57,9 +57,9 @@ class Builder2
         return $this;
     }
 
-    public function member(AssertedMember\Builder\Member $member)
+    public function third(AssertedMember\Builder\Third $third)
     {
-        $this->asserted_member_builder = $member;
+        $this->asserted_third_builder = $third;
 
         return $this;
     }
@@ -94,9 +94,9 @@ class Builder2
             $this->asserted_depended_builder->get()
         );
 
-        if (null !== $this->asserted_member_builder) {
-            $rule->assertMember(
-                $this->asserted_member_builder->get()
+        if (null !== $this->asserted_third_builder) {
+            $rule->assertThird(
+                $this->asserted_third_builder->get()
             );
         }
 

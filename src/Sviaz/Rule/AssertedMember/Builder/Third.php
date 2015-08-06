@@ -22,18 +22,18 @@ use Aot\Text\GroupIdRegistry as GroupIdRegistry;
  * Class Member
  * @package Aot\Sviaz\Rule\AssertedMember\Builder
  */
-class Member extends Base
+class Third extends Base
 {
 
-    /** @var $member \Aot\Sviaz\Rule\AssertedMember\Member */
+    /** @var $member \Aot\Sviaz\Rule\AssertedMember\Third */
     protected $member;
 
-    protected $member_position = \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_ANY;
-    protected $member_presence = \Aot\Sviaz\Rule\AssertedMember\Member::PRESENCE_PRESENT;
+    protected $member_position = \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_ANY;
+    protected $member_presence = \Aot\Sviaz\Rule\AssertedMember\Third::PRESENCE_PRESENT;
 
     /**
      * @param int $chast_rechi_id
-     * @return Member
+     * @return Third
      */
     public static function create($chast_rechi_id)
     {
@@ -47,7 +47,7 @@ class Member extends Base
 
         $ob->chast_rechi_id = $chast_rechi_id;
 
-        $ob->member = \Aot\Sviaz\Rule\AssertedMember\Member::create();
+        $ob->member = \Aot\Sviaz\Rule\AssertedMember\Third::create();
 
         $ob->member->assertChastRechi(
             ChastiRechiRegistry::getClasses()[$chast_rechi_id]
@@ -61,12 +61,12 @@ class Member extends Base
         assert(is_int($position_id));
 
         if (!in_array($position_id, [
-            \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_ANY,
-            \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BETWEEN_MAIN_AND_DEPENDED,
-            \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_AFTER_MAIN,
-            \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BEFORE_MAIN,
-            \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_AFTER_DEPENDED,
-            \Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BEFORE_DEPENDED,
+            \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_ANY,
+            \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BETWEEN_MAIN_AND_DEPENDED,
+            \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_MAIN,
+            \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BEFORE_MAIN,
+            \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_DEPENDED,
+            \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BEFORE_DEPENDED,
         ], true)
         ) {
             throw new \RuntimeException("unsupported position_id = $position_id");
@@ -92,7 +92,7 @@ class Member extends Base
     }
 
     /**
-     * @return \Aot\Sviaz\Rule\AssertedMember\Member
+     * @return \Aot\Sviaz\Rule\AssertedMember\Third
      */
     public function get()
     {

@@ -240,10 +240,10 @@ TEXT;
     public function getAssertedMemberBuilder_member()
     {
         $builder =
-            \Aot\Sviaz\Rule\AssertedMember\Builder\Member::create(
+            \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE
             )
-                ->position(\Aot\Sviaz\Rule\AssertedMember\Member::POSITION_BEFORE_DEPENDED)
+                ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BEFORE_DEPENDED)
                 ->text("text text");
 
 

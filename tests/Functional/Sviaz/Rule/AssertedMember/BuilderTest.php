@@ -40,7 +40,7 @@ class BuilderTest extends \AotTest\AotDataStorage
         $builder_member = $this->getAssertedMemberBuilder_member();
 
         $this->assertInstanceOf(
-            \Aot\Sviaz\Rule\AssertedMember\Member::class,
+            \Aot\Sviaz\Rule\AssertedMember\Third::class,
             $builder_member->get()
         );
 
