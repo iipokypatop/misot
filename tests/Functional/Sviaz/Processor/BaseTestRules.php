@@ -257,12 +257,7 @@ class BaseTestRules extends \AotTest\AotDataStorage
                 }
             }
 
-            if ($have_link && !$must_have_link) {
-                $this->fail("Возникла связь там, где ее быть не должно.\nПравило: " . $name_rule . "\nТекст: " . $text);
-            } elseif (!$have_link && $must_have_link) {
-                $this->fail("Не возникла связь там, где она должна быть.\nПравило: " . $name_rule . "\nТекст: " . $text);
-            }
-
+            $this->assertEquals($have_link, $must_have_link, "Error in rule: " . $name_rule . "\nChecking text: " . $text);
         }
 
     }

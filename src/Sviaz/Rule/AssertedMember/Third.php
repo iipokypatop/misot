@@ -26,7 +26,7 @@ class Third extends Base
 
     protected $presence = self::PRESENCE_PRESENT;
 
-    public static function createByDao(\AotPersistence\Entities\Third $dao)
+    public static function createByDao(\AotPersistence\Entities\Member $dao)
     {
         $ob = parent::createByDao($dao);
 
