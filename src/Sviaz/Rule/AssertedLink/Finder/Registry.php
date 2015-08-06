@@ -12,4 +12,4 @@ namespace Aot\Sviaz\Rule\AssertedLink\Finder;
 class Registry
 {
 
-}1
+}
