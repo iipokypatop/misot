@@ -9,6 +9,7 @@
 namespace Aot\Sviaz\Rule\AssertedMember;
 
 use Aot\RussianMorphology\ChastiRechi\MorphologyBase;
+use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\RussianMorphology\Slovo;
 use Aot\Sviaz\SequenceMember;
 use Aot\Text\GroupIdRegistry;
@@ -20,7 +21,6 @@ class Base
 
     protected $asserted_text;
     protected $asserted_text_group_id;
-
 
 
     /** @var string[] */
@@ -49,6 +49,7 @@ class Base
     {
         return new static;
     }
+
     /**
      * @param \AotPersistence\Entities\Member $dao
      * @return static
@@ -85,6 +86,9 @@ class Base
     {
         assert(is_string($asserted_text));
 
+        if ($asserted_text === '') {
+            throw new \RuntimeException("asserted_text is empty string");
+        }
         if (isset($this->asserted_text_group_id))
             throw new \RuntimeException("asserted_text_group_id already defined");
 
@@ -98,10 +102,15 @@ class Base
 
     public function assertTextGroupId($asserted_text_group_id)
     {
+
         assert(is_int($asserted_text_group_id));
 
         if (isset($this->asserted_text))
             throw new \RuntimeException("asserted_text already defined");
+
+        if (!array_key_exists($asserted_text_group_id, GroupIdRegistry::getWordVariants())) {
+            throw new \RuntimeException("unsupported group registry id = " . var_export($asserted_text_group_id, 1));
+        }
 
         $this->asserted_text_group_id = $asserted_text_group_id;
     }
@@ -132,6 +141,13 @@ class Base
     {
         assert(is_a($morphology_class, MorphologyBase::class, true));
 
+        if (null === $this->getAssertedChastRechiClass()) {
+            throw new \RuntimeException("asserted_chast_rechi_class is not defined");
+        }
+
+        if (!MorphologyRegistry::checkMatchByChastRechiClassAndPriznakClass($this->getAssertedChastRechiClass(), $morphology_class)) {
+            throw new \RuntimeException("chastRechi and priznakClass does not match");
+        }
         $this->asserted_morphologies_classes[] = $morphology_class;
     }
 
@@ -226,17 +242,9 @@ class Base
     }
 
     /**
-     * @return \AotPersistence\Entities\Member
-     */
-    public function getDao()
-    {
-        return $this->dao;
-    }
-
-    /**
      * @param \AotPersistence\Entities\Member $dao
      */
-    public function setDao($dao)
+    protected function setDao($dao)
     {
         $this->dao = $dao;
     }

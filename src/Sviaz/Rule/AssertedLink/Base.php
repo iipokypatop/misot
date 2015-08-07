@@ -58,7 +58,7 @@ class Base
      * Base constructor.
      * @param \Aot\Sviaz\Rule\Base $rule
      */
-    public function __construct(\Aot\Sviaz\Rule\Base $rule)
+    protected function __construct(\Aot\Sviaz\Rule\Base $rule)
     {
         $this->rule = $rule;
 
@@ -84,7 +84,7 @@ class Base
      */
     public static function createByDao(\AotPersistence\Entities\Link $dao)
     {
-        $ruleDao = new \AotPersistence\Entities\Rule();
+        $ruleDao = $dao->getRule();
         $rule = \Aot\Sviaz\Rule\Base::createByDao($ruleDao);
         $ob = new static($rule);
         $ob->setDao($dao);

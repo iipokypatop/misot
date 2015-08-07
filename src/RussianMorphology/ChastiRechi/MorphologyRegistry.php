@@ -717,6 +717,24 @@ class MorphologyRegistry
         return null;
     }
 
+    /**
+     * @param $chast_rechi_class
+     * @param $priznak_class_input
+     * @return bool
+     */
+    public static function checkMatchByChastRechiClassAndPriznakClass($chast_rechi_class, $priznak_class_input)
+    {
+        $chast_rechi_id = ChastiRechiRegistry::getIdByClass($chast_rechi_class);
+        foreach (static::getClasses() as $priznak_group => $variants) {
+            foreach ($variants as $priznak_id => $classes) {
+                if( !empty($classes[$chast_rechi_id]) && $classes[$chast_rechi_id] === $priznak_class_input){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static function getNullClasses()
     {
         return [

@@ -223,12 +223,12 @@ class BaseTestRules extends \AotTest\AotDataStorage
      */
     public function testLaunch($name_rule, $texts)
     {
-        echo "\n*****************************\n" . $name_rule . "\n";
+//        echo "\n*****************************\n" . $name_rule . "\n";
 
         $rule = Container::$name_rule();
 
         foreach ($texts as $text => $must_have_link) {
-            echo "\n Текст:\n \t" . $text . " \n";
+//            echo "\n Текст:\n \t" . $text . " \n";
 
             $words = preg_split('/\s+/', preg_replace('/[^а-яА-Я- ]/u', '', $text));
 
@@ -244,7 +244,7 @@ class BaseTestRules extends \AotTest\AotDataStorage
             // запускаем правило
             if (is_array($rule)) {
                 foreach ($rule as $key => $rule_el) {
-                    echo "\n" . $key;
+//                    echo "\n" . $key;
                     $data = $this->getStrRule($processor, $normalized_matrix, $rule_el);
                     if (!empty($data)) {
                         $have_link = true;
@@ -293,18 +293,17 @@ class BaseTestRules extends \AotTest\AotDataStorage
 
         }
 
-        $echo = [];
-        if (!empty($data)) {
-            $echo[]= " \n Связи:\n";
-            foreach ($data as $str_link => $count_links) {
-                echo $str_link . " - count_links: $count_links \n";
-            }
-            $echo[] = "\n";
-        } else {
-            $echo[] = " \n Связи:\n - \n";
-        }
+//        $echo = [];
+//        if (!empty($data)) {
+//            $echo[]= " \n Связи:\n";
+//            foreach ($data as $str_link => $count_links) {
+//                echo $str_link . " - count_links: $count_links \n";
+//            }
+//            $echo[] = "\n";
+//        } else {
+//            $echo[] = " \n Связи:\n - \n";
+//        }
 
-        //echo join("\n", $echo);
 
         return $data;
     }
