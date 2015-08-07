@@ -96,7 +96,8 @@ class BaseTest extends \AotTest\AotDataStorage
         );
 
         $asserted_main->assertMorphology(
-            new \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Imenitelnij
+//            new \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Imenitelnij
+            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Imenitelnij::class
         );
 
         $asserted_main->setRole(
@@ -117,7 +118,8 @@ class BaseTest extends \AotTest\AotDataStorage
         );
 
         $asserted_depended->assertMorphology(
-            new \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij
+//            new \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij
+            \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij::class
         );
 
         $asserted_depended->setRole(
@@ -170,7 +172,6 @@ class BaseTest extends \AotTest\AotDataStorage
 RULE;
         $asserted_main = $this->get_asserted_main();
         $asserted_depended = $this->get_asserted_depended();
-
 
         $rule = \Aot\Sviaz\Rule\Base::create(
             $asserted_main,
