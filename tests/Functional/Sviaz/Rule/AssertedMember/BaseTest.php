@@ -11,7 +11,12 @@ namespace AotTest\Functional\Sviaz\Rule\AssertedMember;
 
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
+use Aot\Sviaz\Role\Registry;
 use MivarTest\PHPUnitHelper;
+
+
+use Aot\Sviaz\Rule\AssertedLink\Builder\Base as AssertedLinkBuilder;
+use Aot\Sviaz\Role\Registry as RoleRegistry;
 
 class BaseTest extends \AotTest\AotDataStorage
 {
@@ -174,5 +179,59 @@ class BaseTest extends \AotTest\AotDataStorage
         } catch (\RuntimeException $e) {
             $this->assertEquals("asserted_text_group_id already defined", $e->getMessage());
         }
+    }
+
+    public function testLaunchByDao()
+    {
+        $this->markTestSkipped();
+        // создаем member
+        $member_dao = new \AotPersistence\Entities\Member();
+
+        // ставим у него часть речи
+        $chastRechi = new \AotPersistence\Entities\ChastiRechi();
+        $chastRechi->setName(ChastiRechiRegistry::getNames()[ChastiRechiRegistry::GLAGOL]);
+        $member_dao->setChastRechi($chastRechi);
+
+        // устанавливаем у него роль
+        $role = new \AotPersistence\Entities\Role();
+        $role->setName(Registry::getNames()[Registry::OTNOSHENIE]);
+        $member_dao->setRole($role);
+
+
+        $depended = \Aot\Sviaz\Rule\AssertedMember\Depended::createByDao($member_dao);
+    }
+
+    public function testDao()
+    {
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::MESTOIMENIE, RoleRegistry::VESCH)
+                        ->morphology(MorphologyRegistry::RAZRYAD_LICHNOE)
+                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                )
+                ->depended(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::GLAGOL,
+                        RoleRegistry::OTNOSHENIE
+                    )
+
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                        ->morphologyMatching(
+                            MorphologyRegistry::ROD
+                        )
+                        ->morphologyMatching(
+                            MorphologyRegistry::CHISLO
+                        )
+                );
+
+        $rule = $builder->get();
+
+        print_r($builder);
+        print_r($rule);
+//        $rule->save();
+//        $rule_dao = new \AotPersistence\Entities\Rule();
     }
 }

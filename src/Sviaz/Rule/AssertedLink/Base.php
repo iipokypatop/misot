@@ -9,8 +9,17 @@
 namespace Aot\Sviaz\Rule\AssertedLink;
 
 
+use Aot\Persister;
+
+/**
+ * Class Base
+ * @property \AotPersistence\Entities\Link $dao
+ * @package Aot\Sviaz\Rule\AssertedLink
+ */
 class Base
 {
+    use Persister;
+
     /** @var  \Aot\Sviaz\Rule\Base */
     protected $rule;
 
@@ -26,10 +35,6 @@ class Base
 
     /** @var string */
     protected $type_class = \Aot\Sviaz\Podchinitrelnaya\Base::class;
-
-
-    /** @var  \AotPersistence\Entities\Link */
-    protected $dao;
 
 
     /**
@@ -62,7 +67,7 @@ class Base
     {
         $this->rule = $rule;
 
-        $this->asserted_main  = $rule->getAssertedMain();
+        $this->asserted_main = $rule->getAssertedMain();
 
         $this->asserted_depended = $rule->getAssertedDepended();
 
@@ -75,7 +80,10 @@ class Base
      */
     public static function create(\Aot\Sviaz\Rule\Base $rule)
     {
-        return new static($rule);
+        $dao = new \AotPersistence\Entities\Link();
+        $ob = new static($rule);
+        $ob->setDao($dao);
+        return $ob;
     }
 
     /**
@@ -84,8 +92,7 @@ class Base
      */
     public static function createByDao(\AotPersistence\Entities\Link $dao)
     {
-        $ruleDao = $dao->getRule();
-        $rule = \Aot\Sviaz\Rule\Base::createByDao($ruleDao);
+        $rule = \Aot\Sviaz\Rule\Base::createByDao($dao->getRule());
         $ob = new static($rule);
         $ob->setDao($dao);
         return $ob;
@@ -150,5 +157,13 @@ class Base
     protected function setDao($dao)
     {
         $this->dao = $dao;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getEntityClass()
+    {
+        return \AotPersistence\Entities\Link::class;
     }
 }

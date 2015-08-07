@@ -8,14 +8,21 @@
 
 namespace Aot\Sviaz\Rule\AssertedMember;
 
+use Aot\Persister;
 use Aot\RussianMorphology\ChastiRechi\MorphologyBase;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\RussianMorphology\Slovo;
 use Aot\Sviaz\SequenceMember;
 use Aot\Text\GroupIdRegistry;
 
+/**
+ * Class Base*
+ * @property \AotPersistence\Entities\Member $dao
+ * @package Aot\Sviaz\Rule\AssertedMember
+ */
 class Base
 {
+    use Persister;
     /** @var  string */
     protected $asserted_chast_rechi_class;
 
@@ -37,9 +44,6 @@ class Base
     /** @var  string */
     protected $role_class;
 
-    /** @var  \AotPersistence\Entities\Member */
-    protected $dao;
-
     protected function __construct()
     {
 
@@ -47,7 +51,10 @@ class Base
 
     public static function create(/** Rule\AssertedMember\Main $main_sequence_member re */)
     {
-        return new static;
+        $dao = new \AotPersistence\Entities\Member();
+        $ob = new static;
+        $ob->setDao($dao);
+        return $ob;
     }
 
     /**
@@ -180,6 +187,7 @@ class Base
      */
     public function setRole(\Aot\Sviaz\Role\Base $role)
     {
+//        $this->dao->setRole($role->getDao);
         $this->role = $role;
     }
 
@@ -190,6 +198,7 @@ class Base
     {
         assert(is_string($role_class));
         assert(is_a($role_class, \Aot\Sviaz\Role\Base::class, true));
+//        $this->dao->setRole($role_class);
         $this->role_class = $role_class;
     }
 
@@ -247,5 +256,13 @@ class Base
     protected function setDao($dao)
     {
         $this->dao = $dao;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getEntityClass()
+    {
+        return \AotPersistence\Entities\Member::class;
     }
 }
