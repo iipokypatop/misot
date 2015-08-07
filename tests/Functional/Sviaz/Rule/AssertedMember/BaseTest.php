@@ -9,6 +9,8 @@
 namespace AotTest\Functional\Sviaz\Rule\AssertedMember;
 
 
+use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
+use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use MivarTest\PHPUnitHelper;
 
 class BaseTest extends \AotTest\AotDataStorage
@@ -104,5 +106,73 @@ class BaseTest extends \AotTest\AotDataStorage
             [$checker_class],
             PHPUnitHelper::getProtectedProperty($depended, 'checker_classes')
         );
+    }
+
+    public function testAssertMorphology()
+    {
+        $depended = \Aot\Sviaz\Rule\AssertedMember\Depended::create();
+        $reg1 = MorphologyRegistry::PADESZH;
+        $reg2 = MorphologyRegistry::PADESZH_IMENITELNIJ;
+        $reg3 = ChastiRechiRegistry::SUSCHESTVITELNOE;
+        $morphology_class = MorphologyRegistry::getClasses()[$reg1][$reg2][$reg3];
+        try {
+            // не установили часть речи
+            $depended->assertMorphology($morphology_class);
+            $this->fail('Не должно быть тут');
+        } catch (\RuntimeException $e) {
+            $this->assertEquals("asserted_chast_rechi_class is not defined", $e->getMessage());
+        }
+
+        // ставим неверную часть речи
+        $chast_rechi = ChastiRechiRegistry::getClasses()[ChastiRechiRegistry::GLAGOL];
+        $depended->assertChastRechi($chast_rechi);
+        try {
+            $depended->assertMorphology($morphology_class);
+            $this->fail('Не должно быть тут');
+
+        } catch (\RuntimeException $e) {
+            $this->assertEquals("chastRechi and priznakClass does not match", $e->getMessage());
+        }
+    }
+
+    public function testAssertTextGroupId()
+    {
+        $depended = \Aot\Sviaz\Rule\AssertedMember\Depended::create();
+        $depended->assertText('test text');
+        try {
+            $depended->assertTextGroupId(1);
+            $this->fail('Не должно быть тут');
+        } catch (\RuntimeException $e) {
+            $this->assertEquals('asserted_text already defined', $e->getMessage());
+        }
+
+        $depended = \Aot\Sviaz\Rule\AssertedMember\Depended::create();
+        $fail_id = 666;
+        try {
+            $depended->assertTextGroupId($fail_id);
+            $this->fail('Не должно быть тут');
+        } catch (\RuntimeException $e) {
+            $this->assertEquals("unsupported group registry id = " . $fail_id, $e->getMessage());
+        }
+    }
+
+    public function testAssertText()
+    {
+        $depended = \Aot\Sviaz\Rule\AssertedMember\Depended::create();
+        try {
+            $depended->assertText('');
+            $this->fail('Не должно быть тут');
+        } catch (\RuntimeException $e) {
+            $this->assertEquals("asserted_text is empty string", $e->getMessage());
+        }
+
+        $depended = \Aot\Sviaz\Rule\AssertedMember\Depended::create();
+        $depended->assertTextGroupId(1);
+        try {
+            $depended->assertText('текст');
+            $this->fail('Не должно быть тут');
+        } catch (\RuntimeException $e) {
+            $this->assertEquals("asserted_text_group_id already defined", $e->getMessage());
+        }
     }
 }
