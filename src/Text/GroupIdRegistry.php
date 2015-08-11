@@ -9,8 +9,12 @@
 namespace Aot\Text;
 
 
+use Aot\Registry\Uploader;
+
 class GroupIdRegistry
 {
+    use Uploader;
+
     const BIT = 1;
     const NIKTO = 2;
     const PRITYAZHATELNIE_1_AND_2_LITSO = 3;
@@ -49,6 +53,32 @@ class GroupIdRegistry
             static::NARECH_FOR_PRIL_OR_NARECH => 'наречия, образующие связь с прилагательными или наречиями',
             static::NARECH_FOR_GL => 'наречия, образующие связь с глаголом',
             static::DEFISNARECH_FOR_GL => 'наречия, написанные через дефис и образующие связь с глаголом',
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getEntityClass()
+    {
+        return \AotPersistence\Entities\TextGroup::class;
+    }
+
+    /**
+     * @return int[]
+     */
+    protected function getIds()
+    {
+        return array_keys(static::getNames());
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getFields()
+    {
+        return[
+            'name' => [static::class, 'getNames'],
         ];
     }
 }

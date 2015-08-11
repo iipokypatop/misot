@@ -23,6 +23,7 @@ use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq;
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
+use Aot\Sviaz\Rule\AssertedMember\PositionRegistry;
 use MivarTest\PHPUnitHelper;
 
 use Aot\Sviaz\Rule\AssertedLink\Builder\Base as AssertedLinkBuilder;
@@ -483,15 +484,15 @@ TEXT;
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
                         ChastiRechiRegistry::SUSCHESTVITELNOE, RoleRegistry::SVOISTVO
                     )
-                        ->morphology(MorphologyRegistry::CHISLO_MNOZHESTVENNOE)
-                        ->morphology(MorphologyRegistry::PADESZH_TVORITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::CHISLO_MNOZHESTVENNOE)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_TVORITELNIJ)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::PRILAGATELNOE,
                         RoleRegistry::OTNOSHENIE
                     )
-                        ->morphology(MorphologyRegistry::PADESZH_TVORITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_TVORITELNIJ)
                 )
                 ->link(
                     AssertedLinkBuilder::create()
@@ -506,7 +507,7 @@ TEXT;
                     )
                         ->text('облака')
                         ->notPresent()
-                        ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_MAIN)
+                        ->position(AssertedLinkBuilder::POSITION_AFTER_MAIN)
                 );
 
 

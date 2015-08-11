@@ -55,7 +55,7 @@ class BuilderTest extends \AotTest\AotDataStorage
                 RoleRegistry::OTNOSHENIE
             );
 
-        $builder->morphology(MorphologyRegistry::PADESZH_DATELNIJ);
+        $builder->morphologyEq(MorphologyRegistry::PADESZH_DATELNIJ);
 
         $this->assertEquals(
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Datelnij::class,
@@ -76,7 +76,7 @@ class BuilderTest extends \AotTest\AotDataStorage
 
         try {
 
-            $builder->morphology($id);
+            $builder->morphologyEq($id);
 
             $this->fail();
 
@@ -94,7 +94,7 @@ class BuilderTest extends \AotTest\AotDataStorage
 
         try {
 
-            $builder->morphology($id);
+            $builder->morphologyEq($id);
 
             $this->fail();
 

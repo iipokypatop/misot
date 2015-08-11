@@ -9,8 +9,12 @@
 namespace Aot\Sviaz\Rule\AssertedMember\Checker;
 
 
+use Aot\Registry\Uploader;
+
 class Registry
 {
+    use Uploader;
+
     const PredlogPeredSlovom = 1;
     const ChasticaNePeredSlovom = 2;
 
@@ -25,7 +29,34 @@ class Registry
     public static function getNames()
     {
         return [
-            static::PredlogPeredSlovom => 'предлог перед словом'
+            static::PredlogPeredSlovom => 'предлог перед словом',
+            static::ChasticaNePeredSlovom => 'частица НЕ перед словом'
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    protected function getEntityClass()
+    {
+        return \AotPersistence\Entities\MemberChecker::class;
+    }
+
+    /**
+     * @return int[]
+     */
+    protected function getIds()
+    {
+        return array_keys(static::getNames());
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getFields()
+    {
+        return[
+            'name' => [static::class, 'getNames'],
         ];
     }
 }

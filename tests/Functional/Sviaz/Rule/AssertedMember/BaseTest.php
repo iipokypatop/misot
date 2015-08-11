@@ -55,14 +55,14 @@ class BaseTest extends \AotTest\AotDataStorage
 
         $text_group_id = rand();
 
-        $member->assertTextGroupId($text_group_id);
-
-        $this->assertEquals(
-            $text_group_id,
-            $member->getAssertedTextGroupId()
-        );
-
         try {
+            $member->assertTextGroupId($text_group_id);
+
+            $this->assertEquals(
+                $text_group_id,
+                $member->getAssertedTextGroupId()
+            );
+
             $member->assertText($text);
 
             $this->fail("Expected Exception " . \RuntimeException::class);
@@ -203,12 +203,13 @@ class BaseTest extends \AotTest\AotDataStorage
 
     public function testDao()
     {
+//        $this->markTestSkipped();
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::MESTOIMENIE, RoleRegistry::VESCH)
-                        ->morphology(MorphologyRegistry::RAZRYAD_LICHNOE)
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::RAZRYAD_LICHNOE)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
@@ -229,9 +230,10 @@ class BaseTest extends \AotTest\AotDataStorage
 
         $rule = $builder->get();
 
-        print_r($builder);
-        print_r($rule);
-//        $rule->save();
+//        print_r($builder);
+//        print_r($rule);
+//        print_r($rule->getDao());
+        $rule->save();
 //        $rule_dao = new \AotPersistence\Entities\Rule();
     }
 }

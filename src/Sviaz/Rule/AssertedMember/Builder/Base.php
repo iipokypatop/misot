@@ -47,7 +47,7 @@ abstract class Base
         return $this;
     }
 
-    public function morphology($id)
+    public function morphologyEq($id)
     {
         assert(is_int($id));
 
@@ -70,6 +70,36 @@ abstract class Base
 
         return $this;
     }
+
+    public function morphologyIs($id)
+    {
+        assert(is_int($id));
+
+        if( !array_key_exists($id, MorphologyRegistry::getNullClasses()) ){
+            throw new \RuntimeException("no null class for morphology id = " . var_export($id, 1));
+        }
+
+        if( !array_key_exists($this->chast_rechi_id, MorphologyRegistry::getNullClasses()[$id]) ){
+            throw new \RuntimeException("no null class for chast rechi_id = " . var_export($this->chast_rechi_id, 1));
+        }
+
+        if (is_null(MorphologyRegistry::getNullClasses()[$id][$this->chast_rechi_id])) {
+            throw new \RuntimeException("unsupported morphology id = $id for chast rechi_id = $this->chast_rechi_id");
+        }
+        else{
+            $class = MorphologyRegistry::getNullClasses()[$id][$this->chast_rechi_id];
+        }
+
+        $this->member->assertMorphology(
+            $class
+        );
+
+        return $this;
+    }
+
+
+
+
 
     /**
      * @param int $id

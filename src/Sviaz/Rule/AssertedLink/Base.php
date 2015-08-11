@@ -81,6 +81,7 @@ class Base
     public static function create(\Aot\Sviaz\Rule\Base $rule)
     {
         $dao = new \AotPersistence\Entities\Link();
+        $dao->setRule($rule->getDao());
         $ob = new static($rule);
         $ob->setDao($dao);
         return $ob;

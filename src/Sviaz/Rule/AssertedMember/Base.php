@@ -130,6 +130,9 @@ class Base
         assert(is_string($asserted_chast_rechi_class));
         assert(is_a($asserted_chast_rechi_class, Slovo::class, true));
 
+        # когда часть речи будет в базе
+//        $this->dao->setChastRechi($asserted_chast_rechi_class->getDao());
+//        $this->dao->setChastRechi($asserted_chast_rechi_class);
         $this->asserted_chast_rechi_class = $asserted_chast_rechi_class;
     }
 

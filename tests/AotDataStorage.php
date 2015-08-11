@@ -6,6 +6,7 @@ use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Base as Deeprichastie;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Base as Glagol;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base as Suschestvitelnoe;
 use Aot\RussianSyntacsis\Punctuaciya\Zapiataya;
+use Aot\Sviaz\Rule\AssertedMember\PositionRegistry;
 use MivarTest\PHPUnitHelper;
 
 
@@ -212,7 +213,7 @@ TEXT;
             )
                 ->text("text text");
 
-        $builder->morphology(MorphologyRegistry::PADESZH_DATELNIJ);
+        $builder->morphologyEq(MorphologyRegistry::PADESZH_DATELNIJ);
         $builder->check(MemberCheckerRegistry::PredlogPeredSlovom);
 
         return $builder;
@@ -243,7 +244,7 @@ TEXT;
             \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE
             )
-                ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BEFORE_DEPENDED)
+                ->position(Predlog::POSITION_BEFORE_DEPENDED)
                 ->text("text text");
 
 

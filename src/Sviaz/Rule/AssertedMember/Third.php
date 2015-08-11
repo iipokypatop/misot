@@ -8,23 +8,13 @@
 
 namespace Aot\Sviaz\Rule\AssertedMember;
 
-
 class Third extends Base
 {
-    const POSITION_ANY = 1;
-    const POSITION_BETWEEN_MAIN_AND_DEPENDED = 2;
-    const POSITION_AFTER_MAIN = 3;
-    const POSITION_BEFORE_MAIN = 4;
-    const POSITION_AFTER_DEPENDED = 5;
-    const POSITION_BEFORE_DEPENDED = 6;
-
-    const PRESENCE_PRESENT = 1;
-    const PRESENCE_NOT_PRESENT = 2;
 
     /** @var  int */
-    protected $position = self::POSITION_ANY;
+    protected $position = PositionRegistry::POSITION_ANY;
 
-    protected $presence = self::PRESENCE_PRESENT;
+    protected $presence = PresenceRegistry::PRESENCE_PRESENT;
 
     public static function createByDao(\AotPersistence\Entities\Member $dao)
     {
@@ -62,14 +52,14 @@ class Third extends Base
 
     public function present()
     {
-        $this->presence = static::PRESENCE_PRESENT;
+        $this->presence = PresenceRegistry::PRESENCE_PRESENT;
 
         return $this;
     }
 
     public function notPresent()
     {
-        $this->presence = static::PRESENCE_NOT_PRESENT;
+        $this->presence = PresenceRegistry::PRESENCE_NOT_PRESENT;
 
         return $this;
     }
@@ -84,5 +74,6 @@ class Third extends Base
             return false;
         }
     }
+
 
 }

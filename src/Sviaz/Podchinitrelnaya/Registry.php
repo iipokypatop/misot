@@ -9,8 +9,12 @@
 namespace Aot\Sviaz\Podchinitrelnaya;
 
 
+use Aot\Registry\Uploader;
+
 class Registry
 {
+
+    use Uploader;
 
     const SOGLASOVANIE = 1;
     const UPRAVLENIE = 2;
@@ -35,4 +39,29 @@ class Registry
         ];
     }
 
+    /**
+     * @return string
+     */
+    protected function getEntityClass()
+    {
+        return \AotPersistence\Entities\TypeLink::class;
+    }
+
+    /**
+     * @return int[]
+     */
+    protected function getIds()
+    {
+        return array_keys(static::getNames());
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getFields()
+    {
+        return[
+            'name' => [static::class, 'getNames'],
+        ];
+    }
 }

@@ -46,7 +46,7 @@ class Base
      */
     public function assertThird(\Aot\Sviaz\Rule\AssertedMember\Third $asserted_member)
     {
-        $this->dao->setThird($asserted_member->getDao);
+        $this->dao->setThird($asserted_member->getDao());
         $this->asserted_third = $asserted_member;
     }
 
@@ -69,6 +69,8 @@ class Base
     public static function create(AssertedMember\Main $main, AssertedMember\Depended $depended)
     {
         $dao = new \AotPersistence\Entities\Rule();
+        $dao->setMain($main->getDao());
+        $dao->setDepended($depended->getDao());
         $ob = new static($main, $depended);
         $ob->setDao($dao);
         return $ob;

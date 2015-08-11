@@ -9,8 +9,12 @@
 namespace Aot\RussianMorphology\ChastiRechi;
 
 
+use Aot\Registry\Uploader;
+
 class ChastiRechiRegistry
 {
+    use Uploader;
+
     const SUSCHESTVITELNOE = 10;
     const PRILAGATELNOE = 11;
     const GLAGOL = 12;
@@ -107,5 +111,31 @@ class ChastiRechiRegistry
             }
         }
         return null;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getEntityClass()
+    {
+        return \AotPersistence\Entities\ChastiRechi::class;
+    }
+
+    /**
+     * @return int[]
+     */
+    protected function getIds()
+    {
+        return array_keys(static::getNames());
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getFields()
+    {
+        return[
+            'name' => [static::class, 'getNames'],
+        ];
     }
 }

@@ -13,6 +13,7 @@ use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
+use Aot\Sviaz\Rule\AssertedMember\PositionRegistry;
 use Aot\Text\GroupIdRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Builder\Base as AssertedMemberBuilder;
 use Aot\Sviaz\Rule\AssertedLink\Builder\Base as AssertedLinkBuilder;
@@ -26,9 +27,9 @@ class Builder2Test extends \AotTest\AotDataStorage
                 ->main(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::SUSCHESTVITELNOE, RoleRegistry::SVOISTVO)
                         ->text("text text text")
-                        ->morphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
-                        ->morphology(MorphologyRegistry::ROD_SREDNIJ)
+                        ->morphologyEq(MorphologyRegistry::CHISLO_EDINSTVENNOE)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::ROD_SREDNIJ)
                         ->check(MemberCheckerRegistry::PredlogPeredSlovom)
                 )
                 ->depended(
@@ -38,8 +39,8 @@ class Builder2Test extends \AotTest\AotDataStorage
                     )
                         ->text(("bla bla bla"))
                         ->check(MemberCheckerRegistry::PredlogPeredSlovom)
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
-                        ->morphology(MorphologyRegistry::ROD_MUZHSKOI)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::ROD_MUZHSKOI)
                 )
                 ->link(
                     AssertedLinkBuilder::create()
@@ -56,8 +57,8 @@ class Builder2Test extends \AotTest\AotDataStorage
             \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE
             )
-                ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_DEPENDED)
-                ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                ->position(AssertedLinkBuilder::POSITION_AFTER_DEPENDED)
+                ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
         );
 
         $rule = $builder->get();

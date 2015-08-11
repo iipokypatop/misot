@@ -9,16 +9,30 @@
 namespace Aot\Sviaz\Rule\AssertedLink\Checker;
 
 
+use Aot\Registry\Uploader;
 use Aot\Sviaz\Rule\AssertedLink\Checker\BeetweenMainAndDepended\NetSuschestvitelnogoVImenitelnomPadeszhe;
 
 class Registry
 {
+    use Uploader;
+
     const DependedAfterMain = 1;
     const DependedBeforeMain = 2;
     const DependedRightBeforeMain = 3;
     const DependedRightAfterMain = 4;
 
     const NetSuschestvitelnogoVImenitelnomPadeszhe = 10;
+
+    public static function getNames()
+    {
+        return [
+            static::DependedAfterMain => 'зависимое после главного',
+            static::DependedBeforeMain => 'зависимое перед главным',
+            static::DependedRightBeforeMain => 'зависимое сразу перед главным',
+            static::DependedRightAfterMain => 'зависимое сразу после главного',
+            static::NetSuschestvitelnogoVImenitelnomPadeszhe => 'нет существительного в именительном падеже',
+        ];
+    }
 
     public static function getClasses()
     {
@@ -45,5 +59,31 @@ class Registry
         }
 
         return forward_static_call_array([static::getClasses()[$id], 'create'], $args);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getEntityClass()
+    {
+        return \AotPersistence\Entities\LinkChecker::class;
+    }
+
+    /**
+     * @return int[]
+     */
+    protected function getIds()
+    {
+        return array_keys(static::getNames());
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getFields()
+    {
+        return[
+            'name' => [static::class, 'getNames'],
+        ];
     }
 }

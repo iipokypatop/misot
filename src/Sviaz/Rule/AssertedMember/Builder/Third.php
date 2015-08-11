@@ -16,6 +16,8 @@ use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
+use Aot\Sviaz\Rule\AssertedMember\PositionRegistry;
+use Aot\Sviaz\Rule\AssertedMember\PresenceRegistry;
 use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 
 /**
@@ -28,8 +30,8 @@ class Third extends Base
     /** @var $member \Aot\Sviaz\Rule\AssertedMember\Third */
     protected $member;
 
-    protected $member_position = \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_ANY;
-    protected $member_presence = \Aot\Sviaz\Rule\AssertedMember\Third::PRESENCE_PRESENT;
+    protected $member_position = GroupIdRegistry::POSITION_ANY;
+    protected $member_presence = GroupIdRegistry::PRESENCE_PRESENT;
 
     /**
      * @param int $chast_rechi_id
@@ -61,12 +63,12 @@ class Third extends Base
         assert(is_int($position_id));
 
         if (!in_array($position_id, [
-            \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_ANY,
-            \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BETWEEN_MAIN_AND_DEPENDED,
-            \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_MAIN,
-            \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BEFORE_MAIN,
-            \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_DEPENDED,
-            \Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BEFORE_DEPENDED,
+            GroupIdRegistry::POSITION_ANY,
+            GroupIdRegistry::POSITION_BETWEEN_MAIN_AND_DEPENDED,
+            GroupIdRegistry::POSITION_AFTER_MAIN,
+            GroupIdRegistry::POSITION_BEFORE_MAIN,
+            GroupIdRegistry::POSITION_AFTER_DEPENDED,
+            GroupIdRegistry::POSITION_BEFORE_DEPENDED,
         ], true)
         ) {
             throw new \RuntimeException("unsupported position_id = $position_id");

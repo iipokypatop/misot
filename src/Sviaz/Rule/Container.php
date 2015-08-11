@@ -14,6 +14,8 @@ use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedLink\Builder\Base as AssertedLinkBuilder;
+use Aot\Sviaz\Rule\AssertedMember\PositionRegistry;
+use Aot\Sviaz\Rule\AssertedMember\PresenceRegistry;
 use Aot\Text\GroupIdRegistry;
 
 
@@ -227,8 +229,8 @@ TEXT;
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::MESTOIMENIE, RoleRegistry::VESCH)
-                        ->morphology(MorphologyRegistry::RAZRYAD_LICHNOE)
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::RAZRYAD_LICHNOE)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
@@ -267,7 +269,7 @@ TEXT;
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::SUSCHESTVITELNOE, RoleRegistry::VESCH)
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
@@ -291,16 +293,16 @@ TEXT;
                 \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                     ChastiRechiRegistry::SUSCHESTVITELNOE
                 )
-                    ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_DEPENDED)
-                    ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                    ->position(AssertedLinkBuilder::POSITION_AFTER_DEPENDED)
+                    ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
             );
         } elseif (MorphologyRegistry::PADESZH_TVORITELNIJ) {
             $builder->third(
                 \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                     ChastiRechiRegistry::SUSCHESTVITELNOE
                 )
-                    ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_DEPENDED)
-                    ->morphology(MorphologyRegistry::PADESZH_TVORITELNIJ)
+                    ->position(AssertedLinkBuilder::POSITION_AFTER_DEPENDED)
+                    ->morphologyEq(MorphologyRegistry::PADESZH_TVORITELNIJ)
             );
         }
 
@@ -326,8 +328,8 @@ TEXT;
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::MESTOIMENIE, RoleRegistry::VESCH)
-                        ->morphology(MorphologyRegistry::RAZRYAD_LICHNOE)
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::RAZRYAD_LICHNOE)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
@@ -352,16 +354,16 @@ TEXT;
                 \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                     ChastiRechiRegistry::SUSCHESTVITELNOE
                 )
-                    ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_DEPENDED)
-                    ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                    ->position(AssertedLinkBuilder::POSITION_AFTER_DEPENDED)
+                    ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
             );
         } elseif (MorphologyRegistry::PADESZH_TVORITELNIJ) {
             $builder->third(
                 \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                     ChastiRechiRegistry::SUSCHESTVITELNOE
                 )
-                    ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_DEPENDED)
-                    ->morphology(MorphologyRegistry::PADESZH_TVORITELNIJ)
+                    ->position(AssertedLinkBuilder::POSITION_AFTER_DEPENDED)
+                    ->morphologyEq(MorphologyRegistry::PADESZH_TVORITELNIJ)
             );
         }
 
@@ -386,8 +388,8 @@ TEXT;
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::MESTOIMENIE, RoleRegistry::VESCH)
-                        ->morphology(MorphologyRegistry::RAZRYAD_LICHNOE)
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::RAZRYAD_LICHNOE)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
@@ -414,9 +416,9 @@ TEXT;
             \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                 ChastiRechiRegistry::PRILAGATELNOE
             )
-                ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_DEPENDED)
-                ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
-                ->morphology(MorphologyRegistry::FORMA_POLNAYA)
+                ->position(AssertedLinkBuilder::POSITION_AFTER_DEPENDED)
+                ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                ->morphologyEq(MorphologyRegistry::FORMA_POLNAYA)
         );
 //        }
         /*// wtf ??
@@ -452,7 +454,7 @@ TEXT;
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::SUSCHESTVITELNOE, RoleRegistry::VESCH)
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
@@ -477,9 +479,9 @@ TEXT;
             \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                 ChastiRechiRegistry::PRICHASTIE
             )
-                ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_DEPENDED)
-                ->morphology(MorphologyRegistry::ZALOG_STRADATELNYJ)
-                ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
+                ->position(AssertedLinkBuilder::POSITION_AFTER_DEPENDED)
+                ->morphologyEq(MorphologyRegistry::ZALOG_STRADATELNYJ)
+                ->morphologyEq(MorphologyRegistry::FORMA_KRATKAYA)
 
 
         );
@@ -505,7 +507,7 @@ TEXT;
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::SUSCHESTVITELNOE, RoleRegistry::VESCH)
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
@@ -530,7 +532,7 @@ TEXT;
             \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE
             )
-                ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_AFTER_DEPENDED)
+                ->position(AssertedLinkBuilder::POSITION_AFTER_DEPENDED)
         );
 
 
@@ -555,14 +557,14 @@ TEXT;
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::SUSCHESTVITELNOE, RoleRegistry::VESCH)
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::PRILAGATELNOE,
                         RoleRegistry::SVOISTVO
                     )
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
 
                 )
                 ->link(
@@ -581,8 +583,8 @@ TEXT;
             \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE
             )
-                ->position(\Aot\Sviaz\Rule\AssertedMember\Third::PRESENCE_NOT_PRESENT)
-                ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                ->position(AssertedLinkBuilder::PRESENCE_NOT_PRESENT)
+                ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
         );
 
         $rule = $builder->get();
@@ -693,7 +695,7 @@ TEXT;
                         RoleRegistry::VESCH
 
                     )
-                        ->morphology($priznak)
+                        ->morphologyEq($priznak)
                 )
                 ->link(
                     AssertedLinkBuilder::create()
@@ -760,14 +762,14 @@ TEXT;
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::GLAGOL, RoleRegistry::OTNOSHENIE)
-                        ->morphology(MorphologyRegistry::PEREHODNOST_PEREHODNII)
+                        ->morphologyEq(MorphologyRegistry::PEREHODNOST_PEREHODNII)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::MESTOIMENIE,
                         RoleRegistry::VESCH
                     )
-                        ->morphology(MorphologyRegistry::PADESZH_VINITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_VINITELNIJ)
 
                 )
                 ->link(
@@ -810,7 +812,7 @@ TEXT;
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                         ChastiRechiRegistry::GLAGOL
                     )
-                        ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BETWEEN_MAIN_AND_DEPENDED)
+                        ->position(AssertedLinkBuilder::POSITION_BETWEEN_MAIN_AND_DEPENDED)
                         ->notPresent()
                 )
                 ->link(
@@ -839,14 +841,14 @@ TEXT;
                         ChastiRechiRegistry::GLAGOL,
                         RoleRegistry::OTNOSHENIE
                     )
-                        ->morphology(MorphologyRegistry::PEREHODNOST_PEREHODNII)
+                        ->morphologyEq(MorphologyRegistry::PEREHODNOST_PEREHODNII)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::SUSCHESTVITELNOE,
                         RoleRegistry::VESCH
                     )
-                        ->morphology(MorphologyRegistry::PADESZH_VINITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_VINITELNIJ)
 
                 )
                 ->link(
@@ -924,7 +926,7 @@ TEXT;
                         ChastiRechiRegistry::MESTOIMENIE,
                         RoleRegistry::VESCH
                     )
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
                         ->textGroupId(GroupIdRegistry::NIKTO)
                 )
                 ->depended(
@@ -932,8 +934,8 @@ TEXT;
                         ChastiRechiRegistry::GLAGOL,
                         RoleRegistry::OTNOSHENIE
                     )
-                        ->morphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
-                        ->morphology(MorphologyRegistry::LITSO_TRETIE)
+                        ->morphologyEq(MorphologyRegistry::CHISLO_EDINSTVENNOE)
+                        ->morphologyEq(MorphologyRegistry::LITSO_TRETIE)
                         ->check(MemberCheckerRegistry::ChasticaNePeredSlovom)
 
                 )
@@ -967,7 +969,7 @@ TEXT;
                         ChastiRechiRegistry::MESTOIMENIE,
                         RoleRegistry::VESCH
                     )
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
                         ->textGroupId(GroupIdRegistry::NIKTO)
                 )
                 ->depended(
@@ -975,9 +977,9 @@ TEXT;
                         ChastiRechiRegistry::PRICHASTIE,
                         RoleRegistry::OTNOSHENIE
                     )
-                        ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
-                        ->morphology(MorphologyRegistry::ZALOG_STRADATELNYJ)
-                        ->morphology(MorphologyRegistry::CHISLO_EDINSTVENNOE)
+                        ->morphologyEq(MorphologyRegistry::FORMA_KRATKAYA)
+                        ->morphologyEq(MorphologyRegistry::ZALOG_STRADATELNYJ)
+                        ->morphologyEq(MorphologyRegistry::CHISLO_EDINSTVENNOE)
                         // у причастий нет лица!
                         //->morphology(MorphologyRegistry::LITSO_TRETIE)
                         ->check(MemberCheckerRegistry::ChasticaNePeredSlovom)
@@ -1159,32 +1161,32 @@ TEXT;
                         ChastiRechiRegistry::SUSCHESTVITELNOE,
                         RoleRegistry::VESCH
                     )
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
-                        ->morphology($chislo)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq($chislo)
                 )
                 ->depended(
                     $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::PRICHASTIE,
                         RoleRegistry::SVOISTVO
                     )
-                        ->morphology(MorphologyRegistry::ZALOG_STRADATELNYJ)
-                        ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
-                        ->morphology($chislo)
+                        ->morphologyEq(MorphologyRegistry::ZALOG_STRADATELNYJ)
+                        ->morphologyEq(MorphologyRegistry::FORMA_KRATKAYA)
+                        ->morphologyEq($chislo)
                 )
                 ->third(
                     $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                         ChastiRechiRegistry::GLAGOL
                     )
-                        ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BEFORE_DEPENDED)
-                        ->morphology($chislo)
+                        ->position(AssertedLinkBuilder::POSITION_BEFORE_DEPENDED)
+                        ->morphologyEq($chislo)
                         ->textGroupId(GroupIdRegistry::BIT)
 
                 );
 
         if ($rod !== null) {
-            $builder_main->morphology($rod);
-            $builder_depended->morphology($rod);
-            $builder_member->morphology($rod);
+            $builder_main->morphologyEq($rod);
+            $builder_depended->morphologyEq($rod);
+            $builder_member->morphologyEq($rod);
         }
 
 
@@ -1243,33 +1245,33 @@ TEXT;
                     )
                         # не приходит из морфика
                         # ->morphology(MorphologyRegistry::RAZRYAD_LICHNOE)
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
-                        ->morphology($chislo)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq($chislo)
                 )
                 ->depended(
                     $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::PRICHASTIE,
                         RoleRegistry::SVOISTVO
                     )
-                        ->morphology(MorphologyRegistry::ZALOG_STRADATELNYJ)
-                        ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
-                        ->morphology($chislo)
+                        ->morphologyEq(MorphologyRegistry::ZALOG_STRADATELNYJ)
+                        ->morphologyEq(MorphologyRegistry::FORMA_KRATKAYA)
+                        ->morphologyEq($chislo)
                 )
                 ->third(
                     $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                         ChastiRechiRegistry::GLAGOL
                     )
-                        ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BEFORE_DEPENDED)
-                        ->morphology($chislo)
+                        ->position(AssertedLinkBuilder::POSITION_BEFORE_DEPENDED)
+                        ->morphologyEq($chislo)
                         ->textGroupId(GroupIdRegistry::BIT)
 
                 );
 
 
         if ($rod !== null) {
-            $builder_main->morphology($rod);
-            $builder_depended->morphology($rod);
-            $builder_member->morphology($rod);
+            $builder_main->morphologyEq($rod);
+            $builder_depended->morphologyEq($rod);
+            $builder_member->morphologyEq($rod);
         }
 
 
@@ -1323,31 +1325,35 @@ TEXT;
 TEXT;
         $builder = \Aot\Sviaz\Rule\Builder2::create();
 
+//        print_r(MorphologyRegistry::getNullClasses()[MorphologyRegistry::LITSO][ChastiRechiRegistry::GLAGOL]);
         $builder->main(
             $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE,
                 RoleRegistry::VESCH
             )
-                ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
-                ->morphology($chislo)
+                ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                ->morphologyEq($chislo)
         )
             ->third(
                 $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                     ChastiRechiRegistry::GLAGOL
                 )
-                    ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BEFORE_DEPENDED)
+                    ->position(AssertedLinkBuilder::POSITION_BEFORE_DEPENDED)
                     ->textGroupId(GroupIdRegistry::BIT)
-                    ->morphology($chislo)
+                    ->morphologyEq($chislo)
             )
             ->depended(
                 \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                     ChastiRechiRegistry::GLAGOL,
                     RoleRegistry::OTNOSHENIE
                 )
-                    ->morphology(MorphologyRegistry::LITSO_NULL)
-//                ->morphology(MorphologyRegistry::NAKLONENIE_NULL)
-                    ->morphology(MorphologyRegistry::CHISLO_NULL)
-                    ->morphology(MorphologyRegistry::VREMYA_NULL)
+                    ->morphologyIs(MorphologyRegistry::LITSO)
+
+//                    ->morphologyIs(MorphologyRegistry::NAKLONENIE)
+
+                    ->morphologyIs(MorphologyRegistry::CHISLO)
+
+                    ->morphologyIs(MorphologyRegistry::VREMYA)
             )
             ->link(
                 AssertedLinkBuilder::create()
@@ -1355,8 +1361,8 @@ TEXT;
             );
 
         if ($rod !== null) {
-            $builder_main->morphology($rod);
-            $builder_member->morphology($rod);
+            $builder_main->morphologyEq($rod);
+            $builder_member->morphologyEq($rod);
         }
 
         $rule = $builder->get();
@@ -1414,8 +1420,8 @@ TEXT;
                         ChastiRechiRegistry::MESTOIMENIE,
                         RoleRegistry::VESCH
                     )
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
-                        ->morphology($chislo)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq($chislo)
                         ->textGroupId(GroupIdRegistry::ETOVSE)
                 )
                 ->depended(
@@ -1434,14 +1440,14 @@ TEXT;
                 ChastiRechiRegistry::GLAGOL
             )
                 ->textGroupId(GroupIdRegistry::BIT)
-                ->morphology($chislo)
+                ->morphologyEq($chislo)
 
         );
 
 
         if ($rod !== null) {
-            $builder_main->morphology($rod);
-            $builder_member->morphology($rod);
+            $builder_main->morphologyEq($rod);
+            $builder_member->morphologyEq($rod);
         }
 
 
@@ -1592,23 +1598,23 @@ TEXT;
                         ChastiRechiRegistry::MESTOIMENIE,
                         RoleRegistry::VESCH
                     )
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
-                        ->morphology($chislo)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq($chislo)
                 )
                 ->depended(
                     $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::PRILAGATELNOE,
                         RoleRegistry::SVOISTVO
                     )
-                        ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
-                        ->morphology($chislo)
+                        ->morphologyEq(MorphologyRegistry::FORMA_KRATKAYA)
+                        ->morphologyEq($chislo)
                 )
                 ->third(
                     $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                         ChastiRechiRegistry::GLAGOL
                     )
                         ->textGroupId(GroupIdRegistry::BIT)
-                        ->morphology($chislo)
+                        ->morphologyEq($chislo)
 
                 )
                 ->link(
@@ -1616,9 +1622,9 @@ TEXT;
                 );
 
         if ($rod !== null) {
-            $builder_main->morphology($rod);
-            $builder_depended->morphology($rod);
-            $builder_member->morphology($rod);
+            $builder_main->morphologyEq($rod);
+            $builder_depended->morphologyEq($rod);
+            $builder_member->morphologyEq($rod);
         }
 
         $rule = $builder->get();
@@ -1656,23 +1662,23 @@ TEXT;
                         ChastiRechiRegistry::SUSCHESTVITELNOE,
                         RoleRegistry::VESCH
                     )
-                        ->morphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
-                        ->morphology($chislo)
+                        ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->morphologyEq($chislo)
                 )
                 ->depended(
                     $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::PRILAGATELNOE,
                         RoleRegistry::SVOISTVO
                     )
-                        ->morphology(MorphologyRegistry::FORMA_KRATKAYA)
-                        ->morphology($chislo)
+                        ->morphologyEq(MorphologyRegistry::FORMA_KRATKAYA)
+                        ->morphologyEq($chislo)
                 )
                 ->third(
                     $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                         ChastiRechiRegistry::GLAGOL
                     )
                         ->textGroupId(GroupIdRegistry::BIT)
-                        ->morphology($chislo)
+                        ->morphologyEq($chislo)
 
                 )
                 ->link(
@@ -1680,9 +1686,9 @@ TEXT;
                 );
 
         if ($rod !== null) {
-            $builder_main->morphology($rod);
-            $builder_depended->morphology($rod);
-            $builder_member->morphology($rod);
+            $builder_main->morphologyEq($rod);
+            $builder_depended->morphologyEq($rod);
+            $builder_member->morphologyEq($rod);
         }
 
         $rule = $builder->get();
@@ -1785,37 +1791,37 @@ TEXT;
                         ChastiRechiRegistry::SUSCHESTVITELNOE,
                         RoleRegistry::VESCH
                     )
-                        ->morphology($padeszh)
-                        ->morphology($chislo)
+                        ->morphologyEq($padeszh)
+                        ->morphologyEq($chislo)
                 )
                 ->depended(
                     $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::CHISLITELNOE,
                         RoleRegistry::SVOISTVO
                     )
-                        ->morphology($padeszh)
+                        ->morphologyEq($padeszh)
                         # TODO: из морфика число для числительного не приходит (по крайней мере не для всех)
 //                        ->morphology($chislo)
-                        ->morphology(MorphologyRegistry::VID_CHISLITELNOGO_PORYADKOVIY)
+                        ->morphologyEq(MorphologyRegistry::VID_CHISLITELNOGO_PORYADKOVIY)
                 )
                 // TODO: не срабатывает
                 ->third(
                     $builder_member = \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                         ChastiRechiRegistry::SUSCHESTVITELNOE
                     )
-                        ->morphology($padeszh)
-                        ->morphology($chislo)
+                        ->morphologyEq($padeszh)
+                        ->morphologyEq($chislo)
                         ->notPresent()
-                        ->position(\Aot\Sviaz\Rule\AssertedMember\Third::POSITION_BETWEEN_MAIN_AND_DEPENDED)
+                        ->position(AssertedLinkBuilder::POSITION_BETWEEN_MAIN_AND_DEPENDED)
                 )
                 ->link(
                     AssertedLinkBuilder::create()
                 );
 
         if ($rod !== null) {
-            $builder_main->morphology($rod);
-            $builder_depended->morphology($rod);
-            $builder_member->morphology($rod);
+            $builder_main->morphologyEq($rod);
+            $builder_depended->morphologyEq($rod);
+            $builder_member->morphologyEq($rod);
         }
 
         $rule = $builder->get();

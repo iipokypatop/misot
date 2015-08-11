@@ -24,9 +24,6 @@ trait Persister
         return $this->dao;
     }
 
-    /**
-     *
-     */
     public function save()
     {
         $this->getEntityManager()->persist($this->dao);
