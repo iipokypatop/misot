@@ -40,6 +40,22 @@ class Registry
     }
 
     /**
+     * @param string $link_class
+     * @return int|null
+     */
+    public static function getIdLinkByClass($link_class)
+    {
+        foreach (static::getClasses() as $id => $class) {
+            if( $link_class === $class)
+            {
+                return $id;
+            }
+        }
+        return null;
+
+    }
+
+    /**
      * @return string
      */
     protected function getEntityClass()

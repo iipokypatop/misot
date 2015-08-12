@@ -12,10 +12,14 @@ namespace AotTest\Functional\Sviaz\Rule\AssertedMember;
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry;
+use Aot\Text\GroupIdRegistry;
 use MivarTest\PHPUnitHelper;
 
 
+use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
+use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedLink\Builder\Base as AssertedLinkBuilder;
+
 use Aot\Sviaz\Role\Registry as RoleRegistry;
 
 class BaseTest extends \AotTest\AotDataStorage
@@ -207,16 +211,21 @@ class BaseTest extends \AotTest\AotDataStorage
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::MESTOIMENIE, RoleRegistry::VESCH)
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::MESTOIMENIE,
+                        RoleRegistry::VESCH
+                    )
                         ->morphologyEq(MorphologyRegistry::RAZRYAD_LICHNOE)
                         ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                        ->textGroupId(GroupIdRegistry::NIKTO)
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
                         ChastiRechiRegistry::GLAGOL,
                         RoleRegistry::OTNOSHENIE
                     )
-
+                        ->check(MemberCheckerRegistry::ChasticaNePeredSlovom)
+                        ->text('Какой-то текст')
                 )
                 ->link(
                     AssertedLinkBuilder::create()
@@ -226,14 +235,21 @@ class BaseTest extends \AotTest\AotDataStorage
                         ->morphologyMatching(
                             MorphologyRegistry::CHISLO
                         )
+                    ->dependedAfterMain()
                 );
 
         $rule = $builder->get();
 
-//        print_r($builder);
-//        print_r($rule);
-//        print_r($rule->getDao());
-        $rule->save();
+//        $rule->getDao()
+//        $rule->getEntityManager()->persist($rule->getDao());
+        $link = $rule->getLinks()[0];
+
+//        $link->getEntityManager()->persist($link->getDao());
+
+//        $rule->getEntityManager()->persist($rule->getDao());
+
+//        $link->getEntityManager()->flush();
+        $link->save();
 //        $rule_dao = new \AotPersistence\Entities\Rule();
     }
 }

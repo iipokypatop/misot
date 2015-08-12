@@ -62,6 +62,22 @@ class Registry
     }
 
     /**
+     * @param $class_name
+     * @return int|null
+     */
+    public static function getIdByClass($class_name)
+    {
+        foreach (static::getClasses() as $id => $class) {
+            if ($class_name === $class) {
+                return $id;
+            }
+
+        }
+        return null;
+
+    }
+
+    /**
      * @return string
      */
     protected function getEntityClass()
@@ -82,7 +98,7 @@ class Registry
      */
     protected function getFields()
     {
-        return[
+        return [
             'name' => [static::class, 'getNames'],
         ];
     }

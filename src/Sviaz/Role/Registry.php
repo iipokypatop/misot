@@ -38,6 +38,21 @@ class Registry
     }
 
     /**
+     * @param string $role_class
+     * @return int|null
+     */
+    public static function getIdByClass($role_class)
+    {
+        foreach (static::getClasses() as $id => $class) {
+            if( $class === $role_class)
+            {
+                return $id;
+            }
+        }
+        return null;
+    }
+
+    /**
      * @return string
      */
     protected function getEntityClass()

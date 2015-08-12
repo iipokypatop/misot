@@ -9,10 +9,20 @@
 namespace Aot\Sviaz\Rule\AssertedLink\AssertedMatching;
 
 
+use Aot\Persister;
 use Aot\RussianMorphology\ChastiRechi\MorphologyBase;
+use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 
+/**
+ * Class MorphologyMatching
+ *
+ * @property \AotPersistence\Entities\MorphologyMatching $dao
+ * @package Aot\Sviaz\Rule\AssertedLink\AssertedMatching
+ */
 class MorphologyMatching extends Base
 {
+    use Persister;
+
     /** @var string */
     protected $asserted_left_class;
 
@@ -23,6 +33,8 @@ class MorphologyMatching extends Base
 
     /** @var  string */
     protected $asserted_right_class;
+
+    protected $message;
 
     /**
      * @param string $asserted_left_class
@@ -64,10 +76,19 @@ class MorphologyMatching extends Base
      */
     public static function create($asserted_left_class, MorphologyMatchingOperator\Base $operator, $asserted_right_class)
     {
-        return new static($asserted_left_class, $operator, $asserted_right_class);
+        $dao = new \AotPersistence\Entities\MorphologyMatching();
+        $ob = new static($asserted_left_class, $operator, $asserted_right_class);
+        $ob->setDao($dao);
+        $ob->assertFieldsDao();
+        return $ob;
     }
 
-    protected $message;
+    #todo
+    public static function createByDao(){
+        throw new \RuntimeException("Метод еще не реализован");
+    }
+
+
 
     /**
      * @param MorphologyBase|\Aot\Sviaz\SequenceMember\Base $actual_left
@@ -110,5 +131,75 @@ class MorphologyMatching extends Base
             $morphology_left,
             $morphology_right
         );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getEntityClass()
+    {
+        return \AotPersistence\Entities\MorphologyMatching::class;
+    }
+
+    /**
+     * @param \AotPersistence\Entities\MorphologyMatching $dao
+     */
+    protected function setDao($dao)
+    {
+        $this->dao = $dao;
+    }
+
+    /**
+     * @return \AotPersistence\Entities\MorphologyMatching
+     */
+    public function getDao()
+    {
+        return $this->dao;
+    }
+
+    protected function assertFieldsDao()
+    {
+        $left_morphology_id = MorphologyRegistry::getIdMorphologyByBaseClass($this->asserted_left_class);
+        $right_morphology_id = MorphologyRegistry::getIdMorphologyByBaseClass($this->asserted_left_class);
+        $operator_id = OperatorRegistry::getIdByObject($this->operator);
+
+        $entity_left_morphology =
+            $this
+                ->getEntityManager()
+                ->find(
+                    \AotPersistence\Entities\Morphology::class,
+                    $left_morphology_id
+                );
+
+        if( $entity_left_morphology === null){
+            throw new \RuntimeException("morphology with id = $left_morphology_id does not exists");
+        }
+
+        $entity_right_morphology =
+            $this
+                ->getEntityManager()
+                ->find(
+                    \AotPersistence\Entities\Morphology::class,
+                    $right_morphology_id
+                );
+
+        if( $entity_right_morphology === null){
+            throw new \RuntimeException("morphology with id = $right_morphology_id does not exists");
+        }
+
+        $entity_operator =
+            $this
+                ->getEntityManager()
+                ->find(
+                    \AotPersistence\Entities\Operator::class,
+                    $operator_id
+                );
+
+        if( $entity_operator === null){
+            throw new \RuntimeException("operator with id = $operator_id does not exists");
+        }
+        $this->dao->setRightMorphologyId($entity_right_morphology);
+        $this->dao->setLeftMorphologyId($entity_left_morphology);
+        $this->dao->setOperator($entity_operator);
     }
 }

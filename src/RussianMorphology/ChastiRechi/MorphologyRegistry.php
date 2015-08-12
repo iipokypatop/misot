@@ -633,6 +633,30 @@ class MorphologyRegistry extends MorphologyRegistryParent
         ];
     }
 
+    public static function getIdMorphologyByClass($morphology_class)
+    {
+        foreach (static::getClasses() as $variants) {
+            foreach ($variants as $id_morphology => $classes) {
+                if (in_array($morphology_class, $classes, true)) {
+                    return $id_morphology;
+                }
+            }
+
+
+        }
+        return null;
+    }
+
+    public static function getIdMorphologyByBaseClass($morphology_class)
+    {
+        foreach (static::getBaseClasses() as $id_morphology => $classes) {
+            if (in_array($morphology_class, $classes, true)) {
+                return $id_morphology;
+            }
+        }
+        return null;
+    }
+
     public static function getClassByChastRechiAndPriznak($chast_rechi_id, $priznak_id_input)
     {
         foreach (static::getClasses() as $priznak_group => $variants) {

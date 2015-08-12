@@ -9,9 +9,11 @@
 namespace Aot\Sviaz\Rule\AssertedMember;
 
 use Aot\Persister;
+use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyBase;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\RussianMorphology\Slovo;
+use Aot\Sviaz\Role\Registry;
 use Aot\Sviaz\SequenceMember;
 use Aot\Text\GroupIdRegistry;
 
@@ -89,6 +91,15 @@ class Base
         return $this->asserted_morphologies_classes;
     }
 
+
+    /**
+     * @return \AotPersistence\Entities\Member
+     */
+    public function getDao()
+    {
+        return $this->dao;
+    }
+
     public function assertText($asserted_text)
     {
         assert(is_string($asserted_text));
@@ -99,6 +110,13 @@ class Base
         if (isset($this->asserted_text_group_id))
             throw new \RuntimeException("asserted_text_group_id already defined");
 
+        #dao
+        // если нет в дао или не соответствует ID группы
+        if (empty($this->getDao()->getText())) {
+            // пишем в дао текст
+            $this->dao->setText($asserted_text);
+        }
+        #
         $this->asserted_text = $asserted_text;
     }
 
@@ -109,7 +127,6 @@ class Base
 
     public function assertTextGroupId($asserted_text_group_id)
     {
-
         assert(is_int($asserted_text_group_id));
 
         if (isset($this->asserted_text))
@@ -118,6 +135,27 @@ class Base
         if (!array_key_exists($asserted_text_group_id, GroupIdRegistry::getWordVariants())) {
             throw new \RuntimeException("unsupported group registry id = " . var_export($asserted_text_group_id, 1));
         }
+
+        #dao
+        // если нет в дао или не соответствует ID группы
+        if (empty($this->dao->getTextGroup()) || $this->dao->getTextGroup()->getId() !== $asserted_text_group_id) {
+            // пишем в дао id группы
+            /** @var \AotPersistence\Entities\TextGroup $entity_text_group */
+            $entity_text_group =
+                $this
+                    ->getEntityManager()
+                    ->find(
+                        \AotPersistence\Entities\TextGroup::class,
+                        $asserted_text_group_id
+                    );
+
+            if (empty($entity_text_group)) {
+                throw new \RuntimeException("unsupported group registry id = " . var_export($asserted_text_group_id, 1));
+            }
+
+            $this->dao->setTextGroup($entity_text_group);
+        }
+        #
 
         $this->asserted_text_group_id = $asserted_text_group_id;
     }
@@ -130,9 +168,29 @@ class Base
         assert(is_string($asserted_chast_rechi_class));
         assert(is_a($asserted_chast_rechi_class, Slovo::class, true));
 
-        # когда часть речи будет в базе
-//        $this->dao->setChastRechi($asserted_chast_rechi_class->getDao());
-//        $this->dao->setChastRechi($asserted_chast_rechi_class);
+        #dao
+        $id_chast_rechi = intval(ChastiRechiRegistry::getIdByClass($asserted_chast_rechi_class));
+        // если нет в дао или не соответствует ID части речи
+        if (empty($this->dao->getChastRechi()) || $this->dao->getChastRechi()->getId() !== $id_chast_rechi) {
+            // пишем в дао часть речи
+            /** @var \AotPersistence\Entities\ChastiRechi $entity_chast_rechi */
+            $entity_chast_rechi =
+                $this
+                    ->getEntityManager()
+                    ->find(
+                        \AotPersistence\Entities\ChastiRechi::class,
+                        $id_chast_rechi
+                    );
+
+            if (empty($entity_chast_rechi)) {
+                throw new \RuntimeException("unsupported chast rechi id = " . var_export($id_chast_rechi, 1));
+            }
+
+            $this->dao->setChastRechi($entity_chast_rechi);
+
+        }
+        #
+
         $this->asserted_chast_rechi_class = $asserted_chast_rechi_class;
     }
 
@@ -158,6 +216,33 @@ class Base
         if (!MorphologyRegistry::checkMatchByChastRechiClassAndPriznakClass($this->getAssertedChastRechiClass(), $morphology_class)) {
             throw new \RuntimeException("chastRechi and priznakClass does not match");
         }
+
+        #dao
+        // пишем в dao морфологию
+        $id_morphology = MorphologyRegistry::getIdMorphologyByClass($morphology_class);
+
+        /** @var \AotPersistence\Entities\Morphology $entity */
+        $entity =
+            $this
+                ->getEntityManager()
+                ->find(
+                    \AotPersistence\Entities\Morphology::class,
+                    $id_morphology
+                );
+
+        if (empty($entity)) {
+            throw new \RuntimeException("morphology class is not defined");
+        }
+
+        // если нет в дао или не соответствует ID морфологии
+        if (
+            $this->dao->getMorphologies()->isEmpty()
+            || false === $this->dao->getMorphologies()->contains($entity)
+        ) {
+            $this->dao->addMorphology($entity);
+        }
+        #
+
         $this->asserted_morphologies_classes[] = $morphology_class;
     }
 
@@ -173,6 +258,35 @@ class Base
         if (!is_a($checker_class, \Aot\Sviaz\Rule\AssertedMember\Checker\Base::class, true)) {
             throw new \RuntimeException("unsupported checker class $checker_class");
         }
+
+
+        #dao
+        // пишем в dao чекер
+        $id_checker = Checker\Registry::getIdCheckerByClass($checker_class);
+
+        /** @var \AotPersistence\Entities\MemberChecker $entity */
+        $entity =
+            $this
+                ->getEntityManager()
+                ->find(
+                    \AotPersistence\Entities\MemberChecker::class,
+                    $id_checker
+                );
+
+        if (empty($entity)) {
+            throw new \RuntimeException("morphology class is not defined");
+        }
+
+        // если нет в дао или не соответствует ID чекера
+        if (
+            $this->dao->getCheckers()->isEmpty()
+            || false === $this->dao->getCheckers()->contains($entity)
+        ) {
+            $this->dao->addChecker($entity);
+        }
+        #
+
+
         $this->checker_classes[] = $checker_class;
     }
 
@@ -190,7 +304,6 @@ class Base
      */
     public function setRole(\Aot\Sviaz\Role\Base $role)
     {
-//        $this->dao->setRole($role->getDao);
         $this->role = $role;
     }
 
@@ -201,7 +314,30 @@ class Base
     {
         assert(is_string($role_class));
         assert(is_a($role_class, \Aot\Sviaz\Role\Base::class, true));
-//        $this->dao->setRole($role_class);
+
+        # dao
+        $id_role = Registry::getIdByClass($role_class);
+        // если нет в дао или не соответствует ID роли
+        if (empty($this->dao->getRole()) || $this->dao->getRole()->getId() !== $id_role) {
+            // пишем в дао роль
+            /** @var \AotPersistence\Entities\Role $entity_role */
+            $entity_role =
+                $this
+                    ->getEntityManager()
+                    ->find(
+                        \AotPersistence\Entities\Role::class,
+                        $id_role
+                    );
+
+            if (empty($entity_role)) {
+                throw new \RuntimeException("unsupported role id = " . var_export($id_role, 1));
+            }
+
+            $this->dao->setRole($entity_role);
+
+        }
+        #
+
         $this->role_class = $role_class;
     }
 

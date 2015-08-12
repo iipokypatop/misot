@@ -10,6 +10,7 @@ namespace Aot\Sviaz\Rule\AssertedLink;
 
 
 use Aot\Persister;
+use Aot\Sviaz\Podchinitrelnaya\Registry;
 
 /**
  * Class Base
@@ -55,6 +56,32 @@ class Base
         if (!is_a($type_class, \Aot\Sviaz\Podchinitrelnaya\Base::class, true)) {
             throw new \RuntimeException("incorrect type_class " . var_export($type_class, 1));
         }
+
+        #dao
+        // @todo temporary!
+        $id_type_class = Registry::getIdLinkByClass(\Aot\Sviaz\Podchinitrelnaya\Soglasovanie::class);
+
+        // если нет в дао или не соответствует ID части речи
+        if (empty($this->dao->getTypeLink()) || $this->dao->getTypeLink()->getId() !== $id_type_class) {
+            // пишем в дао часть речи
+            /** @var \AotPersistence\Entities\TypeLink $entity_type_link */
+            $entity_type_link =
+                $this
+                    ->getEntityManager()
+                    ->find(
+                        \AotPersistence\Entities\TypeLink::class,
+                        $id_type_class
+                    );
+
+            if (empty($entity_type_link)) {
+                throw new \RuntimeException("unsupported type link id = " . var_export($id_type_class, 1));
+            }
+
+            $this->dao->setTypeLink($entity_type_link);
+
+        }
+        #
+//        print_r($this->dao);
 
         $this->type_class = $type_class;
     }
@@ -116,10 +143,11 @@ class Base
     }
 
     /**
-     * @param AssertedMatching\Base $asserted_matching
+     * @param AssertedMatching\Base|AssertedMatching\MorphologyMatching $asserted_matching
      */
     public function addAssertedMatching(\Aot\Sviaz\Rule\AssertedLink\AssertedMatching\Base $asserted_matching)
     {
+        $this->dao->addMatching($asserted_matching->getDao());
         $this->asserted_matchings[] = $asserted_matching;
     }
 
@@ -149,6 +177,8 @@ class Base
      */
     public function addChecker(\Aot\Sviaz\Rule\AssertedLink\Checker\Base $checker)
     {
+        $this->dao->addChecker($checker->getDao());
+//        print_r($checker->getDao());
         $this->asserted_checkers[] = $checker;
     }
 

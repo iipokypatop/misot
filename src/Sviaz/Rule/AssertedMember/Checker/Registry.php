@@ -26,6 +26,17 @@ class Registry
         ];
     }
 
+    public static function getIdCheckerByClass($checker_class)
+    {
+        foreach (static::getClasses() as $id => $class) {
+            if( $checker_class === $class)
+            {
+                return $id;
+            }
+        }
+        return null;
+
+    }
     public static function getNames()
     {
         return [
