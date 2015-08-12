@@ -240,16 +240,19 @@ class BaseTest extends \AotTest\AotDataStorage
 
         $rule = $builder->get();
 
-//        $rule->getDao()
-//        $rule->getEntityManager()->persist($rule->getDao());
         $link = $rule->getLinks()[0];
 
-//        $link->getEntityManager()->persist($link->getDao());
+        $matchings = $link->getDao()->getMatchings();
+        /** @var \Doctrine\Common\Collections\ArrayCollection $matchings */
+        $iterator = $matchings->getIterator();
+        foreach ($iterator as $it) {
+            /** @var \AotPersistence\Entities\Link $link_entity */
+            $link_entity = $link->getDao();
 
-//        $rule->getEntityManager()->persist($rule->getDao());
+            /** @var \AotPersistence\Entities\MorphologyMatching $it */
+            $it->setLink($link_entity);
+        }
 
-//        $link->getEntityManager()->flush();
         $link->save();
-//        $rule_dao = new \AotPersistence\Entities\Rule();
     }
 }
