@@ -178,7 +178,6 @@ class Base
     public function addChecker(\Aot\Sviaz\Rule\AssertedLink\Checker\Base $checker)
     {
         $this->dao->addChecker($checker->getDao());
-//        print_r($checker->getDao());
         $this->asserted_checkers[] = $checker;
     }
 

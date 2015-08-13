@@ -24,9 +24,13 @@ trait Persister
         return $this->dao;
     }
 
-    public function save()
+    public function persist()
     {
         $this->getEntityManager()->persist($this->dao);
+    }
+
+    public function flush()
+    {
         $this->getEntityManager()->flush();
     }
 

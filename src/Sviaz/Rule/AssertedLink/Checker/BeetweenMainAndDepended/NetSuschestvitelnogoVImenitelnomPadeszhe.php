@@ -66,9 +66,4 @@ class NetSuschestvitelnogoVImenitelnomPadeszhe extends Base
 
         return $result;
     }
-
-    public static function create()
-    {
-        return new static();
-    }
 }

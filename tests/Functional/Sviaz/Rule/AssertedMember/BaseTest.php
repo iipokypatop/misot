@@ -12,6 +12,7 @@ namespace AotTest\Functional\Sviaz\Rule\AssertedMember;
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry;
+use Aot\Sviaz\Rule\Container;
 use Aot\Text\GroupIdRegistry;
 use MivarTest\PHPUnitHelper;
 
@@ -205,7 +206,7 @@ class BaseTest extends \AotTest\AotDataStorage
         $depended = \Aot\Sviaz\Rule\AssertedMember\Depended::createByDao($member_dao);
     }
 
-    public function testDao()
+    public function testSaveDao()
     {
 //        $this->markTestSkipped();
         $builder =
@@ -236,23 +237,49 @@ class BaseTest extends \AotTest\AotDataStorage
                             MorphologyRegistry::CHISLO
                         )
                     ->dependedAfterMain()
+
                 );
 
         $rule = $builder->get();
 
+        # сохраняем связь в БД
         $link = $rule->getLinks()[0];
 
-        $matchings = $link->getDao()->getMatchings();
-        /** @var \Doctrine\Common\Collections\ArrayCollection $matchings */
-        $iterator = $matchings->getIterator();
-        foreach ($iterator as $it) {
-            /** @var \AotPersistence\Entities\Link $link_entity */
-            $link_entity = $link->getDao();
+//        $matchings = $link->getDao()->getMatchings();
+//
+//        /** @var \Doctrine\Common\Collections\ArrayCollection $matchings */
+//        foreach ($matchings->getIterator() as $matching) {
+//
+//            /** @var \AotPersistence\Entities\Link $link_entity */
+//            $link_entity = $link->getDao();
+//
+//            /** @var \AotPersistence\Entities\MorphologyMatching $matching */
+//            $matching->setLink($link_entity);
+//        }
 
-            /** @var \AotPersistence\Entities\MorphologyMatching $it */
-            $it->setLink($link_entity);
+//        $link->persist();
+//        $link->flush();
+        #
+    }
+    public function testSaveRules()
+    {
+        $methods = get_class_methods(Container::class);
+        print_r($methods);
+        foreach ($methods as $id => $method) {
+            // пропускаем старые правила
+            if( $id > 5)
+            {
+                try{
+                    $rule = Container::$method();
+                }
+                catch(\RuntimeException $e)
+                {
+                    print_r([$id => $e->getMessage()]);
+                }
+            }
+//            print_r($rule);
         }
 
-        $link->save();
+
     }
 }

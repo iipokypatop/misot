@@ -30,8 +30,8 @@ class Third extends Base
     /** @var $member \Aot\Sviaz\Rule\AssertedMember\Third */
     protected $member;
 
-    protected $member_position = GroupIdRegistry::POSITION_ANY;
-    protected $member_presence = GroupIdRegistry::PRESENCE_PRESENT;
+    protected $member_position = PositionRegistry::POSITION_ANY;
+    protected $member_presence = PresenceRegistry::PRESENCE_PRESENT;
 
     /**
      * @param int $chast_rechi_id
@@ -63,12 +63,12 @@ class Third extends Base
         assert(is_int($position_id));
 
         if (!in_array($position_id, [
-            GroupIdRegistry::POSITION_ANY,
-            GroupIdRegistry::POSITION_BETWEEN_MAIN_AND_DEPENDED,
-            GroupIdRegistry::POSITION_AFTER_MAIN,
-            GroupIdRegistry::POSITION_BEFORE_MAIN,
-            GroupIdRegistry::POSITION_AFTER_DEPENDED,
-            GroupIdRegistry::POSITION_BEFORE_DEPENDED,
+            PositionRegistry::POSITION_ANY,
+            PositionRegistry::POSITION_BETWEEN_MAIN_AND_DEPENDED,
+            PositionRegistry::POSITION_AFTER_MAIN,
+            PositionRegistry::POSITION_BEFORE_MAIN,
+            PositionRegistry::POSITION_AFTER_DEPENDED,
+            PositionRegistry::POSITION_BEFORE_DEPENDED,
         ], true)
         ) {
             throw new \RuntimeException("unsupported position_id = $position_id");
