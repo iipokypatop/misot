@@ -236,7 +236,7 @@ class BaseTest extends \AotTest\AotDataStorage
                         ->morphologyMatching(
                             MorphologyRegistry::CHISLO
                         )
-                    ->dependedAfterMain()
+                        ->dependedAfterMain()
 
                 );
 
@@ -257,23 +257,39 @@ class BaseTest extends \AotTest\AotDataStorage
 //            $matching->setLink($link_entity);
 //        }
 
-//        $link->persist();
-//        $link->flush();
+        $link->persist();
+        $link->flush();
         #
     }
+
     public function testSaveRules()
     {
         $methods = get_class_methods(Container::class);
-        print_r($methods);
+//        print_r($methods);
         foreach ($methods as $id => $method) {
             // пропускаем старые правила
-            if( $id > 5)
-            {
-                try{
+            if ($id > 5) {
+                try {
                     $rule = Container::$method();
-                }
-                catch(\RuntimeException $e)
-                {
+                    if( is_array($rule))
+                    {
+                        foreach ($rule as $rule_item) {
+
+                            $link = $rule_item->getLinks()[0];
+
+                            $link->persist();
+                            $link->flush();
+                        }
+
+                    }
+                    else{
+
+                        $link = $rule->getLinks()[0];
+
+                        $link->persist();
+                        $link->flush();
+                    }
+                } catch (\RuntimeException $e) {
                     print_r([$id => $e->getMessage()]);
                 }
             }

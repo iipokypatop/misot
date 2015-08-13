@@ -1349,8 +1349,6 @@ TEXT;
                 )
                     ->morphologyIs(MorphologyRegistry::LITSO)
 
-//                    ->morphologyIs(MorphologyRegistry::NAKLONENIE)
-
                     ->morphologyIs(MorphologyRegistry::CHISLO)
 
                     ->morphologyIs(MorphologyRegistry::VREMYA)

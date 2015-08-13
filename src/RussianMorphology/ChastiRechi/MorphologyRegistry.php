@@ -635,6 +635,12 @@ class MorphologyRegistry extends MorphologyRegistryParent
 
     public static function getIdMorphologyByClass($morphology_class)
     {
+        foreach (static::getNullClasses() as $id_morphology => $classes) {
+            if (in_array($morphology_class, $classes, true)) {
+                return $id_morphology;
+            }
+        }
+
         foreach (static::getClasses() as $variants) {
             foreach ($variants as $id_morphology => $classes) {
                 if (in_array($morphology_class, $classes, true)) {
@@ -680,10 +686,8 @@ class MorphologyRegistry extends MorphologyRegistryParent
     {
         $chast_rechi_id = ChastiRechiRegistry::getIdByClass($chast_rechi_class);
         foreach (static::getNullClasses() as $priznak_group => $variants) {
-            foreach ($variants as $priznak_id => $classes) {
-                if (!empty($variants[$chast_rechi_id]) && $classes[$chast_rechi_id] === $priznak_class_input) {
-                    return true;
-                }
+            if (!empty($variants[$chast_rechi_id]) && $variants[$chast_rechi_id] === $priznak_class_input) {
+                return true;
             }
         }
 

@@ -46,7 +46,7 @@ class Base
      */
     public function assertThird(\Aot\Sviaz\Rule\AssertedMember\Third $asserted_member)
     {
-        $this->dao->setThird($asserted_member->getDao());
+//        $this->dao->setThird($asserted_member->getDao());
         $this->asserted_third = $asserted_member;
     }
 
