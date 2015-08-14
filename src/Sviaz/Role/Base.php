@@ -15,4 +15,5 @@ class Base
     {
         return new static();
     }
+
 }

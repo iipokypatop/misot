@@ -192,9 +192,9 @@ TEXT;
     protected function getMorphologyMatching()
     {
         $MorphologyMatching = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
-            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base::class,
+            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base::class,
             \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
-            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base::class
+            \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Base::class
         );
 
         return $MorphologyMatching;
@@ -244,7 +244,7 @@ TEXT;
             \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE
             )
-                ->position(Predlog::POSITION_BEFORE_DEPENDED)
+                ->position(PositionRegistry::POSITION_BEFORE_DEPENDED)
                 ->text("text text");
 
 

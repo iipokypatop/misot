@@ -9,11 +9,13 @@
 namespace AotTest\Functional\Sviaz\Rule\AssertedMember;
 
 
+use Aot\Persister;
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry;
 use Aot\Sviaz\Rule\Container;
 use Aot\Text\GroupIdRegistry;
+use Doctrine\ORM\EntityManager;
 use MivarTest\PHPUnitHelper;
 
 
@@ -25,6 +27,7 @@ use Aot\Sviaz\Role\Registry as RoleRegistry;
 
 class BaseTest extends \AotTest\AotDataStorage
 {
+    use Persister;
     public function testAssertTextGroupIdThrowsExceptionAfterDefiningText()
     {
 
@@ -264,6 +267,7 @@ class BaseTest extends \AotTest\AotDataStorage
 
     public function testSaveRules()
     {
+        $this->markTestSkipped();
         $methods = get_class_methods(Container::class);
 //        print_r($methods);
         foreach ($methods as $id => $method) {
@@ -290,12 +294,33 @@ class BaseTest extends \AotTest\AotDataStorage
                         $link->flush();
                     }
                 } catch (\RuntimeException $e) {
-                    print_r([$id => $e->getMessage()]);
+//                    print_r([$id => $e->getMessage()]);
                 }
             }
 //            print_r($rule);
         }
+    }
 
+    public function testLoadRules()
+    {
+        $this->markTestSkipped();
+        $em = $this->getEntityManager();
+        /** @var \AotPersistence\Entities\Rule $rule_entity */
+        $rule_entity = $em->find(\AotPersistence\Entities\Rule::class, 115);
 
+        $rule = \Aot\Sviaz\Rule\Base::createByDao($rule_entity);
+        $main = $rule->getAssertedMain();
+        $role = $main->getRoleClass();
+//        print_r($main->getDao()->getId());
+//        $rule->getAssertedMain()->get();
+
+    }
+
+    /**
+     * @return string
+     */
+    protected function getEntityClass()
+    {
+        // TODO: Implement getEntityClass() method.
     }
 }

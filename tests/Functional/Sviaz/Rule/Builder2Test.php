@@ -57,7 +57,7 @@ class Builder2Test extends \AotTest\AotDataStorage
             \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE
             )
-                ->position(AssertedLinkBuilder::POSITION_AFTER_DEPENDED)
+                ->position(PositionRegistry::POSITION_AFTER_DEPENDED)
                 ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
         );
 

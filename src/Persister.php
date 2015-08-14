@@ -8,21 +8,11 @@
 
 namespace Aot;
 
-use \AotPersistence\API\AotAPI;
 
 
 trait Persister
 {
-    protected $dao;
-    protected $conn_db = "host=192.168.10.51 dbname=misot user=postgres password=@Mivar123User@";
-
-    /**
-     * @return object
-     */
-    public function getDao()
-    {
-        return $this->dao;
-    }
+    use DaoAccessor;
 
     public function persist()
     {
@@ -33,7 +23,6 @@ trait Persister
     {
         $this->getEntityManager()->flush();
     }
-
 
     /**
      * @param int $id
@@ -49,11 +38,4 @@ trait Persister
      */
     abstract protected function getEntityClass();
 
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    public function getEntityManager()
-    {
-        return AotAPI::getAPI($this->conn_db);
-    }
 }

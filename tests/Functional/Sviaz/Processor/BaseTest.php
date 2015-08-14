@@ -507,7 +507,7 @@ TEXT;
                     )
                         ->text('облака')
                         ->notPresent()
-                        ->position(AssertedLinkBuilder::POSITION_AFTER_MAIN)
+                        ->position(PositionRegistry::POSITION_AFTER_MAIN)
                 );
 
 

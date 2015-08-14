@@ -79,7 +79,7 @@ class MorphologyMatching extends Base
         $dao = new \AotPersistence\Entities\MorphologyMatching();
         $ob = new static($asserted_left_class, $operator, $asserted_right_class);
         $ob->setDao($dao);
-        $ob->assertFieldsDao();
+        $ob->setFieldsDao();
         return $ob;
     }
 
@@ -157,10 +157,10 @@ class MorphologyMatching extends Base
         return $this->dao;
     }
 
-    protected function assertFieldsDao()
+    protected function setFieldsDao()
     {
         $left_morphology_id = MorphologyRegistry::getIdMorphologyByBaseClass($this->asserted_left_class);
-        $right_morphology_id = MorphologyRegistry::getIdMorphologyByBaseClass($this->asserted_left_class);
+        $right_morphology_id = MorphologyRegistry::getIdMorphologyByBaseClass($this->asserted_right_class);
         $operator_id = OperatorRegistry::getIdByObject($this->operator);
 
         $entity_left_morphology =
