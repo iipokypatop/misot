@@ -37,12 +37,18 @@ class BaseTest extends \AotTest\AotDataStorage
         $rule = $this->getRule1();
         $rule = $this->getRule2();
 
-        $link_container = $processor->go(
+        $sequences = $processor->go(
             $this->getNormalizedMatrix1(),
             [$rule]
         );
 
-        $result = array_filter($link_container);
+
+        $sviazi_container = [];
+        foreach ($sequences as $index => $sequence) {
+            $sviazi_container[$index] = $sequence->getSviazi();
+        }
+
+        $result = array_filter($sviazi_container);
 
         $pretty = $this->pretty(
             $result
@@ -201,13 +207,19 @@ RULE;
         $rule = $this->getRule1();
 
 
-        $result = $processor->go(
+        $sequences = $processor->go(
             $this->getNormalizedMatrix1(),
             [$rule]
         );
 
+        $sviazi_container = [];
+        foreach ($sequences as $index => $sequence) {
+            $sviazi_container[$index] = $sequence->getSviazi();
+        }
+
+
         $pretty = $this->pretty(
-            $result
+            $sviazi_container
         );
 
         //echo join("\n", $pretty);
@@ -219,7 +231,7 @@ RULE;
         $processor = \Aot\Sviaz\Processor\Base::create();
 
 
-        $result = $processor->go(
+        $sequences = $processor->go(
             $this->getNormalizedMatrix1(),
             array_merge([
                 \Aot\Sviaz\Rule\Container::getRule1(),
@@ -232,8 +244,15 @@ RULE;
             )
         );
 
+
+
+        $sviazi_container = [];
+        foreach ($sequences as $index => $sequence) {
+            $sviazi_container[$index] = $sequence->getSviazi();
+        }
+
         $pretty = $this->pretty(
-            $result
+            $sviazi_container
         );
 
         //echo join("\n", $pretty);
@@ -515,12 +534,18 @@ TEXT;
 
         $processor = \Aot\Sviaz\Processor\Base::create();
 
-        $result = $processor->go(
+        $sequences = $processor->go(
             $this->getNormalizedMatrix1(),
             [$rule]
         );
 
-        $result = array_filter($result);
+
+        $sviazi_container = [];
+        foreach ($sequences as $index => $sequence) {
+            $sviazi_container[$index] = $sequence->getSviazi();
+        }
+
+        $result = array_filter($sviazi_container);
 
         $pretty = $this->pretty(
             $result

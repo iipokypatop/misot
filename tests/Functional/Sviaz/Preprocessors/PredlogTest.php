@@ -51,6 +51,7 @@ class PredlogTest extends \AotTest\AotDataStorage
         $this->assertEquals(9, count($raw_sequence));
 
 
+        /** @var \Aot\Sviaz\SequenceMember\Base[] $sequence */
         $sequence = $predlog->run($raw_sequence);
 
 
@@ -68,6 +69,7 @@ class PredlogTest extends \AotTest\AotDataStorage
 
         $this->assertInstanceOf(\Aot\Sviaz\SequenceMember\Word\WordWithPreposition::class, $sequence[4]);
         $this->assertEquals('на', PHPUnitHelper::getProtectedProperty($sequence[4]->getPredlog(), 'text'));
+
         $this->assertEquals('электроэнергию', PHPUnitHelper::getProtectedProperty($sequence[4]->getSlovo(), 'text'));
 
         $this->assertInstanceOf(\Aot\Sviaz\SequenceMember\Word\Base::class, $sequence[5]);

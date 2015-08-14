@@ -24,6 +24,7 @@ class MorphologyRegistry extends MorphologyRegistryParent
 
     const CHISLO_EDINSTVENNOE = 3001;
     const CHISLO_MNOZHESTVENNOE = 3002;
+    const CHISLO_NULL = 3003;
 
     const SKLONENIE_PERVOE = 4001;
     const SKLONENIE_VTOROE = 4002;
@@ -74,15 +75,21 @@ class MorphologyRegistry extends MorphologyRegistryParent
     const NAKLONENIE_IZYAVITELNOE = 16001;
     const NAKLONENIE_POVELITELNOE = 16002;
     const NAKLONENIE_YSLOVNOE = 16003;
+    const NAKLONENIE_NULL = 16004;
 
+    const VREMYA = 17000;
     const VREMYA_BUDUSCHEE = 17001;
     const VREMYA_NASTOYASCHEE = 17002;
     const VREMYA_PROSHEDSHEE = 17003;
+    const VREMYA_NULL = 17004;
 
+    const LITSO = 18000;
     const LITSO_PERVOE = 18001;
     const LITSO_TRETIE = 18002;
     const LITSO_VTOROE = 18003;
+    const LITSO_NULL = 18004;
 
+    const ODUSHEVLYONNOST = 19000;
     const ODUSHEVLYONNOST_ODUSHEVLYONNOE = 19001;
     const ODUSHEVLYONNOST_NEODUSHEVLYONNOE = 19002;
 
@@ -115,7 +122,9 @@ class MorphologyRegistry extends MorphologyRegistryParent
 
             static::CHISLO_EDINSTVENNOE => 'единственное число',
             static::CHISLO_MNOZHESTVENNOE => 'множественное число',
+            static::CHISLO_NULL => '',
 
+            static::SKLONENIE => 'склонение',
             static::SKLONENIE_PERVOE => 'первое склонение',
             static::SKLONENIE_VTOROE => 'второе склонение',
             static::SKLONENIE_TRETIE => 'третье склонение',
@@ -126,9 +135,11 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::PEREHODNOST_PEREHODNII => 'переходный',
             static::PEREHODNOST_NEPEREHODNII => 'непереходный',
 
+            static::ODUSHEVLENNOST => 'одушевленность',
             static::ODUSHEVLENNOST_ODUSHEVLENNOE => 'одушевленноеы',
             static::ODUSHEVLENNOST_NEODUSHEVLENNOE => 'неодушевленное',
 
+            static::RAZRYAD => 'разряд',
             static::RAZRYAD_KACHESTVENNOE => 'качественное',
             static::RAZRYAD_OTNOSITELNOE => 'относительное',
             static::RAZRYAD_PRITYAZHATELNOE => 'притяжательное',
@@ -140,36 +151,47 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::RAZRYAD_UKAZATELNOE => 'указательное',
             static::RAZRYAD_VOPROSITELNOE => 'вопросительное',
 
+            static::FORMA => 'форма',
             static::FORMA_POLNAYA => 'полная',
             static::FORMA_KRATKAYA => 'краткая',
 
+            static::STEPEN_SRAVNENIYA => 'степень сравнения',
             static::STEPEN_SRAVNENIYA_POLOZHITELNAYA => 'положительная',
             static::STEPEN_SRAVNENIYA_SRAVNITELNAYA => 'сравнительная',
             static::STEPEN_SRAVNENIYA_PREVOSHODNAYA => 'превосходная',
 
+            static::VID => 'вид',
             static::VID_SOVERSHENNYJ => 'совершенный',
             static::VID_NESOVERSHENNYJ => 'несовершенный',
 
             static::VOZVRATNOST_VOZVRATNYJ => 'возвратный',
             static::VOZVRATNOST_NEVOZVRATNYJ => 'невозвратный',
 
+            static::ZALOG => 'залог',
             static::ZALOG_DEJSTVITELNYJ => 'действительный',
             static::ZALOG_STRADATELNYJ => 'страдательный',
 
+            static::SPRYAZHENIE => 'спряжение',
             static::SPRYAZHENIE_PERVOE => 'первое',
             static::SPRYAZHENIE_VTOROE => 'второе',
 
+            static::NAKLONENIE => 'наклонение',
             static::NAKLONENIE_IZYAVITELNOE => 'изъявительное',
             static::NAKLONENIE_POVELITELNOE => 'повелительное',
             static::NAKLONENIE_YSLOVNOE => 'условное',
+            static::NAKLONENIE_NULL => '',
 
+            static::VREMYA => 'время',
             static::VREMYA_BUDUSCHEE => 'будущее',
             static::VREMYA_NASTOYASCHEE => 'настоящее',
             static::VREMYA_PROSHEDSHEE => 'прошедшее',
+            static::VREMYA_NULL => '',
 
+            static::LITSO => 'лицо',
             static::LITSO_PERVOE => 'первое',
             static::LITSO_VTOROE => 'второе',
             static::LITSO_TRETIE => 'третье',
+            static::LITSO_NULL => '',
 
             static::ODUSHEVLYONNOST_ODUSHEVLYONNOE => 'одушевленное',
             static::ODUSHEVLYONNOST_NEODUSHEVLYONNOE => 'неодушевленное',
@@ -177,6 +199,7 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::NARITCATELNOST_IMIA_NARITCATELNOE => 'нарицательное',
             static::NARITCATELNOST_IMIA_SOBSTVENNOE => 'собственное',
 
+            static::PODVID => 'подвид',
             static::PODVID_PROSTOY => 'простое',
             static::PODVID_SOSTAVNOY => 'составное',
 
@@ -514,14 +537,37 @@ class MorphologyRegistry extends MorphologyRegistryParent
         return $priznaki;
     }
 
+    protected static $getMorphologyGroupIdCache;
+
+    public static function getMorphologyGroupId()
+    {
+        if (null !== static::$getMorphologyGroupIdCache) {
+            return static::$getMorphologyGroupIdCache;
+        }
+
+        static::$getMorphologyGroupIdCache = [];
+
+        foreach (static::getClasses() as $priznak => $variant_groups) {
+            foreach ($variant_groups as $variant_group_id => $variant_group) {
+                foreach ($variant_group as $id => $variant) {
+                    static::$getMorphologyGroupIdCache[$variant] = $variant_group_id;
+                }
+            }
+        }
+
+        return static::$getMorphologyGroupIdCache;
+    }
+
+
     public static function getVariantsLvl2()
     {
         $tmp = [];
-        foreach (static::getClasses() as $priznak => $variants) {
-            $tmp = array_merge(
-                $tmp,
-                array_values($variants)
-            );
+        foreach (static::getClasses() as $priznak => $variant_groups) {
+            foreach ($variant_groups as $variant_group_id => $variant_group) {
+                foreach ($variant_group as $id => $variant) {
+                    $tmp[$variant] = $variant_group_id;
+                }
+            }
         }
         return $tmp;
     }
@@ -794,5 +840,33 @@ class MorphologyRegistry extends MorphologyRegistryParent
                 ChastiRechiRegistry::CHISLITELNOE => \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Null::class,
             ],
         ];
+    }
+
+    public static function getGroupIdByPriznakClass($priznak_class_input)
+    {
+        foreach (static::getClasses() as $priznak_group_id => $variants) {
+            foreach ($variants as $priznak_id => $classes) {
+                foreach ($classes as $chast_rechi_id => $priznak_class) {
+                    if ($priznak_class_input === $priznak_class) {
+                        return $priznak_group_id;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public static function getVariantIdByPriznakClass($priznak_class_input)
+    {
+        foreach (static::getClasses() as $priznak_group_id => $variants) {
+            foreach ($variants as $variant_id => $classes) {
+                foreach ($classes as $chast_rechi_id => $priznak_class) {
+                    if ($priznak_class_input === $priznak_class) {
+                        return $variant_id;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

@@ -7,8 +7,8 @@ use Aot\RussianMorphology\Slovo;
  * Class Base
  * @package Aot\RussianMorphology\ChastiRechi\Prichastie
  * @property Morphology\Chislo\Base $chislo
- * @property Morphology\Forma\Base $litso
- * @property Morphology\Padeszh\Base $naklonenie
+ * @property Morphology\Forma\Base $forma
+ * @property Morphology\Padeszh\Base $padeszh
  * @property Morphology\Perehodnost\Base $perehodnost
  * @property Morphology\Rod\Base $rod
  * @property Morphology\Vid\Base $vid

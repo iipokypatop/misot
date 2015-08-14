@@ -1,68 +1,38 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: p.semenyuk
+ * Date: 31.07.2015
+ * Time: 12:23
+ */
 
-use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
-use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
-use Aot\Sviaz\Role\Registry as RoleRegistry;
-use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
-use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
-use Aot\Text\GroupIdRegistry as GroupIdRegistry;
+$action = null;
 
-
-//\Aot\View\Charger::charge($_POST);
-
-
-echo "<pre>",
-var_export($_POST, 1),
-
-"</pre>";
-
-
-$mainView = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\View::create();
-
-$dependedView = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\View::create();
-
-$linkView = \Aot\Sviaz\Rule\AssertedLink\Builder\View::create();
-
-
-$id = null;
-if (!empty($_GET['id'])) {
-    if (preg_match("/\\d+/", $_GET['id'])) {
-        $id = intval($_GET['id']);
-    }
+if (empty($_GET['action'])) {
+    die('unknown action');
 }
 
-if (is_int($id)) {
-    if (empty($_POST)) {
-        // read
-        // get from db
-        trigger_error("no db yet");
-    } else {
-        // update
-        // save
-    }
-} else {
-    if (empty($_POST)) {
-        // blank form
-    } else {
+$action = strtolower($_GET['action']);
 
-        // create
-    }
-}
+switch ($action) :
+
+    case strtolower('showRules'):
+        $body = __DIR__ . '/ShowRules/ctrl.php';
+        $script = '/pages/rule/ShowRules/script.js';
+        break;
+
+    case strtolower('showParseResult'):
+        $body = __DIR__ . '/ShowParseResult/ctrl.php';
+        break;
+    case strtolower('Test'):
+        $body = __DIR__ . '/Test/ctrl.php';
+        $script = '/pages/rule/Test/script.js';
+        break;
+
+    case strtolower('inputText'):
+    default:
+        $body = __DIR__ . '/InputText/ctrl.php';
+endswitch;
+
 
 require __DIR__ . '/view.php';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

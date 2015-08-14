@@ -271,10 +271,17 @@ class BaseTestRules extends \AotTest\AotDataStorage
     protected function getStrRule(\Aot\Sviaz\Processor\Base $processor, \Aot\Text\NormalizedMatrix $normalized_matrix, $rule)
     {
         //todo переделать на $this->pretty()
-        $link_container = $processor->go($normalized_matrix, [$rule]);
+        $sequences = $processor->go($normalized_matrix, [$rule]);
+
+
+
+        $sviazi_container = [];
+        foreach ($sequences as $index => $sequence) {
+            $sviazi_container[$index] = $sequence->getSviazi();
+        }
 
         $data = [];
-        foreach ($link_container as $sequence_index => $links) {
+        foreach ($sviazi_container as $sequence_index => $links) {
 
 
             foreach ($links as $link) {

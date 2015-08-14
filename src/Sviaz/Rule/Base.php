@@ -29,10 +29,6 @@ class Base
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Third */
     protected $asserted_third;
 
-
-    /** @var  \Aot\Sviaz\Rule\AssertedLink\Base[] */
-    protected $links = [];
-
     /**
      * @return \Aot\Sviaz\Rule\AssertedMember\Third
      */
@@ -50,6 +46,9 @@ class Base
 //        $this->dao->setThird($asserted_member->getDao());
         $this->asserted_third = $asserted_member;
     }
+
+    /** @var  \Aot\Sviaz\Rule\AssertedLink\Base[] */
+    protected $links = [];
 
     /**
      * Base constructor.
