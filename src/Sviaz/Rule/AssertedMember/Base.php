@@ -31,7 +31,10 @@ class Base
     protected $checker_classes;
 
 
-    /** @var  \Aot\Sviaz\Role\Base */
+    /**
+     * @var  \Aot\Sviaz\Role\Base
+     * @deprecated
+     */
     protected $role;
 
     /** @var  string */
@@ -42,7 +45,7 @@ class Base
 
     }
 
-    public static function create(/** Rule\AssertedMember\Main $main_sequence_member re */)
+    public static function create()
     {
         return new static;
     }
@@ -139,6 +142,7 @@ class Base
 
     /**
      * @return \Aot\Sviaz\Role\Base
+     * @deprecated
      */
     public function getRole()
     {
@@ -188,8 +192,8 @@ class Base
 
 
             if (null !== $this->getAssertedChastRechiClass()) {
-                if (!is_a($actual->getSlovo(), $this->getAssertedChastRechiClass(), true)) {
-                    return false;
+                if  (!is_a($actual->getSlovo(), $this->getAssertedChastRechiClass(), true)) {
+                        return false;
                 }
             }
 

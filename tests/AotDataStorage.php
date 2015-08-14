@@ -68,44 +68,44 @@ class AotDataStorage extends \MivarTest\Base
  проспекте Маршала Баграмяна будут продвигаться вперед по направлению к президентскому дворцу.
 TEXT;
 
-        $esli[0] = $this->getSafeMockLocal(Suschestvitelnoe::class);
+        $esli[0] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($esli[0], 'text', 'если');
-        $esli[1] = $this->getSafeMockLocal(Suschestvitelnoe::class);
+        $esli[1] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($esli[1], 'text', 'если');
-        $esli[2] = $this->getSafeMockLocal(Suschestvitelnoe::class);
+        $esli[2] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($esli[2], 'text', 'если');
-        $esli[3] = $this->getSafeMockLocal(Suschestvitelnoe::class);
+        $esli[3] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($esli[3], 'text', 'если');
 
-        $povishenie[0] = $this->getSafeMockLocal(Suschestvitelnoe::class);
+        $povishenie[0] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($povishenie[0], 'text', 'повышение');
-        $povishenie[1] = $this->getSafeMockLocal(Suschestvitelnoe::class);
+        $povishenie[1] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($povishenie[1], 'text', 'повышение');
 
-        $tarifov[0] = $this->getSafeMockLocal(Suschestvitelnoe::class);
+        $tarifov[0] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($tarifov[0], 'text', 'тарифов');
-        $tarifov[1] = $this->getSafeMockLocal(Suschestvitelnoe::class);
+        $tarifov[1] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($tarifov[1], 'text', 'тарифов');
-        $tarifov[2] = $this->getSafeMockLocal(Suschestvitelnoe::class);
+        $tarifov[2] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($tarifov[2], 'text', 'тарифов');
 
-        $zapiztaya = $this->getSafeMockLocal(Zapiataya::class);
+        $zapiztaya = $this->getSafeMockLocal(Zapiataya::class, ['getText']);
 
-        $na[0] = $this->getSafeMockLocal(Predlog::class, ['getText']);
+        $na[0] = $this->getSafeMockLocal(Predlog::class, ['getText'], ['getText']);
         PHPUnitHelper::setProtectedProperty($na[0], 'text', 'на');
 
-        $elektoenergiu[0] = $this->getSafeMockLocal(Suschestvitelnoe::class);
+        $elektoenergiu[0] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($elektoenergiu[0], 'text', 'электроэнергию');
 
-        $ne[0] = $this->getSafeMockLocal(Chastica::class);
+        $ne[0] = $this->getSafeMockLocal(Chastica::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($ne[0], 'text', 'не');
 
-        $budet[0] = $this->getSafeMockLocal(Glagol::class);
+        $budet[0] = $this->getSafeMockLocal(Glagol::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($budet[0], 'text', 'будет');
-        $budet[1] = $this->getSafeMockLocal(Glagol::class);
+        $budet[1] = $this->getSafeMockLocal(Glagol::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($budet[1], 'text', 'будет');
 
-        $otmeneno[0] = $this->getSafeMockLocal(Deeprichastie::class);
+        $otmeneno[0] = $this->getSafeMockLocal(Deeprichastie::class, ['getText']);
         PHPUnitHelper::setProtectedProperty($otmeneno[0], 'text', 'отменено');
 
         return [
@@ -122,9 +122,11 @@ TEXT;
     }
 
     /**
-     * @return Chastica|Deeprichastie|Glagol|Suschestvitelnoe|Zapiataya | \PHPUnit_Framework_MockObject_MockObject
+     * @param $class
+     * @param array $except_methods
+     * @return Chastica|Deeprichastie|Glagol|Suschestvitelnoe|Zapiataya|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getSafeMockLocal($class, array $except_methods = [])
+    protected function getSafeMockLocal($class, array $except_methods = ['getText'])
     {
         return call_user_func_array([$this, 'getSafeMock'], func_get_args());
     }
@@ -255,7 +257,6 @@ TEXT;
      */
     public function getRawSequence()
     {
-
         $raw_member_builder = \Aot\Sviaz\SequenceMember\RawMemberBuilder::create();
 
         $raw_sequences = $raw_member_builder->getRawSequences(

@@ -10,71 +10,19 @@ use Aot\Sviaz\Rule\AssertedMember\Builder\View;
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
+    <script type="text/javascript" src="/lib/joint.js"></script>
+    <script type="text/javascript" src="/lib/joint.shapes.fsa.js"></script>
+    <link rel="stylesheet" href="/lib/joint.css" type="text/css">
+
+    <? if (!empty($script)):  ?>
+        <script type="text/javascript" src="<?= $script ?>"></script>
+    <? endif ?>
 
 </head>
 
 <body>
 <div>
-    <div>
-        <form method="post">
-            <table border="1" width="100%">
-                <tr>
-                    <td>
-                        <table border="1" width="100%">
-                            <tr>
-                                <td>
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <? /*= $mainView->getField(View::FIELD_TEXT_TYPE_NO)->draw() */ ?><!--
-                                        <tr>
-                                            <td>
-                                                <? /*= $mainView->getField(View::FIELD_TEXT_TYPE_TEXT)->draw() */ ?>
-                                        <tr>
-                                            <td>
-                                                <? /*= $mainView->getField(View::FIELD_TEXT_TYPE_TEXT_GROUP)->draw() */ ?>
-                                        <tr>
-                                            <td>
-                                                <? /*= $mainView->getField(View::FIELD_CHAST_RECHI)->draw() */ ?>
-                                        <tr>
-                                            <td>
-                                                <? /*= $mainView->getField(View::FIELD_ROLE)->draw() */ ?>
-                                        <tr>
-                                            <td>
-                                                <? /*= $mainView->getField(View::FIELD_MORPH)->draw() */ ?>   <tr>
-                                            <td>
-                                                --><? /*= $mainView->getField(View::FIELD_CHECKERS)->draw() */ ?>
-                                    </table>
-                                </td>
-                                <td>
-
-                                </td>
-                                <td>123</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                        <table>
-                            <tr>
-                                <td>
-                            <tr>
-                                <td>
-                        </table>
-                    </td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                </tr>
-            </table>
-
-            <button type="submit">ok</button>
-
-        </form>
-    </div>
-
+    <? require $body ?>
 </div>
 
 </body>

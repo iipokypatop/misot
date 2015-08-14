@@ -10,6 +10,25 @@ namespace Aot\RussianMorphology;
  */
 abstract class Slovo
 {
+    const RENDER_NULL = 1;
+    const RENDER_HTML = 2;
+    const RENDER_SHORT = 3;
+
+    protected $text;
+
+    protected $deadRows = [];
+
+    /** @var  \SemanticPersistence\Entities\Word */
+    protected $dao;
+
+    /**
+     * @return \SemanticPersistence\Entities\Word
+     */
+    public function getDao()
+    {
+        return $this->dao;
+    }
+
     protected $storage = [
 
     ];
@@ -22,7 +41,7 @@ abstract class Slovo
     }
 
     /**
-     * @return \Aot\RussianMorphology\ChastiRechi\MorphologyBase[]
+     * @return string[]
      */
     public function getMorphology()
     {
@@ -51,8 +70,6 @@ abstract class Slovo
         $this->storage[$name] = $value;
     }
 
-
-    protected $text;
 
     /**
      * @param string $text
@@ -108,6 +125,94 @@ abstract class Slovo
     public function getText()
     {
         return $this->text;
+    }
+
+    /**
+     * @return \Aot\RussianMorphology\ChastiRechi\MorphologyBase[]
+     */
+    public function getMorphologyStorage()
+    {
+        return $this->storage;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMorphologyShort()
+    {
+        return $this->getMorphologyFull(self::RENDER_SHORT);
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getDeadRows()
+    {
+        return $this->deadRows;
+    }
+
+    /**
+     * @param int $render_as
+     * @return array
+     */
+    public function getMorphologyFull($render_as = self::RENDER_HTML)
+    {
+        $tds = [];
+        $morphology_tmp = [];
+        foreach ($this->getMorphologyStorage() as $morphology) {
+
+            $group_id = \Aot\RussianMorphology\ChastiRechi\MorphologyRegistry::getGroupIdByPriznakClass(get_class($morphology));
+            $variant_id = \Aot\RussianMorphology\ChastiRechi\MorphologyRegistry::getVariantIdByPriznakClass(get_class($morphology));
+
+            if (null !== $group_id && null !== $variant_id) {
+                $morphology_tmp[$group_id] = $variant_id;
+            }
+        }
+
+
+        foreach (\Aot\RussianMorphology\ChastiRechi\MorphologyRegistry::getClasses() as $group_id => $variants) {
+
+            if (empty($morphology_tmp[$group_id])) {
+                if ($render_as === self::RENDER_NULL) {
+                } elseif ($render_as === self::RENDER_HTML
+                ) {
+                    $tds[] = "<td>-</td>";
+                } else if ($render_as === self::RENDER_SHORT) {
+                    // none
+                }
+
+                if (!isset($this->deadRows[$group_id])) {
+                    $this->deadRows[$group_id] = true;
+                }
+                continue;
+            }
+
+
+            $name_long = \Aot\RussianMorphology\ChastiRechi\MorphologyRegistry::getNames()[$morphology_tmp[$group_id]];
+
+            $name_short = [];
+            foreach (preg_split("/\\s+/u", $name_long) as $word) {
+                $name_short [] = mb_substr($word, 0, 3) . ".";
+            }
+            if ($render_as === self::RENDER_NULL) {
+
+            } else if ($render_as === self::RENDER_HTML) {
+                $color = "rgb(" . join(',', [
+                        255 - floor($morphology_tmp[$group_id] % 10 * 30),
+                        255 - floor($morphology_tmp[$group_id] % 10 * 30),
+                        255 - floor($morphology_tmp[$group_id] % 10 * 30),
+                    ]) . ")";
+                $tds[] = "<td title='{$name_long}' style='background-color: {$color}'>" . join(";", $name_short) . ";" . "</td>";
+            } else if ($render_as === self::RENDER_SHORT) {
+                $tds[] = join(";", $name_short) . ";";
+            }
+
+            $this->deadRows[$group_id] = false;
+        }
+
+
+        return $tds;
     }
 }
 
