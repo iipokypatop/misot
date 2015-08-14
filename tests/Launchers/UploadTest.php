@@ -10,7 +10,7 @@ namespace AotTest\Functional\RussianMorphology;
 
 
 
-class UploadTest extends \AotTest\AotDataStorage
+class UploadTest /*extends \AotTest\AotDataStorage*/
 {
 
     public function testLaunch(){
