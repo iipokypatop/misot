@@ -13,24 +13,24 @@ use Aot\RussianMorphology\Slovo;
 
 abstract class Base
 {
-    /**
-     * Word constructor.
-     * @param $slovo
-     */
-    protected function __construct(Slovo $slovo)
+
+    protected function __construct()
     {
-        $this->slovo = $slovo;
+
     }
 
-
-    /** @var  Slovo */
-    protected $slovo;
-
-    /**
-     * @return Slovo
-     */
-    public function getSlovo()
+    public static function create()
     {
-        return $this->slovo;
+        return new static();
+    }
+
+    protected $id;
+
+    public function getId()
+    {
+        if (null === $this->id) {
+            $this->id = spl_object_hash($this);
+        }
+        return $this->id;
     }
 }

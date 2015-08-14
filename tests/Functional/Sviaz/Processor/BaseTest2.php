@@ -32,7 +32,7 @@ TEXT
 
         $processor = \Aot\Sviaz\Processor\Base::create();
 
-        $result = $processor->go(
+        $sequences = $processor->go(
             $normalized_matrix,
             [
                 \Aot\Sviaz\Rule\Container::getRule_OtricMest_Gl(),
@@ -55,8 +55,14 @@ TEXT
 
         );
 
+
+        $sviazi_container = [];
+        foreach ($sequences as $index => $sequence) {
+            $sviazi_container[$index] = $sequence->getSviazi();
+        }
+
         $pretty = $this->pretty(
-            $result
+            $sviazi_container
         );
 
         //echo join("\n", $pretty);

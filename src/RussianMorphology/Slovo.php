@@ -10,6 +10,25 @@ namespace Aot\RussianMorphology;
  */
 abstract class Slovo
 {
+    const RENDER_NULL = 1;
+    const RENDER_HTML = 2;
+    const RENDER_SHORT = 3;
+
+    protected $text;
+
+    protected $deadRows = [];
+
+    /** @var  \SemanticPersistence\Entities\Word */
+    protected $dao;
+
+    /**
+     * @return \SemanticPersistence\Entities\Word
+     */
+    public function getDao()
+    {
+        return $this->dao;
+    }
+
     protected $storage = [
 
     ];
@@ -51,8 +70,6 @@ abstract class Slovo
         $this->storage[$name] = $value;
     }
 
-
-    protected $text;
 
     /**
      * @param string $text
@@ -127,8 +144,6 @@ abstract class Slovo
     }
 
 
-    protected $deadRows = [];
-
     /**
      * @return array
      */
@@ -136,11 +151,6 @@ abstract class Slovo
     {
         return $this->deadRows;
     }
-
-    const RENDER_NULL = 1;
-    const RENDER_HTML = 2;
-    const RENDER_SHORT = 3;
-
 
     /**
      * @param int $render_as

@@ -6,7 +6,6 @@
  * Time: 17:31
  */
 
-
 require $imports['ShowParseResult']['form'];
 
 $post['form']['correct_sequence']['id'] =
@@ -15,7 +14,7 @@ $post['form']['correct_sequence']['id'] =
         : null;
 
 $post['form']['correct_sequence']['submit'] = isset($_POST['form']['correct_sequence']['submit']);
-
-
-//var_export($post);die;
-
+$post['form']['correct_sequence']['new_links'] =
+    isset($_POST['form']['correct_sequence']['new_links'])
+        ? $_POST['form']['correct_sequence']['new_links']
+        : null;

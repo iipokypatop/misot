@@ -9,12 +9,12 @@
 
 $imports = [
     'InputText' => [
-        'view' => __DIR__ . '/../InputText/ctrl.php',
+        'view' => __DIR__ . '/../InputText/view.html',
         'model' => __DIR__ . '/../InputText/model.php',
         'form' => __DIR__ . '/../InputText/form.php',
     ],
     'ShowParseResult' => [
-        'view' => __DIR__ . '/../ShowParseResult/ctrl.php',
+        'view' => __DIR__ . '/../ShowParseResult/view.html',
         'model' => __DIR__ . '/../ShowParseResult/model.php',
         'form' => __DIR__ . '/../ShowParseResult/form.php',
     ]
@@ -22,5 +22,4 @@ $imports = [
 
 require __DIR__ . '/' . 'form.php';
 require __DIR__ . '/' . 'model.php';
-require __DIR__ . '/' . 'view.phtml';
-
+require __DIR__ . '/' . 'view.html';

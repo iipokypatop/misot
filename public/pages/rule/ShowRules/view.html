@@ -1,32 +1,39 @@
 <?php
+
 /** @var array $post */
 /** @var \Aot\Sviaz\Podchinitrelnaya\Base[][] $sviazi_container */
 
 ?>
-<? require $imports['ShowParseResult']['view'] ?>
+<?   require $imports['ShowParseResult']['view'] ?>
+
+<script>
+    var mergeForms2 = function mergeForms2() {
+        $("form[name='form[text_for_parse]']")
+            .find("input, textarea, select")
+            .attr('form', 'form[correct_sequence]');
+
+        $("form[name='form[rule_options]']")
+            .find("input, textarea, select")
+            .attr('form', 'form[correct_sequence]');
+
+        $("form[name='form[rules_form]']")
+            .find("input, textarea, select")
+            .attr('form', 'form[correct_sequence]');
+
+        return true;
+    }
+</script>
 
 
-    <script>
-        var mergeForms2 = function mergeForms2() {
-            $("form[name='form[text_for_parse]']")
-                .find("input, textarea, select")
-                .attr('form', 'form[correct_sequence]');
+<div id="paper"></div>
 
-            $("form[name='form[rule_options]']")
-                .find("input, textarea, select")
-                .attr('form', 'form[correct_sequence]');
-
-            $("form[name='form[rules_form]']")
-                .find("input, textarea, select")
-                .attr('form', 'form[correct_sequence]');
-
-            return true;
-        }
-    </script>
-
-<? if (isset($sviazi_container)): ?>
+<? if (isset($raw_sequences)): ?>
     <? $rules_count = [] ?>
 
+    <script type="text/javascript">
+        var sequences = [];
+
+    </script>
     <form name="form[correct_sequence]" id="form[correct_sequence]" action="index.php?area=rule&action=ShowRules"
           method="post"
           onsubmit="return mergeForms2()">
@@ -47,20 +54,23 @@
                 <td>роль главного</td>
                 <td>роль зависимого</td>
             </tr>
-            <? foreach ($sviazi_container as $sequence_index => $sviazi): ?>
-
-                <? $rules_count[$sequence_index] = count($sviazi) ?>
-                <? foreach ($sviazi as $index => $sviaz): ?>
+            <? $rendeder = \Aot\JointJS\Renderer::create(); ?>
+            <? foreach ($sequences as $sequence_index => $sequence): ?>
+                <? $rules_count[$sequence_index] = count($sequence->getSviazi()) ?>
+                <? foreach ($sequence->getSviazi() as $index => $sviaz): ?>
                     <? /** @var \Aot\Sviaz\Podchinitrelnaya\Base $sviaz */ ?>
                     <? $main = $sviaz->getMainSequenceMember()->getSlovo() ?>
                     <? $depended = $sviaz->getDependedSequenceMember()->getSlovo() ?>
-                    <tr>
+                    <tr data-sequence_index="<?= $sequence_index ?>">
                         <? if ($index === 0): ?>
                             <td rowspan="<?= $rules_count[$sequence_index] ?>">
                                 <input type="radio"
                                        name="form[correct_sequence][id]"
-                                       value="<?= $sequence_index ?>"
+                                       value="<?= $sequence->getId() ?>"
+                                       onclick="disableAllOtherGroups(this);loadData(<?= $sequence_index ?>);enableGroup(this);"
+                                       group_id="form[correct_sequence][id][<?= $sequence_index ?>]"
                                     <?= $sequence_index === $post['form']['correct_sequence']['id'] ? 'checked' : '' ?>
+                                       data-sequence_id="<?=$sequence->getId()?>"
                                     />
                             </td>
                             <td rowspan="<?= $rules_count[$sequence_index] ?>">
@@ -69,9 +79,26 @@
                             <td rowspan="<?= $rules_count[$sequence_index] ?>">
                                 <?= $sequence_index ?>
                             </td>
+                            <td style="display: none">
+                                <script type="text/javascript">
+                                    sequences[<?=$sequence_index?>] =<?= $rendeder->renderSequence($sequence) ?>;
+                                </script>
+
+                            </td>
                         <? endif ?>
 
-                        <td><input type="checkbox"/></td>
+                        <td>
+                            <input
+                                checked
+                                disabled
+                                type="checkbox"
+                                onclick="toggleLink(this)"
+                                group_id="form[correct_sequence][id][<?= $sequence_index ?>]"
+                                name="form[correct_sequence][sviaz][<?= $index ?>]"
+                                id="<?= $sviaz->getId() ?>"
+                                data-cell_id="<?= $sviaz->getId() ?>"
+                                />
+                        </td>
                         <td>-</td>
                         <td>-</td>
                         <td><?= $main->getText() ?></td>
@@ -85,11 +112,12 @@
                 <tr>
                     <td colspan="100%"></td>
                 </tr>
+                <? //if ($sequence_index > 3) break; ?>
             <? endforeach; ?>
 
         </table>
 
-        <table border="1">
+        <table style="" border="1">
             <caption>Статистика сработавших правил</caption>
             <tr>
                 <td>номер последовательности</td>
@@ -105,9 +133,52 @@
             <? endforeach ?>
 
         </table>
+        <input type="hidden" value="" name="form[correct_sequence][json]">
         <input type="hidden" value="ok" name="form[correct_sequence][submit]">
-        <button>сохранить</button>
+        <button onclick="attachResultJson();return false;">сохранить</button>
     </form>
+    <?php
+    $points_config = [];
+    $index = 0;
+    foreach ($sequence as $member) {
+        $points_config[] = $config = new stdClass();
+        $config->text = $member->getSlovo()->getText();
+    }
 
+    $links_config = [];
+    $counter = 0;
+    foreach ($sequence->getSviazi() as $index => $sviaz) {
+        $links_config[$index] = $config = new stdClass();
+        $config->main = $sviaz->getSequence()->getPosition($sviaz->getMainSequenceMember());
+        $config->depended = $sviaz->getSequence()->getPosition($sviaz->getDependedSequenceMember());
+        $config->text = "$index";
+    }
 
+    ?>
+    <script>
+
+    </script>
 <? endif ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

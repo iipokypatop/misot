@@ -8,4 +8,4 @@
 
 require __DIR__ . '/' . 'form.php';
 require __DIR__ . '/' . 'model.php';
-require __DIR__ . '/' . 'view.phtml';
+require __DIR__ . '/' . 'view.html';

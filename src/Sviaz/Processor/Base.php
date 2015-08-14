@@ -69,18 +69,21 @@ class Base
     }
 
     /**
-     * @param \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi
+     * @param Sequence $sequence
      * @return \Aot\Sviaz\Podchinitrelnaya\Base[]
      */
-    protected function postProcess(array $sviazi)
+    protected function postProcess(\Aot\Sviaz\Sequence $sequence)
     {
-        if ([] === $sviazi) {
-            return [];
-        }
+        $sviazi = $sequence->getSviazi();
 
         foreach ($sviazi as $sviaz) {
             assert(is_a($sviaz, \Aot\Sviaz\Podchinitrelnaya\Base::class, true));
         }
+
+        if ([] === $sviazi) {
+            return [];
+        }
+
 
         $new_sviazi = $sviazi;
 
@@ -94,7 +97,7 @@ class Base
     /**
      * @param \Aot\Text\NormalizedMatrix $normalized_matrix
      * @param array $rules
-     * @return \Aot\Sviaz\Podchinitrelnaya\Base[][]
+     * @return \Aot\Sviaz\Sequence[]
      */
     public function go(\Aot\Text\NormalizedMatrix $normalized_matrix, array $rules)
     {
@@ -106,23 +109,23 @@ class Base
 
         $raw_sequences = $this->raw_member_builder->getRawSequences($normalized_matrix);
 
-        $sviazi_container = [];
-
+        $sequences = [];
         foreach ($raw_sequences as $index => $raw_sequence) {
 
             $sequence = $this->preProcess($raw_sequence);
 
-            $sviazi = $this->applyRules(
+            $this->applyRules(
                 $sequence,
                 $rules
             );
 
-            $sviazi = $this->postProcess($sviazi);
+            $this->postProcess($sequence);
 
-            $sviazi_container[$index] = $sviazi;
+            $sequences[] = $sequence;
+
         }
 
-        return $sviazi_container;
+        return $sequences;
     }
 
 
@@ -174,12 +177,14 @@ class Base
 
                         if ($result) {
 
-                            $sviazi[] = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
+                            $sviazi[] = $sviaz = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
                                 $main_candidate,
                                 $depended_candidate,
                                 $rule,
                                 $sequence
                             );
+
+                            $sequence->addSviaz($sviaz);
 
                             /*$this->cache->put([$rule, $main_candidate, $depended_candidate]);*/
                         }

@@ -14,17 +14,64 @@ use Aot\Sviaz\SequenceMember\Base as SequenceMemberBase;
 class Base extends SequenceMemberBase
 {
 
+    protected $slovo;
+
+    protected $dao;
+
     /**
-     * Word constructor.
-     * @param $slovo
+     * @return Slovo
      */
-    protected function __construct(Slovo $slovo)
+    public function getSlovo()
+    {
+        return $this->slovo;
+    }
+
+    /**
+     * @param Slovo $slovo
+     */
+    public function setSlovo(\Aot\RussianMorphology\Slovo $slovo)
     {
         $this->slovo = $slovo;
     }
 
-    public static function create(Slovo $slovo)
+
+    protected function __construct()
     {
-        return new static($slovo);
+
     }
+
+    /**
+     * @param Slovo|null $slovo
+     * @return static
+     */
+    public static function create(Slovo $slovo = null)
+    {
+        assert(!is_null($slovo));
+
+        $ob = new static($slovo);
+
+        $ob->slovo = $slovo;
+        //$ob->dao =
+
+        return $ob;
+    }
+
+
+    public static function createByDao($dao)
+    {
+        $ob = new static();
+
+        $ob->dao = $dao;
+
+        return $ob;
+
+    }
+
+    public function getDao()
+    {
+        throw new \RuntimeException("not implemented yet");
+
+        return $this->dao;
+    }
+
 }

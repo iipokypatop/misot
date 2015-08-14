@@ -10,12 +10,19 @@ use Aot\Sviaz\Rule\AssertedMember\Builder\View;
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://yastatic.net/jquery/1.11.2/jquery.js"></script>
+    <script type="text/javascript" src="/lib/joint.js"></script>
+    <script type="text/javascript" src="/lib/joint.shapes.fsa.js"></script>
+    <link rel="stylesheet" href="/lib/joint.css" type="text/css">
+
+    <? if (!empty($script)):  ?>
+        <script type="text/javascript" src="<?= $script ?>"></script>
+    <? endif ?>
+
 </head>
 
 <body>
 <div>
-   <?require $body?>
+    <? require $body ?>
 </div>
 
 </body>

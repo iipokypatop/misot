@@ -23,8 +23,10 @@ class Punctuation extends Base
         $this->punctuaciya = $punctuaciya;
     }
 
-    public static function create(\Aot\RussianSyntacsis\Punctuaciya\Base $punctuaciya)
+    public static function create(\Aot\RussianSyntacsis\Punctuaciya\Base $punctuaciya = null)
     {
+        assert(!is_null($punctuaciya));
+
         return new static($punctuaciya);
     }
 }

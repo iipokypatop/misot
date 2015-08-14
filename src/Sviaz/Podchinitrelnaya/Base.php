@@ -11,6 +11,9 @@ namespace Aot\Sviaz\Podchinitrelnaya;
 
 class Base
 {
+    /** @var  string */
+    protected $id;
+
     /** @var  \Aot\Sviaz\SequenceMember\Base */
     protected $main_sequence_member;
     /** @var  \Aot\Sviaz\SequenceMember\Base */
@@ -20,23 +23,12 @@ class Base
     /** @var  \Aot\Sviaz\Sequence */
     protected $sequence;
 
-    /**
-     * Base constructor.
-     * @param \Aot\Sviaz\SequenceMember\Base $main_sequence_member
-     * @param \Aot\Sviaz\SequenceMember\Base $depended_sequence_member
-     * @param \Aot\Sviaz\Rule\Base $rule
-     * @param \Aot\Sviaz\Sequence $sequence
-     */
-    protected function __construct(
-        \Aot\Sviaz\SequenceMember\Base $main_sequence_member,
-        \Aot\Sviaz\SequenceMember\Base $depended_sequence_member,
-        \Aot\Sviaz\Rule\Base $rule,
-        \Aot\Sviaz\Sequence $sequence
-    )
+    /** @var  \SemanticPersistence\Entities\SyntaxRule */
+    protected $dao;
+
+    protected function __construct()
     {
-        $this->main_sequence_member = $main_sequence_member;
-        $this->depended_sequence_member = $depended_sequence_member;
-        $this->rule = $rule;
+
     }
 
     /**
@@ -48,20 +40,64 @@ class Base
     }
 
     /**
-     * @param \Aot\Sviaz\SequenceMember\Base $main_sequence_member
-     * @param \Aot\Sviaz\SequenceMember\Base $depended_sequence_member
+     * @param \Aot\Sviaz\SequenceMember\Word\Base $main_sequence_member
+     * @param \Aot\Sviaz\SequenceMember\Word\Base $depended_sequence_member
      * @param \Aot\Sviaz\Rule\Base $rule
      * @param \Aot\Sviaz\Sequence $sequence
      * @return Base
      */
     public static function create(
-        \Aot\Sviaz\SequenceMember\Base $main_sequence_member,
-        \Aot\Sviaz\SequenceMember\Base $depended_sequence_member,
+        \Aot\Sviaz\SequenceMember\Word\Base $main_sequence_member,
+        \Aot\Sviaz\SequenceMember\Word\Base $depended_sequence_member,
         \Aot\Sviaz\Rule\Base $rule,
         \Aot\Sviaz\Sequence $sequence
     )
     {
-        return new static($main_sequence_member, $depended_sequence_member, $rule, $sequence);
+        $ob = new static();
+
+        $ob->main_sequence_member = $main_sequence_member;
+        $ob->depended_sequence_member = $depended_sequence_member;
+        $ob->rule = $rule;
+        $ob->sequence = $sequence;
+        // temporary start
+        $ob->id = spl_object_hash($ob);
+        // temporary end
+
+        /* $ob->dao = new \SemanticPersistence\Entities\SyntaxRule;
+
+         $ob->dao
+             ->setMain(
+                 $main_sequence_member->getDao()
+             )
+             ->setDepend(
+                 $depended_sequence_member->getDao()
+             );*/
+
+        return $ob;
+    }
+
+    public static function createByDao(\SemanticPersistence\Entities\SyntaxRule $dao)
+    {
+        throw new \RuntimeException("not implemented exception");
+
+        $ob = new static();
+
+        $ob->dao = $dao;
+
+        $ob->main_sequence_member =
+            \Aot\Sviaz\SequenceMember\Word\Base::createByDao(
+                $dao->getMain()
+            );
+
+        $ob->depended_sequence_member =
+            \Aot\Sviaz\SequenceMember\Word\Base::createByDao(
+                $dao->getDepend()
+            );
+
+        //$ob->rule = $rule;
+        //$ob->sequence = $sequence;
+
+        return $ob;
     }
 
     /**
@@ -88,5 +124,11 @@ class Base
         return $this->rule;
     }
 
-
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }
