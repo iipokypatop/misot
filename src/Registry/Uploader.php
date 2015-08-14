@@ -14,7 +14,7 @@ use MivarTest\PHPUnitHelper;
 
 trait Uploader
 {
-    protected $conn_db = "host=test-db.miva.pro dbname=misot user=postgres password=@Mivar123User@";
+    protected $conn_db = "host=test-db.mivar.pro dbname=misot user=postgres password=@Mivar123User@";
 
     /**
      * @return string
