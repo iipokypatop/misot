@@ -1,0 +1,15 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Angelina
+ * Date: 25.06.15
+ * Time: 14:17
+ */
+
+namespace Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Naklonenie;
+
+
+class Yslovnoe extends Base
+{
+
+}
