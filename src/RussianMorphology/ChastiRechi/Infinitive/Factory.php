@@ -82,89 +82,24 @@ class Factory extends \Aot\RussianMorphology\Factory
             # возвратность
             $vozvratnost = $this->getVozvratnost($dw->parameters);
 
-            # разряд
-            $razryad = $this->getRazryad($dw->parameters);
-
-            # спряжение
-            $spryazhenie = $this->getSpryazhenie($dw->parameters);
-
-            # число
-            $chislo = $this->getChislo($dw->parameters);
-
-            # наклонение
-            $naklonenie = $this->getNaklonenie($dw->parameters);
-
-            # время
-            $vremya = $this->getVremya($dw->parameters);
-
-            # лицо
-            $litso = $this->getLitso($dw->parameters);
-
-            # род
-            $rod = $this->getRod($dw->parameters);
-
-            foreach ($chislo as $val_chislo) {
-                foreach ($litso as $val_litso) {
-                    foreach ($naklonenie as $val_naklonenie) {
-                        foreach ($perehodnost as $val_perehodnost) {
-                            foreach ($rod as $val_rod) {
-                                foreach ($spryazhenie as $val_spryazhenie) {
-                                    foreach ($vid as $val_vid) {
-                                        foreach ($vozvratnost as $val_vozvratnost) {
-                                            foreach ($vremya as $val_vremya) {
-                                                foreach ($razryad as $val_razryad) {
-                                                    $words[] = Base::create(
-                                                        $text,
-                                                        $val_chislo,
-                                                        $val_litso,
-                                                        $val_naklonenie,
-                                                        $val_perehodnost,
-                                                        $val_rod,
-                                                        $val_spryazhenie,
-                                                        $val_vid,
-                                                        $val_vozvratnost,
-                                                        $val_vremya,
-                                                        $val_razryad
-                                                    );
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+            foreach ($perehodnost as $val_perehodnost) {
+                foreach ($vid as $val_vid) {
+                    foreach ($vozvratnost as $val_vozvratnost) {
+                        $words[] = Base::create(
+                            $text,
+                            $val_perehodnost,
+                            $val_vid,
+                            $val_vozvratnost
+                        );
                     }
                 }
             }
+
+
         }
         return $words;
     }
 
-    /**
-     * @param array $parameters
-     * @return \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Chislo\Base[]
-     */
-    protected function getChislo($parameters)
-    {
-
-        if (empty($parameters[NUMBER_ID])) {
-            return [NullChislo::create()];
-        }
-
-        $param = $parameters[NUMBER_ID];
-        $chislo = [];
-        foreach ($param->id_value_attr as $val) {
-            if (intval($val) === NUMBER_SINGULAR_ID) {
-                $chislo[] = Edinstvennoe::create();
-            } elseif (intval($val) === NUMBER_PLURAL_ID) {
-                $chislo[] = Mnozhestvennoe::create();
-            } else {
-                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
-            }
-        }
-
-        return $chislo;
-    }
 
     /**
      * @param array $parameters
@@ -245,167 +180,4 @@ class Factory extends \Aot\RussianMorphology\Factory
         return $vozvratnost;
     }
 
-    /**
-     * @param array $parameters
-     * @return \Aot\RussianMorphology\ChastiRechi\GlInfinitiveagol\Morphology\Zalog\Base[]
-     */
-    protected function getRazryad($parameters)
-    {
-
-        if (empty($parameters[DISCHARGE_COMMUNION_ID])) {
-            return [NullRazryad::create()];
-        }
-
-        $param = $parameters[DISCHARGE_COMMUNION_ID];
-        $razryad = [];
-        foreach ($param->id_value_attr as $val) {
-            if (intval($val) === COMMUNION_VALID_ID) {
-                $razryad[] = Dejstvitelnyj::create();
-            } elseif (intval($val) === COMMUNION_PASSIVE_ID) {
-                $razryad[] = Stradatelnyj::create();
-            } else {
-                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
-            }
-        }
-
-        return $razryad;
-    }
-
-    /**
-     * @param array $parameters
-     * @return \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Spryazhenie\Base[]
-     */
-    protected function getSpryazhenie($parameters)
-    {
-
-        if (empty($parameters[\OldAotConstants::CONJUGATION()])) {
-            return [NullSpryazhenie::create()];
-        }
-
-        $param = $parameters[\OldAotConstants::CONJUGATION()];
-        $spryazhenie = [];
-        foreach ($param->id_value_attr as $val) {
-            if (intval($val) === \OldAotConstants::CONJUGATION_1()) {
-                $spryazhenie[] = Pervoe::create();
-            } elseif (intval($val) === \OldAotConstants::CONJUGATION_2()) {
-                $spryazhenie[] = Vtoroe::create();
-            } else {
-                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
-            }
-        }
-
-        return $spryazhenie;
-
-    }
-
-    /**
-     * @param array $parameters
-     * @return \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Naklonenie\Base[]
-     */
-    protected function getNaklonenie($parameters)
-    {
-
-        if (empty($parameters[MOOD_ID])) {
-            return [NullNaklonenie::create()];
-        }
-
-        $param = $parameters[MOOD_ID];
-        $naklonenie = [];
-        foreach ($param->id_value_attr as $val) {
-            if (intval($val) === \OldAotConstants::MOOD_INDICATIVE()) {
-                $naklonenie[] = Izyavitelnoe::create();
-            } elseif (intval($val) === \OldAotConstants::MOOD_IMPERATIVE()) {
-                $naklonenie[] = Povelitelnoe::create();
-            } elseif (intval($val) === \OldAotConstants::MOOD_SUBJUNCTIVE()) {
-                $naklonenie[] = Yslovnoe::create();
-            } else {
-                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
-            }
-        }
-
-        return $naklonenie;
-    }
-
-    /**
-     * @param array $parameters
-     * @return \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vremya\Base[]
-     */
-    protected function getVremya($parameters)
-    {
-
-        if (empty($parameters[TIME_ID])) {
-            return [NullVremya::create()];
-        }
-
-        $param = $parameters[TIME_ID];
-        $vremya = [];
-        foreach ($param->id_value_attr as $val) {
-            if (intval($val) === TIME_SIMPLE_ID) {
-                $vremya[] = Nastoyaschee::create();
-            } elseif (intval($val) === TIME_FUTURE_ID) {
-                $vremya[] = Buduschee::create();
-            } elseif (intval($val) === TIME_PAST_ID) {
-                $vremya[] = Proshedshee::create();
-            } else {
-                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
-            }
-        }
-
-        return $vremya;
-    }
-
-    /**
-     * @param array $parameters
-     * @return \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Rod\Base[]
-     */
-    protected function getRod($parameters)
-    {
-
-        if (empty($parameters[GENUS_ID])) {
-            return [NullRod::create()];
-        }
-
-        $param = $parameters[GENUS_ID];
-
-        $rod = [];
-        foreach ($param->id_value_attr as $val) {
-            if (intval($val) === GENUS_MASCULINE_ID) {
-                $rod[] = Muzhskoi::create();
-            } elseif (intval($val) === GENUS_NEUTER_ID) {
-                $rod[] = Srednij::create();
-            } elseif (intval($val) === GENUS_FEMININE_ID) {
-                $rod[] = Zhenskii::create();
-            } else {
-                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
-            }
-        }
-        return $rod;
-    }
-
-    /**
-     * @param array $parameters
-     * @return \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Litso\Base[]
-     */
-    protected function getLitso($parameters)
-    {
-
-        if (empty($parameters[PERSON_ID])) {
-            return [NullLitso::create()];
-        }
-
-        $param = $parameters[PERSON_ID];
-        $litso = [];
-        foreach ($param->id_value_attr as $val) {
-            if (intval($val) === PERSON_RIFST_ID) {
-                $litso[] = PervoeLitso::create();
-            } elseif (intval($val) === PERSON_SECOND_ID) {
-                $litso[] = VtoroeLitso::create();
-            } elseif (intval($val) === PERSON_THIRD_ID) {
-                $litso[] = TretieLitso::create();
-            } else {
-                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
-            }
-        }
-        return $litso;
-    }
 }
