@@ -9,50 +9,17 @@
 namespace Aot\RussianMorphology\ChastiRechi\Infinitive;
 
 
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Edinstvennoe;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Mnozhestvennoe;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Null as NullChislo;
+use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Nesovershennyj;
+use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Sovershennyj;
+use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Null as NullVid;
 
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Dejstvitelnyj;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Stradatelnyj;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null as NullRazryad;
+use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Neperehodnyj;
+use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Perehodnyj;
+use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Null as NullPerehodnost;
 
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Nesovershennyj;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Null as NullVid;
-
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Neperehodnyj;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Perehodnyj;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Null as NullPerehodnost;
-
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Nevozvratnyj;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Vozvratnyj;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Null as NullVozvratnost;
-
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie\Pervoe;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie\Vtoroe;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie\Null as NullSpryazhenie;
-
-
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Izyavitelnoe;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Povelitelnoe;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Yslovnoe;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Null as NullNaklonenie;
-
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Buduschee;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Nastoyaschee;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Proshedshee;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Null as NullVremya;
-
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Muzhskoi;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Srednij;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Zhenskii;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Null as NullRod;
-
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Pervoe as PervoeLitso;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Vtoroe as VtoroeLitso;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Tretie as TretieLitso;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Null as NullLitso;
+use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Nevozvratnyj;
+use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Vozvratnyj;
+use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Null as NullVozvratnost;
 
 use Aot\RussianMorphology\FactoryException;
 use Dw;
@@ -71,7 +38,7 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $text = $dw->word_form;
         $words = [];
-        if (isset($word->word) && intval($dw->id_word_class) === VERB_CLASS_ID) {
+        if (isset($word->word) && intval($dw->id_word_class) === INFINITIVE_CLASS_ID ) {
 
             # вид
             $vid = $this->getVid($dw->parameters);
