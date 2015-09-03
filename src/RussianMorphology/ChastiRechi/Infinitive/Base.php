@@ -4,14 +4,6 @@ namespace Aot\RussianMorphology\ChastiRechi\Infinitive;
 
 use Aot\RussianMorphology\Slovo;
 
-
-/**
- * Created by PhpStorm.
- * User: p.semenyuk
- * Date: 17.06.2015
- * Time: 22:11
- */
-
 /**
  * Class Base
  * @package Aot\RussianMorphology\ChastiRechi\Infinitive
@@ -31,7 +23,7 @@ class Base extends Slovo
     }
 
     /**
-     * Glagol constructor.
+     * Infinitive constructor.
      * @param $text
      * @param Morphology\Perehodnost\Base $perehodnost
      * @param Morphology\Vid\Base $vid

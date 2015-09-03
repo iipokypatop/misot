@@ -29,6 +29,24 @@ use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Nevozvratnyj
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Vozvratnyj;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Null as NullVozvratnost;
 
+
+# от инфинитива
+//use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Nesovershennyj;
+//use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Sovershennyj;
+//use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Null as NullVid;
+//
+//use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Neperehodnyj;
+//use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Perehodnyj;
+//use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Null as NullPerehodnost;
+//
+//use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Nevozvratnyj;
+//use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Vozvratnyj;
+//use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Null as NullVozvratnost;
+###############
+
+
+
+
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie\Pervoe;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie\Vtoroe;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie\Null as NullSpryazhenie;
@@ -58,7 +76,7 @@ use Aot\RussianMorphology\FactoryException;
 use Dw;
 use Word;
 
-class Factory extends \Aot\RussianMorphology\Factory
+class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\Aot\RussianMorphology\Factory
 {
 
     /**
@@ -113,16 +131,17 @@ class Factory extends \Aot\RussianMorphology\Factory
                                         foreach ($vozvratnost as $val_vozvratnost) {
                                             foreach ($vremya as $val_vremya) {
                                                 foreach ($razryad as $val_razryad) {
+
                                                     $words[] = Base::create(
                                                         $text,
                                                         $val_chislo,
                                                         $val_litso,
                                                         $val_naklonenie,
+                                                        $val_vid,
                                                         $val_perehodnost,
+                                                        $val_vozvratnost,
                                                         $val_rod,
                                                         $val_spryazhenie,
-                                                        $val_vid,
-                                                        $val_vozvratnost,
                                                         $val_vremya,
                                                         $val_razryad
                                                     );
