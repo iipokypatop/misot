@@ -15,7 +15,7 @@ trait DaoAccessor
 {
 
     protected $dao;
-    protected $conn_db = "host=192.168.10.51 dbname=misot user=postgres password=@Mivar123User@";
+    protected $conn_db = "host=test-db.mivar.pro dbname=misot user=postgres password=@Mivar123User@";
 
     protected function get($name)
     {

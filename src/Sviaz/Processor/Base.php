@@ -93,6 +93,8 @@ class Base
             $new_sviazi = $engine->run($new_sviazi);
         }
 
+        //$sequence->setS
+
         return $new_sviazi;
     }
 

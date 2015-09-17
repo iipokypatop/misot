@@ -44,6 +44,10 @@
       "type": "git"
     },
     {
+      "url": "git@git.mivar.pro:mivar-projects/aot-db-api.git",
+      "type": "git"
+    },
+    {
       "url": "git@git.mivar.pro:mivar-projects/semantic-db-api.git",
       "type": "git"
     }

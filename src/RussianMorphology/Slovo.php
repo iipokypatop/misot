@@ -16,7 +16,7 @@ abstract class Slovo
 
     protected $text;
 
-    protected $deadRows = [];
+    private $deadRows = [];
 
     /** @var  \SemanticPersistence\Entities\Word */
     protected $dao;
