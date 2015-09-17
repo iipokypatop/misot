@@ -82,7 +82,7 @@ class Base
         assert(!is_null($role_id));
 
         if (!isset(\Aot\Sviaz\Role\Registry::getClasses()[$role_id])) {
-            throw new \RuntimeException("Unsupported role id = " . $role_id);
+            throw new \RuntimeException("Unsupported role id = " . var_export($role_id, 1));
         }
 
         return \Aot\Sviaz\Role\Registry::getClasses()[$role_id];

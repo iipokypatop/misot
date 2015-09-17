@@ -330,8 +330,11 @@ class Builder
             throw new \RuntimeException("role must be defined!");
 
         } else {
-            $member->setRole(
+            /*$member->setRole(
                 forward_static_call_array([RoleRegistry::getClasses()[$config['role']], 'create'], [])
+            );*/
+            $member->setRoleClass(
+                RoleRegistry::getClasses()[$config['role']]
             );
         }
 
