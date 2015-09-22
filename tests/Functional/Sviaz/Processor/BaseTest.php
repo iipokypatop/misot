@@ -107,8 +107,8 @@ class BaseTest extends \AotTest\AotDataStorage
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Imenitelnij::class
         );
 
-        $asserted_main->setRole(
-            \Aot\Sviaz\Role\Vesch::create()
+        $asserted_main->setRoleClass(
+            \Aot\Sviaz\Role\Vesch::class
         );
 
         return $asserted_main;
@@ -127,10 +127,6 @@ class BaseTest extends \AotTest\AotDataStorage
         $asserted_depended->assertMorphology(
 //            new \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij
             \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij::class
-        );
-
-        $asserted_depended->setRole(
-            \Aot\Sviaz\Role\Svoistvo::create()
         );
 
         $asserted_depended->setRoleClass(

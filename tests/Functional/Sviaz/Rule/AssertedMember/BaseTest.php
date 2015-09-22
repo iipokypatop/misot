@@ -117,7 +117,8 @@ class BaseTest extends \AotTest\AotDataStorage
         $this->assertEquals(null, $result);
         $this->assertEquals(
             [$checker_class],
-            PHPUnitHelper::getProtectedProperty($depended, 'checker_classes')
+            //PHPUnitHelper::getProtectedProperty($depended, 'checker_classes')
+            $depended->getCheckerClasses()
         );
     }
 

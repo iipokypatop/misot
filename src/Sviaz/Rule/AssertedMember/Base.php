@@ -18,9 +18,7 @@ use Aot\Sviaz\SequenceMember;
 use Aot\Text\GroupIdRegistry;
 
 /**
- * Class Base*
  * @property \AotPersistence\Entities\Member $dao
- * @package Aot\Sviaz\Rule\AssertedMember
  */
 class Base
 {
@@ -34,8 +32,11 @@ class Base
     public static function create()
     {
         $dao = new \AotPersistence\Entities\Member();
+
         $ob = new static;
+
         $ob->setDao($dao);
+
         return $ob;
     }
 
@@ -58,6 +59,7 @@ class Base
     public function getRoleClass()
     {
         $role_id = $this->get('role');
+
         assert(!is_null($role_id));
 
         if (!isset(\Aot\Sviaz\Role\Registry::getClasses()[$role_id])) {
@@ -306,7 +308,7 @@ class Base
         if ($actual instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
 
             if (null !== $this->getAssertedText()) {
-                if (strtolower($actual->getSlovo()->getText()) !== strtolower($this->asserted_text)) {
+                if (strtolower($actual->getSlovo()->getText()) !== strtolower($this->getAssertedText())) {
                     return false;
                 }
             }
@@ -320,7 +322,6 @@ class Base
                     return false;
                 }
             }
-
 
             if (null !== $this->getAssertedChastRechiClass()) {
                 if (!is_a($actual->getSlovo(), $this->getAssertedChastRechiClass(), true)) {
@@ -361,5 +362,21 @@ class Base
     protected function getEntityClass()
     {
         return \AotPersistence\Entities\Member::class;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCheckerClasses()
+    {
+        $checker_classes = [];
+        foreach ($this->dao->getCheckers() as $checker_dao) {
+            /** @var $checker_dao \AotPersistence\Entities\MemberChecker */
+
+            $checker_classes[] = \Aot\Sviaz\Rule\AssertedMember\Checker\Registry::getClasses()[$checker_dao->getId()];
+        }
+
+        return $checker_classes;
+
     }
 }
