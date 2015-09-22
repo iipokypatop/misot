@@ -47,10 +47,9 @@ class Registry
 
     /**
      * @param int $id
-     * @param array $args
-     * @return \Aot\Sviaz\Rule\AssertedLink\Checker\Base
+     * @return Base
      */
-    public static function getObjectById($id, array $args = [])
+    public static function getObjectById($id)
     {
         assert(is_int($id));
 
@@ -58,7 +57,7 @@ class Registry
             throw new \RuntimeException("unsupported id = " . var_export($id, 1));
         }
 
-        return forward_static_call_array([static::getClasses()[$id], 'create'], $args);
+        return forward_static_call_array([static::getClasses()[$id], 'createById'], [$id]);
     }
 
     /**

@@ -718,6 +718,19 @@ class MorphologyRegistry extends MorphologyRegistryParent
         return null;
     }
 
+    public static function getIdAndChastRehiAndMorphologyIdByBaseClass($morphology_class)
+    {
+        foreach (static::getBaseClasses() as $morphology_id => $classes) {
+            foreach ($classes as $chast_rechi_id => $variant) {
+                if ($morphology_class === $variant) {
+                    return [$chast_rechi_id, $morphology_id];
+                }
+            }
+        }
+        return null;
+    }
+
+
     public static function getClassByChastRechiAndPriznak($chast_rechi_id, $priznak_id_input)
     {
         foreach (static::getClasses() as $priznak_group => $variants) {

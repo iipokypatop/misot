@@ -11,5 +11,10 @@ namespace Aot\Sviaz\Rule\AssertedLink\Checker\BeetweenMainAndDepended;
 
 class Base extends \Aot\Sviaz\Rule\AssertedLink\Checker\Base
 {
+    public static function create()
+    {
+        $ob = new static();
 
+        return $ob;
+    }
 }

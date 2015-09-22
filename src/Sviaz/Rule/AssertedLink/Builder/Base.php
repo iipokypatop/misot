@@ -127,11 +127,11 @@ class Base
                 throw new \RuntimeException("unsupported morphology for main chast_rechi = {$asserted_main_class_id}, morphology_id = " . var_export($morphology_matching, 1));
             }
 
+            $left = MorphologyRegistry::getBaseClasses()[$morphology_matching][$asserted_main_class_id];
+
             if (empty(MorphologyRegistry::getBaseClasses()[$morphology_matching][$asserted_depended_class_id])) {
                 throw new \RuntimeException("unsupported morphology for depended chast_rechi = {$asserted_depended_class_id}, morphology_id =  " . var_export($morphology_matching, 1));
             }
-
-            $left = MorphologyRegistry::getBaseClasses()[$morphology_matching][$asserted_main_class_id];
 
             $right = MorphologyRegistry::getBaseClasses()[$morphology_matching][$asserted_depended_class_id];
 

@@ -86,11 +86,12 @@ class Base
         $this->type_class = $type_class;
     }
 
-    /**
-     * Base constructor.
-     * @param \Aot\Sviaz\Rule\Base $rule
-     */
-    protected function __construct(\Aot\Sviaz\Rule\Base $rule)
+    protected function __construct()
+    {
+
+    }
+
+    protected function init(\Aot\Sviaz\Rule\Base $rule)
     {
         $this->rule = $rule;
 
@@ -108,9 +109,15 @@ class Base
     public static function create(\Aot\Sviaz\Rule\Base $rule)
     {
         $dao = new \AotPersistence\Entities\Link();
+
         $dao->setRule($rule->getDao());
-        $ob = new static($rule);
+
+        $ob = new static();
+
         $ob->setDao($dao);
+
+        $ob->init($rule);
+
         return $ob;
     }
 
@@ -118,11 +125,22 @@ class Base
      * @param \AotPersistence\Entities\Link $dao
      * @return static
      */
-    public static function createByDao(\AotPersistence\Entities\Link $dao)
+    public static function createByRuleAndDao(\Aot\Sviaz\Rule\Base $rule, \AotPersistence\Entities\Link $dao)
     {
-        $rule = \Aot\Sviaz\Rule\Base::createByDao($dao->getRule());
-        $ob = new static($rule);
+        $ob = new static();
         $ob->setDao($dao);
+        $ob->init($rule);
+
+        foreach ($dao->getMatchings() as $matching_dao) {
+
+            $ob->asserted_matchings[] = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::createByDao($matching_dao);
+        }
+
+        foreach ($dao->getCheckers() as $checker_dao) {
+            /** @var $checker_dao \AotPersistence\Entities\LinkChecker */
+            $ob->asserted_checkers[] =  \Aot\Sviaz\Rule\AssertedLink\Checker\Registry::getObjectById($checker_dao->getId());
+        }
+
         return $ob;
     }
 
@@ -147,8 +165,13 @@ class Base
      */
     public function addAssertedMatching(\Aot\Sviaz\Rule\AssertedLink\AssertedMatching\Base $asserted_matching)
     {
-        $this->dao->addMatching($asserted_matching->getDao());
+        $asserted_matching->getDao()->setLink($this->dao);
+
         $this->asserted_matchings[] = $asserted_matching;
+
+        $this->dao->addMatching(
+            $asserted_matching->getDao()
+        );
     }
 
     public function attempt(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
@@ -177,16 +200,31 @@ class Base
      */
     public function addChecker(\Aot\Sviaz\Rule\AssertedLink\Checker\Base $checker)
     {
-        $this->dao->addChecker($checker->getDao());
+        if (in_array($checker, $this->asserted_checkers, true)) {
+            throw new \RuntimeException("checker already exists ! " . var_export($checker, 1));
+        }
+
+        $this->dao->addChecker(
+            $checker->getDao()
+        );
+
         $this->asserted_checkers[] = $checker;
     }
 
     /**
      * @param \AotPersistence\Entities\Link $dao
      */
-    protected function setDao($dao)
+    protected function setDao(\AotPersistence\Entities\Link $dao)
     {
         $this->dao = $dao;
+    }
+
+    /**
+     * @return \AotPersistence\Entities\Link
+     */
+    public function getDao()
+    {
+        return $this->dao;
     }
 
     /**

@@ -24,7 +24,7 @@ class Container
 
     /**
      * 2
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule1()
     {
@@ -54,7 +54,7 @@ TEXT;
 
     /**
      * 19
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule2()
     {
@@ -89,7 +89,7 @@ TEXT;
 
     /**
      * 12
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule4()
     {
@@ -127,7 +127,7 @@ TEXT;
     /**
      * 13
      * TODO: правило описано не полно (и текст правила не совсем совпадает)
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule5()
     {
@@ -216,7 +216,7 @@ TEXT;
 
     /**
      * 3
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule6()
     {
@@ -256,10 +256,12 @@ TEXT;
 
     /**
      * 4
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule7()
     {
+        throw new \RuntimeException("not more supported ");
+
         <<<TEXT
 Если в предложении есть существительное в именительном падеже,
 глагол «быть»*, согласующийся в роде и числе с существительным,
@@ -314,10 +316,12 @@ TEXT;
 
     /**
      * 5
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule8()
     {
+        throw new \RuntimeException("no more supported");
+
         <<<TEXT
 Если в предложении есть личное местоимение в именительном падеже, глагол «быть»,
 согласующийся в роде и числе с местоимением,
@@ -374,10 +378,13 @@ TEXT;
 
     /**
      * 6
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule9()
     {
+
+        throw new \RuntimeException("no more supported");
+
         <<<TEXT
 Если в предложении есть личное местоимение в именительном падеже, глагол «быть»,
 согласующийся в роде и числе с местоимением,
@@ -441,10 +448,12 @@ TEXT;
 
     /**
      * 7
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule10()
     {
+        throw new \RuntimeException("no more supported");
+
         <<<TEXT
 Если в предложении есть существительное в именительном падеже и глагол «быть» в форме,
 совпадающей с существительным в роде и числе, а после него – краткое страдательное причастие,
@@ -494,10 +503,12 @@ TEXT;
 
     /**
      * 11
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule11()
     {
+        throw new \RuntimeException("no more supported");
+
         <<<TEXT
 Если в предложении есть существительное в именительном падеже,
 глагол «быть», совпадающий с существительным в роде и числе,
@@ -544,10 +555,12 @@ TEXT;
 
     /**
      * 12
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule12()
     {
+        throw new \RuntimeException("no more supported");
+
         <<<TEXT
 Если в предложении есть существительное в именительном падеже и прилагательное в именительном падеже,
 совпадающее с существительным в числе и роде,
@@ -594,7 +607,7 @@ TEXT;
 
     /**
      * 13
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule13()
     {
@@ -638,7 +651,7 @@ TEXT;
 
     /**
      * 14
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule14()
     {
@@ -680,7 +693,7 @@ TEXT;
     /**
      * 15
      * @param $priznak
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     protected static function getRule16($priznak)
     {
@@ -726,6 +739,8 @@ TEXT;
 
     public static function getRuleSuchPadej()
     {
+        throw new \RuntimeException("no more supported");
+
         <<<TEXT
 Если в предложении есть глагол и существительное в любом падеже,
 кроме именительного, и между ними нет другого глагола, то между ними есть связь.
@@ -749,7 +764,7 @@ TEXT;
 
     /**
      * 16
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule17()
     {
@@ -785,10 +800,12 @@ TEXT;
 
     /**
      * 17
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule15()
     {
+        throw new \RuntimeException("no more supported");
+
         <<<TEXT
 Если перед или после глагола есть деепричастие
 и между ним нет других глаголов,
@@ -827,7 +844,7 @@ TEXT;
 
     /**
      * 33
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_PerehGl_Susch()
     {
@@ -863,7 +880,7 @@ TEXT;
 
     /**
      * 80
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_LichnoeMest_Pril()
     {
@@ -909,7 +926,7 @@ TEXT;
 
     /**
      * 81
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_OtricMest_Gl()
     {
@@ -952,7 +969,7 @@ TEXT;
 
     /**
      * 82
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_OtricMest_Prich(/*$padeszh, $rod, $chislo*/)
     {
@@ -996,7 +1013,7 @@ TEXT;
 
     /**
      * 83
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_PrityazhMest_Susch()
     {
@@ -1040,7 +1057,7 @@ TEXT;
 
     /**
      * 84
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_UkazMest_Susch(/*$padeszh, $rod, $chislo*/)
     {
@@ -1083,7 +1100,7 @@ TEXT;
 
     /**
      * 79
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_GroupChisl_Susch()
     {
@@ -1122,7 +1139,7 @@ TEXT;
 
     /**
      * 7 rewrite
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getSuschImenitPadeszh_Gl_Prich()
     {
@@ -1202,7 +1219,7 @@ TEXT;
 
     /**
      * 8
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getLichnoeMestImenitPadeszh_Gl_Prich()
     {
@@ -1287,7 +1304,7 @@ TEXT;
 
     /**
      * 9
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_Susch_GlBit_GlInf()
     {
@@ -1371,7 +1388,7 @@ TEXT;
 
     /**
      * 10
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_Mest_Gl_Narech()
     {
@@ -1401,7 +1418,7 @@ TEXT;
 
     /**
      * 10
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     protected static function getByRodAndChisloForRule_Mest_Gl_Narech($chislo, $rod)
     {
@@ -1456,7 +1473,7 @@ TEXT;
 
     /**
      * 18
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function Rule_Gl_Deepr()
     {
@@ -1568,7 +1585,7 @@ TEXT;
 
     /**
      * 34
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_LichnoeMest_GlagBit_KrPril()
     {
@@ -1585,7 +1602,7 @@ TEXT;
 
     /**
      * 34 (без учета порядка, скорее всего он там неважен)
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     protected static function getByRodAndChisloForRule_LichnoeMest_GlagBit_KrPril($chislo, $rod)
     {
@@ -1632,7 +1649,7 @@ TEXT;
 
     /**
      * 35
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_Susch_GlagBit_KrPril()
     {
@@ -1649,7 +1666,7 @@ TEXT;
 
     /**
      * 35 (без учета порядка, скорее всего он там неважен)
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     protected static function getByRodAndChisloForRule_Susch_GlagBit_KrPril($chislo, $rod)
     {
@@ -1697,7 +1714,7 @@ TEXT;
 
     /**
      * 37 fail
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     /*public static function getRule_KrPril_Susch()
     {
@@ -1712,7 +1729,7 @@ TEXT;
 
     /**
      * 37
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     /*protected static function getByRodAndChisloForRule_KrPril_Susch($chislo, $rod, $padeszh)
     {
@@ -1764,7 +1781,7 @@ TEXT;
 
     /**
      * 39
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_Susch_PoryadkChisl()
     {
@@ -1778,7 +1795,7 @@ TEXT;
 
     /**
      * 39
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     protected static function getByRodAndChisloForRule_Susch_PoryadkChisl($chislo, $rod, $padeszh)
     {
@@ -1829,7 +1846,7 @@ TEXT;
 
     /**
      * 23
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_Pril_Narech()
     {
@@ -1864,7 +1881,7 @@ TEXT;
 
     /**
      * 24
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_Narech_Narech()
     {
@@ -1899,7 +1916,7 @@ TEXT;
 
     /**
      * 25
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_Gl_Narech()
     {
@@ -1932,7 +1949,7 @@ TEXT;
 
     /**
      * 26
-     * @return static
+     * @return \Aot\Sviaz\Rule\Base
      */
     public static function getRule_Gl_DefisNarech()
     {

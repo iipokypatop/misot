@@ -59,6 +59,8 @@ class Builder2
 
     public function third(AssertedMember\Builder\Third $third)
     {
+        throw new \RuntimeException("no more supported");
+
         $this->asserted_third_builder = $third;
 
         return $this;

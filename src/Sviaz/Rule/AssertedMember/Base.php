@@ -25,29 +25,6 @@ use Aot\Text\GroupIdRegistry;
 class Base
 {
     use Persister;
-    /** @var  string */
-    protected $asserted_chast_rechi_class;
-
-    protected $asserted_text;
-    protected $asserted_text_group_id;
-
-
-    /** @var string[] */
-    protected $asserted_morphologies_classes = [];
-
-
-    /** @var  string[] */
-    protected $checker_classes;
-
-
-    /**
-     * @var  \Aot\Sviaz\Role\Base
-     * @deprecated
-     */
-    protected $role;
-
-    /** @var  string */
-    protected $role_class;
 
     protected function __construct()
     {
@@ -69,7 +46,9 @@ class Base
     public static function createByDao(\AotPersistence\Entities\Member $dao)
     {
         $ob = new static;
+
         $ob->setDao($dao);
+
         return $ob;
     }
 
@@ -90,9 +69,7 @@ class Base
 
     public function getAssertedText()
     {
-        $text = $this->get('text');
-
-        return $text;
+        return $this->get('text');
     }
 
     /**
@@ -100,8 +77,7 @@ class Base
      */
     public function getAssertedMorphologiesClasses()
     {
-        if( null === $this->getDao()->getChastRechi()->getId())
-        {
+        if (null === $this->getDao()->getChastRechi()->getId()) {
             throw new \RuntimeException('chast rechi is not defined');
         }
         $morphologies = $this->get('morphologies');
@@ -138,7 +114,7 @@ class Base
 
     public function getAssertedTextGroupId()
     {
-        if( null === $this->getDao()->getTextGroup()){
+        if (null === $this->getDao()->getTextGroup()) {
             return null;
         }
         return $this->getDao()->getTextGroup()->getId();
@@ -201,8 +177,7 @@ class Base
      */
     public function getAssertedChastRechiClass()
     {
-        if( null === $this->getDao()->getChastRechi() )
-        {
+        if (null === $this->getDao()->getChastRechi()) {
             return null;
         }
         return ChastiRechiRegistry::getClasses()[$this->getDao()->getChastRechi()->getId()];
@@ -243,9 +218,6 @@ class Base
         if (false === $this->dao->getMorphologies()->contains($entity)) {
             $this->dao->addMorphology($entity);
         }
-        #
-
-        //$this->asserted_morphologies_classes[] = $morphology_class;
     }
 
     /**
@@ -261,9 +233,6 @@ class Base
             throw new \RuntimeException("unsupported checker class $checker_class");
         }
 
-
-        #dao
-        // пишем в dao чекер
         $id_checker = Checker\Registry::getIdCheckerByClass($checker_class);
 
         /** @var \AotPersistence\Entities\MemberChecker $entity */
@@ -279,17 +248,11 @@ class Base
             throw new \RuntimeException("morphology class is not defined");
         }
 
-        // если нет в дао или не соответствует ID чекера
         if (
-            $this->dao->getCheckers()->isEmpty()
-            || false === $this->dao->getCheckers()->contains($entity)
+            $this->dao->getCheckers()->isEmpty() || false === $this->dao->getCheckers()->contains($entity)
         ) {
             $this->dao->addChecker($entity);
         }
-        #
-
-
-        $this->checker_classes[] = $checker_class;
     }
 
     /**
@@ -298,7 +261,7 @@ class Base
      */
     public function getRole()
     {
-        return $this->role;
+        throw new \RuntimeException("no more supported");
     }
 
     /**
@@ -307,7 +270,7 @@ class Base
      */
     public function setRole(\Aot\Sviaz\Role\Base $role)
     {
-        $this->role = $role;
+        throw new \RuntimeException("no more supported");
     }
 
     /**
@@ -335,9 +298,6 @@ class Base
 
         /** @var \AotPersistence\Entities\Role $entity_role */
         $this->dao->setRole($entity_role);
-
-
-        // $this->role_class = $role_class;
     }
 
 
@@ -345,31 +305,30 @@ class Base
     {
         if ($actual instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
 
-
-            if (null !== $this->asserted_text) {
+            if (null !== $this->getAssertedText()) {
                 if (strtolower($actual->getSlovo()->getText()) !== strtolower($this->asserted_text)) {
                     return false;
                 }
             }
 
-            if (null !== $this->asserted_text_group_id) {
-                if (empty(GroupIdRegistry::getWordVariants()[$this->asserted_text_group_id])) {
+            if (null !== $this->getAssertedTextGroupId()) {
+                if (empty(GroupIdRegistry::getWordVariants()[$this->getAssertedTextGroupId()])) {
                     return false;
                 }
 
-                if (!in_array(strtolower($actual->getSlovo()->getText()), GroupIdRegistry::getWordVariants()[$this->asserted_text_group_id], true)) {
+                if (!in_array(strtolower($actual->getSlovo()->getText()), GroupIdRegistry::getWordVariants()[$this->getAssertedTextGroupId()], true)) {
                     return false;
                 }
             }
 
 
             if (null !== $this->getAssertedChastRechiClass()) {
-                if  (!is_a($actual->getSlovo(), $this->getAssertedChastRechiClass(), true)) {
-                        return false;
+                if (!is_a($actual->getSlovo(), $this->getAssertedChastRechiClass(), true)) {
+                    return false;
                 }
             }
 
-            foreach ($this->asserted_morphologies_classes as $asserted_morphology) {
+            foreach ($this->getAssertedMorphologiesClasses() as $asserted_morphology) {
 
                 $morphology = $actual->getSlovo()->getMorphologyByClass_TEMPORARY($asserted_morphology);
 

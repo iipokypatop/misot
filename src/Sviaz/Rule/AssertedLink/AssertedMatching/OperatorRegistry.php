@@ -52,7 +52,7 @@ class OperatorRegistry
     /**
      * @param int $id
      * @param array $args
-     * @return \Aot\Sviaz\Rule\AssertedLink\Checker\Base
+     * @return \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Base
      */
     public static function getObjectById($id, array $args = [])
     {

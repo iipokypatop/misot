@@ -31,10 +31,41 @@ abstract class Base
 
     public static function create()
     {
+        $dao = new \AotPersistence\Entities\LinkChecker;
+
         $ob = new static();
-        $ob->assertDao();
+
+        $ob->setDao($dao);
+
         return $ob;
     }
+
+    /**
+     * @param $id
+     * @return static
+     */
+    public static function createById($id)
+    {
+        assert(is_int($id));
+
+        $ob = new static;
+
+        $dao = $ob
+            ->getEntityManager()
+            ->find(
+                \AotPersistence\Entities\LinkChecker::class,
+                $id
+            );
+
+        if (null === $dao) {
+            throw new \RuntimeException("bad id = " . var_export($id, 1));
+        }
+
+        $ob->setDao($dao);
+
+        return $ob;
+    }
+
 
     /**
      * @param \AotPersistence\Entities\LinkChecker $dao
@@ -52,7 +83,6 @@ abstract class Base
         return $this->dao;
     }
 
-
     /**
      * @return string
      */
@@ -61,17 +91,5 @@ abstract class Base
         return \AotPersistence\Entities\LinkChecker::class;
     }
 
-    protected function assertDao()
-    {
-        $checker_id = Registry::getIdByClass(static::class);
-        /** @var \AotPersistence\Entities\LinkChecker $dao_checker */
-        $dao_checker =
-            $this
-                ->getEntityManager()
-                ->find(
-                    \AotPersistence\Entities\LinkChecker::class,
-                    $checker_id
-                );
-        $this->setDao($dao_checker);
-    }
+
 }

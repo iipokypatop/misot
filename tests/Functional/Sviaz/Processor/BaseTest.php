@@ -190,7 +190,9 @@ RULE;
         $rule->addLink($link);
 
         $link->addChecker(
-            \Aot\Sviaz\Rule\AssertedLink\Checker\BeetweenMainAndDepended\NetSuschestvitelnogoVImenitelnomPadeszhe::create()
+            \Aot\Sviaz\Rule\AssertedLink\Checker\Registry::getObjectById(
+                \Aot\Sviaz\Rule\AssertedLink\Checker\Registry::NetSuschestvitelnogoVImenitelnomPadeszhe
+            )
         );
 
 
@@ -494,6 +496,8 @@ TEXT;
 
     public function testThirdMember()
     {
+        $this->markTestSkipped("third member no more supported");
+
         // краями -  творительный падеж мн. ч
         //
         // Над горами появились облака – сначала легкие и воздушные, затем серые, с рваными краями

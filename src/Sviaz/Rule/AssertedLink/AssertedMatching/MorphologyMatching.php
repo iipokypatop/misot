@@ -76,18 +76,38 @@ class MorphologyMatching extends Base
      */
     public static function create($asserted_left_class, MorphologyMatchingOperator\Base $operator, $asserted_right_class)
     {
-        $dao = new \AotPersistence\Entities\MorphologyMatching();
         $ob = new static($asserted_left_class, $operator, $asserted_right_class);
+
+        $dao = new \AotPersistence\Entities\MorphologyMatching();
+
         $ob->setDao($dao);
-        $ob->setFieldsDao();
+
+        $ob->initDao($asserted_left_class, $operator, $asserted_right_class);
+
         return $ob;
     }
 
-    #todo
-    public static function createByDao(){
-        throw new \RuntimeException("Метод еще не реализован");
-    }
 
+    public static function createByDao(\AotPersistence\Entities\MorphologyMatching $dao)
+    {
+        $asserted_left_class = MorphologyRegistry::getBaseClasses()[$dao->getLeftMorphology()->getId()][$dao->getLeftChastRechi()->getId()];
+
+        $asserted_right_class = MorphologyRegistry::getBaseClasses()[$dao->getRightMorphology()->getId()][$dao->getRightChastRechi()->getId()];
+
+        $operator = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\OperatorRegistry::getObjectById(
+            $dao->getOperator()->getId()
+        );
+
+        $ob = new static(
+            $asserted_left_class,
+            $operator,
+            $asserted_right_class
+        );
+
+        $ob->setDao($dao);
+
+        return $ob;
+    }
 
 
     /**
@@ -157,49 +177,122 @@ class MorphologyMatching extends Base
         return $this->dao;
     }
 
-    protected function setFieldsDao()
+
+    protected function initDao($asserted_left_class, MorphologyMatchingOperator\Base $operator, $asserted_right_class)
     {
-        $left_morphology_id = MorphologyRegistry::getIdMorphologyByBaseClass($this->asserted_left_class);
-        $right_morphology_id = MorphologyRegistry::getIdMorphologyByBaseClass($this->asserted_right_class);
-        $operator_id = OperatorRegistry::getIdByObject($this->operator);
+        $chast_rechi_id_morphology_id =
+            \Aot\RussianMorphology\ChastiRechi\MorphologyRegistry::getIdAndChastRehiAndMorphologyIdByBaseClass($asserted_left_class);
 
-        $entity_left_morphology =
-            $this
-                ->getEntityManager()
-                ->find(
-                    \AotPersistence\Entities\Morphology::class,
-                    $left_morphology_id
-                );
-
-        if( $entity_left_morphology === null){
-            throw new \RuntimeException("morphology with id = $left_morphology_id does not exists");
+        if (null === $chast_rechi_id_morphology_id) {
+            throw new \RuntimeException('incorrect base class ' . var_export($asserted_left_class, 1));
         }
 
-        $entity_right_morphology =
-            $this
-                ->getEntityManager()
-                ->find(
-                    \AotPersistence\Entities\Morphology::class,
-                    $right_morphology_id
-                );
+        list($left_chast_rechi_id, $left_morphology_id) = $chast_rechi_id_morphology_id;
 
-        if( $entity_right_morphology === null){
-            throw new \RuntimeException("morphology with id = $right_morphology_id does not exists");
+        $this->dao->setLeftMorphology(
+            $this->getBuildMorphologyDao($left_morphology_id)
+        );
+
+        $this->dao->setLeftChastRechi(
+            $this->getBuildChastRechiDao($left_chast_rechi_id)
+        );
+
+
+        $chast_rechi_id_morphology_id =
+            \Aot\RussianMorphology\ChastiRechi\MorphologyRegistry::getIdAndChastRehiAndMorphologyIdByBaseClass($asserted_right_class);
+
+        if (null === $chast_rechi_id_morphology_id) {
+            throw new \RuntimeException('incorrect base class ' . var_export($asserted_right_class, 1));
         }
 
-        $entity_operator =
-            $this
-                ->getEntityManager()
-                ->find(
-                    \AotPersistence\Entities\Operator::class,
-                    $operator_id
-                );
+        list($right_chast_rechi_id, $right_morphology_id) = $chast_rechi_id_morphology_id;
 
-        if( $entity_operator === null){
+        $this->dao->setRightMorphology(
+            $this->getBuildMorphologyDao($right_morphology_id)
+        );
+
+        $this->dao->setRightChastRechi(
+            $this->getBuildChastRechiDao($right_chast_rechi_id)
+        );
+
+        $this->dao->setOperator(
+            $this->getBuildOperatorDao($operator)
+        );
+    }
+
+
+    /**
+     * @param $morphology_id
+     * @return \AotPersistence\Entities\Morphology
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @throws \RuntimeException
+     */
+    protected function getBuildMorphologyDao($morphology_id)
+    {
+        $dao = $this
+            ->getEntityManager()
+            ->find(
+                \AotPersistence\Entities\Morphology::class,
+                $morphology_id
+            );
+
+        if ($dao === null) {
+            throw new \RuntimeException("morphology with id = " . var_export($morphology_id, 1) . " does not exists");
+        }
+
+        return $dao;
+    }
+
+
+    /**
+     * @param $chast_rechi_id
+     * @return \AotPersistence\Entities\ChastiRechi
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @throws \RuntimeException
+     */
+    protected function getBuildChastRechiDao($chast_rechi_id)
+    {
+        $dao = $this
+            ->getEntityManager()
+            ->find(
+                \AotPersistence\Entities\ChastiRechi::class,
+                $chast_rechi_id
+            );
+
+        if ($dao === null) {
+            throw new \RuntimeException("chast_rechi_dao with id = " . var_export($chast_rechi_id, 1) . " does not exists");
+        }
+
+        return $dao;
+    }
+
+    /**
+     * @param MorphologyMatchingOperator\Base $operator
+     * @return \AotPersistence\Entities\Operator
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @throws \RuntimeException
+     */
+    public function getBuildOperatorDao(MorphologyMatchingOperator\Base $operator)
+    {
+        $operator_id = OperatorRegistry::getIdByObject($operator);
+
+        $dao = $this
+            ->getEntityManager()
+            ->find(
+                \AotPersistence\Entities\Operator::class,
+                $operator_id
+            );
+
+        if ($dao === null) {
             throw new \RuntimeException("operator with id = $operator_id does not exists");
         }
-        $this->dao->setRightMorphologyId($entity_right_morphology);
-        $this->dao->setLeftMorphologyId($entity_left_morphology);
-        $this->dao->setOperator($entity_operator);
+
+        return $dao;
     }
 }

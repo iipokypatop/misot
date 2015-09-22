@@ -53,13 +53,15 @@ class Builder2Test extends \AotTest\AotDataStorage
                         ->dependedAfterMain()
                 );
 
+        /*
+        //("no more supported");
         $builder->third(
             \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
                 ChastiRechiRegistry::SUSCHESTVITELNOE
             )
                 ->position(PositionRegistry::POSITION_AFTER_DEPENDED)
                 ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
-        );
+        );*/
 
         $rule = $builder->get();
 

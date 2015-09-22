@@ -42,9 +42,10 @@ class Base
      */
     public function assertThird(\Aot\Sviaz\Rule\AssertedMember\Third $asserted_member)
     {
-        # 3-ий мембер в базу не сохраняем
-//        $this->dao->setThird($asserted_member->getDao());
-        $this->asserted_third = $asserted_member;
+        throw new \RuntimeException('not more supported');
+        //3-ий мембер в базу не сохраняем
+        //$this->dao->setThird($asserted_member->getDao());
+        //$this->asserted_third = $asserted_member;
     }
 
     /** @var  \Aot\Sviaz\Rule\AssertedLink\Base[] */
@@ -69,10 +70,15 @@ class Base
     public static function create(AssertedMember\Main $main, AssertedMember\Depended $depended)
     {
         $dao = new \AotPersistence\Entities\Rule();
+
         $dao->setMain($main->getDao());
+
         $dao->setDepended($depended->getDao());
+
         $ob = new static($main, $depended);
+
         $ob->setDao($dao);
+
         return $ob;
     }
 
@@ -82,11 +88,23 @@ class Base
      */
     public static function createByDao(\AotPersistence\Entities\Rule $dao)
     {
-
         $main = AssertedMember\Main::createByDao($dao->getMain());
+
         $depended = AssertedMember\Depended::createByDao($dao->getDepended());
+
         $ob = new static($main, $depended);
+
         $ob->setDao($dao);
+
+        $link_daos = $ob->getAPI()->findBy(
+            \AotPersistence\Entities\Link::class,
+            ['rule' => $dao]
+        );
+
+        foreach ($link_daos as $link_dao) {
+            \Aot\Sviaz\Rule\AssertedLink\Base::createByRuleAndDao($ob, $link_dao);
+        }
+
         return $ob;
     }
 
@@ -120,6 +138,8 @@ class Base
     public function addLink(AssertedLink\Base $link)
     {
         $this->links[] = $link;
+
+        $link->getDao()->setRule($this->getDao());
     }
 
     /**
@@ -173,6 +193,12 @@ class Base
     protected function getEntityClass()
     {
         return \AotPersistence\Entities\Rule::class;
+    }
+
+    /** @return \AotPersistence\Entities\Rule */
+    public function getDao()
+    {
+        return $this->dao;
     }
 }
 

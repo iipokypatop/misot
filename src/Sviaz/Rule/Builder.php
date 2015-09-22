@@ -375,6 +375,9 @@ class Builder
         return $member;
     }
 
+    /**
+     * @return \Aot\Sviaz\Rule\Base
+     */
     public function get()
     {
         /** @var $asserted_main \Aot\Sviaz\Rule\AssertedMember\Main */
@@ -403,13 +406,14 @@ class Builder
 
         foreach ($this->link['checkers'] as $id) {
 
-            $link_checker = LinkCheckerRegistry::getObjectById($id);
+            $link->addChecker(
+                \Aot\Sviaz\Rule\AssertedLink\Checker\Registry::getObjectById($id)
+            );
 
-            $link->addChecker($link_checker);
         }
 
 
-        $rule->addLink($link);
+        //$rule->addLink($link);
 
         return $rule;
     }
