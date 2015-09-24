@@ -39,7 +39,7 @@ class RulesSavesAndRestoreCorrectly extends \AotTest\AotDataStorage
             \Aot\Sviaz\Rule\Container::getRule_OtricMest_Prich(),
         ],
             \Aot\Sviaz\Rule\Container::getRuleSuch1()
-            /*\Aot\Sviaz\Rule\Container::getRuleSuchPadej()*/
+        /*\Aot\Sviaz\Rule\Container::getRuleSuchPadej()*/
         );
 
         foreach ($rules as $index => $rule) {
@@ -53,12 +53,24 @@ class RulesSavesAndRestoreCorrectly extends \AotTest\AotDataStorage
             }
 
             $rule_from_db = \Aot\Sviaz\Rule\Base::createByDao($rule->getDao());
+
             $this->assertEquals($rule, $rule_from_db);
         }
     }
 
-    public function not_testLaunch()
+    public function testRunALlRulessFromDb()
     {
+        $this->markTestSkipped();
 
+        $api = $this->getRule()->getAPI();
+
+        $rule_daos = $api->findBy(
+            \AotPersistence\Entities\Rule::class, []
+        );
+
+        $rules = [];
+        foreach ($rule_daos as $rule_dao) {
+            $rules[] = \Aot\Sviaz\Rule\Base::createByDao($rule_dao);
+        }
     }
 }
