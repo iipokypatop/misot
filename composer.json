@@ -17,7 +17,7 @@
     "symfony/yaml": "2.7.*",
     "mivar-projects/loader": "dev-master",
     "mivar-projects/test-utils": "dev-master",
-    "mivar-projects/text-libraries": "dev-master",
+    "mivar-projects/text-libraries": "dev-develop",
     "txt/mivar_text_semantic": "dev-master",
     "mivar-projects/aot-db-api": "dev-master",
     "mivar-projects/semantic-db-api": "dev-master"
@@ -41,10 +41,6 @@
     },
     {
       "url": "git@git.mivar.pro:txt/mivar_text_semantic.git",
-      "type": "git"
-    },
-    {
-      "url": "git@git.mivar.pro:mivar-projects/aot-db-api.git",
       "type": "git"
     },
     {
