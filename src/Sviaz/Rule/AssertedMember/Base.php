@@ -49,6 +49,8 @@ class Base
     /** @var  string */
     protected $role_class;
 
+    protected  $chlen_sentence=0;
+
     protected function __construct()
     {
 
@@ -403,4 +405,16 @@ class Base
     {
         return \AotPersistence\Entities\Member::class;
     }
+
+    public function setChlenPredlojenia($param)
+    {
+        $this->chlen_sentence=$param;
+    }
+
+    public function getChlenPredlojenia()
+    {
+        return $this->chlen_sentence;
+    }
+
+
 }
