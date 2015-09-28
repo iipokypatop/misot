@@ -19,6 +19,8 @@ use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Depended;
 use Aot\Sviaz\Rule\AssertedMember\Main;
 use Aot\Text\GroupIdRegistry as GroupIdRegistry;
+use Monolog\Registry;
+use Aot\RussianSyntacsis\Predlozhenie\Chasti\Registry as ChastiPredlozhenieRegistry;
 
 
 abstract class Base
@@ -126,5 +128,17 @@ abstract class Base
     public function get()
     {
         return $this->member;
+    }
+
+    public function podlezhachee()
+    {
+        $this->member->setChlenPredlojenia(ChastiPredlozhenieRegistry::PODLEZHACHEE);
+        return $this;
+    }
+
+    public function skazuemoe()
+    {
+        $this->member->setChlenPredlojenia(ChastiPredlozhenieRegistry::SKAZUEMOE);
+        return $this;
     }
 }
