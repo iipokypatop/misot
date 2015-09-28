@@ -76,7 +76,7 @@ class Base
         return $ob;
     }
 
-    public static function createByDao(\SemanticPersistence\Entities\SyntaxRule $dao)
+    public static function createByDao($dao)
     {
         throw new \RuntimeException("not implemented exception");
 
