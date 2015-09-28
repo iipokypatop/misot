@@ -14,6 +14,7 @@ use Aot\Sviaz\Rule\AssertedMember\PresenceRegistry;
 use Aot\Sviaz\Rule\Base as RuleBase;
 use Aot\Sviaz\Sequence;
 use Aot\Sviaz\SequenceMember\RawMemberBuilder;
+use Aot\RussianSyntacsis\Predlozhenie\Chasti\Registry as ChastiPredlozhenieRegistry;
 
 class Base
 {
@@ -76,6 +77,7 @@ class Base
      */
     protected function postProcess(\Aot\Sviaz\Sequence $sequence)
     {
+        /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi */
         $sviazi = $sequence->getSviazi();
 
         foreach ($sviazi as $sviaz) {
@@ -118,7 +120,7 @@ class Base
 
             $sequence = $this->preProcess($raw_sequence);
 
-            $this->applyRules(
+            $this->process(
                 $sequence,
                 $rules
             );
@@ -138,7 +140,7 @@ class Base
      * @param RuleBase[] $rules
      * @return \Aot\Sviaz\Podchinitrelnaya\Base[]
      */
-    protected function applyRules(\Aot\Sviaz\Sequence $sequence, array $rules)
+    protected function process(\Aot\Sviaz\Sequence $sequence, array $rules)
     {
         assert(!empty($rules));
 
@@ -146,58 +148,18 @@ class Base
             assert(is_a($_rule, RuleBase::class));
         }
 
-        $sviazi = [];
 
-        foreach ($rules as $rule) {
+        list($rules1, $rules2) = $this->separateRules($rules);
 
-            foreach ($sequence as $main_candidate) {
-                if (!$rule->getAssertedMain()->attempt($main_candidate)) {
-                    continue;
-                }
 
-                foreach ($sequence as $depended_candidate) {
-                    if ($depended_candidate === $main_candidate) {
-                        continue;
-                    }
+        $this->applyRules($sequence, $rules1);
+        $this->detectSubSequences($sequence);
+        $this->applyRules($sequence, $rules2);
 
-                    if (!$rule->getAssertedDepended()->attempt($depended_candidate)) {
-                        continue;
-                    }
+        /** @var \Aot\Sviaz\Rule\Base $rule */
 
-                    /*if (!$this->cache->get([$rule, $main_candidate, $depended_candidate])) {*/
-                    if (true) {
-                        $result = $this->processThird(
-                            $sequence,
-                            $main_candidate,
-                            $depended_candidate,
-                            $rule
-                        );
 
-                        if (!$result) {
-                            continue;
-                        }
-
-                        $result = $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
-
-                        if ($result) {
-
-                            $sviazi[] = $sviaz = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
-                                $main_candidate,
-                                $depended_candidate,
-                                $rule,
-                                $sequence
-                            );
-
-                            $sequence->addSviaz($sviaz);
-
-                            /*$this->cache->put([$rule, $main_candidate, $depended_candidate]);*/
-                        }
-                    }
-                }
-            }
-        }
-
-        return $sviazi;
+        //return $sviazi1;
     }
 
 
@@ -206,8 +168,7 @@ class Base
         \Aot\Sviaz\SequenceMember\Base $main_candidate,
         \Aot\Sviaz\SequenceMember\Base $depended_candidate,
         \Aot\Sviaz\Rule\AssertedMember\Third $third
-    )
-    {
+    ) {
         $result = true;
 
 
@@ -241,37 +202,39 @@ class Base
 
             // \find and locate
 
-        } else if (PresenceRegistry::PRESENCE_NOT_PRESENT === $third->getPresence()) {
+        } else {
+            if (PresenceRegistry::PRESENCE_NOT_PRESENT === $third->getPresence()) {
 
-            $result = false;
+                $result = false;
 
-            foreach ($sequence as $third_candidate) {
-                if ($third_candidate === $main_candidate) {
-                    continue;
-                }
-                if ($third_candidate === $depended_candidate) {
-                    continue;
-                }
+                foreach ($sequence as $third_candidate) {
+                    if ($third_candidate === $main_candidate) {
+                        continue;
+                    }
+                    if ($third_candidate === $depended_candidate) {
+                        continue;
+                    }
 
-                $result = $third->attempt($third_candidate);
-
-                if (true === $result) {
-                    $result = $this->processPosition(
-                        $sequence->getPosition($main_candidate),
-                        $sequence->getPosition($depended_candidate),
-                        $third->getPosition(),
-                        $sequence->getPosition($third_candidate)
-                    );
+                    $result = $third->attempt($third_candidate);
 
                     if (true === $result) {
-                        $result = false;
-                        break;
+                        $result = $this->processPosition(
+                            $sequence->getPosition($main_candidate),
+                            $sequence->getPosition($depended_candidate),
+                            $third->getPosition(),
+                            $sequence->getPosition($third_candidate)
+                        );
+
+                        if (true === $result) {
+                            $result = false;
+                            break;
+                        }
                     }
                 }
-            }
 
-            if ($result === false) {
-                $result = true;
+                if ($result === false) {
+                    $result = true;
+                }
             }
         }
 
@@ -283,8 +246,7 @@ class Base
         \Aot\Sviaz\SequenceMember\Base $main_candidate,
         \Aot\Sviaz\SequenceMember\Base $depended_candidate,
         \Aot\Sviaz\Rule\Base $rule
-    )
-    {
+    ) {
         $result = true;
 
         $third = $rule->getAssertedThird();
@@ -323,40 +285,42 @@ class Base
 
             // \find and locate
 
-        } else if (PresenceRegistry::PRESENCE_NOT_PRESENT === $third->getPresence()) {
+        } else {
+            if (PresenceRegistry::PRESENCE_NOT_PRESENT === $third->getPresence()) {
 
-            foreach ($sequence as $third_candidate) {
-                if ($third_candidate === $main_candidate) {
-                    continue;
-                }
-                if ($third_candidate === $depended_candidate) {
-                    continue;
-                }
+                foreach ($sequence as $third_candidate) {
+                    if ($third_candidate === $main_candidate) {
+                        continue;
+                    }
+                    if ($third_candidate === $depended_candidate) {
+                        continue;
+                    }
 
-                $result = $third->attempt($third_candidate);
-
-                if (true === $result) {
-                    $result = $this->processPosition(
-                        $sequence->getPosition($main_candidate),
-                        $sequence->getPosition($depended_candidate),
-                        $third->getPosition(),
-                        $sequence->getPosition($third_candidate)
-                    );
+                    $result = $third->attempt($third_candidate);
 
                     if (true === $result) {
-                        $result = false;
-                        break;
+                        $result = $this->processPosition(
+                            $sequence->getPosition($main_candidate),
+                            $sequence->getPosition($depended_candidate),
+                            $third->getPosition(),
+                            $sequence->getPosition($third_candidate)
+                        );
+
+                        if (true === $result) {
+                            $result = false;
+                            break;
+                        }
                     }
                 }
+
+                if ($result === false) {
+                    $result = true;
+                }
+
+            } else {
+
+                throw new \RuntimeException("unsupported presence type " . var_export($third->getPresence(), 1));
             }
-
-            if ($result === false) {
-                $result = true;
-            }
-
-        } else {
-
-            throw new \RuntimeException("unsupported presence type " . var_export($third->getPresence(), 1));
         }
 
         return $result;
@@ -368,8 +332,7 @@ class Base
         \Aot\Sviaz\SequenceMember\Base $main_candidate,
         \Aot\Sviaz\SequenceMember\Base $depended_candidate,
         \Aot\Sviaz\Rule\AssertedMember\Third $third
-    )
-    {
+    ) {
         $result = false;
 
         foreach ($sequence as $third_candidate) {
@@ -408,8 +371,12 @@ class Base
      * @param int $third_position_actual
      * @return bool
      */
-    protected function processPosition($main_position, $depended_position, $third_position_expected, $third_position_actual)
-    {
+    protected function processPosition(
+        $main_position,
+        $depended_position,
+        $third_position_expected,
+        $third_position_actual
+    ) {
         assert(is_int($main_position));
         assert(is_int($depended_position));
         assert(is_int($third_position_expected));
@@ -419,34 +386,192 @@ class Base
 
             return true;
 
-        } else if ($third_position_expected === PositionRegistry::POSITION_BETWEEN_MAIN_AND_DEPENDED) {
-            if ($main_position > $depended_position) {
-                if ($main_position > $third_position_actual && $third_position_actual > $depended_position) {
-                    return true;
+        } else {
+            if ($third_position_expected === PositionRegistry::POSITION_BETWEEN_MAIN_AND_DEPENDED) {
+                if ($main_position > $depended_position) {
+                    if ($main_position > $third_position_actual && $third_position_actual > $depended_position) {
+                        return true;
+                    }
+                } else {
+                    if ($depended_position > $main_position) {
+                        if ($depended_position > $third_position_actual && $third_position_actual > $main_position) {
+                            return true;
+                        }
+                    }
                 }
-            } else if ($depended_position > $main_position) {
-                if ($depended_position > $third_position_actual && $third_position_actual > $main_position) {
-                    return true;
+            } else {
+                if ($third_position_expected === PositionRegistry::POSITION_AFTER_MAIN) {
+                    if ($third_position_actual > $main_position) {
+                        return true;
+                    }
+                } else {
+                    if ($third_position_expected === PositionRegistry::POSITION_BEFORE_MAIN) {
+                        if ($third_position_actual < $main_position) {
+                            return true;
+                        }
+                    } else {
+                        if ($third_position_expected === PositionRegistry::POSITION_AFTER_DEPENDED) {
+                            if ($third_position_actual > $depended_position) {
+                                return true;
+                            }
+                        } else {
+                            if ($third_position_expected === PositionRegistry::POSITION_BEFORE_DEPENDED) {
+                                if ($third_position_actual < $depended_position) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-        } else if ($third_position_expected === PositionRegistry::POSITION_AFTER_MAIN) {
-            if ($third_position_actual > $main_position) {
-                return true;
-            }
-        } else if ($third_position_expected === PositionRegistry::POSITION_BEFORE_MAIN) {
-            if ($third_position_actual < $main_position) {
-                return true;
-            }
-        } else if ($third_position_expected === PositionRegistry::POSITION_AFTER_DEPENDED) {
-            if ($third_position_actual > $depended_position) {
-                return true;
-            }
-        } else if ($third_position_expected === PositionRegistry::POSITION_BEFORE_DEPENDED) {
-            if ($third_position_actual < $depended_position) {
-                return true;
             }
         };
 
         return false;
     }
+
+
+    /**
+     * @param $rules \Aot\Sviaz\Rule\Base[]
+     * @return \Aot\Sviaz\Rule\Base[][]
+     */
+    private function separateRules($rules)
+    {
+        $type1 = [];
+        $type2 = [];
+
+        foreach ($rules as $rule) {
+            if (ChastiPredlozhenieRegistry::PODLEZHACHEE === $rule->getAssertedMain()->getChlenPredlojenia()
+                &&
+                ChastiPredlozhenieRegistry::SKAZUEMOE === $rule->getAssertedDepended()->getChlenPredlojenia()
+            ) {
+                $type1[] = $rule;
+            } else {
+                $type2[] = $rule;
+            }
+        }
+        return [$type1, $type2];
+    }
+
+    /**
+     * @param Sequence $sequence
+     * @param \Aot\Sviaz\Rule\Base[] $rules
+     * @return array
+     */
+    protected function applyRules(\Aot\Sviaz\Sequence $sequence, array $rules)
+    {
+        foreach ($rules as $rule) {
+            assert(is_a($rule, RuleBase::class));
+        }
+        $sviazi=[];
+        /** @var \Aot\Sviaz\Rule\Base $rule */
+        foreach ($rules as $rule) {
+
+            foreach ($sequence as $main_candidate) {
+                if (!$rule->getAssertedMain()->attempt($main_candidate)) {
+                    continue;
+                }
+                $sub_sequences=$sequence->findSubSequencesForMember($main_candidate);
+
+                /* @var \Aot\Sviaz\SequenceMember\Word\Base $depended_candidate */
+                foreach ($sequence as $depended_candidate) {
+
+
+                    if ($depended_candidate === $main_candidate) {
+                        continue;
+                    }
+
+                    if (count($sub_sequences)>=1){
+                        $result=false;
+                        foreach($sub_sequences as $sub_sequence){
+                            if ($sub_sequence->isMemberInSequences($depended_candidate)){
+                                $result=true;
+                            }
+                        }
+                        if (!$result){
+                            continue;
+                        }
+                    }
+
+                    if (!$rule->getAssertedDepended()->attempt($depended_candidate)) {
+                        continue;
+                    }
+
+
+                    /*if (!$this->cache->get([$rule, $main_candidate, $depended_candidate])) {*/
+                    if (true) {
+                        $result = $this->processThird(
+                            $sequence,
+                            $main_candidate,
+                            $depended_candidate,
+                            $rule
+                        );
+
+                        if (!$result) {
+                            continue;
+                        }
+
+                        $result = $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
+
+                        if ($result) {
+                            //print_r($sequence->getPosition($main_candidate));
+                            //print_r($depended_candidate->getSlovo()->getText());
+                            $sviazi[] = $sviaz = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
+                                $main_candidate,
+                                $depended_candidate,
+                                $rule,
+                                $sequence
+                            );
+
+                            $sequence->addSviaz($sviaz);
+
+                            /*$this->cache->put([$rule, $main_candidate, $depended_candidate]);*/
+                        }
+                    }
+                }
+            }
+        }
+
+        return $sviazi;
+    }
+
+    /**
+     *
+     * @param Sequence $sequence
+     */
+    protected function detectSubSequences(\Aot\Sviaz\Sequence $sequence)
+    {
+        $sviazi = $sequence->getSviazi();
+        $main = null;
+        $depended = null;
+        $result = false;
+        foreach ($sviazi as $sviaz) {
+
+            if ($main === null && $depended === null) {
+                $main = $sviaz->getMainSequenceMember();
+                $depended = $sviaz->getDependedSequenceMember();
+                $result = true;
+
+                continue;
+            }
+
+            if ($sviaz->getMainSequenceMember() !== $main || $sviaz->getDependedSequenceMember() !== $depended) {
+                $result = false;
+                break;
+            }
+
+            $result = true;
+
+        }
+
+        if ($result) {
+            $sequence->setSubSequence(
+                \Aot\Sviaz\SubSequence::createSubSequences(
+                    $sequence,
+                    $sequence->getPosition($main),
+                    $sequence->getPosition($depended)
+                )
+            );
+        }
+    }
+
 }
