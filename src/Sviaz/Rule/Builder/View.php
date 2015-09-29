@@ -6,7 +6,7 @@
  * Time: 17:02
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\Builder;
+namespace Aot\Sviaz\Rule\Builder;
 
 
 use Aot\View\Chargeable;

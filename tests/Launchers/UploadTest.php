@@ -10,7 +10,7 @@ namespace AotTest\Functional\RussianMorphology;
 
 
 
-class UploadTest /*extends \AotTest\AotDataStorage*/
+class UploadTest extends \AotTest\AotDataStorage
 {
 
     public function testLaunch(){
@@ -33,7 +33,7 @@ class UploadTest /*extends \AotTest\AotDataStorage*/
         $registry->save();
 
         #linkChecker
-        $registry = new \Aot\Sviaz\Rule\AssertedLink\Checker\Registry();
+        $registry = new \Aot\Sviaz\Rule\Checker\Registry();
         $registry->save();
 
         #memberChecker
@@ -53,7 +53,7 @@ class UploadTest /*extends \AotTest\AotDataStorage*/
         $registry->save();
 
         #operator
-        $registry = new \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\OperatorRegistry();
+        $registry = new \Aot\Sviaz\Rule\AssertedMatching\OperatorRegistry();
         $registry->save();
     }
 }

@@ -6,7 +6,7 @@
  * Time: 13:30
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\Finder;
+namespace Aot\Sviaz\Rule\Finder;
 
 
 class Base

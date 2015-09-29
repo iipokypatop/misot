@@ -6,15 +6,15 @@
  * Time: 13:30
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\Checker;
+namespace Aot\Sviaz\Rule\Checker;
 
 
 use Aot\Persister;
 
 /**
  * Class Base
- * @package Aot\Sviaz\Rule\AssertedLink\Checker
- * @property \AotPersistence\Entities\LinkChecker $dao
+ * @package Aot\Sviaz\Rule\Checker
+ * @property \SemanticPersistence\Entities\MisotEntities\LinkChecker $dao
  */
 abstract class Base
 {
@@ -31,7 +31,7 @@ abstract class Base
 
     public static function create()
     {
-        $dao = new \AotPersistence\Entities\LinkChecker;
+        $dao = new \SemanticPersistence\Entities\MisotEntities\LinkChecker;
 
         $ob = new static();
 
@@ -53,7 +53,7 @@ abstract class Base
         $dao = $ob
             ->getEntityManager()
             ->find(
-                \AotPersistence\Entities\LinkChecker::class,
+                \SemanticPersistence\Entities\MisotEntities\LinkChecker::class,
                 $id
             );
 
@@ -68,7 +68,7 @@ abstract class Base
 
 
     /**
-     * @param \AotPersistence\Entities\LinkChecker $dao
+     * @param \SemanticPersistence\Entities\MisotEntities\LinkChecker $dao
      */
     protected function setDao($dao)
     {
@@ -76,7 +76,7 @@ abstract class Base
     }
 
     /**
-     * @return \AotPersistence\Entities\LinkChecker
+     * @return \SemanticPersistence\Entities\MisotEntities\LinkChecker
      */
     public function getDao()
     {
@@ -88,7 +88,7 @@ abstract class Base
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\LinkChecker::class;
+        return \SemanticPersistence\Entities\MisotEntities\LinkChecker::class;
     }
 
 

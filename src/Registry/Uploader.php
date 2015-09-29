@@ -9,12 +9,12 @@
 namespace Aot\Registry;
 
 
-use AotPersistence\API\AotAPI;
+
 use MivarTest\PHPUnitHelper;
 
 trait Uploader
 {
-    protected $conn_db = "host=test-db.mivar.pro dbname=misot user=postgres password=@Mivar123User@";
+    protected $conn_db = "host=test-db.mivar.pro dbname=mivar_semantic_1890 user=postgres password=@Mivar123User@";
 
     /**
      * @return string
@@ -26,7 +26,7 @@ trait Uploader
      */
     public function getEntityManager()
     {
-        return AotAPI::getAPI($this->conn_db);
+        return \SemanticPersistence\API\SemanticAPI::getAPI($this->conn_db);
     }
 
     /**

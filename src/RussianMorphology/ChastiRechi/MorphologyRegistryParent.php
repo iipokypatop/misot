@@ -313,7 +313,7 @@ class MorphologyRegistryParent
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\Morphology::class;
+        return \SemanticPersistence\Entities\MisotEntities\Morphology::class;
     }
 
     /**

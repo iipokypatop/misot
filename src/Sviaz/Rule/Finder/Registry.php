@@ -6,7 +6,7 @@
  * Time: 12:59
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\Finder;
+namespace Aot\Sviaz\Rule\Finder;
 
 
 class Registry

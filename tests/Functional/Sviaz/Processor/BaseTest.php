@@ -20,13 +20,13 @@ use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base as Suschestvitelnoe;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base as SuschestvitelnoePadeszhBase;
 use Aot\RussianSyntacsis\Punctuaciya\Zapiataya;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
-use Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq;
-use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
+use Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq;
+use Aot\Sviaz\Rule\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\PositionRegistry;
 use MivarTest\PHPUnitHelper;
 
-use Aot\Sviaz\Rule\AssertedLink\Builder\Base as AssertedLinkBuilder;
+use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
 
 class BaseTest extends \AotTest\AotDataStorage
 {
@@ -136,37 +136,6 @@ class BaseTest extends \AotTest\AotDataStorage
         return $asserted_depended;
     }
 
-    protected function get_asserted_link($rule)
-    {
-        $link = \Aot\Sviaz\Rule\AssertedLink\Base::create($rule);
-
-        // падеж
-        $asserted_matching[0] = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
-            SuschestvitelnoePadeszhBase::class,
-            Eq::create(),
-            \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Base::class
-        );
-
-        // род
-        $asserted_matching[1] = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
-            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Base::class,
-            Eq::create(),
-            \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Base::class
-        );
-
-        // число
-        $asserted_matching[2] = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
-            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class,
-            Eq::create(),
-            \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Base::class
-        );
-
-        $link->addAssertedMatching($asserted_matching[0]);
-        $link->addAssertedMatching($asserted_matching[1]);
-        $link->addAssertedMatching($asserted_matching[2]);
-
-        return $link;
-    }
 
     protected function getRule1()
     {
@@ -181,13 +150,38 @@ RULE;
             $asserted_depended
         );
 
-        $link = $this->get_asserted_link($rule);
 
-        $rule->addLink($link);
+        // падеж
+        $asserted_matching[0] = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
+            SuschestvitelnoePadeszhBase::class,
+            Eq::create(),
+            \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Base::class
+        );
 
-        $link->addChecker(
-            \Aot\Sviaz\Rule\AssertedLink\Checker\Registry::getObjectById(
-                \Aot\Sviaz\Rule\AssertedLink\Checker\Registry::NetSuschestvitelnogoVImenitelnomPadeszhe
+        // род
+        $asserted_matching[1] = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
+            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Base::class,
+            Eq::create(),
+            \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Base::class
+        );
+
+        // число
+        $asserted_matching[2] = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
+            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class,
+            Eq::create(),
+            \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Base::class
+        );
+
+
+
+        $rule->addAssertedMatching($asserted_matching[0]);
+        $rule->addAssertedMatching($asserted_matching[1]);
+        $rule->addAssertedMatching($asserted_matching[2]);
+
+
+        $rule->addChecker(
+            \Aot\Sviaz\Rule\Checker\Registry::getObjectById(
+                \Aot\Sviaz\Rule\Checker\Registry::NetSuschestvitelnogoVImenitelnomPadeszhe
             )
         );
 

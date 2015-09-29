@@ -50,7 +50,7 @@ class Registry
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\MemberChecker::class;
+        return \SemanticPersistence\Entities\MisotEntities\MemberChecker::class;
     }
 
     /**

@@ -6,7 +6,7 @@
  * Time: 15:54
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator;
+namespace Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator;
 
 use Aot\RussianMorphology\ChastiRechi\MorphologyBase;
 

@@ -6,10 +6,10 @@
  * Time: 10:41
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\Checker\BeetweenMainAndDepended;
+namespace Aot\Sviaz\Rule\Checker\BeetweenMainAndDepended;
 
 
-class Base extends \Aot\Sviaz\Rule\AssertedLink\Checker\Base
+class Base extends \Aot\Sviaz\Rule\Checker\Base
 {
     public static function create()
     {

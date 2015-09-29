@@ -6,11 +6,11 @@
  * Time: 14:19
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\Checker;
+namespace Aot\Sviaz\Rule\Checker;
 
 
 use Aot\Registry\Uploader;
-use Aot\Sviaz\Rule\AssertedLink\Checker\BeetweenMainAndDepended\NetSuschestvitelnogoVImenitelnomPadeszhe;
+use Aot\Sviaz\Rule\Checker\BeetweenMainAndDepended\NetSuschestvitelnogoVImenitelnomPadeszhe;
 
 class Registry
 {
@@ -38,10 +38,10 @@ class Registry
     {
         return [
             static::NetSuschestvitelnogoVImenitelnomPadeszhe => NetSuschestvitelnogoVImenitelnomPadeszhe::class,
-            static::DependedAfterMain => \Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition\AfterMain::class,
-            static::DependedBeforeMain => \Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition\BeforeMain::class,
-            static::DependedRightBeforeMain => \Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition\RightBeforeMain::class,
-            static::DependedRightAfterMain => \Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition\RightAfterMain::class,
+            static::DependedAfterMain => \Aot\Sviaz\Rule\Checker\DependedPosition\AfterMain::class,
+            static::DependedBeforeMain => \Aot\Sviaz\Rule\Checker\DependedPosition\BeforeMain::class,
+            static::DependedRightBeforeMain => \Aot\Sviaz\Rule\Checker\DependedPosition\RightBeforeMain::class,
+            static::DependedRightAfterMain => \Aot\Sviaz\Rule\Checker\DependedPosition\RightAfterMain::class,
         ];
     }
 
@@ -81,7 +81,7 @@ class Registry
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\LinkChecker::class;
+        return \SemanticPersistence\Entities\MisotEntities\LinkChecker::class;
     }
 
     /**

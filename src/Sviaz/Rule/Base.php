@@ -13,7 +13,7 @@ use Aot\Persister;
 
 /**
  * Class Base
- * @property \AotPersistence\Entities\Rule $dao
+ * @property \SemanticPersistence\Entities\MisotEntities\RuleConfig $dao
  * @package Aot\Sviaz\Rule
  */
 class Base
@@ -28,6 +28,24 @@ class Base
 
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Third */
     protected $asserted_third;
+
+
+    /** @var \Aot\Sviaz\Rule\AssertedMatching\Base[] */
+    protected $asserted_matchings = [];
+    /** @var \Aot\Sviaz\Rule\Checker\Base[] */
+    protected $asserted_checkers = [];
+
+    /** @var string */
+    protected $type_class = \Aot\Sviaz\Podchinitrelnaya\Base::class;
+
+    /**
+     * @return string
+     */
+    public function getTypeClass()
+    {
+        return $this->type_class;
+    }
+
 
     /**
      * @return \Aot\Sviaz\Rule\AssertedMember\Third
@@ -48,8 +66,6 @@ class Base
         //$this->asserted_third = $asserted_member;
     }
 
-    /** @var  \Aot\Sviaz\Rule\AssertedLink\Base[] */
-    protected $links = [];
 
     /**
      * Base constructor.
@@ -69,7 +85,7 @@ class Base
      */
     public static function create(AssertedMember\Main $main, AssertedMember\Depended $depended)
     {
-        $dao = new \AotPersistence\Entities\Rule();
+        $dao = new \SemanticPersistence\Entities\MisotEntities\RuleConfig();
 
         $dao->setMain($main->getDao());
 
@@ -83,10 +99,10 @@ class Base
     }
 
     /**
-     * @param \AotPersistence\Entities\Rule $dao
+     * @param \SemanticPersistence\Entities\MisotEntities\RuleConfig $dao
      * @return static
      */
-    public static function createByDao(\AotPersistence\Entities\Rule $dao)
+    public static function createByDao(\SemanticPersistence\Entities\MisotEntities\RuleConfig $dao)
     {
         $main = AssertedMember\Main::createByDao($dao->getMain());
 
@@ -96,13 +112,13 @@ class Base
 
         $ob->setDao($dao);
 
-        $link_daos = $ob->getAPI()->findBy(
-            \AotPersistence\Entities\Link::class,
-            ['rule' => $dao]
-        );
+        foreach ($dao->getMatchings() as $matching_dao) {
+            $ob->asserted_matchings[] = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::createByDao($matching_dao);
+        }
 
-        foreach ($link_daos as $link_dao) {
-            \Aot\Sviaz\Rule\AssertedLink\Base::createByRuleAndDao($ob, $link_dao);
+        foreach ($dao->getCheckers() as $checker_dao) {
+            /** @var $checker_dao \SemanticPersistence\Entities\MisotEntities\LinkChecker */
+            $ob->asserted_checkers[] = \Aot\Sviaz\Rule\Checker\Registry::getObjectById($checker_dao->getId());
         }
 
         return $ob;
@@ -125,24 +141,6 @@ class Base
     }
 
     /**
-     * @return AssertedLink\Base[]
-     */
-    public function getLinks()
-    {
-        return $this->links;
-    }
-
-    /**
-     * @param AssertedLink\Base $link
-     */
-    public function addLink(AssertedLink\Base $link)
-    {
-        $this->links[] = $link;
-
-        $link->getDao()->setRule($this->getDao());
-    }
-
-    /**
      * @param \Aot\Sviaz\SequenceMember\Base $main_candidate
      * @param \Aot\Sviaz\SequenceMember\Base $depended_candidate
      * @param \Aot\Sviaz\Sequence $sequence
@@ -150,14 +148,25 @@ class Base
      */
     public function attemptLink(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
     {
-        $result = false;
+        return $this->attempt($main_candidate, $depended_candidate, $sequence);
+    }
 
-        foreach ($this->links as $link) {
 
-            $result = $link->attempt($main_candidate, $depended_candidate, $sequence);
+    public function attempt(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
+    {
+        $result = true;
 
-            if (false === $result) {
-                return $result;
+        foreach ($this->asserted_matchings as $asserted_matching) {
+            $result = $asserted_matching->attempt($main_candidate, $depended_candidate);
+            if (!$result) {
+                return false;
+            }
+        }
+
+        foreach ($this->asserted_checkers as $checker) {
+            $result = $checker->check($main_candidate, $depended_candidate, $sequence);
+            if (!$result) {
+                return false;
             }
         }
 
@@ -180,7 +189,7 @@ class Base
     }
 
     /**
-     * @param \AotPersistence\Entities\Rule $dao
+     * @param \SemanticPersistence\Entities\MisotEntities\RuleConfig $dao
      */
     protected function setDao($dao)
     {
@@ -192,13 +201,84 @@ class Base
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\Rule::class;
+        return \SemanticPersistence\Entities\MisotEntities\RuleConfig::class;
     }
 
-    /** @return \AotPersistence\Entities\Rule */
+    /** @return \SemanticPersistence\Entities\MisotEntities\RuleConfig */
     public function getDao()
     {
         return $this->dao;
+    }
+
+
+    /**
+     * @param string $type_class
+     */
+    public function setTypeClass($type_class)
+    {
+        assert(is_string($type_class));
+
+        if (!is_a($type_class, \Aot\Sviaz\Podchinitrelnaya\Base::class, true)) {
+            throw new \RuntimeException("incorrect type_class " . var_export($type_class, 1));
+        }
+
+        $id_type_class = \Aot\Sviaz\Podchinitrelnaya\Registry::getIdLinkByClass(\Aot\Sviaz\Podchinitrelnaya\Soglasovanie::class);
+
+        // если нет в дао или не соответствует ID части речи
+        if (empty($this->dao->getTypeLink()) || $this->dao->getTypeLink()->getId() !== $id_type_class) {
+            // пишем в дао часть речи
+            /** @var \SemanticPersistence\Entities\MisotEntities\TypeLink $entity_type_link */
+            $entity_type_link =
+                $this
+                    ->getEntityManager()
+                    ->find(
+                        \SemanticPersistence\Entities\MisotEntities\TypeLink::class,
+                        $id_type_class
+                    );
+
+            if (empty($entity_type_link)) {
+                throw new \RuntimeException("unsupported type link id = " . var_export($id_type_class, 1));
+            }
+
+            $this->dao->setTypeLink($entity_type_link);
+
+        }
+        #
+//        print_r($this->dao);
+
+        $this->type_class = $type_class;
+    }
+
+
+    /**
+     * @param \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching $asserted_matching
+     */
+    public function addAssertedMatching(\Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching $asserted_matching)
+    {
+        $asserted_matching->getDao()->setRuleConfig($this->dao);
+
+        $this->dao->addMatching(
+            $asserted_matching->getDao()
+        );
+
+        $this->asserted_matchings[] = $asserted_matching;
+    }
+
+
+    /**
+     * @param \Aot\Sviaz\Rule\Checker\Base $checker
+     */
+    public function addChecker(\Aot\Sviaz\Rule\Checker\Base $checker)
+    {
+        if (in_array($checker, $this->asserted_checkers, true)) {
+            throw new \RuntimeException("checker already exists ! " . var_export($checker, 1));
+        }
+
+        $this->dao->addChecker(
+            $checker->getDao()
+        );
+
+        $this->asserted_checkers[] = $checker;
     }
 }
 

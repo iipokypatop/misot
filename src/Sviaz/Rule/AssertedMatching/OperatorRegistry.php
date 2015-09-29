@@ -6,11 +6,11 @@
  * Time: 14:19
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\AssertedMatching;
+namespace Aot\Sviaz\Rule\AssertedMatching;
 
 
 use Aot\Registry\Uploader;
-use Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq;
+use Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq;
 
 class OperatorRegistry
 {
@@ -29,12 +29,12 @@ class OperatorRegistry
     public static function getClasses()
     {
         return [
-            static::EQUAL => \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::class,
+            static::EQUAL => \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::class,
         ];
     }
 
     /**
-     * @param \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Base $object
+     * @param \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Base $object
      * @return int|null
      */
     public static function getIdByObject($object)
@@ -52,7 +52,7 @@ class OperatorRegistry
     /**
      * @param int $id
      * @param array $args
-     * @return \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Base
+     * @return \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Base
      */
     public static function getObjectById($id, array $args = [])
     {
@@ -70,7 +70,7 @@ class OperatorRegistry
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\Operator::class;
+        return \SemanticPersistence\Entities\MisotEntities\Operator::class;
     }
 
     /**

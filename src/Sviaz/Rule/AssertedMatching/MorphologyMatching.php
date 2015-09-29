@@ -6,22 +6,22 @@
  * Time: 15:28
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\AssertedMatching;
+namespace Aot\Sviaz\Rule\AssertedMatching;
 
 
-use Aot\Persister;
+
 use Aot\RussianMorphology\ChastiRechi\MorphologyBase;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 
 /**
  * Class MorphologyMatching
  *
- * @property \AotPersistence\Entities\MorphologyMatching $dao
- * @package Aot\Sviaz\Rule\AssertedLink\AssertedMatching
+ * @property \SemanticPersistence\Entities\MisotEntities\MorphologyMatching $dao
+ * @package Aot\Sviaz\Rule\AssertedMatching
  */
 class MorphologyMatching extends Base
 {
-    use Persister;
+
 
     /** @var string */
     protected $asserted_left_class;
@@ -78,7 +78,7 @@ class MorphologyMatching extends Base
     {
         $ob = new static($asserted_left_class, $operator, $asserted_right_class);
 
-        $dao = new \AotPersistence\Entities\MorphologyMatching();
+        $dao = new \SemanticPersistence\Entities\MisotEntities\MorphologyMatching();
 
         $ob->setDao($dao);
 
@@ -88,13 +88,13 @@ class MorphologyMatching extends Base
     }
 
 
-    public static function createByDao(\AotPersistence\Entities\MorphologyMatching $dao)
+    public static function createByDao(\SemanticPersistence\Entities\MisotEntities\MorphologyMatching $dao)
     {
         $asserted_left_class = MorphologyRegistry::getBaseClasses()[$dao->getLeftMorphology()->getId()][$dao->getLeftChastRechi()->getId()];
 
         $asserted_right_class = MorphologyRegistry::getBaseClasses()[$dao->getRightMorphology()->getId()][$dao->getRightChastRechi()->getId()];
 
-        $operator = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\OperatorRegistry::getObjectById(
+        $operator = \Aot\Sviaz\Rule\AssertedMatching\OperatorRegistry::getObjectById(
             $dao->getOperator()->getId()
         );
 
@@ -158,11 +158,11 @@ class MorphologyMatching extends Base
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\MorphologyMatching::class;
+        return \SemanticPersistence\Entities\MisotEntities\MorphologyMatching::class;
     }
 
     /**
-     * @param \AotPersistence\Entities\MorphologyMatching $dao
+     * @param \SemanticPersistence\Entities\MisotEntities\MorphologyMatching $dao
      */
     protected function setDao($dao)
     {
@@ -170,7 +170,7 @@ class MorphologyMatching extends Base
     }
 
     /**
-     * @return \AotPersistence\Entities\MorphologyMatching
+     * @return \SemanticPersistence\Entities\MisotEntities\MorphologyMatching
      */
     public function getDao()
     {
@@ -223,7 +223,7 @@ class MorphologyMatching extends Base
 
     /**
      * @param $morphology_id
-     * @return \AotPersistence\Entities\Morphology
+     * @return \SemanticPersistence\Entities\MisotEntities\Morphology
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Doctrine\ORM\TransactionRequiredException
@@ -234,7 +234,7 @@ class MorphologyMatching extends Base
         $dao = $this
             ->getEntityManager()
             ->find(
-                \AotPersistence\Entities\Morphology::class,
+                \SemanticPersistence\Entities\MisotEntities\Morphology::class,
                 $morphology_id
             );
 
@@ -248,7 +248,7 @@ class MorphologyMatching extends Base
 
     /**
      * @param $chast_rechi_id
-     * @return \AotPersistence\Entities\ChastiRechi
+     * @return \SemanticPersistence\Entities\MisotEntities\ChastiRechi
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Doctrine\ORM\TransactionRequiredException
@@ -259,7 +259,7 @@ class MorphologyMatching extends Base
         $dao = $this
             ->getEntityManager()
             ->find(
-                \AotPersistence\Entities\ChastiRechi::class,
+                \SemanticPersistence\Entities\MisotEntities\ChastiRechi::class,
                 $chast_rechi_id
             );
 
@@ -272,7 +272,7 @@ class MorphologyMatching extends Base
 
     /**
      * @param MorphologyMatchingOperator\Base $operator
-     * @return \AotPersistence\Entities\Operator
+     * @return \SemanticPersistence\Entities\MisotEntities\Operator
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      * @throws \Doctrine\ORM\TransactionRequiredException
@@ -285,7 +285,7 @@ class MorphologyMatching extends Base
         $dao = $this
             ->getEntityManager()
             ->find(
-                \AotPersistence\Entities\Operator::class,
+                \SemanticPersistence\Entities\MisotEntities\Operator::class,
                 $operator_id
             );
 

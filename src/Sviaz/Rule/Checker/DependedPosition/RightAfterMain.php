@@ -6,7 +6,7 @@
  * Time: 22:05
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition;
+namespace Aot\Sviaz\Rule\Checker\DependedPosition;
 
 
 class RightAfterMain extends Base

@@ -2,20 +2,26 @@
 /**
  * Created by PhpStorm.
  * User: p.semenyuk
- * Date: 04.07.2015
- * Time: 23:25
+ * Date: 024, 24.09.2015
+ * Time: 17:04
  */
 
-namespace AotTest\Functional\Text;
+namespace AotTest\Functional;
 
 
-use Aot\Sviaz\Rule\Container;
-
-class RulesSavesAndRestoreCorrectly extends \AotTest\AotDataStorage
+class MainTest extends \AotTest\AotDataStorage
 {
-    public function testRulesSavesAndRestoresFromDb()
+    public function testRun()
     {
-        /** @var  \Aot\Sviaz\Rule\Base[] $rules */
+
+
+        $this->markTestSkipped();
+
+        $text = <<<TEXT
+Гибель произошла в момент второго из самых опасных ритуалов хаджа.
+Участвуя в нем, мусульмане обещают Аллаху приложить все усилия для изгнания бесов из своей жизни.
+TEXT;
+
         $rules = array_merge([
             \Aot\Sviaz\Rule\Container::getRule1(),
             \Aot\Sviaz\Rule\Container::getRule2(),
@@ -42,31 +48,15 @@ class RulesSavesAndRestoreCorrectly extends \AotTest\AotDataStorage
         /*\Aot\Sviaz\Rule\Container::getRuleSuchPadej()*/
         );
 
-        foreach ($rules as $index => $rule) {
+        $main = \Aot\Main::create();
 
-            $rule->persist();
-            $rule->flush();
-
-
-            $rule_from_db = \Aot\Sviaz\Rule\Base::createByDao($rule->getDao());
-
-            $this->assertEquals($rule, $rule_from_db);
-        }
+        $main->run($text, $rules);
     }
 
-    public function testRunALlRulessFromDb()
-    {
-        $this->markTestSkipped();
 
-        $api = $this->getRule()->getAPI();
 
-        $rule_daos = $api->findBy(
-            \SemanticPersistence\Entities\MisotEntities\RuleConfig::class, []
-        );
 
-        $rules = [];
-        foreach ($rule_daos as $rule_dao) {
-            $rules[] = \Aot\Sviaz\Rule\Base::createByDao($rule_dao);
-        }
-    }
+
+
+
 }

@@ -102,7 +102,7 @@ class Factory extends \Aot\RussianMorphology\Factory
                                     foreach ($vozvratnost as $val_vozvratnost) {
                                         foreach ($vremya as $val_vremya) {
                                             foreach ($razryad as $val_razryad) {
-                                                $words[] = Base::create(
+                                                $words[] = $word = Base::create(
                                                     $text,
                                                     $val_chislo,
                                                     $val_forma,
@@ -114,6 +114,8 @@ class Factory extends \Aot\RussianMorphology\Factory
                                                     $val_vremya,
                                                     $val_razryad
                                                 );
+
+                                                $word->setInitialForm($dw->initial_form);
                                             }
                                         }
                                     }

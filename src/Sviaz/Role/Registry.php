@@ -57,7 +57,7 @@ class Registry
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\Role::class;
+        return \SemanticPersistence\Entities\MisotEntities\Role::class;
     }
 
     /**

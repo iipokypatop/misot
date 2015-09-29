@@ -6,14 +6,14 @@
  * Time: 12:42
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\Builder;
+namespace Aot\Sviaz\Rule\Builder;
 
 
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
 
-use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
+use Aot\Sviaz\Rule\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 
@@ -51,7 +51,7 @@ class Base
 
         throw new \RuntimeException("no finders implemented yet");
 
-        /*if (empty(\Aot\Sviaz\Rule\AssertedLink\Finder\Registry::getClasses()[$id])) {
+        /*if (empty(\Aot\Sviaz\Rule\Finder\Registry::getClasses()[$id])) {
             throw new \RuntimeException("unsupported checker id " . var_export($id, 1));
         }
         $this->link['finders'][] = $id;
@@ -78,35 +78,29 @@ class Base
 
     /**
      * @param \Aot\Sviaz\Rule\Base $rule
-     * @return Base
      */
     public function get(\Aot\Sviaz\Rule\Base $rule)
     {
         $this->rule = $rule;
 
-        $link = \Aot\Sviaz\Rule\AssertedLink\Base::create($rule);
-
         foreach ($this->getMorphologyMatchings() as $asserted_matching) {
-            $link->addAssertedMatching($asserted_matching);
+            $rule->addAssertedMatching($asserted_matching);
         }
 
         foreach ($this->link['checkers'] as $id) {
             $link_checker = LinkCheckerRegistry::getObjectById($id);
-            $link->addChecker($link_checker);
+            $rule->addChecker($link_checker);
         }
 
         if (null === $this->link['type_class_id']) {
-           // @todo temporary!
-            $link->setTypeClass(\Aot\Sviaz\Podchinitrelnaya\Base::class);
+            $rule->setTypeClass(\Aot\Sviaz\Podchinitrelnaya\Base::class);
         } else {
-            $link->setTypeClass(\Aot\Sviaz\Podchinitrelnaya\Registry::getClasses()[$this->link['type_class_id']]);
+            $rule->setTypeClass(\Aot\Sviaz\Podchinitrelnaya\Registry::getClasses()[$this->link['type_class_id']]);
         }
-
-        return $link;
     }
 
     /**
-     * @return \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching[]
+     * @return \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching[]
      */
     protected function getMorphologyMatchings()
     {
@@ -135,9 +129,9 @@ class Base
 
             $right = MorphologyRegistry::getBaseClasses()[$morphology_matching][$asserted_depended_class_id];
 
-            $asserted_matchings[] = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
+            $asserted_matchings[] = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
                 $left,
-                \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
+                \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
                 $right
             );
         }
@@ -154,7 +148,7 @@ class Base
     {
         assert(is_int($id));
 
-        if (empty(\Aot\Sviaz\Rule\AssertedLink\Checker\Registry::getClasses()[$id])) {
+        if (empty(\Aot\Sviaz\Rule\Checker\Registry::getClasses()[$id])) {
             throw new \RuntimeException("unsupported checker id " . var_export($id, 1));
         }
 

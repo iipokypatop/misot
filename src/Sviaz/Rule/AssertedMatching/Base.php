@@ -6,10 +6,13 @@
  * Time: 15:21
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\AssertedMatching;
+namespace Aot\Sviaz\Rule\AssertedMatching;
 
+use Aot\Persister;
 
 abstract class Base
 {
+    use Persister;
+
     abstract public function attempt(\Aot\Sviaz\SequenceMember\Base $actual_left, \Aot\Sviaz\SequenceMember\Base $actual_right);
 }

@@ -6,7 +6,7 @@
  * Time: 15:50
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\Checker\BeetweenMainAndDepended;
+namespace Aot\Sviaz\Rule\Checker\BeetweenMainAndDepended;
 
 
 class NetSuschestvitelnogoVImenitelnomPadeszhe extends Base

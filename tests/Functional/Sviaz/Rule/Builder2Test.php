@@ -11,12 +11,12 @@ namespace AotTest\Functional\Sviaz\Rule;
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
-use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
+use Aot\Sviaz\Rule\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\PositionRegistry;
 use Aot\Text\GroupIdRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Builder\Base as AssertedMemberBuilder;
-use Aot\Sviaz\Rule\AssertedLink\Builder\Base as AssertedLinkBuilder;
+use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
 
 class Builder2Test extends \AotTest\AotDataStorage
 {

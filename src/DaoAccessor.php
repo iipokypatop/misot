@@ -8,14 +8,10 @@
 
 namespace Aot;
 
-use \AotPersistence\API\AotAPI;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
-
 trait DaoAccessor
 {
-
     protected $dao;
-    protected $conn_db = "host=test-db.mivar.pro dbname=misot user=postgres password=@Mivar123User@";
+    protected $conn_db = "host=test-db.mivar.pro dbname=mivar_semantic_1890 user=postgres password=@Mivar123User@";
 
     /**
      * @param $name
@@ -73,14 +69,14 @@ trait DaoAccessor
      */
     public function getEntityManager()
     {
-        return AotAPI::getAPI($this->conn_db)->getEntityManager();
+        return \SemanticPersistence\API\SemanticAPI::getAPI($this->conn_db)->getEntityManager();
     }
 
     /**
-     * @return \AotPersistence\API\APIcurrent
+     * @return \SemanticPersistence\API\SemanticAPI
      */
     public function getAPI()
     {
-        return AotAPI::getAPI($this->conn_db);
+        return \SemanticPersistence\API\SemanticAPI::getAPI($this->conn_db);
     }
 }

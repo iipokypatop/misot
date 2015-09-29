@@ -6,7 +6,7 @@
  * Time: 22:16
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition;
+namespace Aot\Sviaz\Rule\Checker\DependedPosition;
 
 
 use Aot\Sviaz\Sequence;

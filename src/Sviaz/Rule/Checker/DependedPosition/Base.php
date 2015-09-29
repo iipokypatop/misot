@@ -6,10 +6,10 @@
  * Time: 21:58
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition;
+namespace Aot\Sviaz\Rule\Checker\DependedPosition;
 
 
-abstract class Base extends \Aot\Sviaz\Rule\AssertedLink\Checker\Base
+abstract class Base extends \Aot\Sviaz\Rule\Checker\Base
 {
     public function getPosition(\Aot\Sviaz\SequenceMember\Base $member, \Aot\Sviaz\Sequence $sequence)
     {

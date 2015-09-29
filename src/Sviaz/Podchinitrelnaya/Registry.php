@@ -13,7 +13,6 @@ use Aot\Registry\Uploader;
 
 class Registry
 {
-
     use Uploader;
 
     const SOGLASOVANIE = 1;
@@ -46,8 +45,7 @@ class Registry
     public static function getIdLinkByClass($link_class)
     {
         foreach (static::getClasses() as $id => $class) {
-            if( $link_class === $class)
-            {
+            if ($link_class === $class) {
                 return $id;
             }
         }
@@ -60,7 +58,7 @@ class Registry
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\TypeLink::class;
+        return \SemanticPersistence\Entities\MisotEntities\TypeLink::class;
     }
 
     /**
@@ -76,7 +74,7 @@ class Registry
      */
     protected function getFields()
     {
-        return[
+        return [
             'name' => [static::class, 'getNames'],
         ];
     }

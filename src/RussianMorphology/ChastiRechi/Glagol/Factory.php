@@ -132,7 +132,7 @@ class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\A
                                             foreach ($vremya as $val_vremya) {
                                                 foreach ($razryad as $val_razryad) {
 
-                                                    $words[] = Base::create(
+                                                    $words[] = $word = Base::create(
                                                         $text,
                                                         $val_chislo,
                                                         $val_litso,
@@ -145,6 +145,8 @@ class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\A
                                                         $val_vremya,
                                                         $val_razryad
                                                     );
+
+                                                    $word->setInitialForm($dw->initial_form);
                                                 }
                                             }
                                         }

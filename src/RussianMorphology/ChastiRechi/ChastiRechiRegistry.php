@@ -122,7 +122,7 @@ class ChastiRechiRegistry
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\ChastiRechi::class;
+        return \SemanticPersistence\Entities\MisotEntities\ChastiRechi::class;
     }
 
     /**

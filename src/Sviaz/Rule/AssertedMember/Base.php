@@ -18,7 +18,7 @@ use Aot\Sviaz\SequenceMember;
 use Aot\Text\GroupIdRegistry;
 
 /**
- * @property \AotPersistence\Entities\Member $dao
+ * @property \SemanticPersistence\Entities\MisotEntities\Member $dao
  */
 class Base
 {
@@ -31,7 +31,7 @@ class Base
 
     public static function create()
     {
-        $dao = new \AotPersistence\Entities\Member();
+        $dao = new \SemanticPersistence\Entities\MisotEntities\Member();
 
         $ob = new static;
 
@@ -41,10 +41,10 @@ class Base
     }
 
     /**
-     * @param \AotPersistence\Entities\Member $dao
+     * @param \SemanticPersistence\Entities\MisotEntities\Member $dao
      * @return static
      */
-    public static function createByDao(\AotPersistence\Entities\Member $dao)
+    public static function createByDao(\SemanticPersistence\Entities\MisotEntities\Member $dao)
     {
         $ob = new static;
 
@@ -93,7 +93,7 @@ class Base
 
 
     /**
-     * @return \AotPersistence\Entities\Member
+     * @return \SemanticPersistence\Entities\MisotEntities\Member
      */
     public function getDao()
     {
@@ -132,12 +132,12 @@ class Base
         if (!array_key_exists($asserted_text_group_id, GroupIdRegistry::getWordVariants())) {
             throw new \RuntimeException("unsupported group registry id = " . var_export($asserted_text_group_id, 1));
         }
-        /** @var \AotPersistence\Entities\TextGroup $entity_text_group */
+        /** @var \SemanticPersistence\Entities\MisotEntities\TextGroup $entity_text_group */
         $entity_text_group =
             $this
                 ->getEntityManager()
                 ->find(
-                    \AotPersistence\Entities\TextGroup::class,
+                    \SemanticPersistence\Entities\MisotEntities\TextGroup::class,
                     $asserted_text_group_id
                 );
 
@@ -158,12 +158,12 @@ class Base
 
         $id_chast_rechi = intval(ChastiRechiRegistry::getIdByClass($asserted_chast_rechi_class));
 
-        /** @var \AotPersistence\Entities\ChastiRechi $entity_chast_rechi */
+        /** @var \SemanticPersistence\Entities\MisotEntities\ChastiRechi $entity_chast_rechi */
         $entity_chast_rechi =
             $this
                 ->getEntityManager()
                 ->find(
-                    \AotPersistence\Entities\ChastiRechi::class,
+                    \SemanticPersistence\Entities\MisotEntities\ChastiRechi::class,
                     $id_chast_rechi
                 );
 
@@ -203,12 +203,12 @@ class Base
         // пишем в dao морфологию
         $id_morphology = MorphologyRegistry::getIdMorphologyByClass($morphology_class);
 
-        /** @var \AotPersistence\Entities\Morphology $entity */
+        /** @var \SemanticPersistence\Entities\MisotEntities\Morphology $entity */
         $entity =
             $this
                 ->getEntityManager()
                 ->find(
-                    \AotPersistence\Entities\Morphology::class,
+                    \SemanticPersistence\Entities\MisotEntities\Morphology::class,
                     $id_morphology
                 );
 
@@ -237,12 +237,12 @@ class Base
 
         $id_checker = Checker\Registry::getIdCheckerByClass($checker_class);
 
-        /** @var \AotPersistence\Entities\MemberChecker $entity */
+        /** @var \SemanticPersistence\Entities\MisotEntities\MemberChecker $entity */
         $entity =
             $this
                 ->getEntityManager()
                 ->find(
-                    \AotPersistence\Entities\MemberChecker::class,
+                    \SemanticPersistence\Entities\MisotEntities\MemberChecker::class,
                     $id_checker
                 );
 
@@ -290,7 +290,7 @@ class Base
             $this
                 ->getEntityManager()
                 ->find(
-                    \AotPersistence\Entities\Role::class,
+                    \SemanticPersistence\Entities\MisotEntities\Role::class,
                     $id_role
                 );
 
@@ -298,7 +298,7 @@ class Base
             throw new \RuntimeException("unsupported role id = " . var_export($id_role, 1));
         }
 
-        /** @var \AotPersistence\Entities\Role $entity_role */
+        /** @var \SemanticPersistence\Entities\MisotEntities\Role $entity_role */
         $this->dao->setRole($entity_role);
     }
 
@@ -349,7 +349,7 @@ class Base
     }
 
     /**
-     * @param \AotPersistence\Entities\Member $dao
+     * @param \SemanticPersistence\Entities\MisotEntities\Member $dao
      */
     protected function setDao($dao)
     {
@@ -361,7 +361,7 @@ class Base
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\Member::class;
+        return \SemanticPersistence\Entities\MisotEntities\Member::class;
     }
 
     /**
@@ -371,7 +371,7 @@ class Base
     {
         $checker_classes = [];
         foreach ($this->dao->getCheckers() as $checker_dao) {
-            /** @var $checker_dao \AotPersistence\Entities\MemberChecker */
+            /** @var $checker_dao \SemanticPersistence\Entities\MisotEntities\MemberChecker */
 
             $checker_classes[] = \Aot\Sviaz\Rule\AssertedMember\Checker\Registry::getClasses()[$checker_dao->getId()];
         }

@@ -3,15 +3,15 @@
  * Created by PhpStorm.
  * User: p.semenyuk
  * Date: 09.07.2015
- * Time: 22:16
+ * Time: 22:06
  */
 
-namespace Aot\Sviaz\Rule\AssertedLink\Checker\DependedPosition;
+namespace Aot\Sviaz\Rule\Checker\DependedPosition;
 
 
 use Aot\Sviaz\Sequence;
 
-class RightBeforeMain extends Base
+class AfterMain extends Base
 {
     public function check(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, Sequence $sequence)
     {
@@ -21,7 +21,7 @@ class RightBeforeMain extends Base
             return $result;
         }
 
-        $result = $this->getPosition($depended_candidate, $sequence) + 1 === $this->getPosition($main_candidate, $sequence);
+        $result = $this->getPosition($depended_candidate, $sequence) > $this->getPosition($main_candidate, $sequence);
 
         return $result;
     }

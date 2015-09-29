@@ -9,12 +9,12 @@
 namespace Aot\Sviaz\Rule;
 
 
-use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
-use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
-use Aot\Sviaz\Role\Registry as RoleRegistry;
-use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
-use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
-use Aot\Text\GroupIdRegistry as GroupIdRegistry;
+
+
+
+
+
+
 
 
 class Builder2
@@ -31,7 +31,7 @@ class Builder2
     protected $asserted_third_builder;
 
 
-    /** @var  \Aot\Sviaz\Rule\AssertedLink\Builder\Base */
+    /** @var  \Aot\Sviaz\Rule\Builder\Base */
     protected $link_builder;
 
 
@@ -66,7 +66,7 @@ class Builder2
         return $this;
     }
 
-    public function link(AssertedLink\Builder\Base $link_builder)
+    public function link(\Aot\Sviaz\Rule\Builder\Base $link_builder)
     {
         $this->link_builder = $link_builder;
 
