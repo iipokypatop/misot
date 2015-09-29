@@ -15,23 +15,40 @@ abstract class Slovo
     const RENDER_SHORT = 3;
 
     protected $text;
+    protected $initial_form;
+
+    /**
+     * @return mixed
+     */
+    public function getInitialForm()
+    {
+        return $this->initial_form;
+    }
+
+    /**
+     * @param string $initial_form
+     */
+    public function setInitialForm($initial_form)
+    {
+        assert(is_string($initial_form));
+
+        $this->initial_form = $initial_form;
+    }
 
     private $deadRows = [];
 
-    /** @var  \SemanticPersistence\Entities\Word */
+    /** @var  \SemanticPersistence\Entities\SemanticEntities\Word */
     protected $dao;
 
     /**
-     * @return \SemanticPersistence\Entities\Word
+     * @return \SemanticPersistence\Entities\SemanticEntities\Word
      */
     public function getDao()
     {
         return $this->dao;
     }
 
-    protected $storage = [
-
-    ];
+    protected $storage = [];
 
     protected function init()
     {

@@ -26,10 +26,12 @@ class Factory extends \Aot\RussianMorphology\Factory
         $words = [];
 
         if (isset($word->word) && intval($dw->id_word_class) === PARTICLE_CLASS_ID) {
-            $words[] = Base::create(
+            $words[] = $word = Base::create(
                 $text
 
             );
+
+            $word->setInitialForm($dw->initial_form);
         }
         return $words;
     }

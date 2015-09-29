@@ -76,7 +76,7 @@ class Factory extends \Aot\RussianMorphology\Factory
                         foreach ($forma as $val_forma) {
                             foreach ($stepen_sravneniia as $val_stepen_sravneniia) {
                                 foreach ($padeszh as $val_padeszh) {
-                                    $words[] = Base::create(
+                                    $words[] = $word = Base::create(
                                         $text,
                                         $val_chislo,
                                         $val_forma,
@@ -85,6 +85,8 @@ class Factory extends \Aot\RussianMorphology\Factory
                                         $val_rod,
                                         $val_stepen_sravneniia
                                     );
+
+                                    $word->setInitialForm($dw->initial_form);
                                 }
                             }
                         }

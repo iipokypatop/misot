@@ -72,7 +72,7 @@ class Factory extends \Aot\RussianMorphology\Factory
                     foreach ($padeszh as $val_padeszh) {
                         foreach ($razryad as $val_razryad) {
                             foreach ($rod as $val_rod) {
-                                $words[] = Base::create(
+                                $words[] = $word = Base::create(
                                     $text,
                                     $val_chislo,
                                     $val_litso,
@@ -80,6 +80,8 @@ class Factory extends \Aot\RussianMorphology\Factory
                                     $val_razryad,
                                     $val_rod
                                 );
+
+                                $word->setInitialForm($dw->initial_form);
                             }
                         }
                     }

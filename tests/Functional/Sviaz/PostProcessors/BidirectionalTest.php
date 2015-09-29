@@ -10,7 +10,7 @@ namespace AotTest\Functional\Sviaz\PostProcessors;
 
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
-use Aot\Sviaz\Rule\AssertedLink\Builder\Base as AssertedLinkBuilder;
+use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
 
 
 class BidirectionalTest extends \AotTest\AotDataStorage

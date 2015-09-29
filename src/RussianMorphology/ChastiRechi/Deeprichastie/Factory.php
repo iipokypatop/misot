@@ -50,12 +50,15 @@ class Factory extends \Aot\RussianMorphology\Factory
             foreach ($vid as $val_vid) {
                 foreach ($perehodnost as $val_perehodnost) {
                     foreach ($vozvratnost as $val_vozvratnost) {
-                        $words[] = Base::create(
+                        $words[] = $word = Base::create(
                             $text,
                             $val_vid,
                             $val_perehodnost,
                             $val_vozvratnost
                         );
+
+                        $word->setInitialForm($dw->initial_form);
+
                     }
                 }
             }

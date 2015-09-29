@@ -31,7 +31,7 @@ class PresenceRegistry
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\Presence::class;
+        return \SemanticPersistence\Entities\MisotEntities\Presence::class;
     }
 
     /**

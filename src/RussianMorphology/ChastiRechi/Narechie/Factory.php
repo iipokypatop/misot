@@ -35,10 +35,12 @@ class Factory extends \Aot\RussianMorphology\Factory
             $stepen_sravneniia = $this->getStepenSravneniia($dw->parameters);
 
             foreach ($stepen_sravneniia as $val_stepen_sravneniia) {
-                $words[] = Base::create(
+                $words[] = $word = Base::create(
                     $text,
                     $val_stepen_sravneniia
                 );
+
+                $word->setInitialForm($dw->initial_form);
             }
         }
         return $words;
