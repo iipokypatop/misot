@@ -869,4 +869,30 @@ class MorphologyRegistry extends MorphologyRegistryParent
         }
         return null;
     }
+
+    public static function getChastiRechiWithPriznakiWithVarianti()
+    {
+        //Выходной массив частей речи с признаками и вариантами
+        $chasti_rechi_array = [];
+        //Оббегаем все признаки
+        foreach (static::getClasses() as $priznak_id => $variants) {
+            //предобработка вариантов
+            foreach ($variants as $variant_temp_id => $variant_temp_value) {
+                $variants_temp[$variant_temp_id] = $variant_temp_id;
+            }
+            //оббегаем все варианты
+            foreach ($variants as $variant_id => $variant) {
+                //оббегаем все части речи
+                foreach ($variant as $chast_rechi_id => $chast_rechi) {
+                    //добавляем в массив часть речи и признак, признаку присваиваем массив вариантов
+                    $chasti_rechi_array[$chast_rechi_id][$priznak_id] = $variants_temp;
+                }
+            }
+            //обнуляем предобработанные варианты
+            $variants_temp=null;
+        }
+        return $chasti_rechi_array;
+    }
 }
+
+
