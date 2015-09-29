@@ -115,30 +115,23 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::PADESZH_VINITELNIJ => 'винительный падеж',
             static::PADESZH_TVORITELNIJ => 'творительный падеж',
             static::PADESZH_PREDLOZSHNIJ => 'предложный падеж',
-
             static::ROD_MUZHSKOI => 'мужской род',
             static::ROD_ZHENSKII => 'женский род',
             static::ROD_SREDNIJ => 'средний род',
-
             static::CHISLO_EDINSTVENNOE => 'единственное число',
             static::CHISLO_MNOZHESTVENNOE => 'множественное число',
             static::CHISLO_NULL => '',
-
             static::SKLONENIE => 'склонение',
             static::SKLONENIE_PERVOE => 'первое склонение',
             static::SKLONENIE_VTOROE => 'второе склонение',
             static::SKLONENIE_TRETIE => 'третье склонение',
-
             static::NEIZMENYAJMOST_IZMNYAJMIJ => 'неизменяемый',
             static::NEIZMENYAJMOST_NEIZMNYAJMIJ => 'изменяемый',
-
             static::PEREHODNOST_PEREHODNII => 'переходный',
             static::PEREHODNOST_NEPEREHODNII => 'непереходный',
-
             static::ODUSHEVLENNOST => 'одушевленность',
             static::ODUSHEVLENNOST_ODUSHEVLENNOE => 'одушевленноеы',
             static::ODUSHEVLENNOST_NEODUSHEVLENNOE => 'неодушевленное',
-
             static::RAZRYAD => 'разряд',
             static::RAZRYAD_KACHESTVENNOE => 'качественное',
             static::RAZRYAD_OTNOSITELNOE => 'относительное',
@@ -150,63 +143,49 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::RAZRYAD_OTRICATELNOE => 'отрицательное',
             static::RAZRYAD_UKAZATELNOE => 'указательное',
             static::RAZRYAD_VOPROSITELNOE => 'вопросительное',
-
             static::FORMA => 'форма',
             static::FORMA_POLNAYA => 'полная',
             static::FORMA_KRATKAYA => 'краткая',
-
             static::STEPEN_SRAVNENIYA => 'степень сравнения',
             static::STEPEN_SRAVNENIYA_POLOZHITELNAYA => 'положительная',
             static::STEPEN_SRAVNENIYA_SRAVNITELNAYA => 'сравнительная',
             static::STEPEN_SRAVNENIYA_PREVOSHODNAYA => 'превосходная',
-
             static::VID => 'вид',
             static::VID_SOVERSHENNYJ => 'совершенный',
             static::VID_NESOVERSHENNYJ => 'несовершенный',
-
             static::VOZVRATNOST_VOZVRATNYJ => 'возвратный',
             static::VOZVRATNOST_NEVOZVRATNYJ => 'невозвратный',
-
             static::ZALOG => 'залог',
             static::ZALOG_DEJSTVITELNYJ => 'действительный',
             static::ZALOG_STRADATELNYJ => 'страдательный',
-
             static::SPRYAZHENIE => 'спряжение',
             static::SPRYAZHENIE_PERVOE => 'первое',
             static::SPRYAZHENIE_VTOROE => 'второе',
-
             static::NAKLONENIE => 'наклонение',
             static::NAKLONENIE_IZYAVITELNOE => 'изъявительное',
             static::NAKLONENIE_POVELITELNOE => 'повелительное',
             static::NAKLONENIE_YSLOVNOE => 'условное',
             static::NAKLONENIE_NULL => '',
-
             static::VREMYA => 'время',
             static::VREMYA_BUDUSCHEE => 'будущее',
             static::VREMYA_NASTOYASCHEE => 'настоящее',
             static::VREMYA_PROSHEDSHEE => 'прошедшее',
             static::VREMYA_NULL => '',
-
             static::LITSO => 'лицо',
             static::LITSO_PERVOE => 'первое',
             static::LITSO_VTOROE => 'второе',
             static::LITSO_TRETIE => 'третье',
             static::LITSO_NULL => '',
-
             static::ODUSHEVLYONNOST_ODUSHEVLYONNOE => 'одушевленное',
             static::ODUSHEVLYONNOST_NEODUSHEVLYONNOE => 'неодушевленное',
-
             static::NARITCATELNOST_IMIA_NARITCATELNOE => 'нарицательное',
             static::NARITCATELNOST_IMIA_SOBSTVENNOE => 'собственное',
-
             static::PODVID => 'подвид',
             static::PODVID_PROSTOY => 'простое',
             static::PODVID_SOSTAVNOY => 'составное',
-
             static::TIP_CELIY => 'целое',
             static::TIP_DROBNIY => 'дробное',
             static::TIP_SOBIRATELNIY => 'собирательное',
-
             static::VID_CHISLITELNOGO_KOLICHESTVENNIY => 'количественный',
             static::VID_CHISLITELNOGO_PORYADKOVIY => 'порядковый',
         ];
@@ -872,24 +851,29 @@ class MorphologyRegistry extends MorphologyRegistryParent
 
     public static function getChastiRechiWithPriznakiWithVarianti()
     {
+        $element_template = [
+            'id' => null,
+            'text' => null,
+            'children' => []
+        ];
         //Выходной массив частей речи с признаками и вариантами
         $chasti_rechi_array = [];
         //Оббегаем все признаки
         foreach (static::getClasses() as $priznak_id => $variants) {
-            //предобработка вариантов
-            foreach ($variants as $variant_temp_id => $variant_temp_value) {
-                $variants_temp[$variant_temp_id] = $variant_temp_id;
-            }
-            //оббегаем все варианты
             foreach ($variants as $variant_id => $variant) {
-                //оббегаем все части речи
                 foreach ($variant as $chast_rechi_id => $chast_rechi) {
-                    //добавляем в массив часть речи и признак, признаку присваиваем массив вариантов
-                    $chasti_rechi_array[$chast_rechi_id][$priznak_id] = $variants_temp;
+                    $chasti_rechi_array[$chast_rechi_id]['id']= $chast_rechi_id;
+                    $chasti_rechi_array[$chast_rechi_id]['text']=\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::getNames()[$chast_rechi_id];
+
+                    $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['id'] = $priznak_id;
+                    $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['text'] = static::getNames()[$priznak_id];
+
+                    $element_template2=$element_template;
+                    $element_template2['id']=$variant_id;
+                    $element_template2['text']=static::getNames()[$variant_id];
+                    $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['children'][$variant_id] = $element_template2;
                 }
             }
-            //обнуляем предобработанные варианты
-            $variants_temp=null;
         }
         return $chasti_rechi_array;
     }
