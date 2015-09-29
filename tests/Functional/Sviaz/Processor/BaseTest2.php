@@ -65,6 +65,6 @@ TEXT
             $sviazi_container
         );
 
-        //echo join("\n", $pretty);
+        echo join("\n", $pretty);
     }
 }

@@ -13,7 +13,7 @@ use MivarTest\PHPUnitHelper;
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
-use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
+use Aot\Sviaz\Rule\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 use Aot\RussianMorphology\ChastiRechi\Predlog\Base as Predlog;
@@ -175,17 +175,14 @@ TEXT;
         $Suschestvitelnoe->chislo = new \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe();
 
 
-        $link = \Aot\Sviaz\Rule\AssertedLink\Base::create($rule);
 
-        $asserted_match = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
+        $asserted_match = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class,
-            \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
+            \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class
         );
 
-        $link->addAssertedMatching($asserted_match);
-
-        $rule->addLink($link);
+        $rule->addAssertedMatching($asserted_match);
 
         return $rule;
 
@@ -193,9 +190,9 @@ TEXT;
 
     protected function getMorphologyMatching()
     {
-        $MorphologyMatching = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
+        $MorphologyMatching = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base::class,
-            \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
+            \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
             \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Base::class
         );
 

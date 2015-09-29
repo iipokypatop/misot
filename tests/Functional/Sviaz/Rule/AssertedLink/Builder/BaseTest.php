@@ -12,7 +12,7 @@ namespace AotTest\Functional\Sviaz\Rule\AssertedLink\Builder;
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
-use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
+use Aot\Sviaz\Rule\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Builder\Base as AssertedMemberBuilder;
@@ -22,8 +22,8 @@ class BaseTest extends \AotTest\AotDataStorage
 {
     public function testLaunch()
     {
-        $builder = \Aot\Sviaz\Rule\AssertedLink\Builder\Base::create()
-            ->check(\Aot\Sviaz\Rule\AssertedLink\Checker\Registry::DependedAfterMain);
+        $builder = \Aot\Sviaz\Rule\Builder\Base::create()
+            ->check(\Aot\Sviaz\Rule\Checker\Registry::DependedAfterMain);
 
         $builder ->morphologyMatching(MorphologyRegistry::PADESZH);
 
@@ -34,7 +34,7 @@ class BaseTest extends \AotTest\AotDataStorage
 
 
         $link = $builder->check(
-            \Aot\Sviaz\Rule\AssertedLink\Checker\Registry::NetSuschestvitelnogoVImenitelnomPadeszhe
+            \Aot\Sviaz\Rule\Checker\Registry::NetSuschestvitelnogoVImenitelnomPadeszhe
         );
 
         $link->type(SviazRegistry::PRIMIKANIE);
@@ -46,7 +46,7 @@ class BaseTest extends \AotTest\AotDataStorage
 
     public function testFind_Throws_Exception()
     {
-        $builder = \Aot\Sviaz\Rule\AssertedLink\Builder\Base::create();
+        $builder = \Aot\Sviaz\Rule\Builder\Base::create();
 
         $id = -1;
 

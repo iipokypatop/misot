@@ -30,19 +30,19 @@ class Factory
     }
 
     /**
-     * @param \Aot\Sviaz\SequenceMember\Base $main_sequence_member
-     * @param \Aot\Sviaz\SequenceMember\Base $depended_sequence_member
+     * @param \Aot\Sviaz\SequenceMember\Word\Base $main_sequence_member
+     * @param \Aot\Sviaz\SequenceMember\Word\Base $depended_sequence_member
      * @param \Aot\Sviaz\Rule\Base $rule
      * @return Base
      */
     public function build(
-        \Aot\Sviaz\SequenceMember\Base $main_sequence_member,
-        \Aot\Sviaz\SequenceMember\Base $depended_sequence_member,
+        \Aot\Sviaz\SequenceMember\Word\Base $main_sequence_member,
+        \Aot\Sviaz\SequenceMember\Word\Base $depended_sequence_member,
         \Aot\Sviaz\Rule\Base $rule,
         \Aot\Sviaz\Sequence $sequence
     )
     {
-        $type_class = $rule->getLinks()[0]->getTypeClass();
+        $type_class = $rule->getTypeClass();
 
         if ($type_class === \Aot\Sviaz\Podchinitrelnaya\Soglasovanie::class) {
 

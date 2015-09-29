@@ -23,7 +23,6 @@ class Base
     #/** @var  CacheRules */
     protected $cache;
 
-
     /**
      * @var \Aot\Sviaz\PreProcessors\Base[]
      */
@@ -198,84 +197,6 @@ class Base
         }
 
         return $sviazi;
-    }
-
-
-    protected function processThirdOld(
-        \Aot\Sviaz\Sequence $sequence,
-        \Aot\Sviaz\SequenceMember\Base $main_candidate,
-        \Aot\Sviaz\SequenceMember\Base $depended_candidate,
-        \Aot\Sviaz\Rule\AssertedMember\Third $third
-    )
-    {
-        $result = true;
-
-
-        if (PresenceRegistry::PRESENCE_PRESENT === $third->getPresence()) {
-
-            $result = false;
-
-            foreach ($sequence as $third_candidate) {
-                if ($third_candidate === $main_candidate) {
-                    continue;
-                }
-                if ($third_candidate === $depended_candidate) {
-                    continue;
-                }
-
-                $result = $third->attempt($third_candidate);
-
-                if (true === $result) {
-                    $result = $this->processPosition(
-                        $sequence->getPosition($main_candidate),
-                        $sequence->getPosition($depended_candidate),
-                        $third->getPosition(),
-                        $sequence->getPosition($third_candidate)
-                    );
-
-                    if (true === $result) {
-                        break;
-                    }
-                }
-            }
-
-            // \find and locate
-
-        } else if (PresenceRegistry::PRESENCE_NOT_PRESENT === $third->getPresence()) {
-
-            $result = false;
-
-            foreach ($sequence as $third_candidate) {
-                if ($third_candidate === $main_candidate) {
-                    continue;
-                }
-                if ($third_candidate === $depended_candidate) {
-                    continue;
-                }
-
-                $result = $third->attempt($third_candidate);
-
-                if (true === $result) {
-                    $result = $this->processPosition(
-                        $sequence->getPosition($main_candidate),
-                        $sequence->getPosition($depended_candidate),
-                        $third->getPosition(),
-                        $sequence->getPosition($third_candidate)
-                    );
-
-                    if (true === $result) {
-                        $result = false;
-                        break;
-                    }
-                }
-            }
-
-            if ($result === false) {
-                $result = true;
-            }
-        }
-
-        return $result;
     }
 
     protected function processThird(

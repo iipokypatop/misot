@@ -11,9 +11,9 @@ namespace Aot\Sviaz\Rule;
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
-use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
+use Aot\Sviaz\Rule\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
-use Aot\Sviaz\Rule\AssertedLink\Builder\Base as AssertedLinkBuilder;
+use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
 use Aot\Text\GroupIdRegistry;
 
 
