@@ -540,6 +540,29 @@ class Base
      */
     protected function detectSubSequences(\Aot\Sviaz\Sequence $sequence)
     {
+        $members=[];
+        //наполняем массив
+
+        foreach ($sequence->getSviazi() as $sviaz) {
+            $main = $sviaz->getMainSequenceMember();
+            $main_position=$sequence->getPosition($main);
+            $members[$main_position]=$main;
+
+            $depended = $sviaz->getDependedSequenceMember();
+            $depended_position=$sequence->getPosition($depended);
+            $members[$depended_position]=$depended;
+        }
+
+        ksort($members);
+
+        $sequence->setSubSequence(
+            \Aot\Sviaz\SubSequence::createSubSequences(
+                $sequence,
+                $members
+            )
+        );
+
+        /*
         $sviazi = $sequence->getSviazi();
         $main = null;
         $depended = null;
@@ -572,6 +595,7 @@ class Base
                 )
             );
         }
+        */
     }
 
 }

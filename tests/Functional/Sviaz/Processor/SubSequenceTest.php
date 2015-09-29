@@ -294,7 +294,7 @@ class SubSequenceTest extends \AotTest\AotDataStorage
      * detectSubSequences(\Aot\Sviaz\Sequence $sequence) - Тестирование всех связей, проверка, одинаковые ли связи в последовательности.
      * нужно для выяснения, сколько пар подлежащее-сказуемое найдено (идеально - 1, остальное неправильно)
      */
-    public function testDetectSubSequencesSomeSviaziWithDifferentGrammaticalFoundation()
+    public function testDetectSubSequencesSomeSviaziWithDifferentGrammaticalFoundationV1()
     {
         $main = $this->getMock(\Aot\Sviaz\SequenceMember\Base::class);///<Главное слово
         PHPUnitHelper::setProtectedProperty($main, 'id', 100);
@@ -404,6 +404,105 @@ class SubSequenceTest extends \AotTest\AotDataStorage
 
         $this->assertNull($result);
 
+    }
+
+
+    /**
+     * @brief Если связей несколько и они НЕ совпадают (выделяют разные основы предложения)
+     * @see \Aot\Sviaz\Processor\Base::detectSubSequences()
+     *
+     *
+     * @dataProvider detectSubSequencesSviaziWithMultiNumberOfGrammaticalFoundationsProvider
+     */
+    public function testDetectSubSequencesSviaziWithMultiNumberOfGrammaticalFoundations($sentence, $sviazi_in, $expected)
+    {
+        $sentence_length=count($sentence);
+        $sviazi_length=count($sviazi_in);
+
+        $sequence = \Aot\Sviaz\Sequence::create();///<Создаём последовательность
+
+        //Забиваем последовательность элементами
+        $members=[];
+        for($i=0;$i<$sentence_length;$i++)
+        {
+            $members[$i]=$this->getMock(\Aot\Sviaz\SequenceMember\Base::class);
+            PHPUnitHelper::setProtectedProperty($members[$i], 'id', $i);
+            $sequence->append($members[$i]);
+        }
+
+
+        //Создаём последовательность
+        /** @var  \Aot\Sviaz\Sequence | \PHPUnit_Framework_MockObject_MockObject $sequence */
+        $sequence = $this->getMock(\Aot\Sviaz\Sequence::class,
+            ['getSviazi','getPosition']
+        );
+
+
+        $sviazi = [];
+        for ($i = 0; $i < $sviazi_length; $i++)
+        {
+            $sviazi[$i] = $this->getMock(\Aot\Sviaz\Podchinitrelnaya\Base::class, [
+                    'getMainSequenceMember',
+                    'getDependedSequenceMember'
+                ]
+            );
+            //Реализуем первый метод
+            $main_position=$sviazi_in[$i][0];
+            $main=$members[$main_position];
+            $sviazi[$i]->expects($this->at(0))
+                ->method('getMainSequenceMember')
+                ->with()
+                ->will($this->returnValue($main));
+            $sequence
+                ->expects($this->at(1))
+                ->method('getPosition')
+                ->with($main)
+                ->will($this->returnValue($main_position));
+
+
+            //Реализуем второй метод
+            $depended_position=$sviazi_in[$i][1];
+            $depended=$members[$depended_position];
+            $sviazi[$i]->expects($this->at(1))
+                ->method('getDependedSequenceMember')
+                ->with()
+                ->will($this->returnValue($members[$sviazi_in[$i][1]]));
+
+            $sequence
+                ->expects($this->at(2))
+                ->method('getPosition')
+                ->with($depended)
+                ->will($this->returnValue($depended_position));
+        }
+
+
+
+
+        //Первое что - получить связи, к этому моменту они уже должны существовать
+        $sequence
+            ->expects($this->at(0))
+            ->method('getSviazi')
+            ->with()
+            ->will($this->returnValue($sviazi));
+
+
+
+
+        $processor = \Aot\Sviaz\Processor\Base::create();
+        $result = PHPUnitHelper::callProtectedMethod($processor, "detectSubSequences", [$sequence]);
+
+        $sub_sequences=$sequence->getSubSequences();
+        /*
+        $this->assertEquals(0, PHPUnitHelper::getProtectedProperty($sub_sequences[0],'index_start'));
+        $this->assertEquals($position_main, PHPUnitHelper::getProtectedProperty($sub_sequences[0],'index_end'));
+        $this->assertEquals($position_main, PHPUnitHelper::getProtectedProperty($sub_sequences[1],'index_start'));
+        $this->assertEquals($position_depended, PHPUnitHelper::getProtectedProperty($sub_sequences[1],'index_end'));
+        $this->assertEquals($position_depended, PHPUnitHelper::getProtectedProperty($sub_sequences[2],'index_start'));
+        $this->assertEquals($length_sequence-1, PHPUnitHelper::getProtectedProperty($sub_sequences[2],'index_end'));
+
+*/
+        $this->assertNull($result);
+
 
 
         /*
@@ -417,6 +516,63 @@ class SubSequenceTest extends \AotTest\AotDataStorage
         $sequence = $sequences[10];
         $this->assertEquals(0, count($sequence->getSubSequences()));
         */
+    }
+
+
+    public function detectSubSequencesSviaziWithMultiNumberOfGrammaticalFoundationsProvider()
+    {
+        return [
+/*
+            'Набор 1' =>
+                [
+                    //структура предложения
+                    [0, 0, 1, 0, 2, 0],
+                    //связи
+                    [
+                        [2, 4]
+                    ],
+                    //Индексы начала и конца групп
+                    [
+                        [0, 2],
+                        [2, 4],
+                        [4, 5]
+                    ]
+                ],
+
+            'Набор 2' =>
+                [
+                    //структура предложения
+                    [0, 1, 0, 2],
+                    //связи
+                    [
+                        [1, 3]
+                    ],
+                    //Индексы начала и конца групп
+                    [
+                        [0, 1],
+                        [1, 3]
+                    ]
+                ],
+*/
+            'Набор 3' =>
+                [
+                    //структура предложения
+                    [0, 1, 0, 1, 0, 2, 0],
+                    //связи
+                    [
+                        [1, 5],
+                        [3, 5]
+                    ],
+                    //Индексы начала и конца групп
+                    [
+                        [0, 1],
+                        [1, 3],
+                        [3, 5],
+                        [5, 6]
+                    ]
+                ],
+
+        ];
     }
 
 
