@@ -202,7 +202,7 @@ class BaseTest extends \AotTest\AotDataStorage
         $member_dao->setChastRechi($chastRechi);
 
         // устанавливаем у него роль
-        $role = new \SemanticPersistence\Entities\MisotEntities\Role();
+        $role = new \SemanticPersistence\Entities\SemanticEntities\MivarType();
         $role->setName(Registry::getNames()[Registry::OTNOSHENIE]);
         $member_dao->setRole($role);
 

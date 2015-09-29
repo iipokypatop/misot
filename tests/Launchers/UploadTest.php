@@ -9,12 +9,10 @@
 namespace AotTest\Functional\RussianMorphology;
 
 
-
 class UploadTest extends \AotTest\AotDataStorage
 {
-
-    public function testLaunch(){
-
+    public function testLaunch()
+    {
         $this->markTestSkipped('Скрипт для наполнения базы реестрами. Пропускаем...');
         # chastiRechi
         $registry = new \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry();
@@ -28,9 +26,9 @@ class UploadTest extends \AotTest\AotDataStorage
         $registry = new \Aot\Sviaz\Podchinitrelnaya\Registry();
         $registry->save();
 
-        # role
-        $registry = new \Aot\Sviaz\Role\Registry();
-        $registry->save();
+//        # role
+//        $registry = new \Aot\Sviaz\Role\Registry();
+//        $registry->save();
 
         #linkChecker
         $registry = new \Aot\Sviaz\Rule\Checker\Registry();

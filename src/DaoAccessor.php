@@ -11,7 +11,7 @@ namespace Aot;
 trait DaoAccessor
 {
     protected $dao;
-    protected $conn_db = "host=test-db.mivar.pro dbname=mivar_semantic_1890 user=postgres password=@Mivar123User@";
+    protected $conn_db = "host=test-db.mivar.pro dbname=mivar_semantic_new user=postgres password=@Mivar123User@";
 
     /**
      * @param $name

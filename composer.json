@@ -19,7 +19,6 @@
     "mivar-projects/test-utils": "dev-master",
     "mivar-projects/text-libraries": "dev-develop",
     "txt/mivar_text_semantic": "dev-master",
-    "mivar-projects/aot-db-api": "dev-master",
     "mivar-projects/semantic-db-api": "dev-develop"
   },
   "repositories": [

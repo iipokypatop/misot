@@ -290,7 +290,7 @@ class Base
             $this
                 ->getEntityManager()
                 ->find(
-                    \SemanticPersistence\Entities\MisotEntities\Role::class,
+                    \SemanticPersistence\Entities\SemanticEntities\MivarType::class,
                     $id_role
                 );
 
@@ -298,8 +298,8 @@ class Base
             throw new \RuntimeException("unsupported role id = " . var_export($id_role, 1));
         }
 
-        /** @var \SemanticPersistence\Entities\MisotEntities\Role $entity_role */
-        $this->dao->setRole($entity_role);
+        /** @var \SemanticPersistence\Entities\SemanticEntities\MivarType $entity_role */
+        $this->dao->setMivarType($entity_role);
     }
 
 

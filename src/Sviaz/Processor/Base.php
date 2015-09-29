@@ -23,7 +23,6 @@ class Base
     #/** @var  CacheRules */
     protected $cache;
 
-
     /**
      * @var \Aot\Sviaz\PreProcessors\Base[]
      */

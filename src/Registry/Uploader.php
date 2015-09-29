@@ -14,7 +14,7 @@ use MivarTest\PHPUnitHelper;
 
 trait Uploader
 {
-    protected $conn_db = "host=test-db.mivar.pro dbname=mivar_semantic_1890 user=postgres password=@Mivar123User@";
+    protected $conn_db = "host=test-db.mivar.pro dbname=mivar_semantic_new user=postgres password=@Mivar123User@";
 
     /**
      * @return string
@@ -46,16 +46,15 @@ trait Uploader
      */
     public function save()
     {
-        $entity = [];
         foreach ($this->getIds() as $id) {
-            $result = $this->getEntityManager()->find($this->getEntityClass(), $id);
-            if ($result === null) {
+            $entity = $this->getEntityManager()->find($this->getEntityClass(), $id);
+            if ($entity === null) {
                 $class = $this->getEntityClass();
-                $entity[$id] = new $class;
+                $entity = new $class;
             }
-            $changes = $this->charge($entity[$id], $id);
+            $changes = $this->charge($entity, $id);
             if (!empty($changes)) {
-                $this->getEntityManager()->persist($entity[$id]);
+                $this->getEntityManager()->persist($entity);
             }
         }
         $this->getEntityManager()->flush();

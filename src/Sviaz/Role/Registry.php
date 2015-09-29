@@ -15,9 +15,9 @@ class Registry
 {
     use Uploader;
 
-    const OTNOSHENIE = 1;
-    const VESCH = 2;
-    const SVOISTVO = 3;
+    const OTNOSHENIE = 5;
+    const VESCH = 3;
+    const SVOISTVO = 4;
 
     public static function getNames()
     {
@@ -57,7 +57,7 @@ class Registry
      */
     protected function getEntityClass()
     {
-        return \SemanticPersistence\Entities\MisotEntities\Role::class;
+        return \SemanticPersistence\Entities\SemanticEntities\MivarType::class;
     }
 
     /**
