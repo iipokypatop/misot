@@ -50,8 +50,7 @@ class Main
 
     protected function saveSviazi(\Aot\Sviaz\Sequence $sequence)
     {
-        $api = \SemanticPersistence\API\SemanticAPI::getAPI("host=192.168.10.51 dbname=mivar_semantic_1890 user=postgres password=@Mivar123User@");
-
+        $api = \SemanticPersistence\API\SemanticAPI::getAPI("host=192.168.10.51 dbname=mivar_semantic_new user=postgres password=@Mivar123User@");
 
         foreach ($sequence->getSviazi() as $sviaz) {
 

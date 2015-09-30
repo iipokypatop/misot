@@ -29,7 +29,7 @@ class MorphologyRegistryParent
 
     const NARICATELNOST = 7000;
 
-    const ODUSHEVLENNOST = 8000;
+
 
     const RAZRYAD = 9000;
 
@@ -77,7 +77,7 @@ class MorphologyRegistryParent
 
             static::PEREHODNOST => 'переходность',
 
-            static::ODUSHEVLENNOST => 'одушевленность',
+
 
             static::RAZRYAD => 'разряд',
 

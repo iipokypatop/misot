@@ -39,8 +39,8 @@ class MorphologyRegistry extends MorphologyRegistryParent
     const NARICATELNOST_NARICATELNOE = 7001;
     const NARICATELNOST_SOBSTVENNOE = 7002;
 
-    const ODUSHEVLENNOST_ODUSHEVLENNOE = 8001;
-    const ODUSHEVLENNOST_NEODUSHEVLENNOE = 8002;
+
+
 
     const RAZRYAD_KACHESTVENNOE = 9001;
     const RAZRYAD_OTNOSITELNOE = 9002;
@@ -129,9 +129,9 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::NEIZMENYAJMOST_NEIZMNYAJMIJ => 'изменяемый',
             static::PEREHODNOST_PEREHODNII => 'переходный',
             static::PEREHODNOST_NEPEREHODNII => 'непереходный',
-            static::ODUSHEVLENNOST => 'одушевленность',
-            static::ODUSHEVLENNOST_ODUSHEVLENNOE => 'одушевленноеы',
-            static::ODUSHEVLENNOST_NEODUSHEVLENNOE => 'неодушевленное',
+
+
+
             static::RAZRYAD => 'разряд',
             static::RAZRYAD_KACHESTVENNOE => 'качественное',
             static::RAZRYAD_OTNOSITELNOE => 'относительное',

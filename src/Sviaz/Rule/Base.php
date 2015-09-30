@@ -8,7 +8,6 @@
 
 namespace Aot\Sviaz\Rule;
 
-
 use Aot\Persister;
 
 /**
@@ -281,4 +280,3 @@ class Base
         $this->asserted_checkers[] = $checker;
     }
 }
-
