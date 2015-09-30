@@ -56,7 +56,7 @@ class SubSequence
      * @param \Aot\Sviaz\SequenceMember\Base[] $members
      * @return static[]
      */
-    public static function createSubSequences(\Aot\Sviaz\Sequence $sequence, $members)
+    public static function createSubSequences(\Aot\Sviaz\Sequence $sequence, array $members)
     {
         foreach ($members as $member) {
             assert(is_a($member, \Aot\Sviaz\SequenceMember\Base::class, true));
