@@ -23,6 +23,8 @@ class Base
     /** @var  \Aot\Sviaz\Sequence */
     protected $sequence;
 
+    /** @var  \SemanticPersistence\Entities\SyntaxRule */
+    protected $dao;
 
     protected function __construct()
     {
@@ -61,11 +63,45 @@ class Base
         $ob->id = spl_object_hash($ob);
         // temporary end
 
+        /* $ob->dao = new \SemanticPersistence\Entities\SyntaxRule;
+
+         $ob->dao
+             ->setMain(
+                 $main_sequence_member->getDao()
+             )
+             ->setDepend(
+                 $depended_sequence_member->getDao()
+             );*/
+
+        return $ob;
+    }
+
+    public static function createByDao($dao)
+    {
+        throw new \RuntimeException("not implemented exception");
+
+        $ob = new static();
+
+        $ob->dao = $dao;
+
+        $ob->main_sequence_member =
+            \Aot\Sviaz\SequenceMember\Word\Base::createByDao(
+                $dao->getMain()
+            );
+
+        $ob->depended_sequence_member =
+            \Aot\Sviaz\SequenceMember\Word\Base::createByDao(
+                $dao->getDepend()
+            );
+
+        //$ob->rule = $rule;
+        //$ob->sequence = $sequence;
+
         return $ob;
     }
 
     /**
-     * @return \Aot\Sviaz\SequenceMember\Word\Base
+     * @return \Aot\Sviaz\SequenceMember\Base
      */
     public function getMainSequenceMember()
     {
@@ -73,7 +109,7 @@ class Base
     }
 
     /**
-     * @return \Aot\Sviaz\SequenceMember\Word\Base
+     * @return \Aot\Sviaz\SequenceMember\Base
      */
     public function getDependedSequenceMember()
     {
