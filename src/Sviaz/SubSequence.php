@@ -128,8 +128,19 @@ class SubSequence // Sequence -?
         return $this->index_start <= $position && $position <= $this->index_end;
     }
 
-    public function getInterval()
+    /**
+     * @return int
+     */
+    public function getIndexStart()
     {
-        return [$this->index_start,$this->index_end];
+        return $this->index_start;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIndexEnd()
+    {
+        return $this->index_end;
     }
 }
