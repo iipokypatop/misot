@@ -11,7 +11,10 @@ namespace Aot\Text\TextParser\Replacement;
 
 abstract class Base
 {
+    /** @var \Aot\Text\TextParser\Registry */
     protected $registry;
+
+    /** @var \Aot\Text\TextParser\Logger */
     protected $logger;
 
     const START = '{{';
@@ -19,16 +22,16 @@ abstract class Base
 
 
     /**
-     * @param $registry
-     * @param $logger
+     * @param \Aot\Text\TextParser\Registry $registry
+     * @param \Aot\Text\TextParser\Logger $logger
      * @return object Aot\Text\TextParser\Replacement\Base
      */
-    static public function create($registry, $logger)
+    static public function create(\Aot\Text\TextParser\Registry $registry, \Aot\Text\TextParser\Logger $logger)
     {
         return new static($registry, $logger);
     }
 
-    public function __construct($registry, $logger)
+    public function __construct(\Aot\Text\TextParser\Registry $registry, \Aot\Text\TextParser\Logger $logger)
     {
         $this->registry = $registry;
         $this->logger = $logger;

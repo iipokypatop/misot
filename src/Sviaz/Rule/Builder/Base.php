@@ -11,11 +11,8 @@ namespace Aot\Sviaz\Rule\Builder;
 
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
-use Aot\Sviaz\Role\Registry as RoleRegistry;
 
 use Aot\Sviaz\Rule\Checker\Registry as LinkCheckerRegistry;
-use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
-use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 
 class Base
 {
@@ -52,7 +49,7 @@ class Base
         throw new \RuntimeException("no finders implemented yet");
 
         /*if (empty(\Aot\Sviaz\Rule\Finder\Registry::getClasses()[$id])) {
-            throw new \RuntimeException("unsupported checker id " . var_export($id, 1));
+            throw new \RuntimeException("unsupported finder id " . var_export($id, 1));
         }
         $this->link['finders'][] = $id;
 

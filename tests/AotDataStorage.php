@@ -234,22 +234,6 @@ TEXT;
     }
 
     /**
-     * @return \Aot\Sviaz\Rule\AssertedMember\Builder\Base
-     */
-    public function getAssertedMemberBuilder_member()
-    {
-        $builder =
-            \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
-                ChastiRechiRegistry::SUSCHESTVITELNOE
-            )
-                ->position(PositionRegistry::POSITION_BEFORE_DEPENDED)
-                ->text("text text");
-
-
-        return $builder;
-    }
-
-    /**
      * @return \Aot\Sviaz\Sequence
      */
     public function getRawSequence()

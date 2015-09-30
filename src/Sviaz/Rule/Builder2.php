@@ -19,10 +19,6 @@ class Builder2
     protected $asserted_depended_builder;
 
 
-    /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Third */
-    protected $asserted_third_builder;
-
-
     /** @var  \Aot\Sviaz\Rule\Builder\Base */
     protected $link_builder;
 
@@ -45,15 +41,6 @@ class Builder2
     public function depended(AssertedMember\Builder\Base $main)
     {
         $this->asserted_depended_builder = $main;
-
-        return $this;
-    }
-
-    public function third(AssertedMember\Builder\Third $third)
-    {
-        throw new \RuntimeException("no more supported");
-
-        $this->asserted_third_builder = $third;
 
         return $this;
     }
@@ -87,12 +74,6 @@ class Builder2
             $this->asserted_main_builder->get(),
             $this->asserted_depended_builder->get()
         );
-
-        if (null !== $this->asserted_third_builder) {
-            $rule->assertThird(
-                $this->asserted_third_builder->get()
-            );
-        }
 
         $this->link_builder->get(
             $rule

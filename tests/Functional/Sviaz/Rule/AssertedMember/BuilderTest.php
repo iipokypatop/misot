@@ -36,14 +36,6 @@ class BuilderTest extends \AotTest\AotDataStorage
             \Aot\Sviaz\Rule\AssertedMember\Depended::class,
             $depended_builder->get()
         );
-
-        $builder_member = $this->getAssertedMemberBuilder_member();
-
-        $this->assertInstanceOf(
-            \Aot\Sviaz\Rule\AssertedMember\Third::class,
-            $builder_member->get()
-        );
-
     }
 
 

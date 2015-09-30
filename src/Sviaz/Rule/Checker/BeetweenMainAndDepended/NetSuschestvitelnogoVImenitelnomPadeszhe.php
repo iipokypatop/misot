@@ -24,7 +24,7 @@ class NetSuschestvitelnogoVImenitelnomPadeszhe extends Base
         }
 
         foreach ($sequence as $member) {
-            // test cycling
+            // test not cycling
             $sequence->getPosition($main_candidate);
         }
 

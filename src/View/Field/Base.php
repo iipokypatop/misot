@@ -14,6 +14,7 @@ class Base
     protected $storage = [];
 
     /**
+     * @param $key
      * @return mixed
      */
     public function getValue($key)

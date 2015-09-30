@@ -73,7 +73,7 @@ trait DaoAccessor
     }
 
     /**
-     * @return \SemanticPersistence\API\SemanticAPI
+     * @return \SemanticPersistence\API\APIcurrent
      */
     public function getAPI()
     {

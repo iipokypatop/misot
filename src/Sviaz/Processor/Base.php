@@ -9,8 +9,6 @@
 namespace Aot\Sviaz\Processor;
 
 
-use Aot\Sviaz\Rule\AssertedMember\PositionRegistry;
-use Aot\Sviaz\Rule\AssertedMember\PresenceRegistry;
 use Aot\Sviaz\Rule\Base as RuleBase;
 use Aot\Sviaz\Sequence;
 use Aot\Sviaz\SequenceMember\RawMemberBuilder;
@@ -222,33 +220,6 @@ class Base
 
                     if (!$rule->getAssertedDepended()->attempt($depended_candidate)) {
                         continue;
-                    }
-
-                    if (true) {
-                        $result = $this->processThird(
-                            $sequence,
-                            $main_candidate,
-                            $depended_candidate,
-                            $rule
-                        );
-
-                        if (!$result) {
-                            continue;
-                        }
-
-                        $result = $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
-
-                        if ($result) {
-                            $sviazi[] = $sviaz = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
-                                $main_candidate,
-                                $depended_candidate,
-                                $rule,
-                                $sequence
-                            );
-
-                            $sequence->addSviaz($sviaz);
-
-                        }
                     }
                 }
             }

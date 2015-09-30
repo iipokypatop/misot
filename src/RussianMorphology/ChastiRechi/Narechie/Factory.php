@@ -14,7 +14,6 @@ use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Poloz
 use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Sravnitelnaya;
 
 use Dw;
-use MorphAttribute;
 use Word;
 
 class Factory extends \Aot\RussianMorphology\Factory

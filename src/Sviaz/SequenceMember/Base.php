@@ -9,8 +9,6 @@
 namespace Aot\Sviaz\SequenceMember;
 
 
-use Aot\RussianMorphology\Slovo;
-
 abstract class Base
 {
 

@@ -70,7 +70,6 @@ use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Vtoroe as VtoroeLi
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Tretie as TretieLitso;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Null as NullLitso;
 
-use Aot\RussianMorphology\FactoryException;
 use Dw;
 use Word;
 

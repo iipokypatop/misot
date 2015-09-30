@@ -20,7 +20,10 @@ class TextParser
 {
 
 
-    protected $registry = []; // реестр замен и тд
+    /**
+     * @var \Aot\Text\TextParser\Registry
+     */
+    protected $registry; // реестр замен и тд
     protected $sentences = []; // массив предложений
     protected $sentence_words = []; // массив слов предложений
     protected $processed_text; // обработанный текст
@@ -29,6 +32,11 @@ class TextParser
     const END_SENTENCE_TEMPLATE = " %s\n";
     const START_TEMPLATE = '{{';
     const END_TEMPLATE = '}}';
+
+    /**
+     * @var \Aot\Text\TextParser\Logger
+     */
+    protected $logger;
 
     protected static $sentence_needle = [
         "/\\s*[\\,\"\\'\\`\\‘\\‛\\’\\«\\»\\‹\\›\\„\\“\\‟\\”\\:\\;\\(\\)]\\s*/u",

@@ -264,24 +264,6 @@ class Base
     }
 
     /**
-     * @return \Aot\Sviaz\Role\Base
-     * @deprecated
-     */
-    public function getRole()
-    {
-        throw new \RuntimeException("no more supported");
-    }
-
-    /**
-     * @param \Aot\Sviaz\Role\Base $role
-     * @deprecated
-     */
-    public function setRole(\Aot\Sviaz\Role\Base $role)
-    {
-        throw new \RuntimeException("no more supported");
-    }
-
-    /**
      * @param $role_class
      */
     public function setRoleClass($role_class)

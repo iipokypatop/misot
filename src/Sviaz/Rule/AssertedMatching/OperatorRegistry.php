@@ -8,9 +8,7 @@
 
 namespace Aot\Sviaz\Rule\AssertedMatching;
 
-
 use Aot\Registry\Uploader;
-use Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq;
 
 class OperatorRegistry
 {
