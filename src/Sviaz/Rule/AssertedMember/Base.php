@@ -382,9 +382,10 @@ class Base
 
     }
 
-    public function setChlenPredlojenia($param)
+    public function setChlenPredlojenia(int $member)
     {
-        $this->chlen_sentence=$param;
+        $this->chlen_sentence=$member;
+        return $this;
     }
 
     public function getChlenPredlojenia()

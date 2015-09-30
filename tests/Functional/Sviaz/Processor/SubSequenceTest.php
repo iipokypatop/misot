@@ -785,13 +785,9 @@ class SubSequenceTest extends \AotTest\AotDataStorage
         $sub_sequence = \Aot\Sviaz\SubSequence::create($sequence, $length_sequence_part_1 + 1,
             $length_sequence_part_1 + 2);
 
-        try {
-            //проверяем, входит ли элемент в подпоследовательность
+
             $this->assertEquals(false, $sub_sequence->isMemberInSequences($member_search));
-            $this->fail("Не должно было тут быть! Должно быть брошен экзепшн");
-        } catch (\RuntimeException $e) {
-            $this->assertEquals("wtf: позиция не определена", $e->getMessage());
-        }
+
     }
 
     /**
