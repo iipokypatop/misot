@@ -440,9 +440,9 @@ class Base
         $type2 = [];
 
         foreach ($rules as $rule) {
-            if (ChastiPredlozhenieRegistry::PODLEZHACHEE === $rule->getAssertedMain()->getChlenPredlojenia()
+            if (ChastiPredlozhenieRegistry::PODLEZHACHEE === $rule->getAssertedMain()->getChastPredlozhenya()
                 &&
-                ChastiPredlozhenieRegistry::SKAZUEMOE === $rule->getAssertedDepended()->getChlenPredlojenia()
+                ChastiPredlozhenieRegistry::SKAZUEMOE === $rule->getAssertedDepended()->getChastPredlozhenya()
             ) {
                 $type1[] = $rule;
             } else {

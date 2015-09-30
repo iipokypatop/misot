@@ -24,7 +24,7 @@ class Base
 {
     use Persister;
 
-    protected  $chlen_sentence=0;
+    protected $chast_predlozhenya = 0;
 
     protected function __construct()
     {
@@ -109,8 +109,9 @@ class Base
         if ($asserted_text === '') {
             throw new \RuntimeException("asserted_text is empty string");
         }
-        if ($this->getAssertedTextGroupId() !== null)
+        if ($this->getAssertedTextGroupId() !== null) {
             throw new \RuntimeException("asserted_text_group_id already defined");
+        }
 
         // пишем в дао текст
         $this->dao->setText($asserted_text);
@@ -128,8 +129,9 @@ class Base
     {
         assert(is_int($asserted_text_group_id));
 
-        if ($this->getAssertedText() !== null)
+        if ($this->getAssertedText() !== null) {
             throw new \RuntimeException("asserted_text already defined");
+        }
 
         if (!array_key_exists($asserted_text_group_id, GroupIdRegistry::getWordVariants())) {
             throw new \RuntimeException("unsupported group registry id = " . var_export($asserted_text_group_id, 1));
@@ -198,7 +200,9 @@ class Base
             throw new \RuntimeException("asserted_chast_rechi_class is not defined");
         }
 
-        if (!MorphologyRegistry::checkMatchByChastRechiClassAndPriznakClass($this->getAssertedChastRechiClass(), $morphology_class)) {
+        if (!MorphologyRegistry::checkMatchByChastRechiClassAndPriznakClass($this->getAssertedChastRechiClass(),
+            $morphology_class)
+        ) {
             throw new \RuntimeException("chastRechi and priznakClass does not match");
         }
 
@@ -320,7 +324,9 @@ class Base
                     return false;
                 }
 
-                if (!in_array(strtolower($actual->getSlovo()->getText()), GroupIdRegistry::getWordVariants()[$this->getAssertedTextGroupId()], true)) {
+                if (!in_array(strtolower($actual->getSlovo()->getText()),
+                    GroupIdRegistry::getWordVariants()[$this->getAssertedTextGroupId()], true)
+                ) {
                     return false;
                 }
             }
@@ -342,9 +348,11 @@ class Base
 
             return true;
 
-        } else if ($actual instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
+        } else {
+            if ($actual instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
 
-            return true;
+                return true;
+            }
         }
 
         throw new \RuntimeException("unsupported sequence_member type " . get_class($actual));
@@ -382,15 +390,26 @@ class Base
 
     }
 
-    public function setChlenPredlojenia(int $member)
+    /**
+     * @param int $chast_id
+     */
+    public function setChastPredlozhenya($chast_id)
     {
-        $this->chlen_sentence=$member;
-        return $this;
+        assert(is_int($chast_id));
+
+        if (empty(\Aot\RussianSyntacsis\Predlozhenie\Chasti\Registry::getClasses()[$chast_id])) {
+            throw new \RuntimeException("unsupported chast predlozhenya id = " . var_export($chast_id, 1));
+        }
+
+        $this->chast_predlozhenya = $chast_id;
     }
 
-    public function getChlenPredlojenia()
+    /**
+     * @return int
+     */
+    public function getChastPredlozhenya()
     {
-        return $this->chlen_sentence;
+        return $this->chast_predlozhenya;
     }
 
 

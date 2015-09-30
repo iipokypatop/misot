@@ -132,13 +132,13 @@ abstract class Base
 
     public function podlezhachee()
     {
-        $this->member->setChlenPredlojenia(ChastiPredlozhenieRegistry::PODLEZHACHEE);
+        $this->member->setChastPredlozhenya(ChastiPredlozhenieRegistry::PODLEZHACHEE);
         return $this;
     }
 
     public function skazuemoe()
     {
-        $this->member->setChlenPredlojenia(ChastiPredlozhenieRegistry::SKAZUEMOE);
+        $this->member->setChastPredlozhenya(ChastiPredlozhenieRegistry::SKAZUEMOE);
         return $this;
     }
 }
