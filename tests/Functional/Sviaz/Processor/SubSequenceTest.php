@@ -39,6 +39,9 @@ use Aot\Sviaz\Rule\AssertedMember\PositionRegistry;
 
 class SubSequenceTest extends \AotTest\AotDataStorage
 {
+    const INOE=100;
+    const PODLEZJASHEE=101;
+    const SKAZUEMOE=102;
     /**
      * @brief Если нет связей вообще
      * @see \Aot\Sviaz\Processor\Base::detectSubSequences()
@@ -51,7 +54,7 @@ class SubSequenceTest extends \AotTest\AotDataStorage
         $processor = \Aot\Sviaz\Processor\Base::create();
         $sequence = \Aot\Sviaz\Sequence::create();
         $result = PHPUnitHelper::callProtectedMethod($processor, "detectSubSequences", [$sequence]);
-        $this->assertEquals(0, count($sequence->getSubSequences()));
+        $this->assertEquals(1, count($sequence->getSubSequences()));
         $this->assertNull($result);
     }
 
@@ -419,16 +422,9 @@ class SubSequenceTest extends \AotTest\AotDataStorage
         $sentence_length=count($sentence);
         $sviazi_length=count($sviazi_in);
 
-        $sequence = \Aot\Sviaz\Sequence::create();///<Создаём последовательность
 
         //Забиваем последовательность элементами
         $members=[];
-        for($i=0;$i<$sentence_length;$i++)
-        {
-            $members[$i]=$this->getMock(\Aot\Sviaz\SequenceMember\Base::class);
-            PHPUnitHelper::setProtectedProperty($members[$i], 'id', $i);
-            $sequence->append($members[$i]);
-        }
 
 
         //Создаём последовательность
@@ -437,8 +433,16 @@ class SubSequenceTest extends \AotTest\AotDataStorage
             ['getSviazi','getPosition']
         );
 
+        for($i=0;$i<$sentence_length;$i++)
+        {
+            $members[$i]=$this->getMock(\Aot\Sviaz\SequenceMember\Base::class);
+            PHPUnitHelper::setProtectedProperty($members[$i], 'id', $i);
+            $sequence->append($members[$i]);
+        }
 
         $sviazi = [];
+
+
         for ($i = 0; $i < $sviazi_length; $i++)
         {
             $sviazi[$i] = $this->getMock(\Aot\Sviaz\Podchinitrelnaya\Base::class, [
@@ -446,19 +450,14 @@ class SubSequenceTest extends \AotTest\AotDataStorage
                     'getDependedSequenceMember'
                 ]
             );
+
             //Реализуем первый метод
             $main_position=$sviazi_in[$i][0];
             $main=$members[$main_position];
             $sviazi[$i]->expects($this->at(0))
                 ->method('getMainSequenceMember')
                 ->with()
-                ->will($this->returnValue($main));
-            $sequence
-                ->expects($this->at(1))
-                ->method('getPosition')
-                ->with($main)
-                ->will($this->returnValue($main_position));
-
+                ->will($this->returnValue($members[$sviazi_in[$i][0]]));
 
             //Реализуем второй метод
             $depended_position=$sviazi_in[$i][1];
@@ -467,16 +466,7 @@ class SubSequenceTest extends \AotTest\AotDataStorage
                 ->method('getDependedSequenceMember')
                 ->with()
                 ->will($this->returnValue($members[$sviazi_in[$i][1]]));
-
-            $sequence
-                ->expects($this->at(2))
-                ->method('getPosition')
-                ->with($depended)
-                ->will($this->returnValue($depended_position));
         }
-
-
-
 
         //Первое что - получить связи, к этому моменту они уже должны существовать
         $sequence
@@ -485,48 +475,57 @@ class SubSequenceTest extends \AotTest\AotDataStorage
             ->with()
             ->will($this->returnValue($sviazi));
 
+        for ($i = 0; $i < $sviazi_length; $i++)
+        {
+            $main_position=$sviazi_in[$i][0];
+            $main=$members[$main_position];
 
+            $depended_position=$sviazi_in[$i][1];
+            $depended=$members[$depended_position];
+
+            $sequence
+                ->expects($this->at(2*$i+1))
+                ->method('getPosition')
+                ->with()
+                ->will($this->returnValue($main_position));
+
+
+            $sequence
+                ->expects($this->at(2*$i+2))
+                ->method('getPosition')
+                ->with()
+                ->will($this->returnValue($depended_position));
+
+        }
 
 
         $processor = \Aot\Sviaz\Processor\Base::create();
         $result = PHPUnitHelper::callProtectedMethod($processor, "detectSubSequences", [$sequence]);
 
         $sub_sequences=$sequence->getSubSequences();
-        /*
-        $this->assertEquals(0, PHPUnitHelper::getProtectedProperty($sub_sequences[0],'index_start'));
-        $this->assertEquals($position_main, PHPUnitHelper::getProtectedProperty($sub_sequences[0],'index_end'));
-        $this->assertEquals($position_main, PHPUnitHelper::getProtectedProperty($sub_sequences[1],'index_start'));
-        $this->assertEquals($position_depended, PHPUnitHelper::getProtectedProperty($sub_sequences[1],'index_end'));
-        $this->assertEquals($position_depended, PHPUnitHelper::getProtectedProperty($sub_sequences[2],'index_start'));
-        $this->assertEquals($length_sequence-1, PHPUnitHelper::getProtectedProperty($sub_sequences[2],'index_end'));
-
-*/
-        $this->assertNull($result);
 
 
 
-        /*
-        $processor = \Aot\Sviaz\Processor\Base::create();
+        $res=[];
+        foreach($sub_sequences as $sub_sequence)
+        {
+            $res[]=$sub_sequence->getInterval();
+        }
 
-        $sequences = $processor->go(
-            $this->getNormalizedMatrix1(),
-            array_merge([self::getRule1002()], [self::getRule1001()])
+        $this->assertEquals($expected, $res);
 
-        );
-        $sequence = $sequences[10];
-        $this->assertEquals(0, count($sequence->getSubSequences()));
-        */
+
     }
 
 
     public function detectSubSequencesSviaziWithMultiNumberOfGrammaticalFoundationsProvider()
     {
         return [
-/*
+
             'Набор 1' =>
                 [
                     //структура предложения
-                    [0, 0, 1, 0, 2, 0],
+                    [0, 0, static::PODLEZJASHEE, 0, static::SKAZUEMOE, 0],
                     //связи
                     [
                         [2, 4]
@@ -542,7 +541,7 @@ class SubSequenceTest extends \AotTest\AotDataStorage
             'Набор 2' =>
                 [
                     //структура предложения
-                    [0, 1, 0, 2],
+                    [0, static::PODLEZJASHEE, 0, static::SKAZUEMOE],
                     //связи
                     [
                         [1, 3]
@@ -553,11 +552,11 @@ class SubSequenceTest extends \AotTest\AotDataStorage
                         [1, 3]
                     ]
                 ],
-*/
+
             'Набор 3' =>
                 [
                     //структура предложения
-                    [0, 1, 0, 1, 0, 2, 0],
+                    [0, static::PODLEZJASHEE, 0, static::PODLEZJASHEE, 0, static::SKAZUEMOE, 0],
                     //связи
                     [
                         [1, 5],
@@ -572,6 +571,88 @@ class SubSequenceTest extends \AotTest\AotDataStorage
                     ]
                 ],
 
+            'Набор 4' =>
+                [
+                    //структура предложения
+                    [0, static::PODLEZJASHEE, 0],
+                    //связи
+                    [
+                        [1, 1]
+                    ],
+                    //Индексы начала и конца групп
+                    [
+                        [0, 1],
+                        [1, 2],
+                    ]
+                ],
+
+            'Набор 5' =>
+                [
+                    //структура предложения
+                    [0, static::PODLEZJASHEE, 0, static::SKAZUEMOE],
+                    //связи
+                    [
+                        [1, 3]
+                    ],
+                    //Индексы начала и конца групп
+                    [
+                        [0, 1],
+                        [1, 3],
+                    ]
+                ],
+
+            'Набор 6' =>
+                [
+                    //структура предложения
+                    [0, static::PODLEZJASHEE, static::PODLEZJASHEE, static::SKAZUEMOE],
+                    //связи
+                    [
+                        [1, 3],
+                        [2, 3]
+                    ],
+                    //Индексы начала и конца групп
+                    [
+                        [0, 1],
+                        [1, 2],
+                        [2, 3],
+                    ]
+                ],
+
+            'Набор 7' =>
+                [
+                    //структура предложения
+                    [0, static::PODLEZJASHEE, 0, static::SKAZUEMOE, static::SKAZUEMOE],
+                    //связи
+                    [
+                        [1, 3],
+                        [1, 4]
+                    ],
+                    //Индексы начала и конца групп
+                    [
+                        [0, 1],
+                        [1, 3],
+                        [3, 4],
+                    ]
+                ],
+
+            'Набор 8' =>
+                [
+                    //структура предложения
+                    [0, static::SKAZUEMOE, 0, static::PODLEZJASHEE, 0, static::SKAZUEMOE, static::SKAZUEMOE],
+                    //связи
+                    [
+                        [3, 1],
+                        [3, 5],
+                        [3, 6]
+                    ],
+                    //Индексы начала и конца групп
+                    [
+                        [0, 1],
+                        [1, 3],
+                        [3, 5],
+                        [5, 6]
+                    ]
+                ],
         ];
     }
 

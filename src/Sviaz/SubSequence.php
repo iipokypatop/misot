@@ -105,6 +105,7 @@ class SubSequence // Sequence -?
                 $start_index = $i;
             }
         }
+
         if ($start_index !== $sequence_count - 1) {
             $array_subsequences[] = static::create($sequence, $start_index, $sequence_count - 1);
         }
@@ -127,5 +128,8 @@ class SubSequence // Sequence -?
         return $this->index_start <= $position && $position <= $this->index_end;
     }
 
-
+    public function getInterval()
+    {
+        return [$this->index_start,$this->index_end];
+    }
 }
