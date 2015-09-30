@@ -9,8 +9,6 @@
 namespace Aot\Sviaz\Rule\AssertedMember\Builder\Main;
 
 
-
-
 class View extends \Aot\Sviaz\Rule\AssertedMember\Builder\View
 {
     /**

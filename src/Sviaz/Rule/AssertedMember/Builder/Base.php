@@ -77,18 +77,17 @@ abstract class Base
     {
         assert(is_int($id));
 
-        if( !array_key_exists($id, MorphologyRegistry::getNullClasses()) ){
+        if (!array_key_exists($id, MorphologyRegistry::getNullClasses())) {
             throw new \RuntimeException("no null class for morphology id = " . var_export($id, 1));
         }
 
-        if( !array_key_exists($this->chast_rechi_id, MorphologyRegistry::getNullClasses()[$id]) ){
+        if (!array_key_exists($this->chast_rechi_id, MorphologyRegistry::getNullClasses()[$id])) {
             throw new \RuntimeException("no null class for chast rechi_id = " . var_export($this->chast_rechi_id, 1));
         }
 
         if (is_null(MorphologyRegistry::getNullClasses()[$id][$this->chast_rechi_id])) {
             throw new \RuntimeException("unsupported morphology id = $id for chast rechi_id = $this->chast_rechi_id");
-        }
-        else{
+        } else {
             $class = MorphologyRegistry::getNullClasses()[$id][$this->chast_rechi_id];
         }
 
@@ -98,9 +97,6 @@ abstract class Base
 
         return $this;
     }
-
-
-
 
 
     /**

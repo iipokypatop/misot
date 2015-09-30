@@ -63,7 +63,7 @@ abstract class Base
                 }
             }
 
-            if($preg_replace_matches[2] === '.'){
+            if ($preg_replace_matches[2] === '.') {
                 $record_replace .= '.';
 //                $preg_replace_matches[2] = '.';
             }

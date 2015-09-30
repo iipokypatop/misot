@@ -40,8 +40,7 @@ class OperatorRegistry
     public static function getIdByObject($object)
     {
         foreach (static::getClasses() as $id => $class) {
-            if( is_a($object, $class) )
-            {
+            if (is_a($object, $class)) {
                 return $id;
             }
         }
@@ -86,7 +85,7 @@ class OperatorRegistry
      */
     protected function getFields()
     {
-        return[
+        return [
             'name' => [static::class, 'getNames'],
         ];
     }

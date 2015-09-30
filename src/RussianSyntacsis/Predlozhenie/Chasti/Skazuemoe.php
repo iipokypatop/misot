@@ -9,7 +9,7 @@
 namespace Aot\RussianSyntacsis\Predlozhenie\Chasti;
 
 
-class Skazuemoe  extends Base
+class Skazuemoe extends Base
 {
 
 }

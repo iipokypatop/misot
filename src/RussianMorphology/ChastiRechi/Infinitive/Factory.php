@@ -38,7 +38,7 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $text = $dw->word_form;
         $words = [];
-        if (isset($word->word) && intval($dw->id_word_class) === INFINITIVE_CLASS_ID ) {
+        if (isset($word->word) && intval($dw->id_word_class) === INFINITIVE_CLASS_ID) {
 
             # вид
             $vid = $this->getVid($dw->parameters);

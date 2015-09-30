@@ -44,8 +44,7 @@ class Registry
     public static function getIdByClass($role_class)
     {
         foreach (static::getClasses() as $id => $class) {
-            if( $class === $role_class)
-            {
+            if ($class === $role_class) {
                 return $id;
             }
         }
@@ -73,7 +72,7 @@ class Registry
      */
     protected function getFields()
     {
-        return[
+        return [
             'name' => [static::class, 'getNames'],
         ];
     }

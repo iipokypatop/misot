@@ -138,7 +138,7 @@ class ChastiRechiRegistry
      */
     protected function getFields()
     {
-        return[
+        return [
             'name' => [static::class, 'getNames'],
         ];
     }

@@ -55,7 +55,7 @@ class PositionRegistry
      */
     protected function getFields()
     {
-        return[
+        return [
             'name' => [static::class, 'getNames'],
         ];
     }

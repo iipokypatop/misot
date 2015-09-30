@@ -40,8 +40,6 @@ class MorphologyRegistry extends MorphologyRegistryParent
     const NARICATELNOST_SOBSTVENNOE = 7002;
 
 
-
-
     const RAZRYAD_KACHESTVENNOE = 9001;
     const RAZRYAD_OTNOSITELNOE = 9002;
     const RAZRYAD_PRITYAZHATELNOE = 9003;
@@ -129,9 +127,6 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::NEIZMENYAJMOST_NEIZMNYAJMIJ => 'изменяемый',
             static::PEREHODNOST_PEREHODNII => 'переходный',
             static::PEREHODNOST_NEPEREHODNII => 'непереходный',
-
-
-
             static::RAZRYAD => 'разряд',
             static::RAZRYAD_KACHESTVENNOE => 'качественное',
             static::RAZRYAD_OTNOSITELNOE => 'относительное',
@@ -887,15 +882,15 @@ class MorphologyRegistry extends MorphologyRegistryParent
         foreach (static::getClasses() as $priznak_id => $variants) {
             foreach ($variants as $variant_id => $variant) {
                 foreach ($variant as $chast_rechi_id => $chast_rechi) {
-                    $chasti_rechi_array[$chast_rechi_id]['id']= $chast_rechi_id;
-                    $chasti_rechi_array[$chast_rechi_id]['text']=\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::getNames()[$chast_rechi_id];
+                    $chasti_rechi_array[$chast_rechi_id]['id'] = $chast_rechi_id;
+                    $chasti_rechi_array[$chast_rechi_id]['text'] = \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::getNames()[$chast_rechi_id];
 
                     $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['id'] = $priznak_id;
                     $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['text'] = static::getNames()[$priznak_id];
 
-                    $element_template2=$element_template;
-                    $element_template2['id']=$variant_id;
-                    $element_template2['text']=static::getNames()[$variant_id];
+                    $element_template2 = $element_template;
+                    $element_template2['id'] = $variant_id;
+                    $element_template2['text'] = static::getNames()[$variant_id];
                     $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['children'][$variant_id] = $element_template2;
                 }
             }

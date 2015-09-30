@@ -12,7 +12,7 @@ namespace Aot\RussianSyntacsis\Predlozhenie\Chasti;
 
 class Registry
 {
-   // use Uploader;
+    // use Uploader;
 
     const PODLEZHACHEE = 11;
     const SKAZUEMOE = 12;
@@ -33,7 +33,4 @@ class Registry
             static::SKAZUEMOE => \Aot\RussianSyntacsis\Predlozhenie\Chasti\Skazuemoe::class,
         ];
     }
-
-
-
 }

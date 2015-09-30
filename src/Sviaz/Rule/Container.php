@@ -1365,9 +1365,7 @@ TEXT;
                     RoleRegistry::OTNOSHENIE
                 )
                     ->morphologyIs(MorphologyRegistry::LITSO)
-
                     ->morphologyIs(MorphologyRegistry::CHISLO)
-
                     ->morphologyIs(MorphologyRegistry::VREMYA)
             )
             ->link(
@@ -1515,7 +1513,7 @@ TEXT;
     {
 
         if (!method_exists(self::class, $name_rule)) {
-            throw new \RuntimeException('Правила ' . $name_rule .' не существует');
+            throw new \RuntimeException('Правила ' . $name_rule . ' не существует');
         }
 
         $priznaki = [
@@ -1542,7 +1540,7 @@ TEXT;
     {
 
         if (!method_exists(self::class, $name_rule)) {
-            throw new \RuntimeException('Правила ' . $name_rule .' не существует');
+            throw new \RuntimeException('Правила ' . $name_rule . ' не существует');
         }
 
         $priznaki = [
@@ -1871,7 +1869,7 @@ TEXT;
                 )
                 ->link(
                     AssertedLinkBuilder::create()
-                    ->dependedRightBeforeMain()
+                        ->dependedRightBeforeMain()
                 );
 
         $rule = $builder->get();
@@ -1980,7 +1978,6 @@ TEXT;
 
         return $rule;
     }
-
 
 
 }

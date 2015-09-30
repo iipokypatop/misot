@@ -140,7 +140,7 @@ class Renderer
                                 $member->getSlovo()->getText()
                             )
                             ->setFontWeight(800)
-                    ->setMagnet(true)
+                            ->setMagnet(true)
                     )->setDot(
                         \Aot\JointJS\Objects\Text::create()
                             ->setMagnet(true)

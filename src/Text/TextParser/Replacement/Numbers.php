@@ -20,13 +20,14 @@ class Numbers extends Base
             "/(\\{\\{)?(\\d+([\\s\\,]*\\d+)*(\\-?[оы]?м)?)/u",
         ];
     }
+
     protected function insertTemplate($preg_replace_matches)
     {
-        if( $preg_replace_matches[1] === '{{' || trim($preg_replace_matches[0]) === ''){
+        if ($preg_replace_matches[1] === '{{' || trim($preg_replace_matches[0]) === '') {
             return $preg_replace_matches[0];
         }
 
-        $preg_replace_matches[0] = preg_replace(["/(\\,)/","/(\\s)/"], [".", ""], $preg_replace_matches[0]);
+        $preg_replace_matches[0] = preg_replace(["/(\\,)/", "/(\\s)/"], [".", ""], $preg_replace_matches[0]);
         $index = $this->registry->add($preg_replace_matches[0]);
         $this->logger->notice("R: Заменили по шаблону [{$preg_replace_matches[0]}], индекс {$index}");
         return $this->format($index);

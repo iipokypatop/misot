@@ -9,14 +9,6 @@
 namespace Aot\Sviaz\Rule;
 
 
-
-
-
-
-
-
-
-
 class Builder2
 {
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base */
@@ -108,36 +100,4 @@ class Builder2
 
         return $rule;
     }
-
-    public function slovo(\Aot\Sviaz\Rule\AssertedMember\Base $member)
-    {
-        throw new \RuntimeException("not implemented yet");
-    }
-
-    public function estSlovo($chast_rechi_id, array $morphology)
-    {
-        throw new \RuntimeException("not implemented yet");
-
-        return $this;
-    }
-
-    public function netSlova($chast_rechi_id, array $morphology)
-    {
-        throw new \RuntimeException("not implemented yet");
-        return $this;
-    }
-
-    public function netSlovaMezhduGlavnimIZavisimim($chast_rechi_id, array $morphology)
-    {
-        throw new \RuntimeException("not implemented yet");
-        return $this;
-    }
-
-    public function estSlovoMezhduGlavnimIZavisimim($chast_rechi_id, array $morphology)
-    {
-        throw new \RuntimeException("not implemented yet");
-        return $this;
-    }
-
-
 }

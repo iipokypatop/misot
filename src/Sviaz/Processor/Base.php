@@ -21,10 +21,6 @@ class Base
     /** @var  RawMemberBuilder */
     protected $raw_member_builder;
 
-    #/** @var  CacheRules */
-    protected $cache;
-
-
     /**
      * @var \Aot\Sviaz\PreProcessors\Base[]
      */
@@ -39,7 +35,6 @@ class Base
     {
         $this->raw_member_builder = \Aot\Sviaz\SequenceMember\RawMemberBuilder::create();
 
-        $this->cache = \Aot\Sviaz\Processor\CacheRules::create();
 
         $this->pre_processing_engines = [
             \Aot\Sviaz\PreProcessors\Predlog::create(),
@@ -163,273 +158,6 @@ class Base
     }
 
 
-    protected function processThirdOld(
-        \Aot\Sviaz\Sequence $sequence,
-        \Aot\Sviaz\SequenceMember\Base $main_candidate,
-        \Aot\Sviaz\SequenceMember\Base $depended_candidate,
-        \Aot\Sviaz\Rule\AssertedMember\Third $third
-    ) {
-        $result = true;
-
-
-        if (PresenceRegistry::PRESENCE_PRESENT === $third->getPresence()) {
-
-            $result = false;
-
-            foreach ($sequence as $third_candidate) {
-                if ($third_candidate === $main_candidate) {
-                    continue;
-                }
-                if ($third_candidate === $depended_candidate) {
-                    continue;
-                }
-
-                $result = $third->attempt($third_candidate);
-
-                if (true === $result) {
-                    $result = $this->processPosition(
-                        $sequence->getPosition($main_candidate),
-                        $sequence->getPosition($depended_candidate),
-                        $third->getPosition(),
-                        $sequence->getPosition($third_candidate)
-                    );
-
-                    if (true === $result) {
-                        break;
-                    }
-                }
-            }
-
-            // \find and locate
-
-        } else {
-            if (PresenceRegistry::PRESENCE_NOT_PRESENT === $third->getPresence()) {
-
-                $result = false;
-
-                foreach ($sequence as $third_candidate) {
-                    if ($third_candidate === $main_candidate) {
-                        continue;
-                    }
-                    if ($third_candidate === $depended_candidate) {
-                        continue;
-                    }
-
-                    $result = $third->attempt($third_candidate);
-
-                    if (true === $result) {
-                        $result = $this->processPosition(
-                            $sequence->getPosition($main_candidate),
-                            $sequence->getPosition($depended_candidate),
-                            $third->getPosition(),
-                            $sequence->getPosition($third_candidate)
-                        );
-
-                        if (true === $result) {
-                            $result = false;
-                            break;
-                        }
-                    }
-                }
-
-                if ($result === false) {
-                    $result = true;
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    protected function processThird(
-        \Aot\Sviaz\Sequence $sequence,
-        \Aot\Sviaz\SequenceMember\Base $main_candidate,
-        \Aot\Sviaz\SequenceMember\Base $depended_candidate,
-        \Aot\Sviaz\Rule\Base $rule
-    ) {
-        $result = true;
-
-        $third = $rule->getAssertedThird();
-
-        if (null === $third) {
-            return $result;
-        }
-
-        $result = false;
-
-        if (PresenceRegistry::PRESENCE_PRESENT === $third->getPresence()) {
-
-            foreach ($sequence as $third_candidate) {
-                if ($third_candidate === $main_candidate) {
-                    continue;
-                }
-                if ($third_candidate === $depended_candidate) {
-                    continue;
-                }
-
-                $result = $third->attempt($third_candidate);
-
-                if (true === $result) {
-                    $result = $this->processPosition(
-                        $sequence->getPosition($main_candidate),
-                        $sequence->getPosition($depended_candidate),
-                        $third->getPosition(),
-                        $sequence->getPosition($third_candidate)
-                    );
-
-                    if (true === $result) {
-                        break;
-                    }
-                }
-            }
-
-            // \find and locate
-
-        } else {
-            if (PresenceRegistry::PRESENCE_NOT_PRESENT === $third->getPresence()) {
-
-                foreach ($sequence as $third_candidate) {
-                    if ($third_candidate === $main_candidate) {
-                        continue;
-                    }
-                    if ($third_candidate === $depended_candidate) {
-                        continue;
-                    }
-
-                    $result = $third->attempt($third_candidate);
-
-                    if (true === $result) {
-                        $result = $this->processPosition(
-                            $sequence->getPosition($main_candidate),
-                            $sequence->getPosition($depended_candidate),
-                            $third->getPosition(),
-                            $sequence->getPosition($third_candidate)
-                        );
-
-                        if (true === $result) {
-                            $result = false;
-                            break;
-                        }
-                    }
-                }
-
-                if ($result === false) {
-                    $result = true;
-                }
-
-            } else {
-
-                throw new \RuntimeException("unsupported presence type " . var_export($third->getPresence(), 1));
-            }
-        }
-
-        return $result;
-    }
-
-
-    protected function thirdFindAndLocate(
-        \Aot\Sviaz\Sequence $sequence,
-        \Aot\Sviaz\SequenceMember\Base $main_candidate,
-        \Aot\Sviaz\SequenceMember\Base $depended_candidate,
-        \Aot\Sviaz\Rule\AssertedMember\Third $third
-    ) {
-        $result = false;
-
-        foreach ($sequence as $third_candidate) {
-            if ($third_candidate === $main_candidate) {
-                continue;
-            }
-            if ($third_candidate === $depended_candidate) {
-                continue;
-            }
-
-            $result = $third->attempt($third_candidate);
-
-            if (true === $result) {
-                $result = $this->processPosition(
-                    $sequence->getPosition($main_candidate),
-                    $sequence->getPosition($depended_candidate),
-                    $third->getPosition(),
-                    $sequence->getPosition($third_candidate)
-                );
-
-                if (true === $result) {
-                    $result = false;
-                    break;
-                }
-            }
-        }
-
-        return $result;
-    }
-
-
-    /**
-     * @param int $main_position
-     * @param int $depended_position
-     * @param int $third_position_expected
-     * @param int $third_position_actual
-     * @return bool
-     */
-    protected function processPosition(
-        $main_position,
-        $depended_position,
-        $third_position_expected,
-        $third_position_actual
-    ) {
-        assert(is_int($main_position));
-        assert(is_int($depended_position));
-        assert(is_int($third_position_expected));
-        assert(is_int($third_position_actual));
-
-        if ($third_position_expected === PositionRegistry::POSITION_ANY) {
-
-            return true;
-
-        } else {
-            if ($third_position_expected === PositionRegistry::POSITION_BETWEEN_MAIN_AND_DEPENDED) {
-                if ($main_position > $depended_position) {
-                    if ($main_position > $third_position_actual && $third_position_actual > $depended_position) {
-                        return true;
-                    }
-                } else {
-                    if ($depended_position > $main_position) {
-                        if ($depended_position > $third_position_actual && $third_position_actual > $main_position) {
-                            return true;
-                        }
-                    }
-                }
-            } else {
-                if ($third_position_expected === PositionRegistry::POSITION_AFTER_MAIN) {
-                    if ($third_position_actual > $main_position) {
-                        return true;
-                    }
-                } else {
-                    if ($third_position_expected === PositionRegistry::POSITION_BEFORE_MAIN) {
-                        if ($third_position_actual < $main_position) {
-                            return true;
-                        }
-                    } else {
-                        if ($third_position_expected === PositionRegistry::POSITION_AFTER_DEPENDED) {
-                            if ($third_position_actual > $depended_position) {
-                                return true;
-                            }
-                        } else {
-                            if ($third_position_expected === PositionRegistry::POSITION_BEFORE_DEPENDED) {
-                                if ($third_position_actual < $depended_position) {
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        };
-
-        return false;
-    }
-
-
     /**
      * @param $rules \Aot\Sviaz\Rule\Base[]
      * @return \Aot\Sviaz\Rule\Base[][]
@@ -462,7 +190,7 @@ class Base
         foreach ($rules as $rule) {
             assert(is_a($rule, RuleBase::class));
         }
-        $sviazi=[];
+        $sviazi = [];
         /** @var \Aot\Sviaz\Rule\Base $rule */
         foreach ($rules as $rule) {
 
@@ -470,7 +198,7 @@ class Base
                 if (!$rule->getAssertedMain()->attempt($main_candidate)) {
                     continue;
                 }
-                $sub_sequences=$sequence->findSubSequencesForMember($main_candidate);
+                $sub_sequences = $sequence->findSubSequencesForMember($main_candidate);
 
                 /* @var \Aot\Sviaz\SequenceMember\Word\Base $depended_candidate */
                 foreach ($sequence as $depended_candidate) {
@@ -480,14 +208,14 @@ class Base
                         continue;
                     }
 
-                    if (count($sub_sequences)>=1){
-                        $result=false;
-                        foreach($sub_sequences as $sub_sequence){
-                            if ($sub_sequence->isMemberInSequences($depended_candidate)){
-                                $result=true;
+                    if (count($sub_sequences) >= 1) {
+                        $result = false;
+                        foreach ($sub_sequences as $sub_sequence) {
+                            if ($sub_sequence->isMemberInSequences($depended_candidate)) {
+                                $result = true;
                             }
                         }
-                        if (!$result){
+                        if (!$result) {
                             continue;
                         }
                     }
@@ -496,8 +224,6 @@ class Base
                         continue;
                     }
 
-
-                    /*if (!$this->cache->get([$rule, $main_candidate, $depended_candidate])) {*/
                     if (true) {
                         $result = $this->processThird(
                             $sequence,
@@ -513,8 +239,6 @@ class Base
                         $result = $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
 
                         if ($result) {
-                            //print_r($sequence->getPosition($main_candidate));
-                            //print_r($depended_candidate->getSlovo()->getText());
                             $sviazi[] = $sviaz = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
                                 $main_candidate,
                                 $depended_candidate,
@@ -524,7 +248,6 @@ class Base
 
                             $sequence->addSviaz($sviaz);
 
-                            /*$this->cache->put([$rule, $main_candidate, $depended_candidate]);*/
                         }
                     }
                 }
@@ -540,17 +263,17 @@ class Base
      */
     protected function detectSubSequences(\Aot\Sviaz\Sequence $sequence)
     {
-        $members=[];
+        $members = [];
         //наполняем массив
 
         foreach ($sequence->getSviazi() as $sviaz) {
             $main = $sviaz->getMainSequenceMember();
-            $main_position=$sequence->getPosition($main);
-            $members[$main_position]=$main;
+            $main_position = $sequence->getPosition($main);
+            $members[$main_position] = $main;
 
             $depended = $sviaz->getDependedSequenceMember();
-            $depended_position=$sequence->getPosition($depended);
-            $members[$depended_position]=$depended;
+            $depended_position = $sequence->getPosition($depended);
+            $members[$depended_position] = $depended;
         }
 
         ksort($members);
@@ -561,41 +284,5 @@ class Base
                 $members
             )
         );
-
-        /*
-        $sviazi = $sequence->getSviazi();
-        $main = null;
-        $depended = null;
-        $result = false;
-        foreach ($sviazi as $sviaz) {
-
-            if ($main === null && $depended === null) {
-                $main = $sviaz->getMainSequenceMember();
-                $depended = $sviaz->getDependedSequenceMember();
-                $result = true;
-
-                continue;
-            }
-
-            if ($sviaz->getMainSequenceMember() !== $main || $sviaz->getDependedSequenceMember() !== $depended) {
-                $result = false;
-                break;
-            }
-
-            $result = true;
-
-        }
-
-        if ($result) {
-            $sequence->setSubSequence(
-                \Aot\Sviaz\SubSequence::createSubSequences(
-                    $sequence,
-                    $sequence->getPosition($main),
-                    $sequence->getPosition($depended)
-                )
-            );
-        }
-        */
     }
-
 }

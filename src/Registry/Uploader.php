@@ -9,7 +9,6 @@
 namespace Aot\Registry;
 
 
-
 use MivarTest\PHPUnitHelper;
 
 trait Uploader

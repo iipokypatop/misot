@@ -9,7 +9,6 @@
 namespace Aot;
 
 
-
 trait Persister
 {
     use DaoAccessor;

@@ -13,7 +13,7 @@
     <script type="text/javascript" src="/lib/joint.shapes.fsa.js"></script>
     <link rel="stylesheet" href="/lib/joint.css" type="text/css">
 
-    <? if (!empty($script)):  ?>
+    <? if (!empty($script)): ?>
         <script type="text/javascript" src="<?= $script ?>"></script>
     <? endif ?>
 

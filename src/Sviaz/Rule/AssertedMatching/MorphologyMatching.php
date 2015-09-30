@@ -9,7 +9,6 @@
 namespace Aot\Sviaz\Rule\AssertedMatching;
 
 
-
 use Aot\RussianMorphology\ChastiRechi\MorphologyBase;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 

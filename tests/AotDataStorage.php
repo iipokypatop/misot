@@ -175,7 +175,6 @@ TEXT;
         $Suschestvitelnoe->chislo = new \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe();
 
 
-
         $asserted_match = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class,
             \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
