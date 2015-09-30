@@ -1,10 +1,9 @@
 <?php
 
-use Aot\Sviaz\Rule\AssertedMember\Builder\View;
 
 /** @var $mainView \Aot\Sviaz\Rule\AssertedMember\Builder\Main\View */
 /** @var $dependedView \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\View */
-/** @var $linkView \Aot\Sviaz\Rule\AssertedLink\Builder\View */
+/** @var $linkView \Aot\Sviaz\Rule\Builder\View */
 
 
 ?><!DOCTYPE html>

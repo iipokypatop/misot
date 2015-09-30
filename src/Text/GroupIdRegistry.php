@@ -61,7 +61,7 @@ class GroupIdRegistry
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\TextGroup::class;
+        return \SemanticPersistence\Entities\MisotEntities\TextGroup::class;
     }
 
     /**

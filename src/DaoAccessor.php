@@ -8,15 +8,15 @@
 
 namespace Aot;
 
-use \AotPersistence\API\AotAPI;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
-
 trait DaoAccessor
 {
-
     protected $dao;
-    protected $conn_db = "host=test-db.mivar.pro dbname=misot user=postgres password=@Mivar123User@";
+    protected $conn_db = "host=test-db.mivar.pro dbname=mivar_semantic_new user=postgres password=@Mivar123User@";
 
+    /**
+     * @param $name
+     * @return int[] | null
+     */
     protected function get($name)
     {
         if (empty($this->getDao())) {
@@ -53,34 +53,7 @@ trait DaoAccessor
 
     protected function set($name)
     {
-//        if (empty($this->getDao())) {
-//            throw new \RuntimeException("No dao");
-//        }
-//
-//        $callback = [$this->setDao(), 'get'.$name];
-//        if( !is_callable($callback))
-//        {
-//            throw new \RuntimeException("No method ". $callback[1] . " in class ". get_class($callback[0]));
-//        }
-//
-//        $value = call_user_func($callback);
-//        print_r($value);
-//
-//        if ($value === null) {
-//            return null;
-//        } else if (is_scalar($value)) {
-//            return $value;
-//        } else if (is_object($value)) {
-//            return $value->getId();
-//        } else if (is_array($value)) {
-//            $ids = [];
-//            foreach ($value as $item) {
-//                $ids[] = $item->getId();
-//            }
-//            return $ids;
-//        }
-//
-//        throw new \RuntimeException("Unsupported value type or resource");
+        throw new \RuntimeException("not supported");
     }
 
     /**
@@ -96,7 +69,14 @@ trait DaoAccessor
      */
     public function getEntityManager()
     {
-        return AotAPI::getAPI($this->conn_db)->getEntityManager();
+        return \SemanticPersistence\API\SemanticAPI::getAPI($this->conn_db)->getEntityManager();
     }
 
+    /**
+     * @return \SemanticPersistence\API\SemanticAPI
+     */
+    public function getAPI()
+    {
+        return \SemanticPersistence\API\SemanticAPI::getAPI($this->conn_db);
+    }
 }

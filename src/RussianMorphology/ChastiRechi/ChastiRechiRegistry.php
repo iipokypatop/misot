@@ -23,6 +23,7 @@ class ChastiRechiRegistry
     const DEEPRICHASTIE = 15;
     const CHISLITELNOE = 16;
     const MESTOIMENIE = 17;
+    const INFINITIVE = 18;
 
     const PREDLOG = 19;
     const SOYUZ = 20;
@@ -41,6 +42,7 @@ class ChastiRechiRegistry
             static::DEEPRICHASTIE => 'деепричастие',
             static::CHISLITELNOE => 'числительное',
             static::MESTOIMENIE => 'местоимение',
+            static::INFINITIVE => 'инфинитив',
 
             static::PREDLOG => 'предлог',
             static::SOYUZ => 'союз',
@@ -58,6 +60,7 @@ class ChastiRechiRegistry
             static::NARECHIE => Narechie\Base::class,
             static::DEEPRICHASTIE => Deeprichastie\Base::class,
             static::MESTOIMENIE => Mestoimenie\Base::class,
+            static::INFINITIVE => Infinitive\Base::class,
             static::CHISLITELNOE => Chislitelnoe\Base::class,
 
             static::PREDLOG => Predlog\Base::class,
@@ -79,6 +82,7 @@ class ChastiRechiRegistry
             static::NARECHIE => Narechie\Factory::get(),
             static::DEEPRICHASTIE => Deeprichastie\Factory::get(),
             static::MESTOIMENIE => Mestoimenie\Factory::get(),
+            static::INFINITIVE => Infinitive\Factory::get(),
             static::CHISLITELNOE => Chislitelnoe\Factory::get(),
             static::CHASTICA => Chastica\Factory::get(),
         ];
@@ -118,7 +122,7 @@ class ChastiRechiRegistry
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\ChastiRechi::class;
+        return \SemanticPersistence\Entities\MisotEntities\ChastiRechi::class;
     }
 
     /**

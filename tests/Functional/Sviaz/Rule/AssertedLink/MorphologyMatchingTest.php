@@ -22,9 +22,9 @@ class MorphologyMatchingTest extends \AotTest\AotDataStorage
     public function testConstruct_will_throw_RuntimeException_incorrect_argument_type()
     {
         try {
-            \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
+            \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
                 [],
-                \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
+                \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
                 \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base::class
             );
             $this->fail();
@@ -34,9 +34,9 @@ class MorphologyMatchingTest extends \AotTest\AotDataStorage
         }
 
         try {
-            \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
+            \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
                 \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base::class,
-                \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
+                \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
                 132
             );
             $this->fail();
@@ -55,9 +55,9 @@ class MorphologyMatchingTest extends \AotTest\AotDataStorage
 
 
         try {
-            \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
+            \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
                 $invalid_object_class,
-                \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
+                \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
                 \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base::class
             );
             $this->fail();
@@ -68,9 +68,9 @@ class MorphologyMatchingTest extends \AotTest\AotDataStorage
         }
 
         try {
-            \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
+            \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
                 \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Base::class,
-                \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
+                \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
                 $invalid_object_class
             );
             $this->fail();
@@ -83,9 +83,9 @@ class MorphologyMatchingTest extends \AotTest\AotDataStorage
 
     public function testAttemptSuccess()
     {
-        $MorphologyMatching = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
+        $MorphologyMatching = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base::class,
-            \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
+            \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base::class
         );
 
@@ -111,9 +111,9 @@ class MorphologyMatchingTest extends \AotTest\AotDataStorage
 
     public function testAttemptFail()
     {
-        $MorphologyMatching = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
+        $MorphologyMatching = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base::class,
-            \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
+            \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base::class
         );
 

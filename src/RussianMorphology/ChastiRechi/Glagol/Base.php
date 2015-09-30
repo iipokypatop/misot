@@ -26,7 +26,7 @@ use Aot\RussianMorphology\Slovo;
  * @property Morphology\Vremya\Base $vremya
  * @property Morphology\Zalog\Base $razryad
  */
-class Base extends Slovo
+class Base extends Slovo //\Aot\RussianMorphology\ChastiRechi\Infinitive\Base
 {
     public function getMorphology()
     {
@@ -50,11 +50,11 @@ class Base extends Slovo
      * @param Morphology\Chislo\Base $chislo
      * @param Morphology\Litso\Base $litso
      * @param Morphology\Naklonenie\Base $naklonenie
+     * @param Morphology\Vid\Base $vid
      * @param Morphology\Perehodnost\Base $perehodnost
+     * @param Morphology\Vozvratnost\Base $vozvratnost
      * @param Morphology\Rod\Base $rod
      * @param Morphology\Spryazhenie\Base $spryazhenie
-     * @param Morphology\Vid\Base $vid
-     * @param Morphology\Vozvratnost\Base $vozvratnost
      * @param Morphology\Vremya\Base $vremya
      * @param Morphology\Zalog\Base $razryad
      * @return static
@@ -64,11 +64,11 @@ class Base extends Slovo
         Morphology\Chislo\Base $chislo,
         Morphology\Litso\Base $litso,
         Morphology\Naklonenie\Base $naklonenie,
+        Morphology\Vid\Base $vid,
         Morphology\Perehodnost\Base $perehodnost,
+        Morphology\Vozvratnost\Base $vozvratnost,
         Morphology\Rod\Base $rod,
         Morphology\Spryazhenie\Base $spryazhenie,
-        Morphology\Vid\Base $vid,
-        Morphology\Vozvratnost\Base $vozvratnost,
         Morphology\Vremya\Base $vremya,
         Morphology\Zalog\Base $razryad
     )

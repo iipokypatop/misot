@@ -19,9 +19,9 @@ use Doctrine\ORM\EntityManager;
 use MivarTest\PHPUnitHelper;
 
 
-use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
+use Aot\Sviaz\Rule\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
-use Aot\Sviaz\Rule\AssertedLink\Builder\Base as AssertedLinkBuilder;
+use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
 
 use Aot\Sviaz\Role\Registry as RoleRegistry;
 
@@ -117,7 +117,8 @@ class BaseTest extends \AotTest\AotDataStorage
         $this->assertEquals(null, $result);
         $this->assertEquals(
             [$checker_class],
-            PHPUnitHelper::getProtectedProperty($depended, 'checker_classes')
+            //PHPUnitHelper::getProtectedProperty($depended, 'checker_classes')
+            $depended->getCheckerClasses()
         );
     }
 
@@ -193,15 +194,15 @@ class BaseTest extends \AotTest\AotDataStorage
     {
         $this->markTestSkipped();
         // создаем member
-        $member_dao = new \AotPersistence\Entities\Member();
+        $member_dao = new \SemanticPersistence\Entities\MisotEntities\Member();
 
         // ставим у него часть речи
-        $chastRechi = new \AotPersistence\Entities\ChastiRechi();
+        $chastRechi = new \SemanticPersistence\Entities\MisotEntities\ChastiRechi();
         $chastRechi->setName(ChastiRechiRegistry::getNames()[ChastiRechiRegistry::GLAGOL]);
         $member_dao->setChastRechi($chastRechi);
 
         // устанавливаем у него роль
-        $role = new \AotPersistence\Entities\Role();
+        $role = new \SemanticPersistence\Entities\SemanticEntities\MivarType();
         $role->setName(Registry::getNames()[Registry::OTNOSHENIE]);
         $member_dao->setRole($role);
 
@@ -246,22 +247,22 @@ class BaseTest extends \AotTest\AotDataStorage
         $rule = $builder->get();
 
         # сохраняем связь в БД
-        $link = $rule->getLinks()[0];
+        //$link = $rule->getLinks()[0];
 
 //        $matchings = $link->getDao()->getMatchings();
 //
 //        /** @var \Doctrine\Common\Collections\ArrayCollection $matchings */
 //        foreach ($matchings->getIterator() as $matching) {
 //
-//            /** @var \AotPersistence\Entities\Link $link_entity */
+//            /** @var \SemanticPersistence\Entities\MisotEntities\Link $link_entity */
 //            $link_entity = $link->getDao();
 //
-//            /** @var \AotPersistence\Entities\MorphologyMatching $matching */
+//            /** @var \SemanticPersistence\Entities\MisotEntities\MorphologyMatching $matching */
 //            $matching->setLink($link_entity);
 //        }
 
-        $link->persist();
-        $link->flush();
+//        $link->persist();
+//        $link->flush();
         #
     }
 
@@ -305,8 +306,8 @@ class BaseTest extends \AotTest\AotDataStorage
     {
         $this->markTestSkipped();
         $em = $this->getEntityManager();
-        /** @var \AotPersistence\Entities\Rule $rule_entity */
-        $rule_entity = $em->find(\AotPersistence\Entities\Rule::class, 115);
+        /** @var \SemanticPersistence\Entities\MisotEntities\RuleConfig $rule_entity */
+        $rule_entity = $em->find(\SemanticPersistence\Entities\MisotEntities\RuleConfig::class, 115);
 
         $rule = \Aot\Sviaz\Rule\Base::createByDao($rule_entity);
         $main = $rule->getAssertedMain();

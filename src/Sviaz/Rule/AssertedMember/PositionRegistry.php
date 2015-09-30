@@ -39,7 +39,7 @@ class PositionRegistry
      */
     protected function getEntityClass()
     {
-        return \AotPersistence\Entities\Position::class;
+        return \SemanticPersistence\Entities\MisotEntities\Position::class;
     }
 
     /**

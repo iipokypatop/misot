@@ -115,30 +115,23 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::PADESZH_VINITELNIJ => 'винительный падеж',
             static::PADESZH_TVORITELNIJ => 'творительный падеж',
             static::PADESZH_PREDLOZSHNIJ => 'предложный падеж',
-
             static::ROD_MUZHSKOI => 'мужской род',
             static::ROD_ZHENSKII => 'женский род',
             static::ROD_SREDNIJ => 'средний род',
-
             static::CHISLO_EDINSTVENNOE => 'единственное число',
             static::CHISLO_MNOZHESTVENNOE => 'множественное число',
             static::CHISLO_NULL => '',
-
             static::SKLONENIE => 'склонение',
             static::SKLONENIE_PERVOE => 'первое склонение',
             static::SKLONENIE_VTOROE => 'второе склонение',
             static::SKLONENIE_TRETIE => 'третье склонение',
-
             static::NEIZMENYAJMOST_IZMNYAJMIJ => 'неизменяемый',
             static::NEIZMENYAJMOST_NEIZMNYAJMIJ => 'изменяемый',
-
             static::PEREHODNOST_PEREHODNII => 'переходный',
             static::PEREHODNOST_NEPEREHODNII => 'непереходный',
-
             static::ODUSHEVLENNOST => 'одушевленность',
             static::ODUSHEVLENNOST_ODUSHEVLENNOE => 'одушевленноеы',
             static::ODUSHEVLENNOST_NEODUSHEVLENNOE => 'неодушевленное',
-
             static::RAZRYAD => 'разряд',
             static::RAZRYAD_KACHESTVENNOE => 'качественное',
             static::RAZRYAD_OTNOSITELNOE => 'относительное',
@@ -150,63 +143,49 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::RAZRYAD_OTRICATELNOE => 'отрицательное',
             static::RAZRYAD_UKAZATELNOE => 'указательное',
             static::RAZRYAD_VOPROSITELNOE => 'вопросительное',
-
             static::FORMA => 'форма',
             static::FORMA_POLNAYA => 'полная',
             static::FORMA_KRATKAYA => 'краткая',
-
             static::STEPEN_SRAVNENIYA => 'степень сравнения',
             static::STEPEN_SRAVNENIYA_POLOZHITELNAYA => 'положительная',
             static::STEPEN_SRAVNENIYA_SRAVNITELNAYA => 'сравнительная',
             static::STEPEN_SRAVNENIYA_PREVOSHODNAYA => 'превосходная',
-
             static::VID => 'вид',
             static::VID_SOVERSHENNYJ => 'совершенный',
             static::VID_NESOVERSHENNYJ => 'несовершенный',
-
             static::VOZVRATNOST_VOZVRATNYJ => 'возвратный',
             static::VOZVRATNOST_NEVOZVRATNYJ => 'невозвратный',
-
             static::ZALOG => 'залог',
             static::ZALOG_DEJSTVITELNYJ => 'действительный',
             static::ZALOG_STRADATELNYJ => 'страдательный',
-
             static::SPRYAZHENIE => 'спряжение',
             static::SPRYAZHENIE_PERVOE => 'первое',
             static::SPRYAZHENIE_VTOROE => 'второе',
-
             static::NAKLONENIE => 'наклонение',
             static::NAKLONENIE_IZYAVITELNOE => 'изъявительное',
             static::NAKLONENIE_POVELITELNOE => 'повелительное',
             static::NAKLONENIE_YSLOVNOE => 'условное',
             static::NAKLONENIE_NULL => '',
-
             static::VREMYA => 'время',
             static::VREMYA_BUDUSCHEE => 'будущее',
             static::VREMYA_NASTOYASCHEE => 'настоящее',
             static::VREMYA_PROSHEDSHEE => 'прошедшее',
             static::VREMYA_NULL => '',
-
             static::LITSO => 'лицо',
             static::LITSO_PERVOE => 'первое',
             static::LITSO_VTOROE => 'второе',
             static::LITSO_TRETIE => 'третье',
             static::LITSO_NULL => '',
-
             static::ODUSHEVLYONNOST_ODUSHEVLYONNOE => 'одушевленное',
             static::ODUSHEVLYONNOST_NEODUSHEVLYONNOE => 'неодушевленное',
-
             static::NARITCATELNOST_IMIA_NARITCATELNOE => 'нарицательное',
             static::NARITCATELNOST_IMIA_SOBSTVENNOE => 'собственное',
-
             static::PODVID => 'подвид',
             static::PODVID_PROSTOY => 'простое',
             static::PODVID_SOSTAVNOY => 'составное',
-
             static::TIP_CELIY => 'целое',
             static::TIP_DROBNIY => 'дробное',
             static::TIP_SOBIRATELNIY => 'собирательное',
-
             static::VID_CHISLITELNOGO_KOLICHESTVENNIY => 'количественный',
             static::VID_CHISLITELNOGO_PORYADKOVIY => 'порядковый',
         ];
@@ -317,10 +296,12 @@ class MorphologyRegistry extends MorphologyRegistryParent
                 static::PEREHODNOST_PEREHODNII => [
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Perehodnyj::class,
                     ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Perehodnyj::class,
+                    ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Perehodnyj::class,
                 ],
                 static::PEREHODNOST_NEPEREHODNII => [
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Neperehodnyj::class,
                     ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Neperehodnyj::class,
+                    ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Neperehodnyj::class,
                 ],
             ],
             static::SKLONENIE => [
@@ -432,11 +413,13 @@ class MorphologyRegistry extends MorphologyRegistryParent
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj::class,
                     ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vid\Sovershennyj::class,
                     ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\Sovershennyj::class,
+                    ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Sovershennyj::class,
                 ],
                 static::VID_NESOVERSHENNYJ => [
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Nesovershennyj::class,
                     ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vid\Nesovershennyj::class,
                     ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\Nesovershennyj::class,
+                    ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Nesovershennyj::class,
                 ],
             ],
             static::VOZVRATNOST => [
@@ -444,11 +427,13 @@ class MorphologyRegistry extends MorphologyRegistryParent
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Vozvratnyj::class,
                     ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vozvratnost\Vozvratnyj::class,
                     ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Vozvratnyj::class,
+                    ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Vozvratnyj::class,
                 ],
                 static::VOZVRATNOST_NEVOZVRATNYJ => [
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Nevozvratnyj::class,
                     ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vozvratnost\Nevozvratnyj::class,
                     ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Nevozvratnyj::class,
+                    ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Nevozvratnyj::class,
                 ],
             ],
             static::STEPEN_SRAVNENIYA => [
@@ -615,6 +600,7 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::PEREHODNOST => [
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Base::class,
                 ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Base::class,
+                ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Base::class,
             ],
             static::SKLONENIE => [
                 ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Base::class
@@ -647,11 +633,13 @@ class MorphologyRegistry extends MorphologyRegistryParent
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Base::class,
                 ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vid\Base::class,
                 ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\Base::class,
+                ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Base::class,
             ],
             static::VOZVRATNOST => [
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Base::class,
                 ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vozvratnost\Base::class,
                 ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Base::class,
+                ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Base::class,
             ],
             static::STEPEN_SRAVNENIYA => [
                 ChastiRechiRegistry::NARECHIE => \Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Base::class,
@@ -708,6 +696,19 @@ class MorphologyRegistry extends MorphologyRegistryParent
         }
         return null;
     }
+
+    public static function getIdAndChastRehiAndMorphologyIdByBaseClass($morphology_class)
+    {
+        foreach (static::getBaseClasses() as $morphology_id => $classes) {
+            foreach ($classes as $chast_rechi_id => $variant) {
+                if ($morphology_class === $variant) {
+                    return [$chast_rechi_id, $morphology_id];
+                }
+            }
+        }
+        return null;
+    }
+
 
     public static function getClassByChastRechiAndPriznak($chast_rechi_id, $priznak_id_input)
     {
@@ -777,6 +778,7 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::PEREHODNOST => [
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Null::class,
                 ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Null::class,
+                ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Null::class,
 
             ],
             static::SKLONENIE => [
@@ -810,11 +812,13 @@ class MorphologyRegistry extends MorphologyRegistryParent
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Null::class,
                 ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vid\Null::class,
                 ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\Null::class,
+                ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Null::class,
             ],
             static::VOZVRATNOST => [
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Null::class,
                 ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vozvratnost\Null::class,
                 ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Null::class,
+                ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Null::class,
             ],
             static::STEPEN_SRAVNENIYA => [
                 ChastiRechiRegistry::NARECHIE => \Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Null::class,
@@ -869,4 +873,35 @@ class MorphologyRegistry extends MorphologyRegistryParent
         }
         return null;
     }
+
+    public static function getChastiRechiWithPriznakiWithVarianti()
+    {
+        $element_template = [
+            'id' => null,
+            'text' => null,
+            'children' => []
+        ];
+        //Выходной массив частей речи с признаками и вариантами
+        $chasti_rechi_array = [];
+        //Оббегаем все признаки
+        foreach (static::getClasses() as $priznak_id => $variants) {
+            foreach ($variants as $variant_id => $variant) {
+                foreach ($variant as $chast_rechi_id => $chast_rechi) {
+                    $chasti_rechi_array[$chast_rechi_id]['id']= $chast_rechi_id;
+                    $chasti_rechi_array[$chast_rechi_id]['text']=\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::getNames()[$chast_rechi_id];
+
+                    $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['id'] = $priznak_id;
+                    $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['text'] = static::getNames()[$priznak_id];
+
+                    $element_template2=$element_template;
+                    $element_template2['id']=$variant_id;
+                    $element_template2['text']=static::getNames()[$variant_id];
+                    $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['children'][$variant_id] = $element_template2;
+                }
+            }
+        }
+        return $chasti_rechi_array;
+    }
 }
+
+
