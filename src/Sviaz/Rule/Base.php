@@ -25,9 +25,6 @@ class Base
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Depended */
     protected $asserted_depended;
 
-    /** @var  \Aot\Sviaz\Rule\AssertedMember\Third */
-    protected $asserted_third;
-
 
     /** @var \Aot\Sviaz\Rule\AssertedMatching\Base[] */
     protected $asserted_matchings = [];
@@ -43,15 +40,6 @@ class Base
     public function getTypeClass()
     {
         return $this->type_class;
-    }
-
-
-    /**
-     * @return \Aot\Sviaz\Rule\AssertedMember\Third
-     */
-    public function getAssertedThird()
-    {
-        return $this->asserted_third;
     }
 
     /**
@@ -125,7 +113,7 @@ class Base
     public function getAssertedDepended()
     {
         return $this->asserted_depended;
-    }
+   }
 
     /**
      * @param \Aot\Sviaz\SequenceMember\Base $main_candidate
@@ -168,11 +156,6 @@ class Base
     public function attemptDepended(\Aot\Sviaz\SequenceMember\Base $actual)
     {
         return $this->asserted_depended->attempt($actual);
-    }
-
-    public function attemptMember(\Aot\Sviaz\SequenceMember\Base $actual)
-    {
-        return $this->asserted_third->attempt($actual);
     }
 
     /**

@@ -201,7 +201,6 @@ class Base
                 /* @var \Aot\Sviaz\SequenceMember\Word\Base $depended_candidate */
                 foreach ($sequence as $depended_candidate) {
 
-
                     if ($depended_candidate === $main_candidate) {
                         continue;
                     }
@@ -220,6 +219,21 @@ class Base
 
                     if (!$rule->getAssertedDepended()->attempt($depended_candidate)) {
                         continue;
+                    }
+
+
+                    $result = $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
+
+                    if ($result) {
+                        $sviazi[] = $sviaz = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
+                            $main_candidate,
+                            $depended_candidate,
+                            $rule,
+                            $sequence
+                        );
+
+                        $sequence->addSviaz($sviaz);
+
                     }
                 }
             }
