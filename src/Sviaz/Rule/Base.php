@@ -8,6 +8,7 @@
 
 namespace Aot\Sviaz\Rule;
 
+
 use Aot\Persister;
 
 /**
@@ -25,6 +26,9 @@ class Base
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Depended */
     protected $asserted_depended;
 
+    /** @var  \Aot\Sviaz\Rule\AssertedMember\Third */
+    protected $asserted_third;
+
 
     /** @var \Aot\Sviaz\Rule\AssertedMatching\Base[] */
     protected $asserted_matchings = [];
@@ -40,6 +44,22 @@ class Base
     public function getTypeClass()
     {
         return $this->type_class;
+    }
+
+    /**
+     * @return AssertedMatching\Base[]
+     */
+    public function getAssertedMatchings()
+    {
+        return $this->asserted_matchings;
+    }
+
+    /**
+     * @return Checker\Base[]
+     */
+    public function getAssertedCheckers()
+    {
+        return $this->asserted_checkers;
     }
 
     /**
@@ -113,7 +133,7 @@ class Base
     public function getAssertedDepended()
     {
         return $this->asserted_depended;
-   }
+    }
 
     /**
      * @param \Aot\Sviaz\SequenceMember\Base $main_candidate
@@ -158,6 +178,11 @@ class Base
         return $this->asserted_depended->attempt($actual);
     }
 
+    public function attemptMember(\Aot\Sviaz\SequenceMember\Base $actual)
+    {
+        return $this->asserted_third->attempt($actual);
+    }
+
     /**
      * @param \SemanticPersistence\Entities\MisotEntities\RuleConfig $dao
      */
@@ -179,6 +204,7 @@ class Base
     {
         return $this->dao;
     }
+
 
     /**
      * @param string $type_class
@@ -250,3 +276,4 @@ class Base
         $this->asserted_checkers[] = $checker;
     }
 }
+

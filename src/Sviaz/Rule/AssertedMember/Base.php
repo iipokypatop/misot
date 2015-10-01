@@ -60,7 +60,7 @@ class Base
      */
     public function getRoleClass()
     {
-        $role_id = $this->get('role');
+        $role_id = $this->get('mivarType');
 
         assert(!is_null($role_id));
 
