@@ -56,13 +56,14 @@ class SyntaxTest extends \AotTest\AotDataStorage
         );
         echo join("\n", $pretty);
 
+
     }
 
 
     /** @var \Aot\Sviaz\Podchinitrelnaya\Base $sviaz */
     public function printSviaz($sviaz)
     {
-        print_r(['1' => ($sviaz->getMainSequenceMember()->getSlovo()->getText()) . ' -> ' . $sviaz->getMainSequenceMember()->getSlovo()->getText()]);
+        return ($sviaz->getMainSequenceMember()->getSlovo()->getText()). $sviaz->getMainSequenceMember()->getSlovo()->getText();
     }
 
     public function getSviaziForTest()
@@ -86,7 +87,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
         }
 
         return ([
-            $sviazi_container[16][0],
+            $sviazi_container[16][3],
             $sviazi_container[16][0],
             $sviazi_container[16][3],
             $sviazi_container[16][3],
