@@ -44,12 +44,20 @@ class Syntax
             //Если цикл дошёл сюда, значит это другая связь, нужно проверить, есть ли конфликт
             $main_member_sequence=$sviaz_from_sequence->getMainSequenceMember();
             $depended_member_sequence=$sviaz_from_sequence->getDependedSequenceMember();
-
+            //Если связь повторяется (не важно в какую сторону она будет направлена) нужно идти в БД и вытаскивать связь от туда
+            if ($main_member_sequence===$main_member_sviaz && $depended_member_sequence===$depended_member_sviaz)
+            {
+                //todo получаем начальные формы слов
+                //Ищем в БД, есть ли связь
+                xxx($main_member_sviaz,$depended_member_sviaz);
+            }
 
         }
 
 
     }
+
+
 
     /**
      * @return mixed

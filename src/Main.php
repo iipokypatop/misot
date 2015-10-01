@@ -93,6 +93,51 @@ class Main
         $api->getEntityManager()->flush();
     }
 
+    protected function findSviazMezhduMember($member1,$member2)
+    {
+        $api = \SemanticPersistence\API\SemanticAPI::getAPI("host=192.168.10.51 dbname=mivar_semantic_new user=postgres password=@Mivar123User@");
+
+        foreach ($sequence->getSviazi() as $sviaz) {
+
+            $syntax_rule = new \SemanticPersistence\Entities\SemanticEntities\SyntaxRule;
+
+            $main = new \SemanticPersistence\Entities\SemanticEntities\Word;
+            $main->setName(
+                $sviaz->getMainSequenceMember()->getSlovo()->getInitialForm()
+            );
+
+            /*$main_mivar_type = new \SemanticPersistence\Entities\MivarType;
+
+            //$sviaz->getRule()->getAssertedMain()->getDao()->getRole()
+
+            $main_mivar_type = $api->findBy(
+                \SemanticPersistence\Entities\MivarType::class,
+                []
+            );
+
+            $syntax_rule->setMainMivarType($main_mivar_type);
+            */
+
+            $syntax_rule->setMain($main);
+
+            $depend = new \SemanticPersistence\Entities\SemanticEntities\Word;
+            $depend->setName(
+                $sviaz->getDependedSequenceMember()->getSlovo()->getInitialForm()
+            );
+
+            /*$depend_mivar_type = new \SemanticPersistence\Entities\MivarType;
+            $syntax_rule->setDependMivarType($depend_mivar_type);*/
+            $syntax_rule->setDepend($depend);
+
+
+            $api->getEntityManager()->persist($syntax_rule);
+
+        }
+
+
+        $api->getEntityManager()->flush();
+    }
+
     /**
      * @param \Aot\Sviaz\Sequence[] $sequences
      * @return null | \Aot\Sviaz\Sequence
