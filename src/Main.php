@@ -96,7 +96,7 @@ class Main
     /**
      * @param \SemanticPersistence\Entities\SemanticEntities\Word $word1
      * @param \SemanticPersistence\Entities\SemanticEntities\Word $word2
-     * @return \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[]|bool
+     * @return \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[]|null
      */
     public static function findSviazBetweenTwoWords (\SemanticPersistence\Entities\SemanticEntities\Word $word1,\SemanticPersistence\Entities\SemanticEntities\Word $word2)
     {
@@ -106,16 +106,19 @@ class Main
         //ищем слова в БД. Помним, что слово должно быть только одно!
         //todo Где проверять, вдруг слово 2 раза добавили?
         $word1_obj=$api->findOneBy(\SemanticPersistence\Entities\SemanticEntities\Word::class,['name'=>$word1->getName()]);
+        if (!is_a($word1_obj,\SemanticPersistence\Entities\SemanticEntities\Word::class))
+            return null;
         $word2_obj=$api->findOneBy(\SemanticPersistence\Entities\SemanticEntities\Word::class,['name'=>$word2->getName()]);
-
+        if (!is_a($word2_obj,\SemanticPersistence\Entities\SemanticEntities\Word::class))
+            return null;
         //достаём из БД правила. Их может быть несколько, что не есть хорошо
 
         //"Прямая последовательность"
-        /** @var \SemanticPersistence\Entities\SemanticEntities\SyntaxRule $syntax_rules_part1 */
-        $syntax_rules_part1=$api->findBy(\SemanticPersistence\Entities\SemanticEntities\SyntaxRule::class,['main'=>$word1_obj,'depend'=>$word2_obj]);
+        /** @var \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[] $syntax_rules_part1 */
+        $syntax_rules_part1=$api->findBy(\SemanticPersistence\Entities\SemanticEntities\SyntaxRule::class,['main'=>$word1_obj->getId(),'depend'=>$word2_obj->getId()]);
 
         //"Обратная последовательность"
-        /** @var \SemanticPersistence\Entities\SemanticEntities\SyntaxRule $syntax_rules_part2 */
+        /** @var \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[] $syntax_rules_part2 */
         $syntax_rules_part2=$api->findBy(\SemanticPersistence\Entities\SemanticEntities\SyntaxRule::class,['main'=>$word2_obj,'depend'=>$word1_obj]);
 
         //Мёржим массивы
@@ -125,8 +128,8 @@ class Main
         if (count($syntax_rules)>0)
             return $syntax_rules;
 
-        //возвращаем false если вообще никаких правил не найдено
-        return false;
+        //возвращаем null если вообще никаких правил не найдено
+        return null;
     }
 
     /**

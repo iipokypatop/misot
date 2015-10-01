@@ -73,50 +73,51 @@ class Syntax
         $syntax_rules = \Aot\Main::findSviazBetweenTwoWords($word1, $word2);
 
         //Если получили массив, а не false (в случае неудачи)
-        if (is_array($syntax_rules)) {
-            $sviazi_bd = [];
-            //пробегаем все правила, которые вернулись из БД
-            foreach ($syntax_rules as $syntax_rule) {
-
-                //Прямой порядок слов
-                if ($syntax_rule->getMain()->getName() === $text1) {
-                    //Входные параметры для создания связи
-                    $main_sequence_member = $main;
-                    $depended_sequence_member = $depended;
-                    $rule = \Aot\Sviaz\Rule\Base::createByDao($syntax_rule->getRuleConfig());
-                    $sequence = $sviazi[0]->getSequence();
-
-                    //Создаём и добавляем саму связь
-                    $sviazi_bd[] = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
-                        $main_sequence_member,
-                        $depended_sequence_member,
-                        $rule,
-                        $sequence
-                    );
-                }
-
-                //Обратный порядок слов
-                if ($syntax_rule->getMain()->getName() === $text2) {
-                    //Входные параметры для создания связи
-                    $main_sequence_member = $depended;
-                    $depended_sequence_member = $main;
-                    $rule = \Aot\Sviaz\Rule\Base::createByDao($syntax_rule->getRuleConfig());
-                    $sequence = $sviazi[0]->getSequence();
-
-                    //Создаём и добавляем саму связь
-                    $sviazi_bd[] = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
-                        $main_sequence_member,
-                        $depended_sequence_member,
-                        $rule,
-                        $sequence
-                    );
-                }
-            }
-            //возвращаем массив найденных связей
-            return $sviazi_bd;
+        if (is_null($syntax_rules)) {
+            //возвращаем те связи, которые попали на вход фильтра
+            return $sviazi;
         }
-        //возвращаем те связи, которые попали на вход фильтра
-        return $sviazi;
+        //Связи, на основе правил, полученных из БД
+        $sviazi_bd = [];
+        //пробегаем все правила, которые вернулись из БД
+        foreach ($syntax_rules as $syntax_rule) {
+
+            //Прямой порядок слов
+            if ($syntax_rule->getMain()->getName() === $text1) {
+                //Входные параметры для создания связи
+                $main_sequence_member = $main;
+                $depended_sequence_member = $depended;
+                $rule = \Aot\Sviaz\Rule\Base::createByDao($syntax_rule->getRuleConfig());
+                $sequence = $sviazi[0]->getSequence();
+
+                //Создаём и добавляем саму связь
+                $sviazi_bd[] = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
+                    $main_sequence_member,
+                    $depended_sequence_member,
+                    $rule,
+                    $sequence
+                );
+            }
+
+            //Обратный порядок слов
+            if ($syntax_rule->getMain()->getName() === $text2) {
+                //Входные параметры для создания связи
+                $main_sequence_member = $depended;
+                $depended_sequence_member = $main;
+                $rule = \Aot\Sviaz\Rule\Base::createByDao($syntax_rule->getRuleConfig());
+                $sequence = $sviazi[0]->getSequence();
+
+                //Создаём и добавляем саму связь
+                $sviazi_bd[] = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
+                    $main_sequence_member,
+                    $depended_sequence_member,
+                    $rule,
+                    $sequence
+                );
+            }
+        }
+        //возвращаем массив найденных связей
+        return $sviazi_bd;
     }
 }
 
