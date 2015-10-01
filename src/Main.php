@@ -93,18 +93,27 @@ class Main
         $api->getEntityManager()->flush();
     }
 
-    protected function findSviazMezhduMember($member1,$member2)
+    //protected function findSviazMezhduMember(\SemanticPersistence\Entities\SemanticEntities\Word $word1,\SemanticPersistence\Entities\SemanticEntities\Word $word2)
+    protected function findSviazMezhduMember($word1,$word2)
     {
         $api = \SemanticPersistence\API\SemanticAPI::getAPI("host=192.168.10.51 dbname=mivar_semantic_new user=postgres password=@Mivar123User@");
 
-        foreach ($sequence->getSviazi() as $sviaz) {
+        $qb = $api->createQueryBuilder();
 
-            $syntax_rule = new \SemanticPersistence\Entities\SemanticEntities\SyntaxRule;
+        $qb->add('select', 'w')
+            ->add('from', 'Word w')
+            ->add('where', 'w.name = :word')
+            ->setParameter('word', $word1);
+        $query = $qb->getQuery();
+        $result = $query->getResult();
+
+        $syntax_rule = new \SemanticPersistence\Entities\SemanticEntities\SyntaxRule;
 
             $main = new \SemanticPersistence\Entities\SemanticEntities\Word;
             $main->setName(
                 $sviaz->getMainSequenceMember()->getSlovo()->getInitialForm()
             );
+
 
             /*$main_mivar_type = new \SemanticPersistence\Entities\MivarType;
 
@@ -132,7 +141,7 @@ class Main
 
             $api->getEntityManager()->persist($syntax_rule);
 
-        }
+
 
 
         $api->getEntityManager()->flush();
