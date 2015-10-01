@@ -180,7 +180,6 @@ class Base
         return $this->dao;
     }
 
-
     /**
      * @param string $type_class
      */

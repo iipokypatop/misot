@@ -219,7 +219,6 @@ class MorphologyMatching extends Base
         );
     }
 
-
     /**
      * @param $morphology_id
      * @return \SemanticPersistence\Entities\MisotEntities\Morphology
@@ -293,5 +292,16 @@ class MorphologyMatching extends Base
         }
 
         return $dao;
+    }
+
+    public function getPriznakGroupId()
+    {
+        $id = \Aot\RussianMorphology\ChastiRechi\MorphologyRegistry::getIdMorphologyByBaseClass($this->asserted_left_class);
+
+        if ($id === null) {
+            throw new \RuntimeException("no id found for class $this->asserted_left_class");
+        }
+
+        return $id;
     }
 }

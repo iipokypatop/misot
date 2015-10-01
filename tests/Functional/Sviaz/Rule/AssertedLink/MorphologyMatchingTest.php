@@ -137,5 +137,18 @@ class MorphologyMatchingTest extends \AotTest\AotDataStorage
         $this->assertFalse($result);
     }
 
+    public function testMorphologyMatchingReturnsCorrectPriznakGroupId()
+    {
+        $MorphologyMatching = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
+            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base::class,
+            \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
+            \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base::class
+        );
+
+        $this->assertEquals(
+            \Aot\RussianMorphology\ChastiRechi\MorphologyRegistryParent::PADESZH,
+            $MorphologyMatching->getPriznakGroupId()
+        );
+    }
 
 }

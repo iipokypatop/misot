@@ -106,7 +106,6 @@ abstract class Slovo
      */
     public function getMorphologyByClass_TEMPORARY($classname)
     {
-        #throw new \RuntimeException("more than one subclass of $classname");
 
         $values = [];
         foreach ($this->storage as $name => $value) {
