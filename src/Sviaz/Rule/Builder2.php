@@ -38,7 +38,7 @@ class Builder2
     /**
      * @return static
      */
-    public static function create()
+    public static function   create()
     {
         return new static();
     }

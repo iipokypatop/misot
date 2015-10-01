@@ -46,6 +46,22 @@ class Base
         return $this->type_class;
     }
 
+    /**
+     * @return AssertedMatching\Base[]
+     */
+    public function getAssertedMatchings()
+    {
+        return $this->asserted_matchings;
+    }
+
+    /**
+     * @return Checker\Base[]
+     */
+    public function getAssertedCheckers()
+    {
+        return $this->asserted_checkers;
+    }
+
 
     /**
      * @return \Aot\Sviaz\Rule\AssertedMember\Third

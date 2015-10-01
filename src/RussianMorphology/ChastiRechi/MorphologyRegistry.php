@@ -874,6 +874,38 @@ class MorphologyRegistry extends MorphologyRegistryParent
         return null;
     }
 
+//    public static function getChastiRechiWithPriznakiWithVarianti()
+//    {
+//        $element_template = [
+//            'id' => null,
+//            'text' => null,
+//            'children' => []
+//        ];
+//        //Выходной массив частей речи с признаками и вариантами
+//        $chasti_rechi_array = [];
+//        //Оббегаем все признаки
+//        foreach (static::getClasses() as $priznak_id => $variants) {
+//            foreach ($variants as $variant_id => $variant) {
+//                foreach ($variant as $chast_rechi_id => $chast_rechi) {
+//                    $chasti_rechi_array[$chast_rechi_id]['id']= $chast_rechi_id;
+//                    $chasti_rechi_array[$chast_rechi_id]['text']=\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::getNames()[$chast_rechi_id];
+//
+//                    $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['id'] = $priznak_id;
+//                    $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['text'] = static::getNames()[$priznak_id];
+//
+//                    $element_template2=$element_template;
+//                    $element_template2['id']=$variant_id;
+//                    $element_template2['text']=static::getNames()[$variant_id];
+//                    $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['children'][$variant_id] = $element_template2;
+//                }
+//            }
+//        }
+//        return $chasti_rechi_array;
+//    }
+
+
+
+
     public static function getChastiRechiWithPriznakiWithVarianti()
     {
         $element_template = [
@@ -900,7 +932,33 @@ class MorphologyRegistry extends MorphologyRegistryParent
                 }
             }
         }
-        return $chasti_rechi_array;
+
+        //изменение ассоциативности:
+        $chasti_rechi_array_no_associations=[];
+        $k=0;
+        foreach ($chasti_rechi_array as $chasti_rechi) {
+            $k=$chasti_rechi['id'];
+            $chasti_rechi_array_no_associations[$k][0]['id']=$chasti_rechi['id'];
+            $chasti_rechi_array_no_associations[$k][0]['text']=$chasti_rechi['text'];
+            $chasti_rechi_array_no_associations[$k][0]['children']=[];
+            $l=0;
+            foreach ($chasti_rechi['children'] as $priznak){
+                $chasti_rechi_array_no_associations[$k][0]['children'][]['id']=$priznak['id'];
+                $chasti_rechi_array_no_associations[$k][0]['children'][$l]['text']=$priznak['text'];
+                $chasti_rechi_array_no_associations[$k][0]['children'][$l]['children']=[];
+
+                $m=0;
+                foreach ($priznak['children'] as $variant){
+                    $chasti_rechi_array_no_associations[$k][0]['children'][$l]['children'][]['id']=$variant['id'];
+                    $chasti_rechi_array_no_associations[$k][0]['children'][$l]['children'][$m]['text']=$variant['text'];
+                    $chasti_rechi_array_no_associations[$k][0]['children'][$l]['children'][$m]['children']=[];
+                    $m++;
+                }
+                $l++;
+            }
+//            $k++;
+        }
+        return $chasti_rechi_array_no_associations;
     }
 }
 

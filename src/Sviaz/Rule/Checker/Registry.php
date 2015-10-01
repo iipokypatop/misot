@@ -33,6 +33,15 @@ class Registry
             static::NetSuschestvitelnogoVImenitelnomPadeszhe => 'нет существительного в именительном падеже',
         ];
     }
+    public static function getPositionNames()
+    {
+        return [
+            static::DependedAfterMain => 'зависимое после главного',
+            static::DependedBeforeMain => 'зависимое перед главным',
+            static::DependedRightBeforeMain => 'зависимое сразу перед главным',
+            static::DependedRightAfterMain => 'зависимое сразу после главного',
+        ];
+    }
 
     public static function getClasses()
     {

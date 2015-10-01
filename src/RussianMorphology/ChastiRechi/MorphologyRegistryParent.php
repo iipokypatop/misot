@@ -107,7 +107,7 @@ class MorphologyRegistryParent
 
             static::TIP => 'тип',
 
-            static::VID_CHISLITELNOGO => 'вид',
+            static::VID_CHISLITELNOGO => 'вид числительного',
         ];
     }
 
