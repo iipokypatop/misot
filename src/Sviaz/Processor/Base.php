@@ -221,6 +221,22 @@ class Base
                     if (!$rule->getAssertedDepended()->attempt($depended_candidate)) {
                         continue;
                     }
+
+                    $result = $rule->attemptLink($main_candidate, $depended_candidate, $sequence);
+
+                    if ($result) {
+
+                        $sviazi[] = $sviaz = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
+                            $main_candidate,
+                            $depended_candidate,
+                            $rule,
+                            $sequence
+                        );
+
+                        $sequence->addSviaz($sviaz);
+
+                        /*$this->cache->put([$rule, $main_candidate, $depended_candidate]);*/
+                    }
                 }
             }
         }

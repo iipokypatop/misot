@@ -34,30 +34,47 @@ class SyntaxTest extends \AotTest\AotDataStorage
     {
         $filter_syntax=\Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
         //$filter_syntax->run("test");
-        /*
-        $word1='эра';
-        $api = \SemanticPersistence\API\SemanticAPI::getAPI("host=192.168.10.51 dbname=mivar_semantic_new user=postgres password=@Mivar123User@");
-        $qb = $api->createQueryBuilder();
-        $qb->add('select', 'w')
-            ->add('from', 'words w')
-            ->add('where', 'w.name = :word')
-            ->setParameter('word', $word1);
-        $query = $qb->getQuery();
-        $result = $query->getResult();
-        */
+
+
+
+
 
         /*Здесь у нас массив из двух связей (противоречащих друг другу), отправляем их в фильтр*/
         /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $res */
         $res=$this->getSviaziForTest();
 
-        /*
-        print_r($res[0]->getMainSequenceMember()->getSlovo()->getText());
-        print_r($res[0]->getDependedSequenceMember()->getSlovo()->getText());
-        */
+
+        $result = array_filter([$res]);
+        $pretty = $this->pretty(
+            $result
+        );
+        echo join("\n", $pretty);
+
+
+        $res2=$filter_syntax->run($res);
+
+
+        $result = array_filter([$res2]);
+        $pretty = $this->pretty(
+            $result
+        );
+        echo join("\n", $pretty);
+
+
+
+/*
+        print_r($res[1]->getMainSequenceMember()->getSlovo()->getText());
+        print_r($res[1]->getDependedSequenceMember()->getSlovo()->getText());
+*/
 
 
     }
 
+    /** @var \Aot\Sviaz\Podchinitrelnaya\Base $sviaz */
+    public function printSviaz($sviaz)
+    {
+        print_r(['1'=>($sviaz->getMainSequenceMember()->getSlovo()->getText()).' -> '.$sviaz->getMainSequenceMember()->getSlovo()->getText()]);
+    }
 
     public function getSviaziForTest()
     {
@@ -79,11 +96,12 @@ class SyntaxTest extends \AotTest\AotDataStorage
             $sviazi_container[$index] = $sequence->getSviazi();
         }
 
-        return([$sviazi_container[0][0],$sviazi_container[0][3]]);
+        return([$sviazi_container[16][3],$sviazi_container[16][0]]);
 
+        /*
         print_r($sviazi_container[0][0]->getId());
         print_r($sviazi_container[0][3]->getId());
-
+        */
 
         $result = array_filter($sviazi_container);
 
@@ -160,6 +178,7 @@ TEXT;
 
         $oblaka[0] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($oblaka[0], 'text', 'облака');
+        PHPUnitHelper::setProtectedProperty($oblaka[0], 'initial_form', 'облако');
         $oblaka[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe::create();
         $oblaka[0]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $oblaka[0]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -167,8 +186,10 @@ TEXT;
         $oblaka[0]->rod = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij::create();
         $oblaka[0]->sklonenie = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::create();
 
+
         $oblaka[1] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($oblaka[1], 'text', 'облака');
+        PHPUnitHelper::setProtectedProperty($oblaka[1], 'initial_form', 'облако');
         $oblaka[1]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $oblaka[1]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $oblaka[1]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -178,6 +199,7 @@ TEXT;
 
         $oblaka[2] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($oblaka[2], 'text', 'облака');
+        PHPUnitHelper::setProtectedProperty($oblaka[2], 'initial_form', 'облако');
         $oblaka[2]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $oblaka[2]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $oblaka[2]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -188,6 +210,7 @@ TEXT;
 
         $legkie[0] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($legkie[0], 'text', 'легкие');
+
         $legkie[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $legkie[0]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $legkie[0]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -228,6 +251,7 @@ TEXT;
 
         $vozdushnue[0] = $this->getMock(Prilagatelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($vozdushnue[0], 'text', 'воздушные');
+        PHPUnitHelper::setProtectedProperty($vozdushnue[0], 'initial_form', 'воздушный');
         $vozdushnue[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $vozdushnue[0]->forma = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::create();
         $vozdushnue[0]->padeszh = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij::create();
@@ -238,6 +262,7 @@ TEXT;
 
         $vozdushnue[1] = $this->getMock(Prilagatelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($vozdushnue[1], 'text', 'воздушные');
+        PHPUnitHelper::setProtectedProperty($vozdushnue[1], 'initial_form', 'воздушный');
         $vozdushnue[1]->chislo = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $vozdushnue[1]->forma = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::create();
         $vozdushnue[1]->padeszh = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Vinitelnij::create();

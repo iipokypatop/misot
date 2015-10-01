@@ -93,58 +93,40 @@ class Main
         $api->getEntityManager()->flush();
     }
 
-    //protected function findSviazMezhduMember(\SemanticPersistence\Entities\SemanticEntities\Word $word1,\SemanticPersistence\Entities\SemanticEntities\Word $word2)
-    protected function findSviazMezhduMember($word1,$word2)
+    /**
+     * @param \SemanticPersistence\Entities\SemanticEntities\Word $word1
+     * @param \SemanticPersistence\Entities\SemanticEntities\Word $word2
+     * @return \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[]|bool
+     */
+    public static function findSviazBetweenTwoWords (\SemanticPersistence\Entities\SemanticEntities\Word $word1,\SemanticPersistence\Entities\SemanticEntities\Word $word2)
     {
+        //Соединение, АПИ
         $api = \SemanticPersistence\API\SemanticAPI::getAPI("host=192.168.10.51 dbname=mivar_semantic_new user=postgres password=@Mivar123User@");
 
-        $qb = $api->createQueryBuilder();
+        //ищем слова в БД. Помним, что слово должно быть только одно!
+        //todo Где проверять, вдруг слово 2 раза добавили?
+        $word1_obj=$api->findOneBy(\SemanticPersistence\Entities\SemanticEntities\Word::class,['name'=>$word1->getName()]);
+        $word2_obj=$api->findOneBy(\SemanticPersistence\Entities\SemanticEntities\Word::class,['name'=>$word2->getName()]);
 
-        $qb->add('select', 'w')
-            ->add('from', 'Word w')
-            ->add('where', 'w.name = :word')
-            ->setParameter('word', $word1);
-        $query = $qb->getQuery();
-        $result = $query->getResult();
+        //достаём из БД правила. Их может быть несколько, что не есть хорошо
 
-        $syntax_rule = new \SemanticPersistence\Entities\SemanticEntities\SyntaxRule;
+        //"Прямая последовательность"
+        /** @var \SemanticPersistence\Entities\SemanticEntities\SyntaxRule $syntax_rules_part1 */
+        $syntax_rules_part1=$api->findBy(\SemanticPersistence\Entities\SemanticEntities\SyntaxRule::class,['main'=>$word1_obj,'depend'=>$word2_obj]);
 
-            $main = new \SemanticPersistence\Entities\SemanticEntities\Word;
-            $main->setName(
-                $sviaz->getMainSequenceMember()->getSlovo()->getInitialForm()
-            );
+        //"Обратная последовательность"
+        /** @var \SemanticPersistence\Entities\SemanticEntities\SyntaxRule $syntax_rules_part2 */
+        $syntax_rules_part2=$api->findBy(\SemanticPersistence\Entities\SemanticEntities\SyntaxRule::class,['main'=>$word2_obj,'depend'=>$word1_obj]);
 
+        //Мёржим массивы
+        $syntax_rules=array_merge($syntax_rules_part1,$syntax_rules_part2);
 
-            /*$main_mivar_type = new \SemanticPersistence\Entities\MivarType;
+        //Проверяем, существуют ли правила
+        if (count($syntax_rules)>0)
+            return $syntax_rules;
 
-            //$sviaz->getRule()->getAssertedMain()->getDao()->getRole()
-
-            $main_mivar_type = $api->findBy(
-                \SemanticPersistence\Entities\MivarType::class,
-                []
-            );
-
-            $syntax_rule->setMainMivarType($main_mivar_type);
-            */
-
-            $syntax_rule->setMain($main);
-
-            $depend = new \SemanticPersistence\Entities\SemanticEntities\Word;
-            $depend->setName(
-                $sviaz->getDependedSequenceMember()->getSlovo()->getInitialForm()
-            );
-
-            /*$depend_mivar_type = new \SemanticPersistence\Entities\MivarType;
-            $syntax_rule->setDependMivarType($depend_mivar_type);*/
-            $syntax_rule->setDepend($depend);
-
-
-            $api->getEntityManager()->persist($syntax_rule);
-
-
-
-
-        $api->getEntityManager()->flush();
+        //возвращаем false если вообще никаких правил не найдено
+        return false;
     }
 
     /**
