@@ -21,7 +21,6 @@ use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Nevozvra
 use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Vozvratnyj;
 use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Null as NullVozvratnost;
 
-use Aot\RussianMorphology\FactoryException;
 use Dw;
 use Word;
 
@@ -38,7 +37,7 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $text = $dw->word_form;
         $words = [];
-        if (isset($word->word) && intval($dw->id_word_class) === INFINITIVE_CLASS_ID ) {
+        if (isset($word->word) && intval($dw->id_word_class) === INFINITIVE_CLASS_ID) {
 
             # вид
             $vid = $this->getVid($dw->parameters);

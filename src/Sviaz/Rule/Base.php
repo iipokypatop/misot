@@ -8,7 +8,6 @@
 
 namespace Aot\Sviaz\Rule;
 
-
 use Aot\Persister;
 
 /**
@@ -54,18 +53,6 @@ class Base
     {
         return $this->asserted_third;
     }
-
-    /**
-     * @param \Aot\Sviaz\Rule\AssertedMember\Third $asserted_member
-     */
-    public function assertThird(\Aot\Sviaz\Rule\AssertedMember\Third $asserted_member)
-    {
-        throw new \RuntimeException('not more supported');
-        //3-ий мембер в базу не сохраняем
-        //$this->dao->setThird($asserted_member->getDao());
-        //$this->asserted_third = $asserted_member;
-    }
-
 
     /**
      * Base constructor.
@@ -281,4 +268,3 @@ class Base
         $this->asserted_checkers[] = $checker;
     }
 }
-

@@ -42,8 +42,6 @@ class NormalizedMatrixTest extends \AotTest\AotDataStorage
         PHPUnitHelper::setProtectedProperty($normalizedMatrix, 'matrix', $matrix);
 
 
-
-
         $matrix
             ->expects($this->once())
             ->method('getSentenceMatrix')
@@ -66,7 +64,7 @@ class NormalizedMatrixTest extends \AotTest\AotDataStorage
                     $matrix_id_mask[$index][] = $register_value;
 
                 }
-            } elseif ( $index === 2) {
+            } elseif ($index === 2) {
                 $normalizedMatrix
                     ->expects($this->at($test_index++))
                     ->method('register')
@@ -87,7 +85,7 @@ class NormalizedMatrixTest extends \AotTest\AotDataStorage
         $this->assertNull($res); // метод ничего не возвращает, поэтому долно равняться Null
         $this->assertEquals($matrix_id_mask, PHPUnitHelper::getProtectedProperty($normalizedMatrix, 'matrix_id_mask'));
 
-        $this->assertEquals([[$data[1]],[$data[2]]],$i->getCalledParams());
+        $this->assertEquals([[$data[1]], [$data[2]]], $i->getCalledParams());
     }
 
 }

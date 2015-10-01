@@ -50,7 +50,7 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $text = $dw->word_form;
         $words = [];
-        if (isset($word->word) &&  intval($dw->id_word_class) === PRONOUN_CLASS_ID) {
+        if (isset($word->word) && intval($dw->id_word_class) === PRONOUN_CLASS_ID) {
 
             # число
             $chislo = $this->getChislo($dw->parameters);

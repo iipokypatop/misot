@@ -9,11 +9,7 @@
 namespace Aot\Sviaz\Rule\AssertedMember\Builder\Depended;
 
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
-use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
-use Aot\Sviaz\Rule\Checker\Registry as LinkCheckerRegistry;
-use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
-use Aot\Text\GroupIdRegistry as GroupIdRegistry;
 
 
 class Base extends \Aot\Sviaz\Rule\AssertedMember\Builder\Base

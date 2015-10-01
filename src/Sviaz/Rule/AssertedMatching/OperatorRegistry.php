@@ -8,9 +8,7 @@
 
 namespace Aot\Sviaz\Rule\AssertedMatching;
 
-
 use Aot\Registry\Uploader;
-use Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq;
 
 class OperatorRegistry
 {
@@ -40,8 +38,7 @@ class OperatorRegistry
     public static function getIdByObject($object)
     {
         foreach (static::getClasses() as $id => $class) {
-            if( is_a($object, $class) )
-            {
+            if (is_a($object, $class)) {
                 return $id;
             }
         }
@@ -86,7 +83,7 @@ class OperatorRegistry
      */
     protected function getFields()
     {
-        return[
+        return [
             'name' => [static::class, 'getNames'],
         ];
     }

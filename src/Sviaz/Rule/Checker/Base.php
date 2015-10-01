@@ -20,6 +20,12 @@ abstract class Base
 {
     use Persister;
 
+    /**
+     * @param \Aot\Sviaz\SequenceMember\Base $main_candidate
+     * @param \Aot\Sviaz\SequenceMember\Base $depended_candidate
+     * @param \Aot\Sviaz\Sequence $sequence
+     * @return bool
+     */
     public function check(\Aot\Sviaz\SequenceMember\Base $main_candidate, \Aot\Sviaz\SequenceMember\Base $depended_candidate, \Aot\Sviaz\Sequence $sequence)
     {
         if ($main_candidate === $depended_candidate) {

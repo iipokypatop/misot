@@ -300,12 +300,12 @@ class Builder
 
         throw new \RuntimeException("not implemented yet");
 
-        if (empty(\Aot\Sviaz\Rule\Checker\Registry::getClasses()[$id])) {
+        /*if (empty(\Aot\Sviaz\Rule\Checker\Registry::getClasses()[$id])) {
             throw new \RuntimeException("unsupported checker id " . var_export($id, 1));
         }
         $this->link['finders'][] = $id;
 
-        return $this;
+        return $this;*/
     }
 
     /**
@@ -471,28 +471,40 @@ class Builder
         return $this;
     }
 
-    # Зависимое после главного
+    /**
+     * Зависимое после главного
+     * @return $this
+     */
     public function dependedAfterMain()
     {
         $this->dependedAndMainCheck(LinkCheckerRegistry::DependedAfterMain);
         return $this;
     }
 
-    # Главное после зависимого
+    /**
+     * Главное после зависимого
+     * @return $this
+     */
     public function dependedBeforeMain()
     {
         $this->dependedAndMainCheck(LinkCheckerRegistry::DependedBeforeMain);
         return $this;
     }
 
-    # Зависимое после главного, стоят подряд
+    /**
+     * Зависимое после главного, стоят подряд
+     * @return $this
+     */
     public function dependedRightAfterMain()
     {
         $this->dependedAndMainCheck(LinkCheckerRegistry::DependedRightBeforeMain);
         return $this;
     }
 
-    # Главное после зависимого, стоят подряд
+    /**
+     * Главное после зависимого, стоят подряд
+     * @return $this
+     */
     public function dependedRightBeforeMain()
     {
         $this->dependedAndMainCheck(LinkCheckerRegistry::DependedRightAfterMain);
@@ -513,27 +525,7 @@ class Builder
 
     }
 
-    public function estSlovo($chast_rechi_id, array $morphology)
-    {
 
-
-        return $this;
-    }
-
-    public function netSlova($chast_rechi_id, array $morphology)
-    {
-        return $this;
-    }
-
-    public function netSlovaMezhduGlavnimIZavisimim($chast_rechi_id, array $morphology)
-    {
-        return $this;
-    }
-
-    public function estSlovoMezhduGlavnimIZavisimim($chast_rechi_id, array $morphology)
-    {
-        return $this;
-    }
 
 
 }

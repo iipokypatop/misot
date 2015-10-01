@@ -66,12 +66,4 @@ class Base extends SequenceMemberBase
         return $ob;
 
     }
-
-    public function getDao()
-    {
-        throw new \RuntimeException("not implemented yet");
-
-        return $this->dao;
-    }
-
 }

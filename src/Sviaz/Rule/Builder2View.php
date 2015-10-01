@@ -9,7 +9,6 @@
 namespace Aot\Sviaz\Rule;
 
 
-
 class Builder2View
 {
     /**

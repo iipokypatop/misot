@@ -175,7 +175,6 @@ TEXT;
         $Suschestvitelnoe->chislo = new \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe();
 
 
-
         $asserted_match = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class,
             \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::create(),
@@ -228,22 +227,6 @@ TEXT;
                 ChastiRechiRegistry::PRILAGATELNOE,
                 RoleRegistry::OTNOSHENIE
             )
-                ->text("text text");
-
-
-        return $builder;
-    }
-
-    /**
-     * @return \Aot\Sviaz\Rule\AssertedMember\Builder\Base
-     */
-    public function getAssertedMemberBuilder_member()
-    {
-        $builder =
-            \Aot\Sviaz\Rule\AssertedMember\Builder\Third::create(
-                ChastiRechiRegistry::SUSCHESTVITELNOE
-            )
-                ->position(PositionRegistry::POSITION_BEFORE_DEPENDED)
                 ->text("text text");
 
 

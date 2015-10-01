@@ -9,14 +9,6 @@
 namespace Aot\Sviaz\Rule;
 
 
-
-
-
-
-
-
-
-
 class Builder2
 {
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base */
@@ -25,10 +17,6 @@ class Builder2
 
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base */
     protected $asserted_depended_builder;
-
-
-    /** @var  \Aot\Sviaz\Rule\AssertedMember\Builder\Third */
-    protected $asserted_third_builder;
 
 
     /** @var  \Aot\Sviaz\Rule\Builder\Base */
@@ -53,15 +41,6 @@ class Builder2
     public function depended(AssertedMember\Builder\Base $main)
     {
         $this->asserted_depended_builder = $main;
-
-        return $this;
-    }
-
-    public function third(AssertedMember\Builder\Third $third)
-    {
-        throw new \RuntimeException("no more supported");
-
-        $this->asserted_third_builder = $third;
 
         return $this;
     }
@@ -96,48 +75,10 @@ class Builder2
             $this->asserted_depended_builder->get()
         );
 
-        if (null !== $this->asserted_third_builder) {
-            $rule->assertThird(
-                $this->asserted_third_builder->get()
-            );
-        }
-
         $this->link_builder->get(
             $rule
         );
 
         return $rule;
     }
-
-    public function slovo(\Aot\Sviaz\Rule\AssertedMember\Base $member)
-    {
-        throw new \RuntimeException("not implemented yet");
-    }
-
-    public function estSlovo($chast_rechi_id, array $morphology)
-    {
-        throw new \RuntimeException("not implemented yet");
-
-        return $this;
-    }
-
-    public function netSlova($chast_rechi_id, array $morphology)
-    {
-        throw new \RuntimeException("not implemented yet");
-        return $this;
-    }
-
-    public function netSlovaMezhduGlavnimIZavisimim($chast_rechi_id, array $morphology)
-    {
-        throw new \RuntimeException("not implemented yet");
-        return $this;
-    }
-
-    public function estSlovoMezhduGlavnimIZavisimim($chast_rechi_id, array $morphology)
-    {
-        throw new \RuntimeException("not implemented yet");
-        return $this;
-    }
-
-
 }

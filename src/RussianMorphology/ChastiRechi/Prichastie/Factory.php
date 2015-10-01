@@ -46,9 +46,7 @@ use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Srednij;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Zhenskij;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Null as NullRod;
 
-use Aot\RussianMorphology\FactoryException;
 use Dw;
-use MorphAttribute;
 use Word;
 
 

@@ -20,7 +20,10 @@ class TextParser
 {
 
 
-    protected $registry = []; // реестр замен и тд
+    /**
+     * @var \Aot\Text\TextParser\Registry
+     */
+    protected $registry; // реестр замен и тд
     protected $sentences = []; // массив предложений
     protected $sentence_words = []; // массив слов предложений
     protected $processed_text; // обработанный текст
@@ -29,6 +32,11 @@ class TextParser
     const END_SENTENCE_TEMPLATE = " %s\n";
     const START_TEMPLATE = '{{';
     const END_TEMPLATE = '}}';
+
+    /**
+     * @var \Aot\Text\TextParser\Logger
+     */
+    protected $logger;
 
     protected static $sentence_needle = [
         "/\\s*[\\,\"\\'\\`\\‘\\‛\\’\\«\\»\\‹\\›\\„\\“\\‟\\”\\:\\;\\(\\)]\\s*/u",
@@ -121,8 +129,8 @@ class TextParser
         $sentences = explode("\n", $text);
         // чистим
         foreach ($sentences as $key => $sentence) {
-            if (strpos($sentence, static::END_TEMPLATE. ".") !== FALSE) {
-                $sentences[$key] = str_replace(static::END_TEMPLATE.".", static::END_TEMPLATE, $sentence);
+            if (strpos($sentence, static::END_TEMPLATE . ".") !== FALSE) {
+                $sentences[$key] = str_replace(static::END_TEMPLATE . ".", static::END_TEMPLATE, $sentence);
             }
             $sentences[$key] = trim($sentences[$key]);
             if ($sentences[$key] === '') {
@@ -144,15 +152,14 @@ class TextParser
         foreach ($sentences as $key => $sentence) {
             $sentence = preg_replace_callback(
                 static::$sentence_needle,
-                function($match){
-                    if( $match[0] === '{{'){
+                function ($match) {
+                    if ($match[0] === '{{') {
                         return " " . $match[0];
-                    }
-                    elseif($match[0] === '}}'){
+                    } elseif ($match[0] === '}}') {
 
                         return $match[0] . " ";
                     }
-                    return " " .$match[0] . " ";
+                    return " " . $match[0] . " ";
                 },
                 $sentence);
             $sentence_words[$key] = preg_split("/\\s+/u", $sentence);
@@ -168,13 +175,13 @@ class TextParser
     {
         $sentence_words = $this->getSentenceWords();
         $registry = $this->getRegistry()->getRegistry();
-        if( empty($sentence_words) || empty($registry) ){
+        if (empty($sentence_words) || empty($registry)) {
             return;
         }
         foreach ($sentence_words as &$words) {
             foreach ($words as &$word) {
                 if (preg_match("/\\{\\{(\\d+)\\}\\}/u", $word, $match)) {
-                    if ( !isset($registry[$match[1]]) ) {
+                    if (!isset($registry[$match[1]])) {
                         throw new \RuntimeException('Неизвестный индекс');
                     }
                     $word = $registry[$match[1]];

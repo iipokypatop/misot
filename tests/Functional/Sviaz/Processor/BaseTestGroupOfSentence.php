@@ -20,28 +20,26 @@ use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base as Suschestvitelnoe;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base as SuschestvitelnoePadeszhBase;
 use Aot\RussianSyntacsis\Punctuaciya\Zapiataya;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
-use Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq;
-use Aot\Sviaz\Rule\Checker\Registry as LinkCheckerRegistry;
+use Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatchingOperator\Eq;
+use Aot\Sviaz\Rule\AssertedLink\Checker\Registry as LinkCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
 use Aot\Sviaz\Rule\AssertedMember\PositionRegistry;
 use MivarTest\PHPUnitHelper;
 
-use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
+use Aot\Sviaz\Rule\AssertedLink\Builder\Base as AssertedLinkBuilder;
 
-class BaseTest extends \AotTest\AotDataStorage
+class BaseTestGroupOfSentence extends \AotTest\AotDataStorage
 {
-    public function testLaunch()
-    {
-        $processor = \Aot\Sviaz\Processor\Base::create();
 
-        $rule = $this->getRule1();
-        $rule = $this->getRule2();
+    public function testMain()
+    {
+
+        $processor = \Aot\Sviaz\Processor\Base::create();
 
         $sequences = $processor->go(
             $this->getNormalizedMatrix1(),
-            [$rule]
+            array_merge([self::getRule1001()],[self::getRule1002()])
         );
-
 
         $sviazi_container = [];
         foreach ($sequences as $index => $sequence) {
@@ -54,8 +52,35 @@ class BaseTest extends \AotTest\AotDataStorage
             $result
         );
 
+        print_r($pretty);
         //echo join("\n", $pretty);
 
+    }
+
+
+    protected function getRule1()
+    {
+        <<<RULE
+        Если в предложении стоят подряд существительное, а за ним – причастие, и они совпадают в роде, числе и падеже, то между ними есть связь.
+RULE;
+        $asserted_main = $this->get_asserted_main();
+        $asserted_depended = $this->get_asserted_depended();
+
+        $rule = \Aot\Sviaz\Rule\Base::create(
+            $asserted_main,
+            $asserted_depended
+        );
+
+        $link = $this->get_asserted_link($rule);
+
+        $rule->addLink($link);
+
+        $link->addChecker(
+            \Aot\Sviaz\Rule\AssertedLink\Checker\BeetweenMainAndDepended\NetSuschestvitelnogoVImenitelnomPadeszhe::create()
+        );
+
+
+        return $rule;
     }
 
     protected function getRule2()
@@ -92,6 +117,8 @@ class BaseTest extends \AotTest\AotDataStorage
         return $rule;
     }
 
+
+
     /**
      * @return \Aot\Sviaz\Rule\AssertedMember\Main
      */
@@ -107,8 +134,8 @@ class BaseTest extends \AotTest\AotDataStorage
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Imenitelnij::class
         );
 
-        $asserted_main->setRoleClass(
-            \Aot\Sviaz\Role\Vesch::class
+        $asserted_main->setRole(
+            \Aot\Sviaz\Role\Vesch::create()
         );
 
         return $asserted_main;
@@ -129,6 +156,10 @@ class BaseTest extends \AotTest\AotDataStorage
             \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij::class
         );
 
+        $asserted_depended->setRole(
+            \Aot\Sviaz\Role\Svoistvo::create()
+        );
+
         $asserted_depended->setRoleClass(
             \Aot\Sviaz\Role\Svoistvo::class
         );
@@ -136,119 +167,43 @@ class BaseTest extends \AotTest\AotDataStorage
         return $asserted_depended;
     }
 
-
-    protected function getRule1()
+    protected function get_asserted_link($rule)
     {
-        <<<RULE
-        Если в предложении стоят подряд существительное, а за ним – причастие, и они совпадают в роде, числе и падеже, то между ними есть связь.
-RULE;
-        $asserted_main = $this->get_asserted_main();
-        $asserted_depended = $this->get_asserted_depended();
-
-        $rule = \Aot\Sviaz\Rule\Base::create(
-            $asserted_main,
-            $asserted_depended
-        );
-
+        $link = \Aot\Sviaz\Rule\AssertedLink\Base::create($rule);
 
         // падеж
-        $asserted_matching[0] = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
+        $asserted_matching[0] = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
             SuschestvitelnoePadeszhBase::class,
             Eq::create(),
             \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Base::class
         );
 
         // род
-        $asserted_matching[1] = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
+        $asserted_matching[1] = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Base::class,
             Eq::create(),
             \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Base::class
         );
 
         // число
-        $asserted_matching[2] = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatching::create(
+        $asserted_matching[2] = \Aot\Sviaz\Rule\AssertedLink\AssertedMatching\MorphologyMatching::create(
             \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Base::class,
             Eq::create(),
             \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Base::class
         );
 
+        $link->addAssertedMatching($asserted_matching[0]);
+        $link->addAssertedMatching($asserted_matching[1]);
+        $link->addAssertedMatching($asserted_matching[2]);
 
-
-        $rule->addAssertedMatching($asserted_matching[0]);
-        $rule->addAssertedMatching($asserted_matching[1]);
-        $rule->addAssertedMatching($asserted_matching[2]);
-
-
-        $rule->addChecker(
-            \Aot\Sviaz\Rule\Checker\Registry::getObjectById(
-                \Aot\Sviaz\Rule\Checker\Registry::NetSuschestvitelnogoVImenitelnomPadeszhe
-            )
-        );
-
-
-        return $rule;
+        return $link;
     }
 
 
-    public function testFirst()
-    {
-        //$this->markTestSkipped();
-
-        $processor = \Aot\Sviaz\Processor\Base::create();
-
-        $rule = $this->getRule1();
-
-
-        $sequences = $processor->go(
-            $this->getNormalizedMatrix1(),
-            [$rule]
-        );
-
-        $sviazi_container = [];
-        foreach ($sequences as $index => $sequence) {
-            $sviazi_container[$index] = $sequence->getSviazi();
-        }
-
-
-        $pretty = $this->pretty(
-            $sviazi_container
-        );
-
-        //echo join("\n", $pretty);
-    }
-
-    public function testSecond()
-    {
-
-        $processor = \Aot\Sviaz\Processor\Base::create();
-
-
-        $sequences = $processor->go(
-            $this->getNormalizedMatrix1(),
-            array_merge([
-                \Aot\Sviaz\Rule\Container::getRule1(),
-                \Aot\Sviaz\Rule\Container::getRule2(),
-
-                \Aot\Sviaz\Rule\Container::getRule4(),
-                \Aot\Sviaz\Rule\Container::getRule5(),
-                //\Aot\Sviaz\Rule\Container::getRuleSuchestvitelnoeiSuchestvitelnoeDocOtLarisu(),
-            ], \Aot\Sviaz\Rule\Container::getRuleSuch1()
-            )
-        );
 
 
 
-        $sviazi_container = [];
-        foreach ($sequences as $index => $sequence) {
-            $sviazi_container[$index] = $sequence->getSviazi();
-        }
 
-        $pretty = $this->pretty(
-            $sviazi_container
-        );
-
-        //echo join("\n", $pretty);
-    }
 
     /**
      * @return array
@@ -273,8 +228,8 @@ TEXT;
         $gorami[0]->sklonenie = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::create();
 
         $poiavilis[0] = $this->getMock(Glagol::class, ['_']);
-        PHPUnitHelper::setProtectedProperty($poiavilis[0], 'text', 'появились');
-        $poiavilis[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Mnozhestvennoe::create();
+        PHPUnitHelper::setProtectedProperty($poiavilis[0], 'text', 'появилось');
+        $poiavilis[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Edinstvennoe::create();
         $poiavilis[0]->litso = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Tretie::create();
         $poiavilis[0]->naklonenie = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Izyavitelnoe::create();
         $poiavilis[0]->perehodnost = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Perehodnyj::create();
@@ -285,8 +240,17 @@ TEXT;
         $poiavilis[0]->vremya = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Proshedshee::create();
         $poiavilis[0]->razryad = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::create();
 
+        $add[0] = $this->getMock(Prilagatelnoe::class, ['_']);
+        PHPUnitHelper::setProtectedProperty($add[0], 'text', 'красивое');
+        $add[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe::create();
+        $add[0]->forma = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::create();
+        $add[0]->padeszh = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Tvoritelnij::create();
+        $add[0]->razryad = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::create();
+        $add[0]->rod = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::create();
+        $add[0]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Null::create();
+
         $oblaka[0] = $this->getMock(Suschestvitelnoe::class, ['_']);
-        PHPUnitHelper::setProtectedProperty($oblaka[0], 'text', 'облака');
+        PHPUnitHelper::setProtectedProperty($oblaka[0], 'text', 'облако');
         $oblaka[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe::create();
         $oblaka[0]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $oblaka[0]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -295,8 +259,8 @@ TEXT;
         $oblaka[0]->sklonenie = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::create();
 
         $oblaka[1] = $this->getMock(Suschestvitelnoe::class, ['_']);
-        PHPUnitHelper::setProtectedProperty($oblaka[1], 'text', 'облака');
-        $oblaka[1]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
+        PHPUnitHelper::setProtectedProperty($oblaka[1], 'text', 'облако');
+        $oblaka[1]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe::create();
         $oblaka[1]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $oblaka[1]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
         $oblaka[1]->padeszh = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Imenitelnij::create();
@@ -304,8 +268,8 @@ TEXT;
         $oblaka[1]->sklonenie = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::create();
 
         $oblaka[2] = $this->getMock(Suschestvitelnoe::class, ['_']);
-        PHPUnitHelper::setProtectedProperty($oblaka[2], 'text', 'облака');
-        $oblaka[2]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
+        PHPUnitHelper::setProtectedProperty($oblaka[2], 'text', 'облако');
+        $oblaka[2]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe::create();
         $oblaka[2]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $oblaka[2]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
         $oblaka[2]->padeszh = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Vinitelnij::create();
@@ -422,6 +386,7 @@ TEXT;
             'nad' => $nad,
             'gorami' => $gorami,
             'poiavilis' => $poiavilis,
+            'add'=>$add,
             'oblaka' => $oblaka,
             'legkie' => $legkie,
             'i' => $i,
@@ -483,5 +448,129 @@ TEXT;
     {
         return parent::getMock($originalClassName, $methods, $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods); // TODO: Change the autogenerated stub
     }
+
+
+
+
+    public static function getRule1001()
+    {
+
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE,
+                        RoleRegistry::VESCH
+                    )
+                        ->podlezhachee()
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::GLAGOL,
+                        RoleRegistry::OTNOSHENIE
+                    )
+                        ->skazuemoe()
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                        ->morphologyMatching(
+                            MorphologyRegistry::CHISLO
+                        )
+                );
+
+        $rule = $builder->get();
+
+        return $rule;
+
+        /*
+
+                $builder = \Aot\Sviaz\Rule\Builder::create()
+                    ->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE)
+                    ->mainMorphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                    ->mainRole(RoleRegistry::VESCH)
+                    ->dependedChastRechi(ChastiRechiRegistry::GLAGOL)
+                    ->dependedRole(RoleRegistry::OTNOSHENIE);
+
+
+                $rule = $builder->get();
+
+                return $rule;*/
+    }
+
+
+    public static function getRule1002()
+    {
+
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE,
+                        RoleRegistry::VESCH
+                    )
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE,
+                        RoleRegistry::SVOISTVO
+                    )
+
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                );
+
+        $rule = $builder->get();
+
+        return $rule;
+
+
+    }
+
+    public static function getRule1003()
+    {
+
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::SUSCHESTVITELNOE,
+                        RoleRegistry::VESCH
+                    )
+                        ->podlezhachee()
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::GLAGOL,
+                        RoleRegistry::OTNOSHENIE
+                    )
+                        ->skazuemoe()
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                        ->morphologyMatching(
+                            MorphologyRegistry::CHISLO
+                        )
+                );
+
+        $rule = $builder->get();
+
+        return $rule;
+
+        /*
+
+                $builder = \Aot\Sviaz\Rule\Builder::create()
+                    ->mainChastRechi(ChastiRechiRegistry::SUSCHESTVITELNOE)
+                    ->mainMorphology(MorphologyRegistry::PADESZH_IMENITELNIJ)
+                    ->mainRole(RoleRegistry::VESCH)
+                    ->dependedChastRechi(ChastiRechiRegistry::GLAGOL)
+                    ->dependedRole(RoleRegistry::OTNOSHENIE);
+
+
+                $rule = $builder->get();
+
+                return $rule;*/
+    }
+
 
 }

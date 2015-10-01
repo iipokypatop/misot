@@ -7,6 +7,7 @@
  */
 
 namespace Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Chislo;
+
 use \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Base as BaseMorphology;
 
 class Base extends BaseMorphology

@@ -45,8 +45,6 @@ use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Null as Null
 ###############
 
 
-
-
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie\Pervoe;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie\Vtoroe;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie\Null as NullSpryazhenie;
@@ -72,7 +70,6 @@ use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Vtoroe as VtoroeLi
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Tretie as TretieLitso;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Null as NullLitso;
 
-use Aot\RussianMorphology\FactoryException;
 use Dw;
 use Word;
 

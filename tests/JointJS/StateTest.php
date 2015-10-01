@@ -19,8 +19,6 @@ class StateTest extends \MivarTest\Base
         $ob->setId('id');
 
 
-
-
         $attrs = \Aot\JointJS\Objects\Attr::create();
         $text = \Aot\JointJS\Objects\Text::create();
         $text->setText("label");
@@ -42,7 +40,7 @@ class StateTest extends \MivarTest\Base
         #echo  json_encode($ob);
 
         $this->assertEquals(
-          '{"id":"id","type":"basic.Rect","attrs":{"text":{"text":"label"}},"position":{"x":1,"y":2},"angle":200,"size":{"width":300,"height":400},"z":500,"embeds":[600,700],"parent":"parent_id"}',
+            '{"id":"id","type":"basic.Rect","attrs":{"text":{"text":"label"}},"position":{"x":1,"y":2},"angle":200,"size":{"width":300,"height":400},"z":500,"embeds":[600,700],"parent":"parent_id"}',
             json_encode($ob)
         );
     }

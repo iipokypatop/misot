@@ -13,6 +13,7 @@ class Short extends Base
 {
     const START_SHORT = "(^|[^а-яА-ЯЁё])";
     const END_SHORT = "(.|$)";
+
     protected function getPatterns()
     {
         /**
@@ -28,24 +29,24 @@ class Short extends Base
         return [
             "/и\\s?т\\.?[пд]\\.?/u", // и тд и тп
 
-            "/". static::START_SHORT ."[Тт]ел\\.(.)/u", //
-            "/". static::START_SHORT ."[Сс]м\\.?(.|$)/u", // смотри (см.)
-            "/". static::START_SHORT ."см([^а-яА-Я]|$)/u", // сантиметр (см)
+            "/" . static::START_SHORT . "[Тт]ел\\.(.)/u", //
+            "/" . static::START_SHORT . "[Сс]м\\.?(.|$)/u", // смотри (см.)
+            "/" . static::START_SHORT . "см([^а-яА-Я]|$)/u", // сантиметр (см)
             "/[сю]\\.\\s?ш\\./u",
             "/[вз]\\.\\s?д\\./u",
-            "/". static::START_SHORT ."н\\.?э\\.?(.|$)/u", // н.э.
+            "/" . static::START_SHORT . "н\\.?э\\.?(.|$)/u", // н.э.
 
-            "/". static::START_SHORT ."б[\\/\\\\]у(\\.|\\s|$)/u",
+            "/" . static::START_SHORT . "б[\\/\\\\]у(\\.|\\s|$)/u",
             "/([\\d\\s])гг?(\\.|\\s|$)/u", // г,гг
             "/с\\.[\\-\\s]*х\\./u",
-            "/". static::START_SHORT ."[Бб]укв\\.(.|$)/u",
-            "/". static::START_SHORT ."[Тт]ыс\\.(.|$)/u",
-            "/". static::START_SHORT ."[МмТтр]лн(.|$)/u",
-            "/". static::START_SHORT ."[Мм]лрд(.|$)/u",
+            "/" . static::START_SHORT . "[Бб]укв\\.(.|$)/u",
+            "/" . static::START_SHORT . "[Тт]ыс\\.(.|$)/u",
+            "/" . static::START_SHORT . "[МмТтр]лн(.|$)/u",
+            "/" . static::START_SHORT . "[Мм]лрд(.|$)/u",
             "/([\\d\\s])[сгт]([^а-яА-ЯёЁ])/u", // секунда/грамм TODO
-            "/". static::START_SHORT ."[Чч]ел\\.(.|$)/u",
-            "/". static::START_SHORT ."[Ээ]кз\\.(.|$)/u",
-            "/". static::START_SHORT ."к\\.\\s?[тгиюмпфх]\\.\\s?н.".static::END_SHORT."/u", //  к.т.н., к.г.н.
+            "/" . static::START_SHORT . "[Чч]ел\\.(.|$)/u",
+            "/" . static::START_SHORT . "[Ээ]кз\\.(.|$)/u",
+            "/" . static::START_SHORT . "к\\.\\s?[тгиюмпфх]\\.\\s?н." . static::END_SHORT . "/u", //  к.т.н., к.г.н.
 
 
             "/([^а-яА-ЯЁё])[дп]р(\\.|$)/u", // и др. и пр.

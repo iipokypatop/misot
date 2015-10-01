@@ -5,8 +5,6 @@
  * Date: 20.07.2015
  * Time: 16:05
  */
-
-
 // php run.php connection_string
 
 class aaa

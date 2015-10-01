@@ -1,5 +1,5 @@
 <?php
-  
+
 namespace Aot\RussianMorphology\ChastiRechi\Mestoimenie;
 
 use Aot\RussianMorphology\Slovo;

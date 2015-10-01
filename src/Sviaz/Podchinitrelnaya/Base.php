@@ -23,7 +23,6 @@ class Base
     /** @var  \Aot\Sviaz\Sequence */
     protected $sequence;
 
-
     protected function __construct()
     {
 
@@ -64,8 +63,13 @@ class Base
         return $ob;
     }
 
+    public static function createByDao()
+    {
+        throw new \RuntimeException("not implemented exception");
+    }
+
     /**
-     * @return \Aot\Sviaz\SequenceMember\Word\Base
+     * @return \Aot\Sviaz\SequenceMember\Base
      */
     public function getMainSequenceMember()
     {
@@ -73,7 +77,7 @@ class Base
     }
 
     /**
-     * @return \Aot\Sviaz\SequenceMember\Word\Base
+     * @return \Aot\Sviaz\SequenceMember\Base
      */
     public function getDependedSequenceMember()
     {

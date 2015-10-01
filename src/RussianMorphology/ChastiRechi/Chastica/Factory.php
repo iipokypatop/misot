@@ -9,7 +9,6 @@
 namespace Aot\RussianMorphology\ChastiRechi\Chastica;
 
 
-
 use Dw;
 use Word;
 

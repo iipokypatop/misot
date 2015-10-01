@@ -9,7 +9,7 @@
 namespace Aot\RussianSyntacsis\Predlozhenie\Chasti;
 
 
-class Obstoyatelstvo  extends Base
+class Obstoyatelstvo extends Base
 {
 
 }

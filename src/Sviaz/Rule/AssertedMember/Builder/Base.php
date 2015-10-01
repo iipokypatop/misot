@@ -8,17 +8,9 @@
 
 namespace Aot\Sviaz\Rule\AssertedMember\Builder;
 
-use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
-use Aot\Sviaz\Role\Registry as RoleRegistry;
-
-
-use Aot\Sviaz\Rule\Checker\Registry as LinkCheckerRegistry;
-
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
-use Aot\Sviaz\Rule\AssertedMember\Depended;
-use Aot\Sviaz\Rule\AssertedMember\Main;
-use Aot\Text\GroupIdRegistry as GroupIdRegistry;
+use Aot\RussianSyntacsis\Predlozhenie\Chasti\Registry as ChastiPredlozhenieRegistry;
 
 
 abstract class Base
@@ -75,18 +67,17 @@ abstract class Base
     {
         assert(is_int($id));
 
-        if( !array_key_exists($id, MorphologyRegistry::getNullClasses()) ){
+        if (!array_key_exists($id, MorphologyRegistry::getNullClasses())) {
             throw new \RuntimeException("no null class for morphology id = " . var_export($id, 1));
         }
 
-        if( !array_key_exists($this->chast_rechi_id, MorphologyRegistry::getNullClasses()[$id]) ){
+        if (!array_key_exists($this->chast_rechi_id, MorphologyRegistry::getNullClasses()[$id])) {
             throw new \RuntimeException("no null class for chast rechi_id = " . var_export($this->chast_rechi_id, 1));
         }
 
         if (is_null(MorphologyRegistry::getNullClasses()[$id][$this->chast_rechi_id])) {
             throw new \RuntimeException("unsupported morphology id = $id for chast rechi_id = $this->chast_rechi_id");
-        }
-        else{
+        } else {
             $class = MorphologyRegistry::getNullClasses()[$id][$this->chast_rechi_id];
         }
 
@@ -96,9 +87,6 @@ abstract class Base
 
         return $this;
     }
-
-
-
 
 
     /**
@@ -126,5 +114,17 @@ abstract class Base
     public function get()
     {
         return $this->member;
+    }
+
+    public function podlezhachee()
+    {
+        $this->member->setChastPredlozhenya(ChastiPredlozhenieRegistry::PODLEZHACHEE);
+        return $this;
+    }
+
+    public function skazuemoe()
+    {
+        $this->member->setChastPredlozhenya(ChastiPredlozhenieRegistry::SKAZUEMOE);
+        return $this;
     }
 }

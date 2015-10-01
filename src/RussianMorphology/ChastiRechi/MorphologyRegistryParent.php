@@ -16,97 +16,51 @@ class MorphologyRegistryParent
     use Uploader;
 
     const PADESZH = 1000;
-
     const ROD = 2000;
-
     const CHISLO = 3000;
-
     const SKLONENIE = 4000;
-
     const NEIZMENYAJMOST = 5000;
-
     const PEREHODNOST = 6000;
-
     const NARICATELNOST = 7000;
-
-    const ODUSHEVLENNOST = 8000;
-
     const RAZRYAD = 9000;
-
     const FORMA = 10000;
-
     const STEPEN_SRAVNENIYA = 11000;
-
     const VID = 12000;
-
     const VOZVRATNOST = 13000;
-
     const ZALOG = 14000;
-
     const SPRYAZHENIE = 15000;
-
     const NAKLONENIE = 16000;
-
     const VREMYA = 17000;
-
     const LITSO = 18000;
-
     const ODUSHEVLYONNOST = 19000;
-
     const NARITCATELNOST = 20000;
-
     const PODVID = 21000;
-
     const TIP = 22000;
-
     const VID_CHISLITELNOGO = 23000;
-
 
     public static function getNames()
     {
         return [
             static::PADESZH => 'падеж',
-
             static::ROD => 'род',
-
             static::CHISLO => 'число',
-
             static::SKLONENIE => 'склонение',
-
             static::NEIZMENYAJMOST => 'изменяемость',
-
             static::PEREHODNOST => 'переходность',
-
-            static::ODUSHEVLENNOST => 'одушевленность',
-
             static::RAZRYAD => 'разряд',
-
             static::FORMA => 'форма',
-
             static::STEPEN_SRAVNENIYA => 'степень сравнения',
-
             static::VID => 'вид',
-
             static::VOZVRATNOST => 'возвратность',
-
             static::ZALOG => 'залог',
-
             static::SPRYAZHENIE => 'спряжение',
-
             static::NAKLONENIE => 'наклонение',
-
             static::VREMYA => 'время',
-
             static::LITSO => 'лицо',
-
             static::ODUSHEVLYONNOST => 'одушевленность',
-
             static::NARITCATELNOST => 'нарицательность',
-
             static::PODVID => 'подвид',
-
             static::TIP => 'тип',
-
             static::VID_CHISLITELNOGO => 'вид',
         ];
     }
@@ -207,7 +161,6 @@ class MorphologyRegistryParent
             ],
         ];
     }
-
 
 
     public static function getNullClasses()
@@ -329,7 +282,7 @@ class MorphologyRegistryParent
      */
     protected function getFields()
     {
-        return[
+        return [
             'name' => [static::class, 'getNames'],
         ];
     }

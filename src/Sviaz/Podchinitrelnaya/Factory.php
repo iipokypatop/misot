@@ -33,6 +33,7 @@ class Factory
      * @param \Aot\Sviaz\SequenceMember\Word\Base $main_sequence_member
      * @param \Aot\Sviaz\SequenceMember\Word\Base $depended_sequence_member
      * @param \Aot\Sviaz\Rule\Base $rule
+     * @param \Aot\Sviaz\Sequence $sequence
      * @return Base
      */
     public function build(
