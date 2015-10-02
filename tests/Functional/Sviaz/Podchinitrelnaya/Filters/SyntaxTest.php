@@ -30,43 +30,103 @@ use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
 
 class SyntaxTest extends \AotTest\AotDataStorage
 {
+    /**
+     * /brief Тест создания фильтра (и создание последовательностей)
+     */
     public function testLaunch()
     {
-        //СОздаём фильтр
+        //создаём последовательности из тестового примера
+        //$sequences=$this->getSviaziForTests();
+        //Создаём фильтр
+        $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
+        $this->assertEquals(\Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::class, get_class($filter_syntax));
+        //$this->printSviazi(static::$sequences[0]);
+    }
+
+    /**
+     * \brief Когда фильтр отработал
+     * @depends testLaunch
+     */
+    public function testCase1()
+    {
+        //Создаём фильтр
         $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
 
-        /*Здесь у нас массив из двух связей (противоречащих друг другу), отправляем их в фильтр*/
+        //Конфликтующий набор связей
         /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $res */
-        $res = $this->getSviaziForTest();
-
-
-        $result = array_filter([$res]);
-        $pretty = $this->pretty(
-            $result
-        );
-        echo join("\n", $pretty);
-
+        $res = $this->getNaborSviazeyForTestCase1();
+        //$this->printSviazi($res);//Печать связей
 
         $res2 = $filter_syntax->run($res);
+        //$this->printSviazi($res2); //Печать связей
+
+        $this->assertEquals([['облака','воздушные']],$this->getProstoyMassivSviazi($res2));
+
+        //print_r($this->getProstoyMassivSviazi($res));
+        //print_r($this->getProstoyMassivSviazi($res2));
+    }
+
+    public function getNaborSviazeyForTestCase1()
+    {
+        //создаём последовательности из тестового примера
+        $sequence=$this->getSviaziForTests()[16];
+        return [$sequence[3],$sequence[0],$sequence[0],$sequence[7]];
+    }
 
 
-        $result = array_filter([$res2]);
+    /**
+     * \brief Когда чего-то нет в БД и фильтр не должен отработать
+     * @depends testLaunch
+     */
+    public function testCase2()
+    {
+        //Создаём фильтр
+        $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
+        /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $res */
+        //Конфликтующий набор связей
+        $res = $this->getNaborSviazeyForTestCase2();
+        //print_r($this->getProstoyMassivSviazi($res));
+        $res2 = $filter_syntax->run($res);
+        //print_r($this->getProstoyMassivSviazi($res2));
+
+        $this->assertEquals([['серые','горами'],['серые','облака'],['серые','легкие']],$this->getProstoyMassivSviazi($res2));
+    }
+
+    public function getNaborSviazeyForTestCase2()
+    {
+        //создаём последовательности из тестового примера
+        $sequence=$this->getSviaziForTests()[0];
+        return [$sequence[5],$sequence[6],$sequence[7]];
+    }
+
+
+
+    /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi */
+    protected function printSviazi($sviazi)
+    {
+        $result = array_filter([$sviazi]);
         $pretty = $this->pretty(
             $result
         );
         echo join("\n", $pretty);
-
+        echo "\n";
 
     }
-
-
-    /** @var \Aot\Sviaz\Podchinitrelnaya\Base $sviaz */
-    public function printSviaz($sviaz)
+    /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi */
+    protected function getProstoyMassivSviazi($sviazi)
     {
-        return ($sviaz->getMainSequenceMember()->getSlovo()->getText()). $sviaz->getMainSequenceMember()->getSlovo()->getText();
+        $result=[];
+        foreach ($sviazi as $sviaz)
+        {
+            $result[]=[$sviaz->getMainSequenceMember()->getSlovo()->getText(),$sviaz->getDependedSequenceMember()->getSlovo()->getText()];
+        }
+        return $result;
     }
 
-    public function getSviaziForTest()
+
+
+
+    public function getSviaziForTests()
     {
         //СОздаём процессор
         $processor = \Aot\Sviaz\Processor\Base::create();
@@ -80,28 +140,12 @@ class SyntaxTest extends \AotTest\AotDataStorage
             [$rule1, $rule2]
         );
 
-
         $sviazi_container = [];
         foreach ($sequences as $index => $sequence) {
             $sviazi_container[$index] = $sequence->getSviazi();
         }
 
-        return ([
-            $sviazi_container[16][3],
-            $sviazi_container[16][0],
-            $sviazi_container[16][3],
-            $sviazi_container[16][3],
-            $sviazi_container[16][0]
-        ]);
-
-
-        $result = array_filter($sviazi_container);
-
-        $pretty = $this->pretty(
-            $result
-        );
-
-        echo join("\n", $pretty);
+        return $sviazi_container;
     }
 
 
