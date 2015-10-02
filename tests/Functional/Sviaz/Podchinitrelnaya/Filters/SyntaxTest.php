@@ -8,24 +8,18 @@
 
 namespace AotTest\Functional\Sviaz\Podchinitrelnaya\Filters;
 
-use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
-use Aot\RussianMorphology\ChastiRechi\Glagol\Base as Glagol;
-use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 
+use Aot\RussianMorphology\ChastiRechi\Glagol\Base as Glagol;
 use Aot\RussianMorphology\ChastiRechi\Predlog\Base as Predlog;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base as Prilagatelnoe;
 use Aot\RussianMorphology\ChastiRechi\Soyuz\Base;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base as Suschestvitelnoe;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base as SuschestvitelnoePadeszhBase;
 use Aot\RussianSyntacsis\Punctuaciya\Zapiataya;
-use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq;
-use Aot\Sviaz\Rule\Checker\Registry as LinkCheckerRegistry;
-use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
-use Aot\Sviaz\Rule\AssertedMember\PositionRegistry;
 use MivarTest\PHPUnitHelper;
 
-use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
+
 
 
 class SyntaxTest extends \AotTest\AotDataStorage
@@ -45,7 +39,6 @@ class SyntaxTest extends \AotTest\AotDataStorage
 
     /**
      * \brief Когда фильтр отработал
-     * @depends testLaunch
      */
     public function testCase1()
     {
@@ -76,7 +69,6 @@ class SyntaxTest extends \AotTest\AotDataStorage
 
     /**
      * \brief Когда чего-то нет в БД и фильтр не должен отработать
-     * @depends testLaunch
      */
     public function testCase2()
     {
