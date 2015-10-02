@@ -1,0 +1,14 @@
+; Комментарии начинаются с ';', как в php.ini
+
+MODE = DEVELOP
+
+[DEVELOP]
+semantic.db.host = 192.168.10.51
+semantic.db.port = 5432
+semantic.db.user = postgres
+semantic.db.password = @Mivar123User@
+semantic.db.dbname = mivar_semantic_new
+
+
+
+[PRODUCTION : DEVELOP]
