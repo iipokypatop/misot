@@ -12,9 +12,6 @@ namespace Aot\Sviaz\Podchinitrelnaya\Filters;
 class Syntax
 {
 
-    const PRIAMOE_NAPRAVLENIE = 1;
-    const OBRATNOE_NAPRAVLENIE = -1;
-
     public static function create()
     {
         return new static();
