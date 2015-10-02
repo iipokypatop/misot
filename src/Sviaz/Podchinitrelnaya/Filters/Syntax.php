@@ -8,9 +8,9 @@
 
 namespace Aot\Sviaz\Podchinitrelnaya\Filters;
 
-
 class Syntax
 {
+
     public static function create()
     {
         return new static();
@@ -59,8 +59,7 @@ class Syntax
         $text1 = $main->getSlovo()->getInitialForm();
         $text2 = $depended->getSlovo()->getInitialForm();
 
-        //Ищем в БД, есть ли связи, помним, что стремимся найти одну связь, но если будет несколько,
-        //всё равно вернём их
+        //Ищем в БД, есть ли связи, если будет несколько, вернём их все
         /** @var \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[] $syntax_rules */
         $syntax_rules = \Aot\Main::findSviazBetweenTwoWords($text1, $text2);
 
@@ -70,22 +69,69 @@ class Syntax
             return $sviazi;
         }
 
-        if (count($syntax_rules) > 1) {
+        $intersection_viazey=$this->intersectSviazeyAndRulesFromDB($sviazi, $syntax_rules);
+        if (empty($intersection_viazey)) {
             //возвращаем те связи, которые попали на вход фильтра
             return $sviazi;
         }
+        return $intersection_viazey;
 
-        //Связи, на основе правил, полученных из БД
-        //Если всё ок, то в массиве лишь одно правило
-        $syntax_rule = $syntax_rules[0];
 
-        //возвращаем созданную связь
-        $created_sviaz = $this->createSviazFromSyntaxRule($sviazi[0], $syntax_rule);
-        if (is_null($created_sviaz)) {
-            return $sviazi;
-        }
-        return [$created_sviaz];
+        //ПРошлая версия, вызывающая генерацию связей
+//        if (count($syntax_rules) > 1) {
+//            //возвращаем те связи, которые попали на вход фильтра
+//            return $sviazi;
+//        }
+//
+//        //Связи, на основе правил, полученных из БД
+//        //Если всё ок, то в массиве лишь одно правило
+//        $syntax_rule = $syntax_rules[0];
+//
+//        //возвращаем созданную связь
+//        $created_sviaz = $this->createSviazFromSyntaxRule($sviazi[0], $syntax_rule);
+//        if (is_null($created_sviaz)) {
+//            return $sviazi;
+//        }
+//        return [$created_sviaz];
     }
+
+
+    /**
+     * @param \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi
+     * @param \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[] $syntax_rules
+     * @return \Aot\Sviaz\Podchinitrelnaya\Base[]
+     */
+    protected function intersectSviazeyAndRulesFromDB($sviazi, $syntax_rules)
+    {
+        $intersection_viazey=[];
+        foreach($sviazi as $sviaz)
+        {
+            $sviaz_rule_id=$sviaz->getRule()->getDao()->getId();
+            $sviaz_main=$sviaz->getMainSequenceMember()->getSlovo()->getInitialForm();
+            $sviaz_depended=$sviaz->getDependedSequenceMember()->getSlovo()->getInitialForm();
+            foreach ($syntax_rules as $syntax_rule) {
+//                print_r(
+//                    [
+//                        ['sviaz'=>$sviaz_rule_id,'rule'=>$syntax_rule->getId()],
+//                        ['sviaz'=>$sviaz_main,'rule'=>$syntax_rule->getMain()->getName()],
+//                        ['sviaz'=>$sviaz_depended,'rule'=>$syntax_rule->getDepend()->getName()]
+//                    ]
+//                );
+                if ($sviaz_rule_id!==$syntax_rule->getId())
+                    continue;
+                if ($sviaz_main!==$syntax_rule->getMain()->getName())
+                    continue;
+                if ($sviaz_depended!==$syntax_rule->getDepend()->getName())
+                    continue;
+                $intersection_viazey[]=$sviaz;
+                break;
+            }
+
+        }
+        return $intersection_viazey;
+    }
+
+
 
     /**
      * @param \Aot\Sviaz\Podchinitrelnaya\Base $sviaz
