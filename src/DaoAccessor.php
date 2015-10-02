@@ -8,10 +8,12 @@
 
 namespace Aot;
 
+use Aot\Tools\Config;
+
 trait DaoAccessor
 {
     protected $dao;
-    protected $conn_db = "host=test-db.mivar.pro dbname=mivar_semantic_new user=postgres password=@Mivar123User@";
+//    protected $conn_db = "host=test-db.mivar.pro dbname=mivar_semantic_new user=postgres password=@Mivar123User@";
 
     /**
      * @param $name
@@ -69,7 +71,9 @@ trait DaoAccessor
      */
     public function getEntityManager()
     {
-        return \SemanticPersistence\API\SemanticAPI::getAPI($this->conn_db)->getEntityManager();
+        $config = Config::getConfig();
+
+        return \SemanticPersistence\API\SemanticAPI::getAPI($config[$config['MODE']]['semantic']['db'])->getEntityManager();
     }
 
     /**
@@ -77,6 +81,8 @@ trait DaoAccessor
      */
     public function getAPI()
     {
-        return \SemanticPersistence\API\SemanticAPI::getAPI($this->conn_db);
+        $config = Config::getConfig();
+
+        return \SemanticPersistence\API\SemanticAPI::getAPI($config[$config['MODE']]['semantic']['db']);
     }
 }
