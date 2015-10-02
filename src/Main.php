@@ -94,8 +94,8 @@ class Main
     }
 
     /**
-     * @param $word1
-     * @param $word2
+     * @param $text1
+     * @param $text2
      * @return \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[]|null
      */
     public static function findSviazBetweenTwoWords($text1, $text2)
