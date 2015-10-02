@@ -69,7 +69,7 @@ class Syntax
             return $sviazi;
         }
 
-        $intersection_viazey=$this->intersectSviazeyAndRulesFromDB($sviazi, $syntax_rules);
+        $intersection_viazey = $this->intersectSviazeyAndRulesFromDB($sviazi, $syntax_rules);
         if (empty($intersection_viazey)) {
             //возвращаем те связи, которые попали на вход фильтра
             return $sviazi;
@@ -103,16 +103,15 @@ class Syntax
      */
     protected function intersectSviazeyAndRulesFromDB($sviazi, $syntax_rules)
     {
-        $intersection_viazey=[];
-        foreach($sviazi as $sviaz)
-        {
-            $sviaz_rule_id=$sviaz->getRule()->getDao()->getId();
-            /* @var \Aot\Sviaz\SequenceMember\Word\Base $main_member*/
-            $main_member=$sviaz->getMainSequenceMember();
-            $sviaz_main=$main_member->getSlovo()->getInitialForm();
-            /* @var \Aot\Sviaz\SequenceMember\Word\Base $depended_member*/
-            $depended_member=$sviaz->getDependedSequenceMember();
-            $sviaz_depended=$depended_member->getSlovo()->getInitialForm();
+        $intersection_viazey = [];
+        foreach ($sviazi as $sviaz) {
+            $sviaz_rule_id = $sviaz->getRule()->getDao()->getId();
+            /* @var \Aot\Sviaz\SequenceMember\Word\Base $main_member */
+            $main_member = $sviaz->getMainSequenceMember();
+            $sviaz_main = $main_member->getSlovo()->getInitialForm();
+            /* @var \Aot\Sviaz\SequenceMember\Word\Base $depended_member */
+            $depended_member = $sviaz->getDependedSequenceMember();
+            $sviaz_depended = $depended_member->getSlovo()->getInitialForm();
             foreach ($syntax_rules as $syntax_rule) {
 //                print_r(
 //                    [
@@ -121,20 +120,22 @@ class Syntax
 //                        ['sviaz_depended'=>$sviaz_depended,'rule_depended'=>$syntax_rule->getDepend()->getName()]
 //                    ]
 //                );
-                if ($sviaz_rule_id!==$syntax_rule->getId())
+                if ($sviaz_rule_id !== $syntax_rule->getId()) {
                     continue;
-                if ($sviaz_main!==$syntax_rule->getMain()->getName())
+                }
+                if ($sviaz_main !== $syntax_rule->getMain()->getName()) {
                     continue;
-                if ($sviaz_depended!==$syntax_rule->getDepend()->getName())
+                }
+                if ($sviaz_depended !== $syntax_rule->getDepend()->getName()) {
                     continue;
-                $intersection_viazey[]=$sviaz;
+                }
+                $intersection_viazey[] = $sviaz;
                 break;
             }
 
         }
         return $intersection_viazey;
     }
-
 
 
     /**
