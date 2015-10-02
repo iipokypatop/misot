@@ -107,14 +107,18 @@ class Syntax
         foreach($sviazi as $sviaz)
         {
             $sviaz_rule_id=$sviaz->getRule()->getDao()->getId();
-            $sviaz_main=$sviaz->getMainSequenceMember()->getSlovo()->getInitialForm();
-            $sviaz_depended=$sviaz->getDependedSequenceMember()->getSlovo()->getInitialForm();
+            /* @var \Aot\Sviaz\SequenceMember\Word\Base $main_member*/
+            $main_member=$sviaz->getMainSequenceMember();
+            $sviaz_main=$main_member->getSlovo()->getInitialForm();
+            /* @var \Aot\Sviaz\SequenceMember\Word\Base $depended_member*/
+            $depended_member=$sviaz->getDependedSequenceMember();
+            $sviaz_depended=$depended_member->getSlovo()->getInitialForm();
             foreach ($syntax_rules as $syntax_rule) {
 //                print_r(
 //                    [
-//                        ['sviaz'=>$sviaz_rule_id,'rule'=>$syntax_rule->getId()],
-//                        ['sviaz'=>$sviaz_main,'rule'=>$syntax_rule->getMain()->getName()],
-//                        ['sviaz'=>$sviaz_depended,'rule'=>$syntax_rule->getDepend()->getName()]
+//                        ['sviaz_id'=>$sviaz_rule_id,'rule_id'=>$syntax_rule->getId()],
+//                        ['sviaz_main'=>$sviaz_main,'rule_main'=>$syntax_rule->getMain()->getName()],
+//                        ['sviaz_depended'=>$sviaz_depended,'rule_depended'=>$syntax_rule->getDepend()->getName()]
 //                    ]
 //                );
                 if ($sviaz_rule_id!==$syntax_rule->getId())
