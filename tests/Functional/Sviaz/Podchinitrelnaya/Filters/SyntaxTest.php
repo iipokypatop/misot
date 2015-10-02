@@ -20,8 +20,6 @@ use Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq;
 use MivarTest\PHPUnitHelper;
 
 
-
-
 class SyntaxTest extends \AotTest\AotDataStorage
 {
     /**
@@ -30,15 +28,15 @@ class SyntaxTest extends \AotTest\AotDataStorage
     public function testLaunch()
     {
         //создаём последовательности из тестового примера
-        //$sequences=$this->getSviaziForTests();
+        $sequences = $this->getSviaziForTests();
         //Создаём фильтр
         $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
         $this->assertEquals(\Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::class, get_class($filter_syntax));
-        //$this->printSviazi(static::$sequences[0]);
+        $this->printSviazi($sequences[16]);
     }
 
     /**
-     * \brief Когда фильтр отработал
+     * \brief Когда фильтр отработал (обратный порядок слов)
      */
     public function testCase1()
     {
@@ -46,24 +44,34 @@ class SyntaxTest extends \AotTest\AotDataStorage
         $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
 
         //Конфликтующий набор связей
-        /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $res */
-        $res = $this->getNaborSviazeyForTestCase1();
+        /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $conflicting_group_of_sviazey */
+        $conflicting_group_of_sviazey = $this->getNaborSviazeyForTestCase1();
         //$this->printSviazi($res);//Печать связей
 
-        $res2 = $filter_syntax->run($res);
-        //$this->printSviazi($res2); //Печать связей
+        $sviazi_after_filter = $filter_syntax->run($conflicting_group_of_sviazey);
+        //$this->printSviazi($sviazi_after_filter); //Печать связей
 
-        $this->assertEquals([['облака','воздушные']],$this->getProstoyMassivSviazi($res2));
+        $this->assertEquals([['облака', 'воздушные']], $this->getProstoyMassivSviazi($sviazi_after_filter));
 
-        //print_r($this->getProstoyMassivSviazi($res));
-        //print_r($this->getProstoyMassivSviazi($res2));
+        //print_r($this->getProstoyMassivSviazi($conflicting_group_of_sviazey));
+        //print_r($this->getProstoyMassivSviazi($sviazi_after_filter));
     }
 
     public function getNaborSviazeyForTestCase1()
     {
         //создаём последовательности из тестового примера
-        $sequence=$this->getSviaziForTests()[16];
-        return [$sequence[3],$sequence[0],$sequence[0],$sequence[7]];
+        $number_sequence = 16;
+        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $number_sviaz1 = 3;
+        $number_sviaz2 = 0;
+        $number_sviaz3 = 0;
+        $number_sviaz4 = 7;
+        return [
+            $sequence[$number_sviaz1],
+            $sequence[$number_sviaz2],
+            $sequence[$number_sviaz3],
+            $sequence[$number_sviaz4]
+        ];
     }
 
 
@@ -74,23 +82,132 @@ class SyntaxTest extends \AotTest\AotDataStorage
     {
         //Создаём фильтр
         $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
-        /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $res */
+        /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $conflicting_group_of_sviazey */
         //Конфликтующий набор связей
-        $res = $this->getNaborSviazeyForTestCase2();
-        //print_r($this->getProstoyMassivSviazi($res));
-        $res2 = $filter_syntax->run($res);
-        //print_r($this->getProstoyMassivSviazi($res2));
+        $conflicting_group_of_sviazey = $this->getNaborSviazeyForTestCase2();
+        //print_r($this->getProstoyMassivSviazi($conflicting_group_of_sviazey));
+        $sviazi_after_filter = $filter_syntax->run($conflicting_group_of_sviazey);
+        //print_r($this->getProstoyMassivSviazi($sviazi_after_filter));
 
-        $this->assertEquals([['серые','горами'],['серые','облака'],['серые','легкие']],$this->getProstoyMassivSviazi($res2));
+        $this->assertEquals([['серые', 'горами'], ['серые', 'облака'], ['серые', 'легкие']],
+            $this->getProstoyMassivSviazi($sviazi_after_filter));
     }
 
     public function getNaborSviazeyForTestCase2()
     {
         //создаём последовательности из тестового примера
-        $sequence=$this->getSviaziForTests()[0];
-        return [$sequence[5],$sequence[6],$sequence[7]];
+        $number_sequence = 0;
+        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $number_sviaz1 = 5;
+        $number_sviaz2 = 6;
+        $number_sviaz3 = 7;
+        return [
+            $sequence[$number_sviaz1],
+            $sequence[$number_sviaz2],
+            $sequence[$number_sviaz3]
+        ];
     }
 
+    /**
+     * \brief Когда подаётся только одна связь
+     */
+    public function testCase3()
+    {
+        //Создаём фильтр
+        $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
+        /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $conflicting_group_of_sviazey */
+        //Конфликтующий набор связей
+        $conflicting_group_of_sviazey = $this->getNaborSviazeyForTestCase3();
+        //print_r($this->getProstoyMassivSviazi($conflicting_group_of_sviazey));
+        $sviazi_after_filter = $filter_syntax->run($conflicting_group_of_sviazey);
+        //print_r($this->getProstoyMassivSviazi($sviazi_after_filter));
+
+        $this->assertEquals([['серые', 'горами']], $this->getProstoyMassivSviazi($sviazi_after_filter));
+    }
+
+    public function getNaborSviazeyForTestCase3()
+    {
+        //создаём последовательности из тестового примера
+        $number_sequence = 0;
+        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $number_sviaz1 = 5;
+        return [
+            $sequence[$number_sviaz1]
+        ];
+    }
+
+    /**
+     * \brief Когда в БД найдено несколько связей
+     */
+    public function testCase4()
+    {
+        //Создаём фильтр
+        $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
+        /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $conflicting_group_of_sviazey */
+        //Конфликтующий набор связей
+        $conflicting_group_of_sviazey = $this->getNaborSviazeyForTestCase4();
+        //print_r($this->getProstoyMassivSviazi($conflicting_group_of_sviazey));
+        $sviazi_after_filter = $filter_syntax->run($conflicting_group_of_sviazey);
+        //print_r($this->getProstoyMassivSviazi($sviazi_after_filter));
+
+        $this->assertEquals([['серые', 'легкие'], ['серые', 'облака'], ['серые', 'краями']],
+            $this->getProstoyMassivSviazi($sviazi_after_filter));
+    }
+
+    public function getNaborSviazeyForTestCase4()
+    {
+        //создаём последовательности из тестового примера
+        $number_sequence = 16;
+        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $number_sviaz1 = 8;
+        $number_sviaz2 = 7;
+        $number_sviaz3 = 9;
+        return [
+            $sequence[$number_sviaz1],
+            $sequence[$number_sviaz2],
+            $sequence[$number_sviaz3]
+        ];
+    }
+
+
+    /**
+     * \brief Когда фильтр отработал (прямой порядок слов)
+     */
+    public function testCase5()
+    {
+        //Создаём фильтр
+        $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
+
+        //Конфликтующий набор связей
+        /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $conflicting_group_of_sviazey */
+        $conflicting_group_of_sviazey = $this->getNaborSviazeyForTestCase5();
+        //$this->printSviazi($conflicting_group_of_sviazey);//Печать связей
+
+        $sviazi_after_filter = $filter_syntax->run($conflicting_group_of_sviazey);
+        //$this->printSviazi($res2); //Печать связей
+
+        $this->assertEquals([['облака', 'воздушные']], $this->getProstoyMassivSviazi($sviazi_after_filter));
+
+        //print_r($this->getProstoyMassivSviazi($conflicting_group_of_sviazey));
+        //print_r($this->getProstoyMassivSviazi($sviazi_after_filter));
+    }
+
+    public function getNaborSviazeyForTestCase5()
+    {
+        //создаём последовательности из тестового примера
+        $number_sequence = 16;
+        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $number_sviaz1 = 0;
+        $number_sviaz2 = 3;
+        $number_sviaz3 = 0;
+        $number_sviaz4 = 7;
+        return [
+            $sequence[$number_sviaz1],
+            $sequence[$number_sviaz2],
+            $sequence[$number_sviaz3],
+            $sequence[$number_sviaz4]
+        ];
+    }
 
 
     /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi */
@@ -104,18 +221,19 @@ class SyntaxTest extends \AotTest\AotDataStorage
         echo "\n";
 
     }
+
     /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi */
     protected function getProstoyMassivSviazi($sviazi)
     {
-        $result=[];
-        foreach ($sviazi as $sviaz)
-        {
-            $result[]=[$sviaz->getMainSequenceMember()->getSlovo()->getText(),$sviaz->getDependedSequenceMember()->getSlovo()->getText()];
+        $result = [];
+        foreach ($sviazi as $sviaz) {
+            $result[] = [
+                $sviaz->getMainSequenceMember()->getSlovo()->getText(),
+                $sviaz->getDependedSequenceMember()->getSlovo()->getText()
+            ];
         }
         return $result;
     }
-
-
 
 
     public function getSviaziForTests()
@@ -309,6 +427,7 @@ TEXT;
 
         $serye[0] = $this->getMock(Prilagatelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($serye[0], 'text', 'серые');
+        PHPUnitHelper::setProtectedProperty($serye[0], 'initial_form', 'серый');
 
         $serye[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $serye[0]->forma = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::create();
@@ -319,6 +438,7 @@ TEXT;
 
         $serye[1] = $this->getMock(Prilagatelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($serye[1], 'text', 'серые');
+        PHPUnitHelper::setProtectedProperty($serye[1], 'initial_form', 'серый');
         $serye[1]->chislo = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $serye[1]->forma = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::create();
         $serye[1]->padeszh = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Vinitelnij::create();

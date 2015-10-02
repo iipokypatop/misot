@@ -81,8 +81,8 @@ class Syntax
         $syntax_rule = $syntax_rules[0];
 
         //возвращаем созданную связь
-        $created_sviaz=$this->createSviazFromSyntaxRule($sviazi[0], $syntax_rule);
-        if(is_null($created_sviaz)){
+        $created_sviaz = $this->createSviazFromSyntaxRule($sviazi[0], $syntax_rule);
+        if (is_null($created_sviaz)) {
             return $sviazi;
         }
         return [$created_sviaz];
