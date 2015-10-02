@@ -11,7 +11,6 @@ namespace Aot\Sviaz\Podchinitrelnaya\Filters;
 
 class Syntax
 {
-
     public static function create()
     {
         return new static();
@@ -65,7 +64,7 @@ class Syntax
         /** @var \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[] $syntax_rules */
         $syntax_rules = \Aot\Main::findSviazBetweenTwoWords($text1, $text2);
 
-        //Если получили массив, а не false (в случае неудачи)
+        //в случае неудачи (null)
         if (is_null($syntax_rules)) {
             //возвращаем те связи, которые попали на вход фильтра
             return $sviazi;

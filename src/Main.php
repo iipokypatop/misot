@@ -94,38 +94,44 @@ class Main
     }
 
     /**
-     * @param $text1
-     * @param $text2
+     * @param string $text1
+     * @param string $text2
      * @return \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[]|null
      */
     public static function findSviazBetweenTwoWords($text1, $text2)
     {
+        assert(is_string($text1));
+        assert(is_string($text2));
         //Соединение, АПИ
         $api = \SemanticPersistence\API\SemanticAPI::getAPI("host=192.168.10.51 dbname=mivar_semantic_new user=postgres password=@Mivar123User@");
 
         //ищем слова в БД. Помним, что слово должно быть только одно!
-        //todo Где проверять, вдруг слово 2 раза добавили?
+        /* @var \SemanticPersistence\Entities\SemanticEntities\Word $word1_obj*/
         $word1_obj = $api->findOneBy(\SemanticPersistence\Entities\SemanticEntities\Word::class, ['name' => $text1]);
-        if (!is_a($word1_obj, \SemanticPersistence\Entities\SemanticEntities\Word::class)) {
+        if (empty($word1_obj)) {
             return null;
         }
+        /* @var \SemanticPersistence\Entities\SemanticEntities\Word $word2_obj*/
         $word2_obj = $api->findOneBy(\SemanticPersistence\Entities\SemanticEntities\Word::class, ['name' => $text2]);
-        if (!is_a($word2_obj, \SemanticPersistence\Entities\SemanticEntities\Word::class)) {
+        if (empty($word2_obj)) {
             return null;
         }
         //достаём из БД правила. Их может быть несколько, что не есть хорошо
 
         //"Прямая последовательность"
         /** @var \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[] $syntax_rules_part1 */
-        $syntax_rules_part1 = $api->findBy(\SemanticPersistence\Entities\SemanticEntities\SyntaxRule::class,
-            ['main' => $word1_obj->getId(), 'depend' => $word2_obj->getId()]);
+        $syntax_rules_part1 = $api->findBy(
+            \SemanticPersistence\Entities\SemanticEntities\SyntaxRule::class,
+            ['main' => $word1_obj->getId(), 'depend' => $word2_obj->getId()]
+        );
 
         //"Обратная последовательность"
         /** @var \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[] $syntax_rules_part2 */
-        $syntax_rules_part2 = $api->findBy(\SemanticPersistence\Entities\SemanticEntities\SyntaxRule::class,
-            ['main' => $word2_obj->getId(), 'depend' => $word1_obj->getId()]);
+        $syntax_rules_part2 = $api->findBy(
+            \SemanticPersistence\Entities\SemanticEntities\SyntaxRule::class,
+            ['main' => $word2_obj->getId(), 'depend' => $word1_obj->getId()]
+        );
 
-        //Мёржим массивы
         $syntax_rules = array_merge($syntax_rules_part1, $syntax_rules_part2);
 
         //Проверяем, существуют ли правила
@@ -133,7 +139,7 @@ class Main
             return $syntax_rules;
         }
 
-        //возвращаем null если вообще никаких правил не найдено
+        //возвращаем null, если вообще никаких правил не найдено
         return null;
     }
 

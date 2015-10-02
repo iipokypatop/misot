@@ -28,11 +28,10 @@ class SyntaxTest extends \AotTest\AotDataStorage
     public function testLaunch()
     {
         //создаём последовательности из тестового примера
-        $sequences = $this->getSviaziForTests();
+        $sequences = $this->getSequencesForTests();
         //Создаём фильтр
         $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
-        $this->assertEquals(\Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::class, get_class($filter_syntax));
-        $this->printSviazi($sequences[16]);
+        //$this->printSviazi($sequences[16]);
     }
 
     /**
@@ -61,7 +60,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
     {
         //создаём последовательности из тестового примера
         $number_sequence = 16;
-        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $sequence = $this->getSequencesForTests()[$number_sequence];
         $number_sviaz1 = 3;
         $number_sviaz2 = 0;
         $number_sviaz3 = 0;
@@ -97,7 +96,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
     {
         //создаём последовательности из тестового примера
         $number_sequence = 0;
-        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $sequence = $this->getSequencesForTests()[$number_sequence];
         $number_sviaz1 = 5;
         $number_sviaz2 = 6;
         $number_sviaz3 = 7;
@@ -129,7 +128,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
     {
         //создаём последовательности из тестового примера
         $number_sequence = 0;
-        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $sequence = $this->getSequencesForTests()[$number_sequence];
         $number_sviaz1 = 5;
         return [
             $sequence[$number_sviaz1]
@@ -158,7 +157,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
     {
         //создаём последовательности из тестового примера
         $number_sequence = 16;
-        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $sequence = $this->getSequencesForTests()[$number_sequence];
         $number_sviaz1 = 8;
         $number_sviaz2 = 7;
         $number_sviaz3 = 9;
@@ -196,7 +195,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
     {
         //создаём последовательности из тестового примера
         $number_sequence = 16;
-        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $sequence = $this->getSequencesForTests()[$number_sequence];
         $number_sviaz1 = 0;
         $number_sviaz2 = 3;
         $number_sviaz3 = 0;
@@ -236,7 +235,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
     }
 
 
-    public function getSviaziForTests()
+    public function getSequencesForTests()
     {
         //СОздаём процессор
         $processor = \Aot\Sviaz\Processor\Base::create();
@@ -308,7 +307,7 @@ TEXT;
 
         $gorami[0] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($gorami[0], 'text', 'горами');
-
+        PHPUnitHelper::setProtectedProperty($gorami[0], 'initial_form', 'гора');
         $gorami[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $gorami[0]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $gorami[0]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -318,6 +317,7 @@ TEXT;
 
         $poiavilis[0] = $this->getMock(Glagol::class, ['_']);
         PHPUnitHelper::setProtectedProperty($poiavilis[0], 'text', 'появились');
+        PHPUnitHelper::setProtectedProperty($poiavilis[0], 'initial_form', 'появиться');
         $poiavilis[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Mnozhestvennoe::create();
         $poiavilis[0]->litso = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Tretie::create();
         $poiavilis[0]->naklonenie = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Izyavitelnoe::create();
@@ -328,6 +328,7 @@ TEXT;
         $poiavilis[0]->vozvratnost = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Nevozvratnyj::create();
         $poiavilis[0]->vremya = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Proshedshee::create();
         $poiavilis[0]->razryad = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::create();
+
 
         $oblaka[0] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($oblaka[0], 'text', 'облака');
@@ -363,6 +364,7 @@ TEXT;
 
         $legkie[0] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($legkie[0], 'text', 'легкие');
+        PHPUnitHelper::setProtectedProperty($legkie[0], 'initial_form', 'легкий');
 
         $legkie[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $legkie[0]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
@@ -373,6 +375,7 @@ TEXT;
 
         $legkie[1] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($legkie[1], 'text', 'легкие');
+        PHPUnitHelper::setProtectedProperty($legkie[1], 'initial_form', 'легкий');
         $legkie[1]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $legkie[1]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $legkie[1]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -382,6 +385,7 @@ TEXT;
 
         $legkie[2] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($legkie[2], 'text', 'легкие');
+        PHPUnitHelper::setProtectedProperty($legkie[2], 'initial_form', 'легкий');
         $legkie[2]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe::create();
         $legkie[2]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $legkie[2]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -391,6 +395,7 @@ TEXT;
 
         $legkie[3] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($legkie[3], 'text', 'легкое');
+        PHPUnitHelper::setProtectedProperty($legkie[3], 'initial_form', 'легкий');
         $legkie[3]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $legkie[3]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $legkie[3]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
@@ -454,6 +459,7 @@ TEXT;
 
         $rvanymi[0] = $this->getMock(Prilagatelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($rvanymi[0], 'text', 'рваными');
+        PHPUnitHelper::setProtectedProperty($rvanymi[0], 'initial_form', 'рваный');
         $rvanymi[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $rvanymi[0]->forma = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::create();
         $rvanymi[0]->padeszh = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Tvoritelnij::create();
@@ -464,6 +470,7 @@ TEXT;
 
         $krayami[0] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($krayami[0], 'text', 'краями');
+        PHPUnitHelper::setProtectedProperty($krayami[0], 'initial_form', 'край');
         $krayami[0]->chislo = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::create();
         $krayami[0]->naritcatelnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::create();
         $krayami[0]->odushevlyonnost = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::create();
