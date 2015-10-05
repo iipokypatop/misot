@@ -102,21 +102,20 @@ class Main
     {
         assert(is_string($text1));
         assert(is_string($text2));
-        //Соединение, АПИ
+
         $api = \SemanticPersistence\API\SemanticAPI::getAPI("host=192.168.10.51 dbname=mivar_semantic_new user=postgres password=@Mivar123User@");
 
         //ищем слова в БД. Помним, что слово должно быть только одно!
-        /* @var \SemanticPersistence\Entities\SemanticEntities\Word $word1_obj*/
+        /* @var \SemanticPersistence\Entities\SemanticEntities\Word $word1_obj */
         $word1_obj = $api->findOneBy(\SemanticPersistence\Entities\SemanticEntities\Word::class, ['name' => $text1]);
         if (empty($word1_obj)) {
             return null;
         }
-        /* @var \SemanticPersistence\Entities\SemanticEntities\Word $word2_obj*/
+        /* @var \SemanticPersistence\Entities\SemanticEntities\Word $word2_obj */
         $word2_obj = $api->findOneBy(\SemanticPersistence\Entities\SemanticEntities\Word::class, ['name' => $text2]);
         if (empty($word2_obj)) {
             return null;
         }
-        //достаём из БД правила. Их может быть несколько, что не есть хорошо
 
         //"Прямая последовательность"
         /** @var \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[] $syntax_rules_part1 */
@@ -134,12 +133,12 @@ class Main
 
         $syntax_rules = array_merge($syntax_rules_part1, $syntax_rules_part2);
 
-        //Проверяем, существуют ли правила
+        //Если
         if (count($syntax_rules) > 0) {
             return $syntax_rules;
         }
 
-        //возвращаем null, если вообще никаких правил не найдено
+        //если вообще никаких правил не найдено
         return null;
     }
 
@@ -163,7 +162,6 @@ class Main
         if ($max_sviazi_count === 0) {
             return null;
         }
-
 
         return $sequences[$sviazi_count[$max_sviazi_count][0]];
     }
