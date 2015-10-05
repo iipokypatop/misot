@@ -18,7 +18,7 @@
     "mivar-projects/loader": "dev-master",
     "mivar-projects/test-utils": "dev-master",
     "mivar-projects/text-libraries": "dev-develop",
-    "txt/mivar_text_semantic": "dev-master",
+    "txt/mivar_text_semantic": "dev-master-without-model",
     "mivar-projects/semantic-db-api": "dev-develop"
   },
   "repositories": [

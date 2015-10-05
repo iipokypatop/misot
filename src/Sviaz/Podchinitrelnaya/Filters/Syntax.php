@@ -145,6 +145,8 @@ class Syntax
      */
     protected function createSviazFromSyntaxRule($sviaz, $syntax_rule)
     {
+        throw new \RuntimeException("not tested yet...");
+
         /** @var \Aot\Sviaz\SequenceMember\Word\Base $main */
         $main = $sviaz->getMainSequenceMember();
 

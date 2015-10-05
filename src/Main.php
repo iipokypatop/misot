@@ -103,7 +103,9 @@ class Main
         assert(is_string($text1));
         assert(is_string($text2));
 
-        $api = \SemanticPersistence\API\SemanticAPI::getAPI("host=192.168.10.51 dbname=mivar_semantic_new user=postgres password=@Mivar123User@");
+        $config = \Aot\Tools\Config::getConfig();
+
+        $api = \SemanticPersistence\API\SemanticAPI::getAPI($config[$config['MODE']]['semantic']['db']);
 
         //ищем слова в БД. Помним, что слово должно быть только одно!
         /* @var \SemanticPersistence\Entities\SemanticEntities\Word $word1_obj */
