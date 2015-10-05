@@ -60,12 +60,12 @@ class Syntax
             return $sviazi;
         }
 
-        $intersection_viazey = $this->intersectSviazeyAndRulesFromDB($sviazi, $syntax_rules);
-        if (empty($intersection_viazey)) {
+        $intersection_sviazey = $this->intersectSviazeyAndRulesFromDB($sviazi, $syntax_rules);
+        if (empty($intersection_sviazey)) {
             //возвращаем те связи, которые попали на вход фильтра
             return $sviazi;
         }
-        return $intersection_viazey;
+        return $intersection_sviazey;
     }
 
 
@@ -74,7 +74,7 @@ class Syntax
      * @param \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[] $syntax_rules
      * @return \Aot\Sviaz\Podchinitrelnaya\Base[]
      */
-    protected function intersectSviazeyAndRulesFromDB($sviazi, $syntax_rules)
+    protected function intersectSviazeyAndRulesFromDB(array $sviazi, array $syntax_rules)
     {
         foreach ($sviazi as $sviaz) {
             assert(is_a($sviaz, \Aot\Sviaz\Podchinitrelnaya\Base::class), true);
@@ -85,30 +85,56 @@ class Syntax
         }
 
         $intersection_viazey = [];
+        $array_of_rules_in_sviazah = [];
         foreach ($sviazi as $sviaz) {
             $sviaz_rule_id = $sviaz->getRule()->getDao()->getId();
+            if ($sviaz_rule_id === null) {
+                continue;
+            }
             /* @var \Aot\Sviaz\SequenceMember\Word\Base $main_member */
             $main_member = $sviaz->getMainSequenceMember();
-            $sviaz_main_initial_form = $main_member->getSlovo()->getInitialForm();
             /* @var \Aot\Sviaz\SequenceMember\Word\Base $depended_member */
             $depended_member = $sviaz->getDependedSequenceMember();
-            $sviaz_depended_initial_form = $depended_member->getSlovo()->getInitialForm();
-            foreach ($syntax_rules as $syntax_rule) {
-                if ($sviaz_rule_id !== $syntax_rule->getId()) {
-                    continue;
-                }
-                if ($sviaz_main_initial_form !== $syntax_rule->getMain()->getName()) {
-                    continue;
-                }
-                if ($sviaz_depended_initial_form !== $syntax_rule->getDepend()->getName()) {
-                    continue;
-                }
-                $intersection_viazey[] = $sviaz;
-                break;
-            }
-
+            $key = $this->createKey(
+                $sviaz_rule_id,
+                $main_member->getSlovo()->getInitialForm(),
+                $depended_member->getSlovo()->getInitialForm()
+            );
+            $array_of_rules_in_sviazah[$key] = $sviaz;
         }
-        return $intersection_viazey;
+
+        foreach ($syntax_rules as $syntax_rule) {
+            $key = $this->createKey(
+                $syntax_rule->getId(),
+                $syntax_rule->getMain()->getName(),
+                $syntax_rule->getDepend()->getName()
+            );
+            if (array_key_exists($key, $array_of_rules_in_sviazah)) {
+                $intersection_viazey[] = $array_of_rules_in_sviazah[$key];
+            }
+        }
+        return
+            $intersection_viazey;
+    }
+
+
+    /**
+     * @param string $id
+     * @param string $main
+     * @param string $depended
+     * @return string
+     */
+    protected function createKey($id, $main, $depended)
+    {
+        assert(is_string($id));
+        assert(is_numeric($id));
+        assert(is_string($main));
+        assert(is_string($depended));
+        return join("_", [
+            $id,
+            $main,
+            $depended,
+        ]);
     }
 
 
