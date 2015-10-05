@@ -50,7 +50,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
         $sviazi_after_filter = $filter_syntax->run($conflicting_group_of_sviazey);
         //$this->printSviazi($sviazi_after_filter); //Печать связей
 
-        $this->assertEquals([['облака', 'воздушные'],['облака', 'воздушные']], $this->getProstoyMassivSviazi($sviazi_after_filter));
+        $this->assertEquals([['облака', 'воздушные']], $this->getProstoyMassivSviazi($sviazi_after_filter));
 
         //print_r($this->getProstoyMassivSviazi($conflicting_group_of_sviazey));
         //print_r($this->getProstoyMassivSviazi($sviazi_after_filter));
@@ -185,7 +185,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
         $sviazi_after_filter = $filter_syntax->run($conflicting_group_of_sviazey);
         //$this->printSviazi($res2); //Печать связей
 
-        $this->assertEquals([['облака', 'воздушные'],['облака', 'воздушные']], $this->getProstoyMassivSviazi($sviazi_after_filter));
+        $this->assertEquals([['облака', 'воздушные']], $this->getProstoyMassivSviazi($sviazi_after_filter));
 
         //print_r($this->getProstoyMassivSviazi($conflicting_group_of_sviazey));
         //print_r($this->getProstoyMassivSviazi($sviazi_after_filter));
@@ -507,7 +507,7 @@ RULE;
             $asserted_depended
         );
 
-        PHPUnitHelper::setProtectedProperty($rule->getDao(), 'id', '1');
+        PHPUnitHelper::setProtectedProperty($rule->getDao(), 'id', "1");
         //print_r("id:".$rule->getDao()->getId());
 
 
@@ -561,7 +561,7 @@ RULE;
             $asserted_depended
         );
 
-        PHPUnitHelper::setProtectedProperty($rule->getDao(), 'id', '2');
+        PHPUnitHelper::setProtectedProperty($rule->getDao(), 'id', "2");
 
         $rule->addChecker(
             \Aot\Sviaz\Rule\Checker\Registry::getObjectById(
