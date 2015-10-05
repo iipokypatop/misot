@@ -60,12 +60,12 @@ class Syntax
             return $sviazi;
         }
 
-        $intersection_viazey = $this->intersectSviazeyAndRulesFromDB($sviazi, $syntax_rules);
-        if (empty($intersection_viazey)) {
+        $intersection_sviazey = $this->intersectSviazeyAndRulesFromDB($sviazi, $syntax_rules);
+        if (empty($intersection_sviazey)) {
             //возвращаем те связи, которые попали на вход фильтра
             return $sviazi;
         }
-        return $intersection_viazey;
+        return $intersection_sviazey;
     }
 
 
@@ -74,7 +74,7 @@ class Syntax
      * @param \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[] $syntax_rules
      * @return \Aot\Sviaz\Podchinitrelnaya\Base[]
      */
-    protected function intersectSviazeyAndRulesFromDB($sviazi, $syntax_rules)
+    protected function intersectSviazeyAndRulesFromDB(array $sviazi, array $syntax_rules)
     {
         foreach ($sviazi as $sviaz) {
             assert(is_a($sviaz, \Aot\Sviaz\Podchinitrelnaya\Base::class), true);
