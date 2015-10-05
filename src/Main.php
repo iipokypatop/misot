@@ -116,8 +116,6 @@ class Main
         if (empty($word2_obj)) {
             return null;
         }
-        //достаём из БД правила. Их может быть несколько, что не есть хорошо
-
 
         //"Прямая последовательность"
         /** @var \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[] $syntax_rules_part1 */
@@ -164,7 +162,6 @@ class Main
         if ($max_sviazi_count === 0) {
             return null;
         }
-
 
         return $sequences[$sviazi_count[$max_sviazi_count][0]];
     }
