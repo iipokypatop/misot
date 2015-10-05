@@ -118,6 +118,7 @@ class Main
         }
         //достаём из БД правила. Их может быть несколько, что не есть хорошо
 
+
         //"Прямая последовательность"
         /** @var \SemanticPersistence\Entities\SemanticEntities\SyntaxRule[] $syntax_rules_part1 */
         $syntax_rules_part1 = $api->findBy(
