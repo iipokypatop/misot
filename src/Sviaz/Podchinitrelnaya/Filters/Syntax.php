@@ -10,7 +10,6 @@ namespace Aot\Sviaz\Podchinitrelnaya\Filters;
 
 class Syntax
 {
-
     public static function create()
     {
         return new static();
@@ -24,10 +23,11 @@ class Syntax
     /**
      * @param \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi
      * @return \Aot\Sviaz\Podchinitrelnaya\Base[]
+     *
+     * Примечание: для поиска в БД правил используются слова, взятые из первой связи.
      */
     public function run(array $sviazi)
     {
-        ///Проверяем все связи на то, что они являются связями
         foreach ($sviazi as $sviaz) {
             assert(is_a($sviaz, \Aot\Sviaz\Podchinitrelnaya\Base::class), true);
         }
@@ -37,25 +37,16 @@ class Syntax
             return $sviazi;
         }
 
-        //Берём главное слово из первой связи. Т.к. не важно из какой связи брать слово,
-        // ведь все связи связывают два одних и тех же слова,
-        // просто по разным правилам и в разные стороны
         $main = $sviazi[0]->getMainSequenceMember();
-        //Необходима проверка, т.к. далее мы берём текст слова. Не будет проверки, придёт какая-нибудь запятая и всё полетит
         if (!$main instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
             return $sviazi;
         }
 
-        //Берём зависимое слово из первой связи. Т.к. не важно из какой связи брать слово,
-        // ведь все связи связывают два одних и тех же слова,
-        // просто по разным правилам и в разные стороны
         $depended = $sviazi[0]->getDependedSequenceMember();
-        //Необходима проверка, т.к. далее мы берём текст слова. Не будет проверки, придёт какая-нибудь запятая и всё полетит
         if (!$depended instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
             return $sviazi;
         }
 
-        //Подкачиваем текст
         $text1 = $main->getSlovo()->getInitialForm();
         $text2 = $depended->getSlovo()->getInitialForm();
 
@@ -69,30 +60,12 @@ class Syntax
             return $sviazi;
         }
 
-        $intersection_viazey=$this->intersectSviazeyAndRulesFromDB($sviazi, $syntax_rules);
+        $intersection_viazey = $this->intersectSviazeyAndRulesFromDB($sviazi, $syntax_rules);
         if (empty($intersection_viazey)) {
             //возвращаем те связи, которые попали на вход фильтра
             return $sviazi;
         }
         return $intersection_viazey;
-
-
-        //ПРошлая версия, вызывающая генерацию связей
-//        if (count($syntax_rules) > 1) {
-//            //возвращаем те связи, которые попали на вход фильтра
-//            return $sviazi;
-//        }
-//
-//        //Связи, на основе правил, полученных из БД
-//        //Если всё ок, то в массиве лишь одно правило
-//        $syntax_rule = $syntax_rules[0];
-//
-//        //возвращаем созданную связь
-//        $created_sviaz = $this->createSviazFromSyntaxRule($sviazi[0], $syntax_rule);
-//        if (is_null($created_sviaz)) {
-//            return $sviazi;
-//        }
-//        return [$created_sviaz];
     }
 
 
@@ -103,34 +76,40 @@ class Syntax
      */
     protected function intersectSviazeyAndRulesFromDB($sviazi, $syntax_rules)
     {
-        $intersection_viazey=[];
-        foreach($sviazi as $sviaz)
-        {
-            $sviaz_rule_id=$sviaz->getRule()->getDao()->getId();
-            $sviaz_main=$sviaz->getMainSequenceMember()->getSlovo()->getInitialForm();
-            $sviaz_depended=$sviaz->getDependedSequenceMember()->getSlovo()->getInitialForm();
+        foreach ($sviazi as $sviaz) {
+            assert(is_a($sviaz, \Aot\Sviaz\Podchinitrelnaya\Base::class), true);
+        }
+
+        foreach ($syntax_rules as $syntax_rule) {
+            assert(is_a($syntax_rule, \SemanticPersistence\Entities\SemanticEntities\SyntaxRule::class), true);
+        }
+
+        $intersection_viazey = [];
+        foreach ($sviazi as $sviaz) {
+            $sviaz_rule_id = $sviaz->getRule()->getDao()->getId();
+            /* @var \Aot\Sviaz\SequenceMember\Word\Base $main_member */
+            $main_member = $sviaz->getMainSequenceMember();
+            $sviaz_main_initial_form = $main_member->getSlovo()->getInitialForm();
+            /* @var \Aot\Sviaz\SequenceMember\Word\Base $depended_member */
+            $depended_member = $sviaz->getDependedSequenceMember();
+            $sviaz_depended_initial_form = $depended_member->getSlovo()->getInitialForm();
             foreach ($syntax_rules as $syntax_rule) {
-//                print_r(
-//                    [
-//                        ['sviaz'=>$sviaz_rule_id,'rule'=>$syntax_rule->getId()],
-//                        ['sviaz'=>$sviaz_main,'rule'=>$syntax_rule->getMain()->getName()],
-//                        ['sviaz'=>$sviaz_depended,'rule'=>$syntax_rule->getDepend()->getName()]
-//                    ]
-//                );
-                if ($sviaz_rule_id!==$syntax_rule->getId())
+                if ($sviaz_rule_id !== $syntax_rule->getId()) {
                     continue;
-                if ($sviaz_main!==$syntax_rule->getMain()->getName())
+                }
+                if ($sviaz_main_initial_form !== $syntax_rule->getMain()->getName()) {
                     continue;
-                if ($sviaz_depended!==$syntax_rule->getDepend()->getName())
+                }
+                if ($sviaz_depended_initial_form !== $syntax_rule->getDepend()->getName()) {
                     continue;
-                $intersection_viazey[]=$sviaz;
+                }
+                $intersection_viazey[] = $sviaz;
                 break;
             }
 
         }
         return $intersection_viazey;
     }
-
 
 
     /**
@@ -175,40 +154,3 @@ class Syntax
 
 
 }
-
-/*
- * НА БУДУЩЕЕ!!! ВЫНЕСТИ В ДРУГОЙ МЕТОД
- *
- *
- * //оббегаем все связи и сравниваем их
-    foreach ($sviazi as $sviaz) {
-
-        //Если Id совпадают, значит перед нами таже самая связь, пропускаем её
-        if ($sviaz_from_sequence->getId() === $id_sviaz) {
-            continue;
-        }
-        //Если цикл дошёл сюда, значит это другая связь, нужно проверить, есть ли конфликт
-        $main_member_sequence = $sviaz_from_sequence->getMainSequenceMember();
-        $depended_member_sequence = $sviaz_from_sequence->getDependedSequenceMember();
-        //Если связь повторяется (не важно в какую сторону она будет направлена) нужно идти в БД и вытаскивать связь от туда
-        if (
-            ($main_member_sequence === $main_member_sviaz && $depended_member_sequence === $depended_member_sviaz)
-            ||
-            ($main_member_sequence === $depended_member_sviaz && $depended_member_sequence === $main_member_sviaz)
-        ) {
-            // получаем начальные формы слов
-            $member1_initial_form = $main_member_sviaz->getSlovo()->getInitialForm();
-            $member2_initial_form = $depended_member_sviaz->getSlovo()->getInitialForm();
-
-            //Создаём слова
-            $word1 = new \SemanticPersistence\Entities\SemanticEntities\Word;
-            $word2 = new \SemanticPersistence\Entities\SemanticEntities\Word;
-            $word1->setName($member1_initial_form);
-            $word2->setName($member2_initial_form);
-
-            //Ищем в БД, есть ли связь
-            \Aot\Main::findSviazBetweenTwoWords($word1, $word2);
-        }
-
-    }
-*/
