@@ -31,7 +31,7 @@ abstract class Slovo
     public function setInitialForm($initial_form)
     {
         assert(is_string($initial_form));
-        assert(''!==($initial_form));
+        assert('' !== ($initial_form));
         $this->initial_form = $initial_form;
     }
 
@@ -195,8 +195,10 @@ abstract class Slovo
                 } elseif ($render_as === self::RENDER_HTML
                 ) {
                     $tds[] = "<td>-</td>";
-                } else if ($render_as === self::RENDER_SHORT) {
-                    // none
+                } else {
+                    if ($render_as === self::RENDER_SHORT) {
+                        // none
+                    }
                 }
 
                 if (!isset($this->deadRows[$group_id])) {
@@ -214,15 +216,20 @@ abstract class Slovo
             }
             if ($render_as === self::RENDER_NULL) {
 
-            } else if ($render_as === self::RENDER_HTML) {
-                $color = "rgb(" . join(',', [
-                        255 - floor($morphology_tmp[$group_id] % 10 * 30),
-                        255 - floor($morphology_tmp[$group_id] % 10 * 30),
-                        255 - floor($morphology_tmp[$group_id] % 10 * 30),
-                    ]) . ")";
-                $tds[] = "<td title='{$name_long}' style='background-color: {$color}'>" . join(";", $name_short) . ";" . "</td>";
-            } else if ($render_as === self::RENDER_SHORT) {
-                $tds[] = join(";", $name_short) . ";";
+            } else {
+                if ($render_as === self::RENDER_HTML) {
+                    $color = "rgb(" . join(',', [
+                            255 - floor($morphology_tmp[$group_id] % 10 * 30),
+                            255 - floor($morphology_tmp[$group_id] % 10 * 30),
+                            255 - floor($morphology_tmp[$group_id] % 10 * 30),
+                        ]) . ")";
+                    $tds[] = "<td title='{$name_long}' style='background-color: {$color}'>" . join(";",
+                            $name_short) . ";" . "</td>";
+                } else {
+                    if ($render_as === self::RENDER_SHORT) {
+                        $tds[] = join(";", $name_short) . ";";
+                    }
+                }
             }
 
             $this->deadRows[$group_id] = false;
