@@ -201,6 +201,7 @@ class Base
                 /* @var \Aot\Sviaz\SequenceMember\Word\Base $depended_candidate */
                 foreach ($sequence as $depended_candidate) {
 
+
                     if ($depended_candidate === $main_candidate) {
                         continue;
                     }

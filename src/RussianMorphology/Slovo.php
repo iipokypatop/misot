@@ -18,7 +18,7 @@ abstract class Slovo
     protected $initial_form;
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getInitialForm()
     {
@@ -31,7 +31,7 @@ abstract class Slovo
     public function setInitialForm($initial_form)
     {
         assert(is_string($initial_form));
-
+        assert(''!==($initial_form));
         $this->initial_form = $initial_form;
     }
 
