@@ -23,6 +23,8 @@ class Syntax
     /**
      * @param \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi
      * @return \Aot\Sviaz\Podchinitrelnaya\Base[]
+     *
+     * Примечание: для поиска в БД правил используются слова, взятые из первой связи.
      */
     public function run(array $sviazi)
     {
@@ -35,21 +37,16 @@ class Syntax
             return $sviazi;
         }
 
-        //Берём главное слово из первой связи. Т.к. не важно из какой связи брать слово,
-        // ведь все связи связывают два одних и тех же слова,
-        // просто по разным правилам и в разные стороны
         $main = $sviazi[0]->getMainSequenceMember();
         if (!$main instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
             return $sviazi;
         }
 
-        //Аналогично с зависимым словом
         $depended = $sviazi[0]->getDependedSequenceMember();
         if (!$depended instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
             return $sviazi;
         }
 
-        //Подкачиваем текст
         $text1 = $main->getSlovo()->getInitialForm();
         $text2 = $depended->getSlovo()->getInitialForm();
 
