@@ -127,6 +127,7 @@ class Syntax
     protected function createKey($id, $main, $depended)
     {
         assert(is_string($id));
+        assert(is_numeric($id));
         assert(is_string($main));
         assert(is_string($depended));
         return join("_", [
