@@ -8,35 +8,44 @@
 
 namespace Aot\Orphography;
 
-
 class Suggestion
 {
-    /* $var \Aot\Orphography\Word[] $words */
+    /** @var \Aot\Orphography\Word[] $words */
     protected $words = [];
-    /* $var \Aot\Orphography\Dictionary $dictionary */
+
+    /** @var \Aot\Orphography\Dictionary\Base $dictionary */
     protected $dictionary;
-    /* $var int[] $weights */
+
+    /** @var int[] $weights */
     protected $weights = [];
 
     /**
      * @param \Aot\Orphography\Word[] $words
      * @param int[] $weights
-     * @param \Aot\Orphography\Dictionary $dictionary
+     * @param \Aot\Orphography\Dictionary\Base $dictionary
      */
-    protected function __construct($words, $weights, $dictionary)
+    protected function __construct(array $words, array $weights, $dictionary)
     {
-        $this->setWords($words);
-        $this->setWeights($weights);
-        $this->setDictionary($dictionary);
+        foreach ($words as $word) {
+            assert(is_a($word, \Aot\Orphography\Word::class));
+        }
+
+        foreach ($weights as $weight) {
+            assert(is_int($weight));
+        }
+
+        $this->words = $words;
+        $this->weights = $weights;
+        $this->dictionary = $dictionary;
     }
 
     /**
      * @param \Aot\Orphography\Word[] $words
      * @param int[] $weights
-     * @param \Aot\Orphography\Dictionary $dictionary
+     * @param \Aot\Orphography\Dictionary\Base $dictionary
      * @return static
      */
-    public static function create($words, $weights, $dictionary)
+    public static function create(array $words, $weights, $dictionary)
     {
         return new static($words, $weights, $dictionary);
     }
@@ -50,27 +59,11 @@ class Suggestion
     }
 
     /**
-     * @param array $words
-     */
-    public function setWords($words)
-    {
-        $this->words = $words;
-    }
-
-    /**
      * @return mixed
      */
     public function getDictionary()
     {
         return $this->dictionary;
-    }
-
-    /**
-     * @param mixed $dictionary
-     */
-    public function setDictionary($dictionary)
-    {
-        $this->dictionary = $dictionary;
     }
 
     /**
@@ -80,12 +73,5 @@ class Suggestion
     {
         return $this->weights;
     }
-
-    /**
-     * @param array $weights
-     */
-    public function setWeights($weights)
-    {
-        $this->weights = $weights;
-    }
 }
+
