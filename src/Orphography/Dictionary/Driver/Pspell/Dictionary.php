@@ -12,6 +12,7 @@ namespace Aot\Orphography\Dictionary\Driver\Pspell;
 class Dictionary extends \Aot\Orphography\Dictionary\Base
 {
     const DICTIONARY_RU = 'ru';
+    const DICTIONARY_EN = 'en';
 
     const LEVENSHTEIN_COST_INS = 1;
     const LEVENSHTEIN_COST_REP = 1;
@@ -30,7 +31,8 @@ class Dictionary extends \Aot\Orphography\Dictionary\Base
     protected static function getAvailableStdDictionary()
     {
         return [
-            self::DICTIONARY_RU
+            self::DICTIONARY_RU,
+            self::DICTIONARY_EN
         ];
     }
 
@@ -74,7 +76,7 @@ class Dictionary extends \Aot\Orphography\Dictionary\Base
      */
     public function check(\Aot\Orphography\Word $word)
     {
-        return pspell_check($this->getDictionaryLink(), $word);
+        return pspell_check($this->getDictionaryLink(), $word->getText());
     }
 
     /**
@@ -83,11 +85,15 @@ class Dictionary extends \Aot\Orphography\Dictionary\Base
      */
     public function suggest(\Aot\Orphography\Word $word)
     {
-        throw new \RuntimeException("not implemented yet");
-
-        $variants = pspell_suggest($this->pspell_link, $word);
-
-        return;
+        $variants = pspell_suggest($this->pspell_link, $word->getText());
+        $variants_word = [];
+        $weights_word = [];
+        foreach ($variants as $variant) {
+            $variant_word = \Aot\Orphography\Word::create($variant);
+            $variants_word[] = $variant_word;
+            $weights_word[] = $this->weight($variant_word, $word);
+        }
+        return \Aot\Orphography\Suggestion::create($variants_word, $weights_word, $this);
     }
 
     /**

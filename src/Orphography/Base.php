@@ -11,11 +11,24 @@ namespace Aot\Orphography;
 
 class Base
 {
+
+    protected function __construct()
+    {
+    }
+
+    public static function create()
+    {
+        return new static();
+    }
+
+
     /**
      * @param string $text Обычный текст
+     * @return Word[]
      */
     public function run($text)
     {
+        $timestart = microtime();
         assert(is_string($text));
         $texts_of_words = $this->parseStr($text);
 
@@ -24,9 +37,14 @@ class Base
             $words[] = $this->builder($text_of_word);
         }
 
-        $this->execute($words);
+        $dictionares[] = \Aot\Orphography\Dictionary\Driver\Pspell\Dictionary::createStd("ru");
+        $dictionares[] = \Aot\Orphography\Dictionary\Driver\Pspell\Dictionary::createStd("en");
 
-        return $this->getWords();
+        $this->execute($words, $dictionares);
+        $timestop = microtime();
+
+        print_r("Затраченное время: " . ($timestop - $timestart) . "\n");
+        return $words;
     }
 
     /**
@@ -36,9 +54,9 @@ class Base
     protected function parseStr($text)
     {
         assert(is_string($text));
-        //todo предобработка или соглашение о "не буквах"
-        //todo заменить preg_match_all
-        $texts_of_words = explode(" ", $text);
+        //todo поправить
+        $texts_of_words = preg_split('/[\s,?!\.:\"\"0-9]+/', $text);
+        //$texts_of_words = explode(" ", $text);
         return $texts_of_words;
     }
 
@@ -56,13 +74,22 @@ class Base
 
     /**
      * @param \Aot\Orphography\Word[] $words
+     * @param \Aot\Orphography\Dictionary\Driver\Pspell\Dictionary[] $dictionaries
      */
-    protected function execute($words)
+    protected function execute(array $words, array $dictionaries)
     {
-
         foreach ($words as $word) {
-            $word->getText();
-            //вызов сбора совпадений
+            foreach ($dictionaries as $dictionary) {
+                if ($dictionary->check($word)) {
+                    $matching = \Aot\Orphography\Matching::create($dictionary, 1);
+                } else {
+                    $matching = \Aot\Orphography\Matching::create($dictionary, 0);
+                }
+                /** @var \Aot\Orphography\Suggestion $suggestion_for_word */
+                $suggestion_for_word = $dictionary->suggest($word);
+                $word->addSuggestion($suggestion_for_word);
+                $word->addMatching($matching);
+            }
         }
     }
 }

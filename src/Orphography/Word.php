@@ -44,4 +44,20 @@ class Word
         $this->text = $text;
     }
 
+    /**
+     * @param Suggestion $suggestion
+     */
+    public function addSuggestion($suggestion)
+    {
+        $this->suggestions[] = $suggestion;
+    }
+
+    /**
+     * @param Matching $matching
+     */
+    public function addMatching($matching)
+    {
+        $this->matchings[] = $matching;
+    }
+
 }
