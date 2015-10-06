@@ -12,12 +12,21 @@ namespace Aot\Orphography;
 class Base
 {
     /**
-     * @param string $text
+     * @param string $text Обычный текст
      */
     public function run($text)
     {
         assert(is_string($text));
         $texts_of_words = $this->parseStr($text);
+
+        $words = [];
+        foreach ($texts_of_words as $text_of_word) {
+            $words[] = $this->builder($text_of_word);
+        }
+
+        $this->execute($words);
+
+        return $this->getWords();
     }
 
     /**
@@ -28,6 +37,7 @@ class Base
     {
         assert(is_string($text));
         //todo предобработка или соглашение о "не буквах"
+        //todo заменить preg_match_all
         $texts_of_words = explode(" ", $text);
         return $texts_of_words;
     }
@@ -36,14 +46,23 @@ class Base
      * @param string $text Текст одного слова
      * @return array
      */
-    public function builder($text)
+    protected function builder($text)
     {
-        //создать объект слова
+        assert(is_string($text));
+        $word_obj = \Aot\Orphography\Word::create($text);
+        return $word_obj;
     }
 
-    public function execute()
+
+    /**
+     * @param \Aot\Orphography\Word[] $words
+     */
+    protected function execute($words)
     {
-        //заполнить объект слова
-        return;
+
+        foreach ($words as $word) {
+            $word->getText();
+            //вызов сбора совпадений
+        }
     }
 }
