@@ -6,7 +6,7 @@ namespace Aot\Orphography;
 class Matching
 {
     /**
-     * @var \Aot\Orphography\Dictionary\Base
+     * @var \Aot\Orphography\Language\Base
      */
     protected $dictionary;
     /**
@@ -15,21 +15,21 @@ class Matching
     protected $state;
 
     /**
-     * @param \Aot\Orphography\Dictionary\Base $dictionary
+     * @param \Aot\Orphography\Language\Base $dictionary
      * @param int $state
      */
-    protected function __construct(\Aot\Orphography\Dictionary\Base $dictionary, $state)
+    protected function __construct(\Aot\Orphography\Language\Base $dictionary, $state)
     {
         $this->dictionary = $dictionary;
         $this->state = $state;
     }
 
     /**
-     * @param \Aot\Orphography\Dictionary\Base $dictionary
+     * @param \Aot\Orphography\Language\Base $dictionary
      * @param bool $state
      * @return static
      */
-    public static function create(\Aot\Orphography\Dictionary\Base $dictionary, $state)
+    public static function create(\Aot\Orphography\Language\Base $dictionary, $state)
     {
         return new static($dictionary, $state);
     }

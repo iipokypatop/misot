@@ -12,8 +12,8 @@ class BaseTest extends \AotTest\AotDataStorage
     public function testLaunch()
     {
         $base = \Aot\Orphography\Base::create();
-        $text = "Пивет, малоко! How do you do? Есть новость. Рассказать? Bye!";
-        (($base->run($text)));
+        $text = "привет,приветт, приветтт, приве друг! Как дила? О чом ты думаишь? Я МорфикМорфикМорфик";
+        $base->run($text);
     }
 
 

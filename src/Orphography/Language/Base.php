@@ -6,7 +6,7 @@
  * Time: 14:28
  */
 
-namespace Aot\Orphography\Dictionary;
+namespace Aot\Orphography\Language;
 
 
 abstract class Base

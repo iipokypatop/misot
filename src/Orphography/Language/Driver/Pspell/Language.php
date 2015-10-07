@@ -6,17 +6,21 @@
  * Time: 14:36
  */
 
-namespace Aot\Orphography\Dictionary\Driver\Pspell;
+namespace Aot\Orphography\Language\Driver\Pspell;
 
 
-class Dictionary extends \Aot\Orphography\Dictionary\Base
+class Language extends \Aot\Orphography\Language\Base
 {
-    const DICTIONARY_RU = 'ru';
-    const DICTIONARY_EN = 'en';
+    const LANGUAGE_RU = 'ru';
+    const LANGUAGE_EN = 'en';
+    const LANGUAGE_CUSTOM_MOR = 'mor';
+    const LANGUAGE_CUSTOM_CUS = 'cus';
 
     const LEVENSHTEIN_COST_INS = 1;
     const LEVENSHTEIN_COST_REP = 1;
     const LEVENSHTEIN_COST_DEL = 1;
+
+    protected $language_builder;
 
     /**
      * @var int
@@ -31,13 +35,21 @@ class Dictionary extends \Aot\Orphography\Dictionary\Base
     protected static function getAvailableStdDictionary()
     {
         return [
-            self::DICTIONARY_RU,
-            self::DICTIONARY_EN
+            self::LANGUAGE_RU,
+            self::LANGUAGE_EN
+        ];
+    }
+
+    protected static function getAvailableCustomDictionary()
+    {
+        return [
+            self::LANGUAGE_CUSTOM_MOR,
+            self::LANGUAGE_CUSTOM_CUS
         ];
     }
 
     /**
-     * Dictionary constructor.
+     * Language constructor.
      * @param int $pspell_config
      */
     protected function __construct($pspell_config)
@@ -46,9 +58,11 @@ class Dictionary extends \Aot\Orphography\Dictionary\Base
 
         $this->pspell_config = $pspell_config;
 
-        pspell_config_mode($pspell_config, PSPELL_FAST);
+        //pspell_config_mode($pspell_config, PSPELL_FAST);
 
         $this->pspell_link = pspell_new_config($pspell_config);
+
+
     }
 
     protected function getDictionaryLink()
@@ -57,16 +71,30 @@ class Dictionary extends \Aot\Orphography\Dictionary\Base
     }
 
     /**
-     * @param $dictionary_name
+     * @param $language_name
      * @return null|static
      */
-    public static function createStd($dictionary_name)
+    public static function createStd($language_name)
     {
-        if (!in_array($dictionary_name, static::getAvailableStdDictionary(), true)) {
+        if (!in_array($language_name, static::getAvailableStdDictionary(), true)) {
             return null;
         }
 
-        $pspell_config = pspell_config_create($dictionary_name);
+        $pspell_config = pspell_config_create($language_name);
+
+        $ob = new static($pspell_config);
+
+        return $ob;
+    }
+
+    public static function createCustom($language_name)
+    {
+        if (!in_array($language_name, static::getAvailableCustomDictionary(), true)) {
+            return null;
+        }
+
+        $language_builder = \Aot\Orphography\Language\Driver\Pspell\LanguageBuilder::create();
+        $pspell_config = $language_builder->build($language_name);
 
         $ob = new static($pspell_config);
 

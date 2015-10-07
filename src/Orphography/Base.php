@@ -28,7 +28,6 @@ class Base
      */
     public function run($text)
     {
-        $timestart = microtime();
         assert(is_string($text));
         $texts_of_subtexts = $this->parseStr($text);
 
@@ -37,13 +36,12 @@ class Base
             $subtexts[] = $this->builder($text_of_subtext);
         }
 
-        $dictionares[] = \Aot\Orphography\Dictionary\Driver\Pspell\Dictionary::createStd("ru");
-        $dictionares[] = \Aot\Orphography\Dictionary\Driver\Pspell\Dictionary::createStd("en");
+        $dictionares[] = \Aot\Orphography\Language\Driver\Pspell\Language::createStd("ru");
+        //$dictionares[] = \Aot\Orphography\Language\Driver\Pspell\Language::createStd("en");
+        $dictionares[] = \Aot\Orphography\Language\Driver\Pspell\Language::createCustom("mor");
 
         $this->execute($subtexts, $dictionares);
-        $timestop = microtime();
 
-        //print_r("Затраченное время: " . ($timestop - $timestart) . "\n");
         return $subtexts;
     }
 
@@ -54,7 +52,7 @@ class Base
     protected function parseStr($text)
     {
         assert(is_string($text));
-        //todo поправить
+        //todo обавить предобработку теста
         $texts_of_subtexts = preg_split('/[\s,?!\.:\"\"0-9]+/', $text);
         return $texts_of_subtexts;
     }
@@ -73,7 +71,7 @@ class Base
 
     /**
      * @param \Aot\Orphography\Subtext[] $subtexts
-     * @param \Aot\Orphography\Dictionary\Driver\Pspell\Dictionary[] $dictionaries
+     * @param \Aot\Orphography\Language\Driver\Pspell\Language[] $dictionaries
      */
     protected function execute(array $subtexts, array $dictionaries)
     {
@@ -81,8 +79,8 @@ class Base
             assert(is_a($subtext, \Aot\Orphography\Subtext::class), true);
         }
 
-        foreach ($dictionaries as $dictionarie) {
-            assert(is_a($dictionarie, \Aot\Orphography\Dictionary\Driver\Pspell\Dictionary::class), true);
+        foreach ($dictionaries as $dictionary) {
+            assert(is_a($dictionary, \Aot\Orphography\Language\Base::class), true);
         }
 
         foreach ($subtexts as $subtext) {

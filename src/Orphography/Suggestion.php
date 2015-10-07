@@ -13,7 +13,7 @@ class Suggestion
     /** @var \Aot\Orphography\Subtext[] $subtexts */
     protected $subtexts = [];
 
-    /** @var \Aot\Orphography\Dictionary\Base $dictionary */
+    /** @var \Aot\Orphography\Language\Base $dictionary */
     protected $dictionary;
 
     /** @var int[] $weights */
@@ -22,9 +22,9 @@ class Suggestion
     /**
      * @param \Aot\Orphography\Subtext[] $subtexts
      * @param int[] $weights
-     * @param \Aot\Orphography\Dictionary\Base $dictionary
+     * @param \Aot\Orphography\Language\Base $dictionary
      */
-    protected function __construct(array $subtexts, array $weights, \Aot\Orphography\Dictionary\Base $dictionary)
+    protected function __construct(array $subtexts, array $weights, \Aot\Orphography\Language\Base $dictionary)
     {
         foreach ($subtexts as $subtext) {
             assert(is_a($subtext, \Aot\Orphography\Subtext::class));
@@ -42,10 +42,10 @@ class Suggestion
     /**
      * @param \Aot\Orphography\Subtext[] $subtexts
      * @param int[] $weights
-     * @param \Aot\Orphography\Dictionary\Base $dictionary
+     * @param \Aot\Orphography\Language\Base $dictionary
      * @return static
      */
-    public static function create(array $subtexts, $weights, \Aot\Orphography\Dictionary\Base $dictionary)
+    public static function create(array $subtexts, $weights, \Aot\Orphography\Language\Base $dictionary)
     {
         return new static($subtexts, $weights, $dictionary);
     }
@@ -59,7 +59,7 @@ class Suggestion
     }
 
     /**
-     * @return \Aot\Orphography\Dictionary\Base
+     * @return \Aot\Orphography\Language\Base
      */
     public function getDictionary()
     {
