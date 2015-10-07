@@ -8,7 +8,7 @@
  */
 namespace Aot\Orphography;
 
-class Word
+class Subtext
 {
     /* @var string $text */
     protected $text;
@@ -18,18 +18,26 @@ class Word
     protected $matchings = [];
 
 
+    /**
+     * @param string $text
+     */
     protected function __construct($text)
     {
         $this->setText($text);
     }
 
+    /**
+     * @param string $text
+     * @return static
+     */
     public static function create($text)
     {
+        assert(is_string($text));
         return new static($text);
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getText()
     {
@@ -37,7 +45,7 @@ class Word
     }
 
     /**
-     * @param mixed $text
+     * @param string $text
      */
     public function setText($text)
     {
@@ -47,7 +55,7 @@ class Word
     /**
      * @param Suggestion $suggestion
      */
-    public function addSuggestion($suggestion)
+    public function addSuggestion(\Aot\Orphography\Suggestion $suggestion)
     {
         $this->suggestions[] = $suggestion;
     }
@@ -55,7 +63,7 @@ class Word
     /**
      * @param Matching $matching
      */
-    public function addMatching($matching)
+    public function addMatching(\Aot\Orphography\Matching $matching)
     {
         $this->matchings[] = $matching;
     }

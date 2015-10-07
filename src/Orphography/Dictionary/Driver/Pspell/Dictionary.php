@@ -56,6 +56,10 @@ class Dictionary extends \Aot\Orphography\Dictionary\Base
         return $this->pspell_link;
     }
 
+    /**
+     * @param $dictionary_name
+     * @return null|static
+     */
     public static function createStd($dictionary_name)
     {
         if (!in_array($dictionary_name, static::getAvailableStdDictionary(), true)) {
@@ -71,41 +75,41 @@ class Dictionary extends \Aot\Orphography\Dictionary\Base
 
 
     /**
-     * @param \Aot\Orphography\Word $word
+     * @param \Aot\Orphography\Subtext $subtext
      * @return bool
      */
-    public function check(\Aot\Orphography\Word $word)
+    public function check(\Aot\Orphography\Subtext $subtext)
     {
-        return pspell_check($this->getDictionaryLink(), $word->getText());
+        return pspell_check($this->getDictionaryLink(), $subtext->getText());
     }
 
     /**
-     * @param \Aot\Orphography\Word $word
-     * @return \Aot\Orphography\Word[] with weight as keys
+     * @param \Aot\Orphography\Subtext $subtext
+     * @return \Aot\Orphography\Subtext[] with weight as keys
      */
-    public function suggest(\Aot\Orphography\Word $word)
+    public function suggest(\Aot\Orphography\Subtext $subtext)
     {
-        $variants = pspell_suggest($this->pspell_link, $word->getText());
-        $variants_word = [];
-        $weights_word = [];
+        $variants = pspell_suggest($this->pspell_link, $subtext->getText());
+        $variants_subtext = [];
+        $weights_subtext = [];
         foreach ($variants as $variant) {
-            $variant_word = \Aot\Orphography\Word::create($variant);
-            $variants_word[] = $variant_word;
-            $weights_word[] = $this->weight($variant_word, $word);
+            $variant_subtext = \Aot\Orphography\Subtext::create($variant);
+            $variants_subtext[] = $variant_subtext;
+            $weights_subtext[] = $this->weight($variant_subtext, $subtext);
         }
-        return \Aot\Orphography\Suggestion::create($variants_word, $weights_word, $this);
+        return \Aot\Orphography\Suggestion::create($variants_subtext, $weights_subtext, $this);
     }
 
     /**
-     * @param \Aot\Orphography\Word $word1
-     * @param \Aot\Orphography\Word $word2
+     * @param \Aot\Orphography\Subtext $subtext1
+     * @param \Aot\Orphography\Subtext $subtext2
      * @return int | null
      */
-    public function weight(\Aot\Orphography\Word $word1, \Aot\Orphography\Word $word2)
+    public function weight(\Aot\Orphography\Subtext $subtext1, \Aot\Orphography\Subtext $subtext2)
     {
         $result = levenshtein(
-            $word1->getText(),
-            $word2->getText(),
+            $subtext1->getText(),
+            $subtext2->getText(),
             static::LEVENSHTEIN_COST_INS,
             static::LEVENSHTEIN_COST_REP,
             static::LEVENSHTEIN_COST_DEL

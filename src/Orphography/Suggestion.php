@@ -10,8 +10,8 @@ namespace Aot\Orphography;
 
 class Suggestion
 {
-    /** @var \Aot\Orphography\Word[] $words */
-    protected $words = [];
+    /** @var \Aot\Orphography\Subtext[] $subtexts */
+    protected $subtexts = [];
 
     /** @var \Aot\Orphography\Dictionary\Base $dictionary */
     protected $dictionary;
@@ -20,46 +20,46 @@ class Suggestion
     protected $weights = [];
 
     /**
-     * @param \Aot\Orphography\Word[] $words
+     * @param \Aot\Orphography\Subtext[] $subtexts
      * @param int[] $weights
      * @param \Aot\Orphography\Dictionary\Base $dictionary
      */
-    protected function __construct(array $words, array $weights, $dictionary)
+    protected function __construct(array $subtexts, array $weights, \Aot\Orphography\Dictionary\Base $dictionary)
     {
-        foreach ($words as $word) {
-            assert(is_a($word, \Aot\Orphography\Word::class));
+        foreach ($subtexts as $subtext) {
+            assert(is_a($subtext, \Aot\Orphography\Subtext::class));
         }
 
         foreach ($weights as $weight) {
             assert(is_int($weight));
         }
 
-        $this->words = $words;
+        $this->subtexts = $subtexts;
         $this->weights = $weights;
         $this->dictionary = $dictionary;
     }
 
     /**
-     * @param \Aot\Orphography\Word[] $words
+     * @param \Aot\Orphography\Subtext[] $subtexts
      * @param int[] $weights
      * @param \Aot\Orphography\Dictionary\Base $dictionary
      * @return static
      */
-    public static function create(array $words, $weights, $dictionary)
+    public static function create(array $subtexts, $weights, \Aot\Orphography\Dictionary\Base $dictionary)
     {
-        return new static($words, $weights, $dictionary);
+        return new static($subtexts, $weights, $dictionary);
     }
 
     /**
-     * @return array
+     * @return \Aot\Orphography\Subtext[]
      */
-    public function getWords()
+    public function getSubtexts()
     {
-        return $this->words;
+        return $this->subtexts;
     }
 
     /**
-     * @return mixed
+     * @return \Aot\Orphography\Dictionary\Base
      */
     public function getDictionary()
     {
@@ -67,7 +67,7 @@ class Suggestion
     }
 
     /**
-     * @return array
+     * @return int[]
      */
     public function getWeights()
     {

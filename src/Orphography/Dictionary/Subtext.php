@@ -9,12 +9,12 @@
 namespace Aot\Orphography\Dictionary;
 
 
-abstract class Word
+abstract class Subtext
 {
     /**
      * @return void
      */
-    abstract public function create(\Aot\Orphography\Word $word);
+    abstract public function create(\Aot\Orphography\Subtext $subtext);
 
     /**
      * @return $word

@@ -13,7 +13,7 @@ class BaseTest extends \AotTest\AotDataStorage
     {
         $base = \Aot\Orphography\Base::create();
         $text = "Пивет, малоко! How do you do? Есть новость. Рассказать? Bye!";
-        print_r($base->run($text));
+        print_r(($base->run($text)));
     }
 
 
