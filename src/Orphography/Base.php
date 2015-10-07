@@ -39,6 +39,7 @@ class Base
         $dictionares[] = \Aot\Orphography\Language\Driver\Pspell\Language::createStd("ru");
         //$dictionares[] = \Aot\Orphography\Language\Driver\Pspell\Language::createStd("en");
         $dictionares[] = \Aot\Orphography\Language\Driver\Pspell\Language::createCustom("mor");
+        $dictionares[] = \Aot\Orphography\Language\Driver\Pspell\Language::createCustom("cus");
 
         $this->execute($subtexts, $dictionares);
 
