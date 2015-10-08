@@ -125,7 +125,11 @@ class Language extends \Aot\Orphography\Language\Base
             $variants_subtext[] = $variant_subtext;
             $weights_subtext[] = $this->weight($variant_subtext, $subtext);
         }
-        return \Aot\Orphography\Suggestion::create($variants_subtext, $weights_subtext, $this);
+        return \Aot\Orphography\Suggestion::create(
+            $variants_subtext,
+            $weights_subtext,
+            $this
+        );
     }
 
     /**
