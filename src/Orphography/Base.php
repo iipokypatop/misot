@@ -36,10 +36,10 @@ class Base
             $subtexts[] = $this->builder($text_of_subtext);
         }
 
-        $dictionares[] = \Aot\Orphography\Language\Driver\Pspell\Language::createStd("ru");
-        //$dictionares[] = \Aot\Orphography\Language\Driver\Pspell\Language::createStd("en");
-        $dictionares[] = \Aot\Orphography\Language\Driver\Pspell\Language::createCustom("mor");
-        $dictionares[] = \Aot\Orphography\Language\Driver\Pspell\Language::createCustom("cus");
+        $dictionares[] = \Aot\Orphography\Language\Driver\Pspell\LanguageSTD::create("ru");
+        //$dictionares[] = \Aot\Orphography\LanguageSTD\Driver\Pspell\LanguageSTD::create("en");
+        $dictionares[] = \Aot\Orphography\Language\Driver\Pspell\LanguageCustom::create("mor");
+        $dictionares[] = \Aot\Orphography\Language\Driver\Pspell\LanguageCustom::create("cus");
 
         $this->execute($subtexts, $dictionares);
 

@@ -10,7 +10,7 @@ namespace Aot\Orphography\Language\Driver\Pspell;
 
 /**
  * Class LanguageManager
- * @package Aot\Orphography\Language\Driver\Pspell
+ * @package Aot\Orphography\LanguageSTD\Driver\Pspell
  *
  * Для генерации нового языка необходимо использовать команду
  * aspell --data-dir=mor --lang=mor create master ./mor.rws < word_list_empty
@@ -25,7 +25,7 @@ class LanguageManager
         assert(mb_strlen($language_name) !== 0);
 
         if (!$this->areRequiredFilesExist($language_name)) {
-            throw new \RuntimeException("Language " . $language_name . " not found");
+            throw new \RuntimeException("LanguageSTD " . $language_name . " not found");
         }
         $pspell_config = pspell_config_create($language_name);
         pspell_config_data_dir($pspell_config, $this->getDir() . DIRECTORY_SEPARATOR);
