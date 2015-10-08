@@ -50,6 +50,10 @@
     {
       "url": "git@gitlab.mivar.ru:mivar-projects/morph-api.git",
       "type": "git"
+    },
+    {
+      "url": "git@gitlab.mivar.ru:mivar-projects/doctrine-bootstrap-api.git",
+      "type": "git"
     }
   ],
   "autoload": {

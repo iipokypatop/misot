@@ -55,14 +55,19 @@ class Language extends \Aot\Orphography\Language\Base
     protected function __construct($pspell_config, $language_name)
     {
         assert(is_int($pspell_config));
-
+        $this->language_name = $language_name;
         $this->pspell_config = $pspell_config;
 
         pspell_config_mode($pspell_config, PSPELL_FAST);
-
+        
         $this->pspell_link = pspell_new_config($pspell_config);
-        $this->language_name = $language_name;
+        
 
+        if ($pspell_link === false) {
+            throw new \RuntimeException("error due initializing pspell_link");
+        }
+
+        $this->pspell_link = $pspell_link;
     }
 
     protected function getDictionaryLink()
@@ -79,6 +84,7 @@ class Language extends \Aot\Orphography\Language\Base
         if (!in_array($language_name, static::getAvailableStdDictionary(), true)) {
             return null;
         }
+
         $pspell_config = pspell_config_create($language_name);
 
         $ob = new static($pspell_config, $language_name);
@@ -116,15 +122,25 @@ class Language extends \Aot\Orphography\Language\Base
      */
     public function suggest(\Aot\Orphography\Subtext $subtext)
     {
-        $variants = pspell_suggest($this->pspell_link, $subtext->getText());
+        $variants = pspell_suggest(
+            $this->pspell_link,
+            $subtext->getText()
+        );
         $variants_subtext = [];
         $weights_subtext = [];
-        foreach ($variants as $variant) {
-            $variant_subtext = \Aot\Orphography\Subtext::create($variant);
-            $variants_subtext[] = $variant_subtext;
-            $weights_subtext[] = $this->weight($variant_subtext, $subtext);
+
+        if (is_array($variants)) {
+            foreach ($variants as $variant) {
+                $variant_subtext = \Aot\Orphography\Subtext::create($variant);
+                $variants_subtext[] = $variant_subtext;
+                $weights_subtext[] = $this->weight($variant_subtext, $subtext);
+            }
         }
-        return \Aot\Orphography\Suggestion::create($variants_subtext, $weights_subtext, $this);
+        return \Aot\Orphography\Suggestion::create(
+            $variants_subtext,
+            $weights_subtext,
+            $this
+        );
     }
 
     /**
