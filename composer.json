@@ -20,7 +20,8 @@
     "mivar-projects/text-libraries": "dev-develop",
     "txt/mivar_text_semantic": "dev-master-without-model",
     "mivar-projects/semantic-db-api": "dev-develop",
-    "mivar-projects/morph-api": "dev-master"
+    "mivar-projects/morph-api": "dev-master",
+    "mivar-projects/orthography": "dev-master"
   },
   "repositories": [
     {
@@ -53,6 +54,10 @@
     },
     {
       "url": "git@gitlab.mivar.ru:mivar-projects/doctrine-bootstrap-api.git",
+      "type": "git"
+    },
+    {
+      "url": "git@gitlab.mivar.ru:mivar-projects/orthography.git",
       "type": "git"
     }
   ],
