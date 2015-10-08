@@ -13,6 +13,7 @@ class LanguageCustom extends \Aot\Orphography\Language\Driver\Pspell\LanguageSTD
 {
     const LANGUAGE_CUSTOM_MOR = 'mor';
     const LANGUAGE_CUSTOM_CUS = 'cus';
+    const LANGUAGE_CUSTOM_TST = 'tst';
 
     /**
      * @return string[]
@@ -21,7 +22,8 @@ class LanguageCustom extends \Aot\Orphography\Language\Driver\Pspell\LanguageSTD
     {
         return [
             self::LANGUAGE_CUSTOM_MOR,
-            self::LANGUAGE_CUSTOM_CUS
+            self::LANGUAGE_CUSTOM_CUS,
+            self::LANGUAGE_CUSTOM_TST
         ];
     }
 
