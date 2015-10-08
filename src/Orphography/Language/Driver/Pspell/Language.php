@@ -59,8 +59,8 @@ class Language extends \Aot\Orphography\Language\Base
         $this->pspell_config = $pspell_config;
 
         pspell_config_mode($pspell_config, PSPELL_FAST);
-        
-        $this->pspell_link = pspell_new_config($pspell_config);
+
+        $pspell_link = pspell_new_config($pspell_config);
         
 
         if ($pspell_link === false) {
