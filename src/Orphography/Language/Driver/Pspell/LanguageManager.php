@@ -9,13 +9,13 @@
 namespace Aot\Orphography\Language\Driver\Pspell;
 
 /**
- * Class LanguageBuilder
+ * Class LanguageManager
  * @package Aot\Orphography\Language\Driver\Pspell
  *
  * Для генерации нового языка необходимо использовать команду
  * aspell --data-dir=mor --lang=mor create master ./mor.rws < word_list_empty
  */
-class LanguageBuilder
+class LanguageManager
 {
     const CUSTOM_DICTEINARY_EXTENTION = 'pws';
 

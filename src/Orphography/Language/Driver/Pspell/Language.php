@@ -20,7 +20,7 @@ class Language extends \Aot\Orphography\Language\Base
     const LEVENSHTEIN_COST_REP = 1;
     const LEVENSHTEIN_COST_DEL = 1;
 
-    protected $language_builder;
+    protected $language_name;
 
     /**
      * @var int
@@ -52,16 +52,16 @@ class Language extends \Aot\Orphography\Language\Base
      * Language constructor.
      * @param int $pspell_config
      */
-    protected function __construct($pspell_config)
+    protected function __construct($pspell_config, $language_name)
     {
         assert(is_int($pspell_config));
 
         $this->pspell_config = $pspell_config;
 
-        //pspell_config_mode($pspell_config, PSPELL_FAST);
+        pspell_config_mode($pspell_config, PSPELL_FAST);
 
         $this->pspell_link = pspell_new_config($pspell_config);
-
+        $this->language_name = $language_name;
 
     }
 
@@ -79,10 +79,9 @@ class Language extends \Aot\Orphography\Language\Base
         if (!in_array($language_name, static::getAvailableStdDictionary(), true)) {
             return null;
         }
-
         $pspell_config = pspell_config_create($language_name);
 
-        $ob = new static($pspell_config);
+        $ob = new static($pspell_config, $language_name);
 
         return $ob;
     }
@@ -93,10 +92,10 @@ class Language extends \Aot\Orphography\Language\Base
             return null;
         }
 
-        $language_builder = \Aot\Orphography\Language\Driver\Pspell\LanguageBuilder::create();
+        $language_builder = \Aot\Orphography\Language\Driver\Pspell\LanguageManager::create();
         $pspell_config = $language_builder->build($language_name);
 
-        $ob = new static($pspell_config);
+        $ob = new static($pspell_config, $language_name);
 
         return $ob;
     }
@@ -148,5 +147,21 @@ class Language extends \Aot\Orphography\Language\Base
         };
 
         return $result;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPspellLink()
+    {
+        return $this->pspell_link;
+    }
+
+    public function generateDictionary(array $words)
+    {
+        foreach ($words as $word) {
+            assert(is_string($word));
+            pspell_add_to_personal($this->getPspellLink(), $word);
+        }
     }
 }
