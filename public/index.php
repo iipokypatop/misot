@@ -45,9 +45,9 @@ if (!empty($GET['area'])) {
 }
 */
 
-
 $base = \Orthography\Base::create();
 $text = "пивет";
+
 $base = $base->run($text);
 $i = 0;
 echo "<pre>";
