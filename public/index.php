@@ -11,7 +11,7 @@ mb_internal_encoding('utf-8');
 header('Content-Type: text/html; charset=utf-8');
 
 require_once __DIR__ . "/../Bootstrap.php";
-
+/*
 \Aot\Publisher\Base::get()->publish();
 
 ini_set('display_errors', 1);
@@ -43,4 +43,12 @@ if (!empty($GET['area'])) {
 
     die('page not found');
 }
+*/
 
+
+$base = \Orthography\Base::create();
+$text = "пивет";
+$base = $base->run($text);
+$i = 0;
+echo "<pre>";
+var_export($base);
