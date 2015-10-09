@@ -15,13 +15,12 @@
     "doctrine/migrations": "dev-master",
     "psr/log": "1.0.0",
     "symfony/yaml": "2.7.*",
-    "mivar-projects/loader": "dev-master",
     "mivar-projects/test-utils": "dev-master",
-    "mivar-projects/text-libraries": "dev-develop",
-    "txt/mivar_text_semantic": "dev-master-without-model",
+    "txt/mivar_text_semantic": "dev-master",
     "mivar-projects/semantic-db-api": "dev-develop",
     "mivar-projects/morph-api": "dev-master",
-    "mivar-projects/orthography": "dev-master"
+    "mivar-projects/orthography": "dev-master",
+    "iipokypatop/composer-vendor-overloader" : ">=1.0"
   },
   "repositories": [
     {
