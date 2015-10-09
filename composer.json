@@ -45,6 +45,10 @@
     {
       "url": "git@git.mivar.pro:mivar-projects/semantic-db-api.git",
       "type": "git"
+    },
+    {
+      "url": "git@git.mivar.pro:mivar-projects/doctrine-bootstrap-api.git",
+      "type": "git"
     }
   ],
   "autoload": {
