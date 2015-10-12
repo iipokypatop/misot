@@ -17,7 +17,7 @@
     "symfony/yaml": "2.7.*",
     "mivar-projects/loader": "dev-master",
     "mivar-projects/test-utils": "dev-master",
-    "mivar-projects/text-libraries": "dev-develop",
+    "mivar-projects/text-libraries": "dev-develop||dev-release/1.0.0",
     "txt/mivar_text_semantic": "dev-master-without-model",
     "mivar-projects/semantic-db-api": "dev-develop"
   },
