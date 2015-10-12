@@ -4,7 +4,10 @@ define('PROJECT_ROOT', __DIR__);
 
 require_once __DIR__ . "/vendor/autoload.php";
 
-MivarDevelopmentLoader::load();
+\Overloader\Base::load([
+    'txt',
+    'mivar-projects',
+]);
 
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
