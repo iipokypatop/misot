@@ -8,6 +8,8 @@
 
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Glagol;
 
+use Aot\MivarTextSemantic\Dw;
+use Aot\MivarTextSemantic\Word;
 
 use Aot\RussianMorphology\ChastiRechi\Glagol\Factory;
 use Aot\RussianMorphology\FactoryException;
@@ -76,7 +78,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         # убираем число
         $point_wo_vid = $this->getPoint1();
         $false_vid = 222;
-        $point_wo_vid->dw->parameters[VIEW_ID]->id_value_attr = [$false_vid => $false_vid];
+        $point_wo_vid->dw->parameters[\Aot\MivarTextSemantic\Constants::VIEW_ID]->id_value_attr = [$false_vid => $false_vid];
         try {
             $this->buildFactory($point_wo_vid);
             $this->fail("Не должно было тут быть!");
@@ -87,7 +89,7 @@ class FactoryTest extends \AotTest\AotDataStorage
 
     protected function buildFactory($point)
     {
-        $dw = new \Dw(
+        $dw = new Dw(
             $point->dw->id_word_form,
             $point->dw->initial_form,
             $point->dw->initial_form,
@@ -96,7 +98,7 @@ class FactoryTest extends \AotTest\AotDataStorage
             $point->dw->parameters
         );
 
-        $word = new \Word(
+        $word = new Word(
             $point->kw,
             $point->dw->initial_form,
             $point->id_sentence

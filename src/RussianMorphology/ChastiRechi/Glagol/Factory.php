@@ -9,6 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Glagol;
 
 
+use Aot\MivarTextSemantic\OldAotConstants;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Edinstvennoe;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Mnozhestvennoe;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Null as NullChislo;
@@ -70,8 +71,8 @@ use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Vtoroe as VtoroeLi
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Tretie as TretieLitso;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Null as NullLitso;
 
-use Dw;
-use Word;
+use Aot\MivarTextSemantic\Dw;
+use Aot\MivarTextSemantic\Word;
 
 class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\Aot\RussianMorphology\Factory
 {
@@ -86,7 +87,7 @@ class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\A
     {
         $text = $dw->word_form;
         $words = [];
-        if (isset($word->word) && intval($dw->id_word_class) === VERB_CLASS_ID) {
+        if (isset($word->word) && intval($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::VERB_CLASS_ID) {
 
             # вид
             $vid = $this->getVid($dw->parameters);
@@ -165,16 +166,16 @@ class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\A
     protected function getChislo($parameters)
     {
 
-        if (empty($parameters[NUMBER_ID])) {
+        if (empty($parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID])) {
             return [NullChislo::create()];
         }
 
-        $param = $parameters[NUMBER_ID];
+        $param = $parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID];
         $chislo = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === NUMBER_SINGULAR_ID) {
+            if (intval($val) === \Aot\MivarTextSemantic\Constants::NUMBER_SINGULAR_ID) {
                 $chislo[] = Edinstvennoe::create();
-            } elseif (intval($val) === NUMBER_PLURAL_ID) {
+            } elseif (intval($val) === \Aot\MivarTextSemantic\Constants::NUMBER_PLURAL_ID) {
                 $chislo[] = Mnozhestvennoe::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -191,16 +192,16 @@ class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\A
     protected function getVid($parameters)
     {
 
-        if (empty($parameters[VIEW_ID])) {
+        if (empty($parameters[\Aot\MivarTextSemantic\Constants::VIEW_ID])) {
             return [NullVid::create()];
         }
 
-        $param = $parameters[VIEW_ID];
+        $param = $parameters[\Aot\MivarTextSemantic\Constants::VIEW_ID];
         $vid = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === VIEW_PERFECTIVE_ID) {
+            if (intval($val) === \Aot\MivarTextSemantic\Constants::VIEW_PERFECTIVE_ID) {
                 $vid[] = Sovershennyj::create();
-            } elseif (intval($val) === VIEW_IMPERFECT_ID) {
+            } elseif (intval($val) === \Aot\MivarTextSemantic\Constants::VIEW_IMPERFECT_ID) {
                 $vid[] = Nesovershennyj::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -217,17 +218,17 @@ class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\A
     protected function getPerehodnost($parameters)
     {
 
-        if (empty($parameters[TRANSIVITY_ID])) {
+        if (empty($parameters[\Aot\MivarTextSemantic\Constants::TRANSIVITY_ID])) {
             return [NullPerehodnost::create()];
         }
 
-        $param = $parameters[TRANSIVITY_ID];
+        $param = $parameters[\Aot\MivarTextSemantic\Constants::TRANSIVITY_ID];
 
         $perehodnost = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === \OldAotConstants::TRANSITIVE()) {
+            if (intval($val) === OldAotConstants::TRANSITIVE()) {
                 $perehodnost[] = Perehodnyj::create();
-            } elseif (intval($val) === \OldAotConstants::INTRANSITIVE()) {
+            } elseif (intval($val) === OldAotConstants::INTRANSITIVE()) {
                 $perehodnost[] = Neperehodnyj::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -244,16 +245,16 @@ class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\A
     protected function getVozvratnost($parameters)
     {
 
-        if (empty($parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()])) {
+        if (empty($parameters[OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()])) {
             return [NullVozvratnost::create()];
         }
 
-        $param = $parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()];
+        $param = $parameters[OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()];
         $vozvratnost = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === \OldAotConstants::RETRIEVABLE()) {
+            if (intval($val) === OldAotConstants::RETRIEVABLE()) {
                 $vozvratnost[] = Vozvratnyj::create();
-            } elseif (intval($val) === \OldAotConstants::IRRETRIEVABLE()) {
+            } elseif (intval($val) === OldAotConstants::IRRETRIEVABLE()) {
                 $vozvratnost[] = Nevozvratnyj::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -270,16 +271,16 @@ class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\A
     protected function getRazryad($parameters)
     {
 
-        if (empty($parameters[DISCHARGE_COMMUNION_ID])) {
+        if (empty($parameters[\Aot\MivarTextSemantic\Constants::DISCHARGE_COMMUNION_ID])) {
             return [NullRazryad::create()];
         }
 
-        $param = $parameters[DISCHARGE_COMMUNION_ID];
+        $param = $parameters[\Aot\MivarTextSemantic\Constants::DISCHARGE_COMMUNION_ID];
         $razryad = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === COMMUNION_VALID_ID) {
+            if (intval($val) === \Aot\MivarTextSemantic\Constants::COMMUNION_VALID_ID) {
                 $razryad[] = Dejstvitelnyj::create();
-            } elseif (intval($val) === COMMUNION_PASSIVE_ID) {
+            } elseif (intval($val) === \Aot\MivarTextSemantic\Constants::COMMUNION_PASSIVE_ID) {
                 $razryad[] = Stradatelnyj::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -296,16 +297,16 @@ class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\A
     protected function getSpryazhenie($parameters)
     {
 
-        if (empty($parameters[\OldAotConstants::CONJUGATION()])) {
+        if (empty($parameters[OldAotConstants::CONJUGATION()])) {
             return [NullSpryazhenie::create()];
         }
 
-        $param = $parameters[\OldAotConstants::CONJUGATION()];
+        $param = $parameters[OldAotConstants::CONJUGATION()];
         $spryazhenie = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === \OldAotConstants::CONJUGATION_1()) {
+            if (intval($val) === OldAotConstants::CONJUGATION_1()) {
                 $spryazhenie[] = Pervoe::create();
-            } elseif (intval($val) === \OldAotConstants::CONJUGATION_2()) {
+            } elseif (intval($val) === OldAotConstants::CONJUGATION_2()) {
                 $spryazhenie[] = Vtoroe::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -323,18 +324,18 @@ class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\A
     protected function getNaklonenie($parameters)
     {
 
-        if (empty($parameters[MOOD_ID])) {
+        if (empty($parameters[\Aot\MivarTextSemantic\Constants::MOOD_ID])) {
             return [NullNaklonenie::create()];
         }
 
-        $param = $parameters[MOOD_ID];
+        $param = $parameters[\Aot\MivarTextSemantic\Constants::MOOD_ID];
         $naklonenie = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === \OldAotConstants::MOOD_INDICATIVE()) {
+            if (intval($val) === OldAotConstants::MOOD_INDICATIVE()) {
                 $naklonenie[] = Izyavitelnoe::create();
-            } elseif (intval($val) === \OldAotConstants::MOOD_IMPERATIVE()) {
+            } elseif (intval($val) === OldAotConstants::MOOD_IMPERATIVE()) {
                 $naklonenie[] = Povelitelnoe::create();
-            } elseif (intval($val) === \OldAotConstants::MOOD_SUBJUNCTIVE()) {
+            } elseif (intval($val) === OldAotConstants::MOOD_SUBJUNCTIVE()) {
                 $naklonenie[] = Yslovnoe::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -351,18 +352,18 @@ class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\A
     protected function getVremya($parameters)
     {
 
-        if (empty($parameters[TIME_ID])) {
+        if (empty($parameters[\Aot\MivarTextSemantic\Constants::TIME_ID])) {
             return [NullVremya::create()];
         }
 
-        $param = $parameters[TIME_ID];
+        $param = $parameters[\Aot\MivarTextSemantic\Constants::TIME_ID];
         $vremya = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === TIME_SIMPLE_ID) {
+            if (intval($val) === \Aot\MivarTextSemantic\Constants::TIME_SIMPLE_ID) {
                 $vremya[] = Nastoyaschee::create();
-            } elseif (intval($val) === TIME_FUTURE_ID) {
+            } elseif (intval($val) === \Aot\MivarTextSemantic\Constants::TIME_FUTURE_ID) {
                 $vremya[] = Buduschee::create();
-            } elseif (intval($val) === TIME_PAST_ID) {
+            } elseif (intval($val) === \Aot\MivarTextSemantic\Constants::TIME_PAST_ID) {
                 $vremya[] = Proshedshee::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -379,19 +380,19 @@ class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\A
     protected function getRod($parameters)
     {
 
-        if (empty($parameters[GENUS_ID])) {
+        if (empty($parameters[\Aot\MivarTextSemantic\Constants::GENUS_ID])) {
             return [NullRod::create()];
         }
 
-        $param = $parameters[GENUS_ID];
+        $param = $parameters[\Aot\MivarTextSemantic\Constants::GENUS_ID];
 
         $rod = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === GENUS_MASCULINE_ID) {
+            if (intval($val) === \Aot\MivarTextSemantic\Constants::GENUS_MASCULINE_ID) {
                 $rod[] = Muzhskoi::create();
-            } elseif (intval($val) === GENUS_NEUTER_ID) {
+            } elseif (intval($val) === \Aot\MivarTextSemantic\Constants::GENUS_NEUTER_ID) {
                 $rod[] = Srednij::create();
-            } elseif (intval($val) === GENUS_FEMININE_ID) {
+            } elseif (intval($val) === \Aot\MivarTextSemantic\Constants::GENUS_FEMININE_ID) {
                 $rod[] = Zhenskii::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -407,18 +408,18 @@ class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\A
     protected function getLitso($parameters)
     {
 
-        if (empty($parameters[PERSON_ID])) {
+        if (empty($parameters[\Aot\MivarTextSemantic\Constants::PERSON_ID])) {
             return [NullLitso::create()];
         }
 
-        $param = $parameters[PERSON_ID];
+        $param = $parameters[\Aot\MivarTextSemantic\Constants::PERSON_ID];
         $litso = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === PERSON_RIFST_ID) {
+            if (intval($val) === \Aot\MivarTextSemantic\Constants::PERSON_RIFST_ID) {
                 $litso[] = PervoeLitso::create();
-            } elseif (intval($val) === PERSON_SECOND_ID) {
+            } elseif (intval($val) === \Aot\MivarTextSemantic\Constants::PERSON_SECOND_ID) {
                 $litso[] = VtoroeLitso::create();
-            } elseif (intval($val) === PERSON_THIRD_ID) {
+            } elseif (intval($val) === \Aot\MivarTextSemantic\Constants::PERSON_THIRD_ID) {
                 $litso[] = TretieLitso::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));

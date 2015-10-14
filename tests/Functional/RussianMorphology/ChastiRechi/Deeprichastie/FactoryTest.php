@@ -9,6 +9,10 @@
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Deeprichastie;
 
 
+use Aot\MivarTextSemantic\Dw;
+use Aot\MivarTextSemantic\Word;
+
+
 use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Factory;
 use Aot\RussianMorphology\FactoryException;
 
@@ -63,7 +67,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         # убираем вид
         $point_wo_vid = $this->getPoint();
-        unset($point_wo_vid->dw->parameters[VIEW_ID]);
+        unset($point_wo_vid->dw->parameters[\Aot\MivarTextSemantic\Constants::VIEW_ID]);
         try {
             $this->buildFactory($point_wo_vid);
             $this->fail("Не должно было тут быть!");
@@ -75,7 +79,7 @@ class FactoryTest extends \AotTest\AotDataStorage
 
     private function buildFactory($point)
     {
-        $dw = new \Dw(
+        $dw = new Dw(
             $point->dw->id_word_form,
             $point->dw->initial_form,
             $point->dw->initial_form,
@@ -84,7 +88,7 @@ class FactoryTest extends \AotTest\AotDataStorage
             $point->dw->parameters
         );
 
-        $word = new \Word(
+        $word = new Word(
             $point->kw,
             $point->dw->initial_form,
             $point->id_sentence

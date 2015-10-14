@@ -33,6 +33,7 @@ class Registry
             static::NetSuschestvitelnogoVImenitelnomPadeszhe => 'нет существительного в именительном падеже',
         ];
     }
+
     public static function getPositionNames()
     {
         return [

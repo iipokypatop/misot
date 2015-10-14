@@ -9,8 +9,9 @@
 namespace Aot\RussianMorphology\ChastiRechi\Chastica;
 
 
-use Dw;
-use Word;
+
+use Aot\MivarTextSemantic\Dw;
+use Aot\MivarTextSemantic\Word;
 
 class Factory extends \Aot\RussianMorphology\Factory
 {
@@ -24,7 +25,7 @@ class Factory extends \Aot\RussianMorphology\Factory
         $text = $dw->word_form;
         $words = [];
 
-        if (isset($word->word) && intval($dw->id_word_class) === PARTICLE_CLASS_ID) {
+        if (isset($word->word) && intval($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::PARTICLE_CLASS_ID) {
             $words[] = $word = Base::create(
                 $text
 

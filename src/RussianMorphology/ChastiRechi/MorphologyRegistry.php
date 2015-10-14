@@ -899,8 +899,6 @@ class MorphologyRegistry extends MorphologyRegistryParent
 //    }
 
 
-
-
     public static function getChastiRechiWithPriznakiWithVarianti()
     {
         $element_template = [
@@ -929,24 +927,24 @@ class MorphologyRegistry extends MorphologyRegistryParent
         }
 
         //изменение ассоциативности:
-        $chasti_rechi_array_no_associations=[];
-        $k=0;
+        $chasti_rechi_array_no_associations = [];
+        $k = 0;
         foreach ($chasti_rechi_array as $chasti_rechi) {
-            $k=$chasti_rechi['id'];
-            $chasti_rechi_array_no_associations[$k][0]['id']=$chasti_rechi['id'];
-            $chasti_rechi_array_no_associations[$k][0]['text']=$chasti_rechi['text'];
-            $chasti_rechi_array_no_associations[$k][0]['children']=[];
-            $l=0;
-            foreach ($chasti_rechi['children'] as $priznak){
-                $chasti_rechi_array_no_associations[$k][0]['children'][]['id']=$priznak['id'];
-                $chasti_rechi_array_no_associations[$k][0]['children'][$l]['text']=$priznak['text'];
-                $chasti_rechi_array_no_associations[$k][0]['children'][$l]['children']=[];
+            $k = $chasti_rechi['id'];
+            $chasti_rechi_array_no_associations[$k][0]['id'] = $chasti_rechi['id'];
+            $chasti_rechi_array_no_associations[$k][0]['text'] = $chasti_rechi['text'];
+            $chasti_rechi_array_no_associations[$k][0]['children'] = [];
+            $l = 0;
+            foreach ($chasti_rechi['children'] as $priznak) {
+                $chasti_rechi_array_no_associations[$k][0]['children'][]['id'] = $priznak['id'];
+                $chasti_rechi_array_no_associations[$k][0]['children'][$l]['text'] = $priznak['text'];
+                $chasti_rechi_array_no_associations[$k][0]['children'][$l]['children'] = [];
 
-                $m=0;
-                foreach ($priznak['children'] as $variant){
-                    $chasti_rechi_array_no_associations[$k][0]['children'][$l]['children'][]['id']=$variant['id'];
-                    $chasti_rechi_array_no_associations[$k][0]['children'][$l]['children'][$m]['text']=$variant['text'];
-                    $chasti_rechi_array_no_associations[$k][0]['children'][$l]['children'][$m]['children']=[];
+                $m = 0;
+                foreach ($priznak['children'] as $variant) {
+                    $chasti_rechi_array_no_associations[$k][0]['children'][$l]['children'][]['id'] = $variant['id'];
+                    $chasti_rechi_array_no_associations[$k][0]['children'][$l]['children'][$m]['text'] = $variant['text'];
+                    $chasti_rechi_array_no_associations[$k][0]['children'][$l]['children'][$m]['children'] = [];
                     $m++;
                 }
                 $l++;

@@ -2,9 +2,11 @@
 
 namespace Aot\RussianMorphology;
 
+use Aot\MivarTextSemantic\Dw;
+use Aot\MivarTextSemantic\MivarSpaceWdw;
+use Aot\MivarTextSemantic\SyntaxParser\SyntaxParserManager;
+use Aot\MivarTextSemantic\Word;
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
-use Dw;
-use Word;
 
 
 /**
@@ -49,13 +51,12 @@ abstract class Factory
      */
     public static function getSlova(array $words)
     {
-        $const = new \D_Constants();
-        $const->defineConstants();
-        $syntax_parser = new \SyntaxParserManager();
+
+        $syntax_parser = new SyntaxParserManager();
         $syntax_parser->reg_parser->parse_text(join(' ', $words));
         $syntax_parser->create_dictionary_word();
 
-        /** @var \MivarSpaceWdw[] $spaces */
+        /** @var MivarSpaceWdw[] $spaces */
         $spaces = [];
         foreach ($syntax_parser->reg_parser->get_sentences() as $sentence) {
             $spaces[] = $syntax_parser->create_sentence_space($sentence);
