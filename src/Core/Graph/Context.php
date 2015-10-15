@@ -6,10 +6,10 @@
  * Time: 18:13
  */
 
-namespace Aot\Core;
+namespace Aot\Core\Graph;
 
 
-class Context
+class Context extends Base
 {
 
 }

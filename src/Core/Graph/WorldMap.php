@@ -6,10 +6,10 @@
  * Time: 18:15
  */
 
-namespace Aot\Core;
+namespace Aot\Core\Graph;
 
 
-class WorldMap
+class WorldMap extends Base
 {
 
 }
