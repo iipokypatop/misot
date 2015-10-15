@@ -21,7 +21,8 @@
     "mivar-projects/orthography": "dev-master",
     "iipokypatop/composer-vendor-overloader": ">=1.0.1",
     "mivar-projects/phpmorphy-fork": "dev-master",
-    "mivar-projects/mivar-theory-classes": "dev-master"
+    "clue/graph": "~0.9.0",
+    "graphp/algorithms": "dev-master"
   },
   "repositories": [
     {
@@ -54,10 +55,6 @@
     },
     {
       "url": "git@gitlab.mivar.ru:mivar-projects/phpmorphy-fork.git",
-      "type": "git"
-    },
-    {
-      "url": "git@gitlab.mivar.ru:mivar-projects/mivar-theory-classes.git",
       "type": "git"
     }
   ],
