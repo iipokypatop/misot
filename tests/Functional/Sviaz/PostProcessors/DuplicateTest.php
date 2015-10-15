@@ -97,7 +97,7 @@ TEXT;
         );
 
 
-        $ob->run($sviazi);
+        $ob->run($raw_sequence, $sviazi);
     }
 
 
@@ -142,7 +142,7 @@ TEXT;
             ->willReturn($sviazi[3])
         ;
 
-        $result = $ob->run($sviazi);
+        $result = $ob->run($raw_sequence, $sviazi);
 
         $this->assertEquals(
             [$sviazi [1], $sviazi [2], $sviazi [3]],
