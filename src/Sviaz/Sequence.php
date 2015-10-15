@@ -11,12 +11,15 @@ namespace Aot\Sviaz;
 
 class Sequence extends \ArrayObject
 {
-
     protected $id;
-    /**
-     * @var \Aot\Sviaz\SubSequence[]
-     */
+    /** @var \Aot\Sviaz\SubSequence[] */
     protected $sub_sequences = [];
+    /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] */
+    protected $sviazi = [];
+    /** @var \Aot\Sviaz\Homogeneity[] */
+    protected $homogeneities = [];
+    /** @var \Aot\Sviaz\PreProcessors\HomogeneitySupposed[] */
+    protected $homogeneity_supposeds = [];
 
     /**
      * @return SubSequence[]
@@ -45,11 +48,6 @@ class Sequence extends \ArrayObject
 
         return null;
     }
-
-    /**
-     * @var \Aot\Sviaz\Podchinitrelnaya\Base[]
-     */
-    protected $sviazi = [];
 
     public function addSviaz(\Aot\Sviaz\Podchinitrelnaya\Base $sviaz)
     {
@@ -92,7 +90,6 @@ class Sequence extends \ArrayObject
         return $result;
     }
 
-
     /**
      * @param \Aot\Sviaz\SubSequence[] $sub_sequences
      */
@@ -102,5 +99,70 @@ class Sequence extends \ArrayObject
             assert(is_a($sub_sequence, \Aot\Sviaz\SubSequence::class, true));
         }
         $this->sub_sequences = $sub_sequences;
+    }
+
+    /**
+     * @return Homogeneity[]
+     */
+    public function getHomogeneities()
+    {
+        return $this->homogeneities;
+    }
+
+    /**
+     * @param Homogeneity[] $homogeneities
+     */
+    public function setHomogeneities($homogeneities)
+    {
+        foreach ($homogeneities as $homogeneity) {
+            assert(is_a($homogeneity, \Aot\Sviaz\Homogeneity::class), true);
+        }
+        $this->homogeneities = $homogeneities;
+    }
+
+    /**
+     * @param Homogeneity $homogeneity
+     */
+    public function addHomogeneity(\Aot\Sviaz\Homogeneity $homogeneity)
+    {
+        $this->homogeneities[] = $homogeneity;
+    }
+
+    public function createAndAddHomogeneity(array $members)
+    {
+        $homogeneity=\Aot\Sviaz\Homogeneity::create($members);
+        $this->homogeneities[] = $homogeneity;
+    }
+
+    /**
+     * @return Homogeneity[]
+     */
+    public function getHomogeneitySupposeds()
+    {
+        return $this->homogeneity_supposeds;
+    }
+
+    /**
+     * @param \Aot\Sviaz\HomogeneitySupposed[] $homogeneity_supposeds
+     */
+    public function setHomogeneitySupposeds(array $homogeneity_supposeds)
+    {
+        foreach ($homogeneity_supposeds as $homogeneity_supposed) {
+            assert(is_a($homogeneity_supposed, \Aot\Sviaz\HomogeneitySupposed::class), true);
+        }
+        $this->homogeneity_supposeds = $homogeneity_supposeds;
+    }
+
+    /**
+     * @param \Aot\Sviaz\HomogeneitySupposed $hypothesis_of_homogeneity
+     */
+    public function addHypothesisSupposed(\Aot\Sviaz\HomogeneitySupposed $hypothesis_of_homogeneity)
+    {
+        $this->homogeneity_supposeds[] = $hypothesis_of_homogeneity;
+    }
+
+    public function getMemberByPosition($position)
+    {
+        return $this[$position];
     }
 }
