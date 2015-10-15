@@ -28,7 +28,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
     public function testLaunch()
     {
         //создаём последовательности из тестового примера
-        $sequences = $this->getSequencesForTests();
+        //$sequences = $this->getSequencesForTests();
         //Создаём фильтр
         $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
         //$this->printSviazi($sequences[16]);
