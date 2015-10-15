@@ -36,10 +36,12 @@ class Base
 
         $this->pre_processing_engines = [
             \Aot\Sviaz\PreProcessors\Predlog::create(),
+            \Aot\Sviaz\PreProcessors\HomogeneitySupposed::create()
         ];
 
         $this->post_processing_engines = [
             \Aot\Sviaz\PostProcessors\Duplicate::create(),
+            \Aot\Sviaz\PostProcessors\HomogeneityVerification::create(),
         ];
     }
 
@@ -56,6 +58,7 @@ class Base
     protected function preProcess(\Aot\Sviaz\Sequence $sequence)
     {
         $new_sequence = $sequence;
+
 
         foreach ($this->pre_processing_engines as $engine) {
             $new_sequence = $engine->run($new_sequence);
@@ -85,7 +88,7 @@ class Base
         $new_sviazi = $sviazi;
 
         foreach ($this->post_processing_engines as $engine) {
-            $new_sviazi = $engine->run($new_sviazi);
+            $new_sviazi = $engine->run($sequence, $new_sviazi);
         }
 
         //$sequence->setS
@@ -121,7 +124,7 @@ class Base
             $this->postProcess($sequence);
 
             $sequences[] = $sequence;
-
+            print_r("\n---------\n");
         }
 
         return $sequences;
