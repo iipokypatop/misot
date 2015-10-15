@@ -124,7 +124,7 @@ class Base
             $this->postProcess($sequence);
 
             $sequences[] = $sequence;
-            print_r("\n---------\n");
+            //print_r("\n---------\n");
         }
 
         return $sequences;
