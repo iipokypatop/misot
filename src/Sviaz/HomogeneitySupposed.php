@@ -42,9 +42,8 @@ class HomogeneitySupposed
     /**
      * @param SequenceMember\Base $member
      */
-    public function addMember($member)
+    public function addMember(\Aot\Sviaz\SequenceMember\Base $member)
     {
-        assert(is_a($member, \Aot\Sviaz\SequenceMember\Base::class), true);
         $this->members[spl_object_hash($member)] = $member;
     }
 

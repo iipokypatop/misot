@@ -47,9 +47,8 @@ class Homogeneity
     /**
      * @param SequenceMember\Base $member
      */
-    public function addMembers($member)
+    public function addMember(\Aot\Sviaz\SequenceMember\Base $member)
     {
-        assert(is_a($member, \Aot\Sviaz\SequenceMember\Base::class), true);
         $this->members[] = $member;
     }
 
