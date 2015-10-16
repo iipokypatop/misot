@@ -56,7 +56,6 @@ class HomogeneityTest extends \AotTest\AotDataStorage
         //print_r($this->getProstoyMassivSviazi($sequences[0]->getSviazi()));
         $homogeneities=$sequences[0]->getHomogeneities();
 
-        $i=0;
     }
 
 

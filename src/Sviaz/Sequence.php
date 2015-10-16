@@ -180,4 +180,5 @@ class Sequence extends \ArrayObject
     {
         $this->homogeneity_supposeds[] = $hypothesis_of_homogeneity;
     }
+
 }
