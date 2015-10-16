@@ -153,7 +153,7 @@ class Sequence extends \ArrayObject
      *
      * @return Homogeneity[]
      */
-    public function getHomogeneitySupposeds()
+    public function getHomogeneitySupposed()
     {
         return $this->homogeneity_supposeds;
     }
@@ -161,14 +161,14 @@ class Sequence extends \ArrayObject
     /**
      * @brief Задать массив гипотез о гомогенных группах членов предложений
      *
-     * @param \Aot\Sviaz\Homogeneity\HomogeneitySupposed[] $homogeneity_supposeds
+     * @param \Aot\Sviaz\Homogeneity\HomogeneitySupposed[] $homogeneity_supposed
      */
-    public function setHomogeneitySupposeds(array $homogeneity_supposeds)
+    public function setHomogeneitySupposed(array $homogeneity_supposed)
     {
-        foreach ($homogeneity_supposeds as $homogeneity_supposed) {
-            assert(is_a($homogeneity_supposed, \Aot\Sviaz\Homogeneity\HomogeneitySupposed::class), true);
+        foreach ($homogeneity_supposed as $one_homogeneity_supposed) {
+            assert(is_a($one_homogeneity_supposed, \Aot\Sviaz\Homogeneity\HomogeneitySupposed::class), true);
         }
-        $this->homogeneity_supposeds = $homogeneity_supposeds;
+        $this->homogeneity_supposed = $homogeneity_supposed;
     }
 
     /**
@@ -179,16 +179,5 @@ class Sequence extends \ArrayObject
     public function addHypothesisSupposed(\Aot\Sviaz\Homogeneity\HomogeneitySupposed $hypothesis_of_homogeneity)
     {
         $this->homogeneity_supposeds[] = $hypothesis_of_homogeneity;
-    }
-
-    /**
-     * @brief Получить member по номеру позиции в последовательности
-     *
-     * @param $position
-     * @return \Aot\Sviaz\SequenceMember\Base
-     */
-    public function getMemberByPosition($position)
-    {
-        return $this[$position];
     }
 }

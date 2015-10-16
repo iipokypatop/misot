@@ -26,9 +26,9 @@ class HomogeneitySupposed extends \Aot\Sviaz\PreProcessors\Base
 
         // todo сделать данный метод!
 
-        $member6=$raw_sequence->getMemberByPosition(1);
-        $member7=$raw_sequence->getMemberByPosition(2);
-        $part3=\Aot\Sviaz\HomogeneitySupposed::create();
+        $member6=$raw_sequence->offsetGet(1);
+        $member7=$raw_sequence->offsetGet(2);
+        $part3= \Aot\Sviaz\Homogeneity\HomogeneitySupposed::create();
         $part3->addMember($member6);
         $part3->addMember($member7);
         $raw_sequence->addHypothesisSupposed($part3);
@@ -36,12 +36,12 @@ class HomogeneitySupposed extends \Aot\Sviaz\PreProcessors\Base
 
 
         //$member1=$raw_sequence->getMemberByPosition(4);
-        $member2=$raw_sequence->getMemberByPosition(2);
-        $member3=$raw_sequence->getMemberByPosition(3);
-        $member4=$raw_sequence->getMemberByPosition(5);
-        $member5=$raw_sequence->getMemberByPosition(6);
+        $member2=$raw_sequence->offsetGet(2);
+        $member3=$raw_sequence->offsetGet(3);
+        $member4=$raw_sequence->offsetGet(5);
+        $member5=$raw_sequence->offsetGet(6);
 
-        $part1=\Aot\Sviaz\HomogeneitySupposed::create();
+        $part1= \Aot\Sviaz\Homogeneity\HomogeneitySupposed::create();
         //$part1->addMember($member1);
         $part1->addMember($member2);
         $part1->addMember($member3);
@@ -51,25 +51,25 @@ class HomogeneitySupposed extends \Aot\Sviaz\PreProcessors\Base
         print_r("\n".$member2->getSlovo()->getText().' '.$member3->getSlovo()->getText().' '.$member4->getSlovo()->getText().' '.$member5->getSlovo()->getText()."\n");
 
 
-        $member4=$raw_sequence->getMemberByPosition(7);
-        $member5=$raw_sequence->getMemberByPosition(9);
-        $part2=\Aot\Sviaz\HomogeneitySupposed::create();
+        $member4=$raw_sequence->offsetGet(7);
+        $member5=$raw_sequence->offsetGet(9);
+        $part2= \Aot\Sviaz\Homogeneity\HomogeneitySupposed::create();
         $part2->addMember($member4);
         $part2->addMember($member5);
         $raw_sequence->addHypothesisSupposed($part2);
         print_r("\n".$member4->getSlovo()->getText().' '.$member5->getSlovo()->getText()."\n"."\n");
 
 
-        $member0=$raw_sequence->getMemberByPosition(0);
-        $member1=$raw_sequence->getMemberByPosition(1);
-        $member2=$raw_sequence->getMemberByPosition(2);
-        $member3=$raw_sequence->getMemberByPosition(3);
-        $member5=$raw_sequence->getMemberByPosition(5);
-        $member6=$raw_sequence->getMemberByPosition(6);
-        $member7=$raw_sequence->getMemberByPosition(7);
-        $member8=$raw_sequence->getMemberByPosition(8);
-        $member9=$raw_sequence->getMemberByPosition(9);
-        $part_end=\Aot\Sviaz\HomogeneitySupposed::create();
+        $member0=$raw_sequence->offsetGet(0);
+        $member1=$raw_sequence->offsetGet(1);
+        $member2=$raw_sequence->offsetGet(2);
+        $member3=$raw_sequence->offsetGet(3);
+        $member5=$raw_sequence->offsetGet(5);
+        $member6=$raw_sequence->offsetGet(6);
+        $member7=$raw_sequence->offsetGet(7);
+        $member8=$raw_sequence->offsetGet(8);
+        $member9=$raw_sequence->offsetGet(9);
+        $part_end= \Aot\Sviaz\Homogeneity\HomogeneitySupposed::create();
         $part_end->addMember($member0);
         $part_end->addMember($member1);
         $part_end->addMember($member2);

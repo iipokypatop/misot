@@ -26,12 +26,11 @@ class HomogeneityVerification extends Base
             assert(is_a($sviaz, \Aot\Sviaz\Podchinitrelnaya\Base::class, true));
         }
 
-        $homogeneity_supposed = $this->getHomogeneitySupposeds($sequence);
+        $homogeneity_supposed = $this->getHomogeneitySupposed($sequence);
 
         $homogeneity_from_rule = $this->findHomogeneityFromRule($sviazi);
 
         $this->intersect($homogeneity_supposed, $homogeneity_from_rule, $sequence);
-        $i = 0;
     }
 
     /**
@@ -128,10 +127,10 @@ class HomogeneityVerification extends Base
      * @param \Aot\Sviaz\Sequence $sequence
      * @return array
      */
-    private function getHomogeneitySupposeds($sequence)
+    private function getHomogeneitySupposed($sequence)
     {
         $result = [];
-        $homogeneity_supposeds = $sequence->getHomogeneitySupposeds();
+        $homogeneity_supposeds = $sequence->getHomogeneitySupposed();
         foreach ($homogeneity_supposeds as $homogeneity_supposed) {
             $result[] = $homogeneity_supposed->getMembers();
         }
