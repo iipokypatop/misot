@@ -132,8 +132,9 @@ class HomogeneityVerification extends Base
      * @param $homogeneity_supposed
      * @param $homogeneity_from_rule
      * @param \Aot\Sviaz\Sequence $sequence
+     * @return void
      */
-    protected function intersect($homogeneity_supposed, $homogeneity_from_rule, $sequence)
+    protected function intersect($homogeneity_supposed, $homogeneity_from_rule,\Aot\Sviaz\Sequence $sequence)
     {
         //todo добавить проверки?
 

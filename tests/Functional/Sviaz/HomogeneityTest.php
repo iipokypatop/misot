@@ -386,6 +386,9 @@ TEXT;
     }
 
 
+    /**
+     * @return \Aot\Sviaz\Rule\Base
+     */
     protected function getRule1()
     {
         $builder =
@@ -411,6 +414,9 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * @return \Aot\Sviaz\Rule\Base
+     */
     protected function getRule2()
     {
         $builder =
@@ -437,6 +443,9 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * @return \Aot\Sviaz\Rule\Base
+     */
     protected function getRule3()
     {
         $builder =
@@ -463,6 +472,9 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * @return \Aot\Sviaz\Rule\Base
+     */
     protected function getRule4()
     {
         $builder =
@@ -488,6 +500,9 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * @return \Aot\Sviaz\Rule\Base
+     */
     protected function getRule5()
     {
         $builder =
@@ -513,6 +528,9 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * @return \Aot\Sviaz\Rule\Base
+     */
     protected function getRule6()
     {
         $builder =
@@ -538,6 +556,9 @@ TEXT;
         return $rule;
     }
 
+    /**
+     * @return \Aot\Sviaz\Rule\Base
+     */
     protected function getRule7()
     {
         $builder =
