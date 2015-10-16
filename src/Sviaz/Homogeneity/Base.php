@@ -1,20 +1,14 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Ivan
- * Date: 14.10.2015
- * Time: 9:46
+ * User: p.semenyuk
+ * Date: 29.07.2015
+ * Time: 14:27
  */
 
-namespace Aot\Sviaz;
+namespace Aot\Sviaz\Homogeneity;
 
-/**
- * @brief Класс для однородных членов предложения
- *
- * Class Homogeneity
- * @package Aot\Sviaz
- */
-class Homogeneity
+class Base
 {
     /** @var \Aot\Sviaz\SequenceMember\Base[] */
     protected $members = [];
@@ -35,7 +29,7 @@ class Homogeneity
     }
 
     /**
-     * @return SequenceMember\Base[]
+     * @return \Aot\Sviaz\SequenceMember\Base[]
      */
     public function getMembers()
     {
@@ -43,15 +37,15 @@ class Homogeneity
     }
 
     /**
-     * @param SequenceMember\Base $member
+     * @param \Aot\Sviaz\SequenceMember\Base $member
      */
     public function addMember(\Aot\Sviaz\SequenceMember\Base $member)
     {
-        $this->members[] = $member;
+        $this->members[spl_object_hash($member)] = $member;
     }
 
     /**
-     * @param SequenceMember\Base[] $members
+     * @param \Aot\Sviaz\SequenceMember\Base[] $members
      */
     public function setMembers($members)
     {
@@ -60,6 +54,4 @@ class Homogeneity
             $this->addMember($member);
         }
     }
-
-
 }

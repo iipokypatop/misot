@@ -9,6 +9,8 @@
 namespace Aot\Sviaz;
 
 
+use Aot\Sviaz\Homogeneity\Homogeneity;
+
 class Sequence extends \ArrayObject
 {
     protected $id;
@@ -16,7 +18,7 @@ class Sequence extends \ArrayObject
     protected $sub_sequences = [];
     /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] */
     protected $sviazi = [];
-    /** @var \Aot\Sviaz\Homogeneity[] */
+    /** @var \Aot\Sviaz\Homogeneity\Homogeneity[] */
     protected $homogeneities = [];
     /** @var \Aot\Sviaz\PreProcessors\HomogeneitySupposed[] */
     protected $homogeneity_supposeds = [];
@@ -119,7 +121,7 @@ class Sequence extends \ArrayObject
     public function setHomogeneities($homogeneities)
     {
         foreach ($homogeneities as $homogeneity) {
-            assert(is_a($homogeneity, \Aot\Sviaz\Homogeneity::class), true);
+            assert(is_a($homogeneity, \Aot\Sviaz\Homogeneity\Homogeneity::class), true);
         }
         $this->homogeneities = $homogeneities;
     }
@@ -129,7 +131,7 @@ class Sequence extends \ArrayObject
      *
      * @param Homogeneity $homogeneity
      */
-    public function addHomogeneity(\Aot\Sviaz\Homogeneity $homogeneity)
+    public function addHomogeneity(\Aot\Sviaz\Homogeneity\Homogeneity $homogeneity)
     {
         $this->homogeneities[] = $homogeneity;
     }
@@ -141,7 +143,7 @@ class Sequence extends \ArrayObject
      */
     public function createAndAddHomogeneity(array $members)
     {
-        $homogeneity=\Aot\Sviaz\Homogeneity::create();
+        $homogeneity= \Aot\Sviaz\Homogeneity\Homogeneity::create();
         $homogeneity->setMembers($members);
         $this->homogeneities[] = $homogeneity;
     }
@@ -159,12 +161,12 @@ class Sequence extends \ArrayObject
     /**
      * @brief Задать массив гипотез о гомогенных группах членов предложений
      *
-     * @param \Aot\Sviaz\HomogeneitySupposed[] $homogeneity_supposeds
+     * @param \Aot\Sviaz\Homogeneity\HomogeneitySupposed[] $homogeneity_supposeds
      */
     public function setHomogeneitySupposeds(array $homogeneity_supposeds)
     {
         foreach ($homogeneity_supposeds as $homogeneity_supposed) {
-            assert(is_a($homogeneity_supposed, \Aot\Sviaz\HomogeneitySupposed::class), true);
+            assert(is_a($homogeneity_supposed, \Aot\Sviaz\Homogeneity\HomogeneitySupposed::class), true);
         }
         $this->homogeneity_supposeds = $homogeneity_supposeds;
     }
@@ -172,9 +174,9 @@ class Sequence extends \ArrayObject
     /**
      * @brief Добавить одну гипотезу о гомогенной группе членов предложения
      *
-     * @param \Aot\Sviaz\HomogeneitySupposed $hypothesis_of_homogeneity
+     * @param \Aot\Sviaz\Homogeneity\HomogeneitySupposed $hypothesis_of_homogeneity
      */
-    public function addHypothesisSupposed(\Aot\Sviaz\HomogeneitySupposed $hypothesis_of_homogeneity)
+    public function addHypothesisSupposed(\Aot\Sviaz\Homogeneity\HomogeneitySupposed $hypothesis_of_homogeneity)
     {
         $this->homogeneity_supposeds[] = $hypothesis_of_homogeneity;
     }
