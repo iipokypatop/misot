@@ -20,9 +20,7 @@
     "mivar-projects/morph-api": "dev-develop",
     "mivar-projects/orthography": "dev-master",
     "iipokypatop/composer-vendor-overloader": ">=1.0.1",
-    "mivar-projects/phpmorphy-fork": "dev-master",
-    "clue/graph": "~0.9.0",
-    "graphp/algorithms": "dev-master"
+    "mivar-projects/phpmorphy-fork": "dev-master"
   },
   "repositories": [
     {

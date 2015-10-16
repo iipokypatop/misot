@@ -46,7 +46,7 @@ abstract class Factory
     }
 
     /**
-     * @param array $words
+     * @param string[] $words
      * @return \Aot\RussianMorphology\Slovo[]
      */
     public static function getSlova(array $words)
