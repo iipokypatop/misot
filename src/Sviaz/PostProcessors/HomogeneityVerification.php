@@ -28,9 +28,11 @@ class HomogeneityVerification extends Base
 
         $homogeneity_supposed = $this->getHomogeneitySupposed($sequence);
 
-        $homogeneity_from_rule = $this->findHomogeneityFromRule($sviazi);
+        $homogeneity_from_rule = $this->findHomogeneityFromSviazi($sviazi);
 
         $this->intersect($homogeneity_supposed, $homogeneity_from_rule, $sequence);
+
+        //$this->intersect2($homogeneity_supposed, $homogeneity_from_rule, $sequence);
     }
 
     /**
@@ -39,7 +41,7 @@ class HomogeneityVerification extends Base
      * @param \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi
      * @return array
      */
-    protected function findHomogeneityFromRule(array $sviazi)
+    protected function findHomogeneityFromSviazi(array $sviazi)
     {
         foreach ($sviazi as $sviaz) {
             assert(is_a($sviaz, \Aot\Sviaz\Podchinitrelnaya\Base::class, true));
@@ -47,7 +49,6 @@ class HomogeneityVerification extends Base
 
         $homogeneity = [];///<Все наборы гомологов
 
-        /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi */
         foreach ($sviazi as $sviaz_a) {
             $set_homogeneity = [];///<набор гомологов, имеющих одно главное слово
             $sviaz_a_id = $sviaz_a->getId();
@@ -64,7 +65,7 @@ class HomogeneityVerification extends Base
                     continue;
                 }
                 //Поскольку сейчас нет типа правил и тип правил подменён id'ником
-//                $sviaz_b_id = $sviaz_a->getId();
+//                $sviaz_b_id = $sviaz_b->getId();
 //                if ($sviaz_b_id === $sviaz_a_id) {
 //                    continue;
 //                }
@@ -83,16 +84,16 @@ class HomogeneityVerification extends Base
 
             $set_homogeneity = [];
             $set_homogeneity[spl_object_hash($main_member_a)] = $main_member_a;
-            //поиск ещё depended_member'ов, которые имеют главное слово === $main_member_a
+            //поиск ещё main_member'ов, которые имеют главное слово === $depended_member_a
             foreach ($sviazi as $sviaz_b) {
                 $depended_member_b = $sviaz_b->getDependedSequenceMember();
                 if ($depended_member_b !== $depended_member_a) {
                     continue;
                 }
-                $sviaz_b_id = $sviaz_a->getId();
-                if ($sviaz_b_id === $sviaz_a_id) {
-                    continue;
-                }
+//                $sviaz_b_id = $sviaz_a->getId();
+//                if ($sviaz_b_id === $sviaz_a_id) {
+//                    continue;
+//                }
                 $main_member_b = $sviaz_b->getDependedSequenceMember();
                 if ($main_member_b === $main_member_a) {
                     continue;
@@ -106,19 +107,7 @@ class HomogeneityVerification extends Base
                 $homogeneity[] = $set_homogeneity;
             }
         }
-        $result_homogeneity = [];
-        foreach ($homogeneity as $one_homogeneity) {
-            $flag = true;
-            foreach ($result_homogeneity as $one_result_homogeneity) {
-                if (count(array_intersect_key($one_homogeneity, $one_result_homogeneity)) === count($one_homogeneity)) {
-                    $flag = false;
-                }
-            }
-            if ($flag) {
-                $result_homogeneity[] = $one_homogeneity;
-            }
-        }
-        return $result_homogeneity;
+        return array_values(array_unique($homogeneity, SORT_REGULAR));
     }
 
     /**
@@ -180,7 +169,7 @@ class HomogeneityVerification extends Base
             $count_intersect = count(array_intersect_key($supposed, $homogeneity_from_rule));
 
             if ($count_intersect === $count_members_supposed) {
-                $homogeneity= \Aot\Sviaz\Homogeneity\Homogeneity::create();
+                $homogeneity = \Aot\Sviaz\Homogeneity\Homogeneity::create();
                 $homogeneity->setMembers($homogeneity_from_rule);
                 $sequence->addHomogeneity($homogeneity);
                 return true;
@@ -225,7 +214,7 @@ class HomogeneityVerification extends Base
         if (count($portions) === 0) {
             return false;
         } elseif (count($portions) === 1) {
-            $homogeneity= \Aot\Sviaz\Homogeneity\Homogeneity::create();
+            $homogeneity = \Aot\Sviaz\Homogeneity\Homogeneity::create();
             $homogeneity->setMembers(current($portions));
             $sequence->addHomogeneity($homogeneity);
             return true;
@@ -235,11 +224,83 @@ class HomogeneityVerification extends Base
                 $tmp_array = array_merge($tmp_array, $portion);
             }
             $array_members = array_unique($tmp_array, SORT_REGULAR);
-            $homogeneity= \Aot\Sviaz\Homogeneity\Homogeneity::create();
+            $homogeneity = \Aot\Sviaz\Homogeneity\Homogeneity::create();
             $homogeneity->setMembers($array_members);
             $sequence->addHomogeneity($homogeneity);
             return true;
         }
+
+    }
+
+    /**
+     * @brief Поиск пересечения
+     *
+     * @param $homogeneity_supposed
+     * @param $homogeneity_from_rule
+     * @param \Aot\Sviaz\Sequence $sequence
+     */
+    protected function intersect2($homogeneity_supposed, $homogeneity_from_rule, $sequence)
+    {
+        foreach ($homogeneity_supposed as $supposed) {
+            $this->Overlap($supposed, $homogeneity_from_rule, $sequence);
+        }
+    }
+
+    /**
+     * @param $supposed
+     * @param $homogeneity_from_rule
+     * @param \Aot\Sviaz\Sequence $sequence
+     * @internal param $array_homogeneity_from_rule
+     */
+    protected function Overlap($supposed, $homogeneity_from_rule, $sequence)
+    {
+        $preliminary_set = [];
+        $i = 0;
+        foreach ($supposed as $member) {
+            $j = 0;
+            foreach ($homogeneity_from_rule as $one_homogeneity_from_rule) {
+                foreach ($one_homogeneity_from_rule as $member_rule) {
+                    if ($member === $member_rule) {
+                        $preliminary_set[$i][$j][] = $member;
+                    }
+                }
+                $j++;
+            }
+            $i++;
+        }
+
+        while (true) {
+            foreach ($preliminary_set as $supposed_member) {
+                //если более одного элемент - пересечение, надо везде добавить дополнительные элементы
+                if (count($supposed_member) > 1) {
+                    $keys_rule = array_keys($supposed_member);
+                    //пробегаем все ключи
+                    foreach ($keys_rule as $key_rule) {
+
+                        foreach ($preliminary_set as $supposed_member_corrected) {
+                            //если в элементе есть такой ключ, то добавляем все остальные
+                            if (array_key_exists($key_rule,$supposed_member_corrected))
+                            {
+                                $tmp=$key_rule;
+                                foreach ($keys_rule as $key)
+                                {
+                                    if ($key!==$tmp)
+                                    $supposed_member_corrected[$key]="!!!!!";
+                                }
+                            }
+                        }
+
+
+                    }
+
+
+                }
+
+
+            }
+            break;
+        }
+
 
     }
 
