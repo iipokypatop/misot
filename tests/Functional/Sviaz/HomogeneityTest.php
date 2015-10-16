@@ -62,18 +62,6 @@ class HomogeneityTest extends \AotTest\AotDataStorage
 
 
     /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi */
-    protected function printSviazi($sviazi)
-    {
-        $result = array_filter([$sviazi]);
-        $pretty = $this->pretty(
-            $result
-        );
-        echo join("\n", $pretty);
-        echo "\n";
-
-    }
-
-    /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi */
     protected function getProstoyMassivSviazi($sviazi)
     {
         $result = [];
