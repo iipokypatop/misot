@@ -137,18 +137,6 @@ class Sequence extends \ArrayObject
     }
 
     /**
-     * @brief Добавить из массива members создать одну гомогенную группу и добавить её в набор последовательности
-     *
-     * @param array $members
-     */
-    public function createAndAddHomogeneity(array $members)
-    {
-        $homogeneity= \Aot\Sviaz\Homogeneity\Homogeneity::create();
-        $homogeneity->setMembers($members);
-        $this->homogeneities[] = $homogeneity;
-    }
-
-    /**
      * @brief Получить наборы гипотез о гомогенных группах
      *
      * @return Homogeneity[]
@@ -181,4 +169,14 @@ class Sequence extends \ArrayObject
         $this->homogeneity_supposeds[] = $hypothesis_of_homogeneity;
     }
 
+    /**
+     * @brief Получить member по номеру позиции в последовательности
+     *
+     * @param $position
+     * @return \Aot\Sviaz\SequenceMember\Base
+     */
+    public function getMemberByPosition($position)
+    {
+        return $this[$position];
+    }
 }
