@@ -25,7 +25,7 @@ class HomogeneitySupposed extends \Aot\Sviaz\PreProcessors\Base
         */
 
         // todo сделать данный метод!
-        /*
+
         $member6=$raw_sequence->getMemberByPosition(1);
         $member7=$raw_sequence->getMemberByPosition(2);
         $part3=\Aot\Sviaz\HomogeneitySupposed::create();
@@ -80,7 +80,7 @@ class HomogeneitySupposed extends \Aot\Sviaz\PreProcessors\Base
         $part_end->addMember($member8);
         $part_end->addMember($member9);
         $raw_sequence->addHypothesisSupposed($part_end);
-        */
+
         return $raw_sequence;
     }
 }

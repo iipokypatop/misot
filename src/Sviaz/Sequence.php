@@ -141,7 +141,8 @@ class Sequence extends \ArrayObject
      */
     public function createAndAddHomogeneity(array $members)
     {
-        $homogeneity=\Aot\Sviaz\Homogeneity::create($members);
+        $homogeneity=\Aot\Sviaz\Homogeneity::create();
+        $homogeneity->setMembers($members);
         $this->homogeneities[] = $homogeneity;
     }
 

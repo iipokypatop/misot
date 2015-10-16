@@ -22,18 +22,16 @@ class Homogeneity
     /**
      * Homogeneity constructor.
      */
-    public function __construct($members)
+    protected function __construct()
     {
-        $this->setMembers($members);
     }
 
     /**
-     * @param \Aot\Sviaz\SequenceMember\Base[] $members
      * @return static
      */
-    public static function create(array $members = [])
+    public static function create()
     {
-        return new static($members);
+        return new static();
     }
 
     /**
@@ -55,12 +53,12 @@ class Homogeneity
     /**
      * @param SequenceMember\Base[] $members
      */
-    protected function setMembers($members)
+    public function setMembers($members)
     {
         foreach ($members as $member) {
             assert(is_a($member, \Aot\Sviaz\SequenceMember\Base::class), true);
+            $this->addMember($member);
         }
-        $this->members = $members;
     }
 
 
