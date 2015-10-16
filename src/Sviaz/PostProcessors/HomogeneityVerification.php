@@ -15,12 +15,16 @@ class HomogeneityVerification extends Base
     {
     }
 
+    /**
+     * @param \Aot\Sviaz\Sequence $sequence
+     * @param \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi
+     * @return void
+     */
     public function run(\Aot\Sviaz\Sequence $sequence, array $sviazi)
     {
         foreach ($sviazi as $sviaz) {
             assert(is_a($sviaz, \Aot\Sviaz\Podchinitrelnaya\Base::class, true));
         }
-
 
         $homogeneity_supposed = $this->getHomogeneitySupposeds($sequence);
 
@@ -30,10 +34,20 @@ class HomogeneityVerification extends Base
         $i = 0;
     }
 
-
-    protected function findHomogeneityFromRule($sviazi)
+    /**
+     * @brief Оббегает все связи и вычисляет однородные члены предложения.
+     *
+     * @param \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi
+     * @return array
+     */
+    protected function findHomogeneityFromRule(array $sviazi)
     {
+        foreach ($sviazi as $sviaz) {
+            assert(is_a($sviaz, \Aot\Sviaz\Podchinitrelnaya\Base::class, true));
+        }
+
         $homogeneity = [];///<Все наборы гомологов
+
         /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi */
         foreach ($sviazi as $sviaz_a) {
             $set_homogeneity = [];///<набор гомологов, имеющих одно главное слово
@@ -50,6 +64,7 @@ class HomogeneityVerification extends Base
                 if ($main_member_b !== $main_member_a) {
                     continue;
                 }
+                //Поскольку сейчас нет типа правил и тип правил подменён id'ником
 //                $sviaz_b_id = $sviaz_a->getId();
 //                if ($sviaz_b_id === $sviaz_a_id) {
 //                    continue;
@@ -92,10 +107,24 @@ class HomogeneityVerification extends Base
                 $homogeneity[] = $set_homogeneity;
             }
         }
-        return $homogeneity;
+        $result_homogeneity = [];
+        foreach ($homogeneity as $one_homogeneity) {
+            $flag = true;
+            foreach ($result_homogeneity as $one_result_homogeneity) {
+                if (count(array_intersect_key($one_homogeneity, $one_result_homogeneity)) === count($one_homogeneity)) {
+                    $flag = false;
+                }
+            }
+            if ($flag) {
+                $result_homogeneity[] = $one_homogeneity;
+            }
+        }
+        return $result_homogeneity;
     }
 
     /**
+     * @brief Получить массив гипотез в преобразованном виде
+     *
      * @param \Aot\Sviaz\Sequence $sequence
      * @return array
      */
@@ -110,25 +139,33 @@ class HomogeneityVerification extends Base
     }
 
     /**
+     * @brief Поиск пересечения
+     *
      * @param $homogeneity_supposed
      * @param $homogeneity_from_rule
      * @param \Aot\Sviaz\Sequence $sequence
      */
     protected function intersect($homogeneity_supposed, $homogeneity_from_rule, $sequence)
     {
+        //todo добавить проверки?
+
         foreach ($homogeneity_supposed as $supposed) {
             if ($this->fullOverlap($supposed, $homogeneity_from_rule, $sequence)) {
-                print_r("Существует полное покрытие\n");
-            } elseif ($this->halfOverlap($supposed, $homogeneity_from_rule, $sequence)) {
-                print_r("Существует неоднозначное покрытие\n");
+                //print_r("Существует полное покрытие\n");
+            } elseif ($this->partOverlap($supposed, $homogeneity_from_rule, $sequence)) {
+                //print_r("Существует неоднозначное покрытие\n");
             } else {
-                print_r("Нет покрытия\n");
+                //print_r("Нет покрытия\n");
             }
         }
 
     }
 
     /**
+     * @brief Проверка, существует ли полное покрытие гипотезы
+     *
+     * Если существует хотя бы один набор однородных членов по правилу, перекрывающий все элементы в гипотезе, то это полное покрытие
+     *
      * @param $supposed
      * @param $array_homogeneity_from_rule
      * @param \Aot\Sviaz\Sequence $sequence
@@ -140,8 +177,6 @@ class HomogeneityVerification extends Base
         $sequence
     ) {
         foreach ($array_homogeneity_from_rule as $homogeneity_from_rule) {
-            /* Если существует хотя бы один набор однородных членов по правилу, перекрывающий
-            все элементы в гипотезе, то это полное покрытие */
             $count_members_supposed = count($supposed);///<Количество членов в гипотезе
             $count_intersect = count(array_intersect_key($supposed, $homogeneity_from_rule));
 
@@ -153,14 +188,32 @@ class HomogeneityVerification extends Base
         return false;
     }
 
-    protected function halfOverlap(
+    /**
+     * @brief Проверка, существует ли частичное покрытие или покрытие несколькими правилами
+     *
+     * Алгоритм:
+     * 1) Пробегаем по все группам однородностей, сформированным по правилам, с каждым таким правилом
+     * находим пересечение нашей гипотезы
+     * 2) Если пересечение больше или равно двум, следовательно есть подозрение на однородность и
+     * этот случай необходимо рассмотреть     *
+     * 3) После того, как собрали всех кандидатов на однородность, узнаём их кол-во, если
+     * оно равно 0, следовательно ничего не подходит и мы завершаем вычисления
+     * 4) Если равно 1 - сразу записываем     *
+     * 5) Если кол-во более 2ух, то озвращаем все как единую группу однородностей (в будущем нужна проверка:
+     * 6) todo В будущев может появиться: если есть пересечение - добавляем как одну однородность или вообще откидываем, если нет - как несколько
+     *
+     * @param $supposed
+     * @param $array_homogeneity_from_rule
+     * @param $sequence
+     * @return bool
+     */
+    protected function partOverlap(
         $supposed,
         $array_homogeneity_from_rule,
-        $sequence
+        \Aot\Sviaz\Sequence $sequence
     ) {
         $portions = [];
         foreach ($array_homogeneity_from_rule as $homogeneity_from_rule) {
-            $count_members_supposed = count($supposed);///<Количество членов в гипотезе
             $intersect = array_intersect_key($supposed, $homogeneity_from_rule);
             $count_intersect = count($intersect);///< Количество перекрываемых членов в гипотезе
 
@@ -170,6 +223,9 @@ class HomogeneityVerification extends Base
         }
         if (count($portions) === 0) {
             return false;
+        } elseif (count($portions) === 1) {
+            $sequence->createAndAddHomogeneity(current($portions));
+            return true;
         } else {
             $tmp_array = [];
             foreach ($portions as $portion) {

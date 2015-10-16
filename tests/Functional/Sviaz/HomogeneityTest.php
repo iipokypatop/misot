@@ -49,8 +49,7 @@ class HomogeneityTest extends \AotTest\AotDataStorage
                 $this->getRule3(),
                 $this->getRule4(),
                 $this->getRule5(),
-                $this->getRule6(),
-                $this->getRule7()
+                $this->getRule6()
             ]
         );
 
