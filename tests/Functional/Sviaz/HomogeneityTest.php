@@ -91,7 +91,7 @@ class HomogeneityTest extends \AotTest\AotDataStorage
 
     public function getSequencesForTests()
     {
-        //СОздаём процессор
+        //Создаём процессор
         $processor = \Aot\Sviaz\Processor\Base::create();
 
         //Получаем два правила, причё они будут противоречить друг другу
