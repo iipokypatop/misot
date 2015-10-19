@@ -50,7 +50,8 @@ class Main
 
     protected function saveSviazi(\Aot\Sviaz\Sequence $sequence)
     {
-        $api = \SemanticPersistence\API\SemanticAPI::getAPI("host=192.168.10.51 dbname=mivar_semantic_new user=postgres password=@Mivar123User@");
+//        $api = \SemanticPersistence\API\SemanticAPI::getAPI("host=192.168.10.51 dbname=mivar_semantic_new user=postgres password=@Mivar123User@");
+        $api = \SemanticPersistence\API\SemanticAPI::getAPI();
 
         foreach ($sequence->getSviazi() as $sviaz) {
 
@@ -105,7 +106,8 @@ class Main
 
         $config = \Aot\Tools\Config::getConfig();
 
-        $api = \SemanticPersistence\API\SemanticAPI::getAPI($config[$config['MODE']]['semantic']['db']);
+//        $api = \SemanticPersistence\API\SemanticAPI::getAPI($config[$config['MODE']]['semantic']['db']);
+        $api = \SemanticPersistence\API\SemanticAPI::getAPI();
 
         //ищем слова в БД. Помним, что слово должно быть только одно!
         /* @var \SemanticPersistence\Entities\SemanticEntities\Word $word1_obj */
