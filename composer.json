@@ -20,7 +20,8 @@
     "mivar-projects/morph-api": "dev-develop",
     "mivar-projects/orthography": "dev-master",
     "iipokypatop/composer-vendor-overloader": ">=1.0.1",
-    "mivar-projects/phpmorphy-fork": "dev-master"
+    "mivar-projects/phpmorphy-fork": "dev-master",
+    "mivar-projects/utils": "dev-develop"
   },
   "repositories": [
     {
@@ -53,6 +54,10 @@
     },
     {
       "url": "git@gitlab.mivar.ru:mivar-projects/phpmorphy-fork.git",
+      "type": "git"
+    },
+    {
+      "url": "git@gitlab.mivar.ru:mivar-projects/utils.git",
       "type": "git"
     }
   ],
