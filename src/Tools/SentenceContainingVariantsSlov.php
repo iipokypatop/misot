@@ -18,6 +18,9 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
     /** @var \Aot\RussianMorphology\Slovo[][] */
     protected $slova = [];
 
+    /**
+     * @return SentenceContainingVariantsSlov
+     */
     public static function create()
     {
         return new static();
@@ -43,7 +46,6 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
         $this->slova [] = $slova[0];
     }
 
-
     /**
      * @return \Aot\RussianMorphology\Slovo[]
      */
@@ -52,7 +54,9 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
         return $this->slova[$this->position];
     }
 
-
+    /**
+     * return void
+     */
     public function next()
     {
         $this->position++;
@@ -74,7 +78,9 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
         return array_key_exists($this->position, $this->texts);
     }
 
-
+    /**
+     * return void
+     */
     public function rewind()
     {
         $this->position = 0;

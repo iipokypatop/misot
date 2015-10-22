@@ -30,7 +30,7 @@ class ConvertTextIntoSlova
                 $slova = (\Aot\RussianMorphology\Factory::getSlova([$word]));
                 if (count($slova)===0)
                 {
-                    $tmp_sentence->add($word, [$slova]);
+                    $tmp_sentence->add($word, [[]]);
                     continue;
                 }
                 $tmp_sentence->add($word, $slova);
