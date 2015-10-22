@@ -3,4 +3,6 @@ vendor/
 tests/Coverage
 composer.lock
 
+.DS_Store
+
 config/config.ini
