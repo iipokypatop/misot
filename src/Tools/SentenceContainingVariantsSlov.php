@@ -9,7 +9,7 @@
 namespace Aot\Tools;
 
 
-class Registry implements \Iterator, \Countable
+class SentenceContainingVariantsSlov implements \Iterator, \Countable
 {
     /** @var int */
     protected $position = 0;
@@ -30,18 +30,17 @@ class Registry implements \Iterator, \Countable
 
     /**
      * @param string $text
-     * @param \Aot\RussianMorphology\Slovo[][] $array_slova
+     * @param \Aot\RussianMorphology\Slovo[][] $slova
      */
-    public function add($text, $array_slova)
+    public function add($text, $slova)
     {
         assert(is_string($text));
-        foreach ($array_slova as $slova) {
-            foreach ($slova as $slovo) {
-                assert(is_a($slovo, \Aot\RussianMorphology\Slovo::class, true));
-            }
+        assert(count($slova) === 1);
+        foreach ($slova[0] as $slovo) {
+            assert(is_a($slovo, \Aot\RussianMorphology\Slovo::class, true));
         }
         $this->texts [] = $text;
-        $this->slova [] = current($array_slova);
+        $this->slova [] = $slova[0];
     }
 
 

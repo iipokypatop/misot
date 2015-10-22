@@ -25,7 +25,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
 
     public function testLaunch()
     {
-        $text = "Папа пришёл домой и лёг спать. А потом и мама пришла домой.";
+        $text = "Ресовать Папа пришёл домой и лёг спать. А потом и мама пришла домой.";
         $res = \Aot\Tools\ConvertTextIntoSlova::convert($text);
         foreach ($res as $sentence) {
             foreach ($sentence as $key => $value) {

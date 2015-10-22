@@ -13,7 +13,7 @@ class ConvertTextIntoSlova
 {
     /**
      * @param string $text
-     * @return \Aot\Tools\Registry[]
+     * @return \Aot\Tools\SentenceContainingVariantsSlov[]
      */
     public static function convert($text)
     {
@@ -22,12 +22,16 @@ class ConvertTextIntoSlova
         $parser->execute($text);
         $parser->render();
         $sentence_words = $parser->getSentenceWords();
-        /** @var \Aot\Tools\Registry[] $registry */
+        /** @var \Aot\Tools\SentenceContainingVariantsSlov[] $registry */
         $registry = [];
         foreach ($sentence_words as $sentence) {
-            $tmp_registry = \Aot\Tools\Registry::create();
+            $tmp_registry = \Aot\Tools\SentenceContainingVariantsSlov::create();
             foreach ($sentence as $word) {
                 $slova = (\Aot\RussianMorphology\Factory::getSlova([$word]));
+                if (count($slova)===0)
+                {
+                    continue;
+                }
                 $tmp_registry->add($word, $slova);
             }
             $registry[] = $tmp_registry;
