@@ -336,15 +336,15 @@ class Helper
                             } elseif ($gram_val == 'ИМЯ') {
                                 $param_id = 27;
                                 $param_name = 'ФИО';
-                                $array_dictionary_word[$word][$id]['initial_form'] = my_ucfirst($array_dictionary_word[$word][$id]['initial_form']);
+                                $array_dictionary_word[$word][$id]['initial_form'] = self::my_ucfirst($array_dictionary_word[$word][$id]['initial_form']);
                             } elseif ($gram_val == 'ОТЧ') {
                                 $param_id = 27;
                                 $param_name = 'ФИО';
-                                $array_dictionary_word[$word][$id]['initial_form'] = my_ucfirst($array_dictionary_word[$word][$id]['initial_form']);
+                                $array_dictionary_word[$word][$id]['initial_form'] = self::my_ucfirst($array_dictionary_word[$word][$id]['initial_form']);
                             } elseif ($gram_val == 'ФАМ') {
                                 $param_id = 27;
                                 $param_name = 'ФИО';
-                                $array_dictionary_word[$word][$id]['initial_form'] = my_ucfirst($array_dictionary_word[$word][$id]['initial_form']);
+                                $array_dictionary_word[$word][$id]['initial_form'] = self::my_ucfirst($array_dictionary_word[$word][$id]['initial_form']);
                             } elseif ($gram_val == 'СРАВН') {
                                 $param_id = 15;
                                 $param_name = 'степень сравнения';
@@ -395,7 +395,7 @@ class Helper
                             } elseif ($gram_val == 'УКАЗАТ') {
 
                             } elseif ($gram_val == 'ЛОК') {
-                                $array_dictionary_word[$word][$id]['initial_form'] = my_ucfirst($array_dictionary_word[$word][$id]['initial_form']);
+                                $array_dictionary_word[$word][$id]['initial_form'] = self::my_ucfirst($array_dictionary_word[$word][$id]['initial_form']);
 
                             } elseif ($gram_val == 'КАЧ') {
 
