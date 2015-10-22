@@ -27,7 +27,7 @@ class ConvertTextIntoSlova
         foreach ($sentence_words as $sentence) {
             $tmp_registry = \Aot\Tools\Registry::create();
             foreach ($sentence as $word) {
-                $slova = current(\Aot\RussianMorphology\Factory::getSlova([$word]));
+                $slova = (\Aot\RussianMorphology\Factory::getSlova([$word]));
                 $tmp_registry->add($word, $slova);
             }
             $registry[] = $tmp_registry;
