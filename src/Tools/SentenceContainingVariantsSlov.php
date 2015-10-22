@@ -86,7 +86,6 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
         $this->position = 0;
     }
 
-
     /**
      * @return int
      */
