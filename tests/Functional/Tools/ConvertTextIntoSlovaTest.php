@@ -9,17 +9,6 @@
 namespace AotTest\Functional\Sviaz\Podchinitrelnaya\Filters;
 
 
-use Aot\RussianMorphology\ChastiRechi\Glagol\Base as Glagol;
-use Aot\RussianMorphology\ChastiRechi\Predlog\Base as Predlog;
-use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base as Prilagatelnoe;
-use Aot\RussianMorphology\ChastiRechi\Soyuz\Base;
-use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base as Suschestvitelnoe;
-use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Base as SuschestvitelnoePadeszhBase;
-use Aot\RussianSyntacsis\Punctuaciya\Zapiataya;
-use Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq;
-use MivarTest\PHPUnitHelper;
-
-
 class ConvertTextIntoSlovaTest extends \AotTest\AotDataStorage
 {
 
@@ -36,7 +25,7 @@ class ConvertTextIntoSlovaTest extends \AotTest\AotDataStorage
         }
     }
 
-    public function testConvert()
+    public function testConvert_ReturnsCorrectFormatAndWorksProperly()
     {
         $words = [
             0 => "Пичаль",
