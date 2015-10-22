@@ -20,7 +20,7 @@ use Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq;
 use MivarTest\PHPUnitHelper;
 
 
-class SyntaxTest extends \AotTest\AotDataStorage
+class ConvertTextIntoSlovaTest extends \AotTest\AotDataStorage
 {
 
     public function testLaunch()
@@ -34,6 +34,11 @@ class SyntaxTest extends \AotTest\AotDataStorage
                 //print_r($value);
             }
         }
+    }
+
+    public function testConvert()
+    {
+
     }
 
 
