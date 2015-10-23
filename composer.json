@@ -31,10 +31,6 @@
     },
     {
       "type": "git",
-      "url": "git@git.mivar.pro:mivar-projects/text-libraries.git"
-    },
-    {
-      "type": "git",
       "url": "git@git.mivar.pro:mivar-projects/test-utils.git"
     },
     {
@@ -64,6 +60,10 @@
     {
       "url": "git@gitlab.mivar.ru:mivar-projects/utils.git",
       "type": "git"
+    },
+    {
+      "type": "git",
+      "url": "git@git.mivar.pro:mivar-projects/text-libraries.git"
     }
   ],
   "autoload": {

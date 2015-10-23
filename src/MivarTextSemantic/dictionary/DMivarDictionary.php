@@ -1,6 +1,6 @@
 <?php
 
-namespace Aot\MivarTextSemantic\dictionary;
+namespace Aot\MivarTextSemantic\Dictionary;
 
 use Aot\MivarTextSemantic\Dw;
 use Aot\MivarTextSemantic\MorphAttribute;
@@ -123,7 +123,7 @@ class DMivarDictionary
 
             $this->array_missing_words = array_diff($words_array, $find_word);
             if ($use_predict && $this->array_missing_words) {
-                $miss_words_predict = \Aot\MivarTextSemantic\dictionary\Helper::getWordFromAllDict($this->array_missing_words);
+                $miss_words_predict = \Aot\MivarTextSemantic\Dictionary\Helper::getWordFromAllDict($this->array_missing_words);
                 if ($miss_words_predict) {
                     foreach ($miss_words_predict as $word => $dict_words) {
                         $result[$word] = $dict_words;
