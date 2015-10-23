@@ -17,18 +17,29 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
     protected $texts = [];
     /** @var \Aot\RussianMorphology\Slovo[][] */
     protected $slova = [];
+    /**
+     * @var string
+     */
+    protected $raw_sentence_text;
 
     /**
+     * @param string $raw_sentence_text
      * @return SentenceContainingVariantsSlov
      */
-    public static function create()
+    public static function create($raw_sentence_text)
     {
-        return new static();
+        return new static($raw_sentence_text);
     }
 
-    protected function __construct()
+    /**
+     * @param string $raw_sentence_text
+     */
+    protected function __construct($raw_sentence_text)
     {
+        assert(is_string($raw_sentence_text));
+        assert(!empty($raw_sentence_text));
 
+        $this->raw_sentence_text = $raw_sentence_text;
     }
 
     /**
@@ -92,5 +103,13 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
     public function count()
     {
         return count($this->slova);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRawSentenceText()
+    {
+        return $this->raw_sentence_text;
     }
 }
