@@ -21,12 +21,17 @@
     "mivar-projects/orthography": "dev-master",
     "iipokypatop/composer-vendor-overloader": ">=1.0.1",
     "mivar-projects/phpmorphy-fork": "dev-master",
-    "mivar-projects/utils": "dev-develop"
+    "mivar-projects/utils": "dev-develop",
+    "mivar-projects/text-libraries": "dev-release/1.1.0"
   },
   "repositories": [
     {
       "type": "git",
       "url": "git@git.mivar.pro:mivar-projects/loader.git"
+    },
+    {
+      "type": "git",
+      "url": "git@git.mivar.pro:mivar-projects/text-libraries.git"
     },
     {
       "type": "git",
