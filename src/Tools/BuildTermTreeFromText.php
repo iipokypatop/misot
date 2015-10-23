@@ -13,7 +13,7 @@ class BuildTermTreeFromText
 {
     /**
      * @param string $text
-     * @return array
+     * @return array предназначенный для вывода на интерфейс
      */
     public static function run($text)
     {
@@ -23,14 +23,13 @@ class BuildTermTreeFromText
         foreach ($sentences as $sentence) {
             $tmpl_slova = [];
             foreach ($sentence as $word => $slova) {
-
                 $tmpl_initial_forms = [];
                 foreach ($slova as $slovo) {
-                    $initial_form = ($slovo->getInitialForm());
-                    $definitions = static::getDefinitionsForInitialForm($initial_form);
+                    $initial_form = $slovo->getInitialForm();
+                    $terms = static::getTermsForInitialForm($initial_form);
                     $tmpl_definitions = [];
-                    foreach ($definitions as $definition) {
-                        $tmpl_definitions[] = static::fillTemplate($definition, $initial_form, []);
+                    foreach ($terms as $term) {
+                        $tmpl_definitions[] = static::fillTemplate($term->getDefinition(), $initial_form, []);
                     }
                     $tmpl_initial_forms[] = static::fillTemplate($initial_form, $word, $tmpl_definitions);
                 }
@@ -38,46 +37,48 @@ class BuildTermTreeFromText
             }
             $tmpl_sentences[] = static::fillTemplate($sentence->getRawSentenceText(), "Предложения", $tmpl_slova);
         }
-        $result = static::fillTemplate("Предложения", null, $tmpl_sentences);
-        return $result;
+        return [static::fillTemplate("Предложения", null, $tmpl_sentences)];
     }
 
     /**
      * @param string $initial_form
-     * @return string[]
+     * @return \SemanticPersistence\Entities\SemanticEntities\Term[]
      */
-    protected static function getDefinitionsForInitialForm($initial_form)
+    protected static function getTermsForInitialForm($initial_form)
     {
         assert(is_string($initial_form));
+        $initial_form = strtolower($initial_form);
 
         $result = [];
 
-        $api = \SemanticPersistence\API\SemanticAPI::getAPI();
-        $word_entities = $api->findBy(\SemanticPersistence\Entities\SemanticEntities\Word::class,
-            ['name' => [$initial_form]]);
-        /** @var \SemanticPersistence\Entities\SemanticEntities\Word $word_entity */
-        foreach ($word_entities as $word_entity) {
-            /** @var \SemanticPersistence\Entities\SemanticEntities\Term[] $terms */
-            $terms = $api->findBy(\SemanticPersistence\Entities\SemanticEntities\Term::class,
-                ['word' => $word_entity->getId()]);
-            foreach ($terms as $term) {
-                $definition = $term->getDefinition();
-                $result[] = $definition;
-            }
+        /** @var \SemanticPersistence\Entities\SemanticEntities\Word[] $word_entities */
+        $word_entities =
+            \SemanticPersistence\API\SemanticAPI::getAPI()
+                ->findBy(
+                    \SemanticPersistence\Entities\SemanticEntities\Word::class,
+                    ['name' => [$initial_form]]
+                );
 
+        foreach ($word_entities as $word_entity) {
+            $result = array_merge(
+                $result,
+                \SemanticPersistence\API\SemanticAPI::getAPI()
+                    ->findBy(
+                        \SemanticPersistence\Entities\SemanticEntities\Term::class,
+                        ['word' => $word_entity->getId()]
+                    )
+            );
         }
+
         return $result;
     }
 
     protected static function fillTemplate($name, $parent, array $children)
     {
-        $template =
-            [
-                'name' => $name,
-                'parent' => $parent,
-                'children' => $children
-            ];
-        return $template;
+        return [
+            'name' => $name,
+            'parent' => $parent,
+            'children' => $children
+        ];
     }
-
 }
