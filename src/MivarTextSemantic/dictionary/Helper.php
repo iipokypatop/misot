@@ -1,5 +1,5 @@
 <?php
-namespace Aot\MivarTextSemantic\Dictionary;
+namespace Aot\MivarTextSemantic\dictionary;
 
 
 class Helper
