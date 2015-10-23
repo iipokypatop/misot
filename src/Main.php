@@ -38,7 +38,7 @@ class Main
         foreach ($parser->getSentenceWords() as $sentence) {
 
             $slova = \Aot\RussianMorphology\Factory::getSlova($sentence);
-            $processor = \Aot\Sviaz\Processor\Base::create();
+            $processor = Sviaz\Processor::create();
             $matrix = \Aot\Text\Matrix::create($slova);
             $normalized_matrix = \Aot\Text\NormalizedMatrix::create($matrix);
 

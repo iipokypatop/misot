@@ -2,7 +2,7 @@
 
 namespace Aot\MivarTextSemantic\SyntaxParser;
 
-use Aot\MivarTextSemantic\Dictionary\DMivarDictionary;
+use Aot\MivarTextSemantic\dictionary\DMivarDictionary;
 use Aot\MivarTextSemantic\MivarSpaceWdw;
 use Aot\MivarTextSemantic\MivarSpaceWdwOOz;
 use Aot\MivarTextSemantic\RegParser\RegClasses\Text;
