@@ -15,8 +15,8 @@ use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
 
 class Aot extends Base
 {
-
     protected $cache_nf_member = [];
+
     public function run(\Aot\Sviaz\Sequence $sequence, array $rules)
     {
         assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true ));
@@ -48,8 +48,6 @@ class Aot extends Base
                 $sequence->addSviaz($this->createSvyaz($sequence, $rule, 'O', 'SO'));
             }
         }
-
-        print_r($sequence->getSviazi());
     }
     /**
      * Создаем правило

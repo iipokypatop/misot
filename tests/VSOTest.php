@@ -15,6 +15,14 @@ class VSOTest extends \AotTest\AotDataStorage
 {
     protected $cache_nf_member = [];
 
+
+    public function testRunInClass()
+    {
+        $sequence = $this->getRawSequence();
+        $misot_to_aot = \Aot\Sviaz\Processors\Aot::create();
+        $misot_to_aot->run($sequence, []);
+    }
+
     /**
      *
      */

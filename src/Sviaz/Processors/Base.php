@@ -12,4 +12,9 @@ namespace Aot\Sviaz\Processors;
 abstract class Base
 {
     abstract public function run(\Aot\Sviaz\Sequence $sequence, array $rules);
+
+    public static function create()
+    {
+        return new static();
+    }
 }
