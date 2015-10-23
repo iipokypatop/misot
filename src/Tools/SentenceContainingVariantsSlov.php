@@ -101,7 +101,7 @@ class SentenceContainingVariantsSlov extends \ArrayIterator implements \Iterator
     {
         $result = '';
         foreach ($this->texts as $word) {
-            $result = $result . $word;
+            $result = $result . $word . ' ';
         }
         return $result;
     }
