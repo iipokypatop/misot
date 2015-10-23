@@ -22,7 +22,7 @@ class DMivarDictionary
     protected static $dbconn;
 
     //Конструктор, выполняет создание объекта класса DOMDocument из массива уникальных слов
-    //Вход: массив уникальных слов
+    //Вход: массив уникальных сл
     function __construct($words_array, $need_forms = false, $connection_string = \Aot\MivarTextSemantic\Constants::DB_CONNECTION)
     {
         self::$dbconn = pg_connect($connection_string);
