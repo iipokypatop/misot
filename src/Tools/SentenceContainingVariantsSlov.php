@@ -9,7 +9,7 @@
 namespace Aot\Tools;
 
 
-class SentenceContainingVariantsSlov implements \Iterator, \Countable
+class SentenceContainingVariantsSlov extends \ArrayIterator implements \Iterator, \Countable
 {
     /** @var int */
     protected $position = 0;
@@ -26,7 +26,7 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
         return new static();
     }
 
-    protected function __construct()
+    public function __construct()
     {
 
     }
@@ -92,5 +92,17 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
     public function count()
     {
         return count($this->slova);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSentenceAsString()
+    {
+        $result = '';
+        foreach ($this->texts as $word) {
+            $result = $result . $word;
+        }
+        return $result;
     }
 }
