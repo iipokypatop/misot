@@ -1,6 +1,6 @@
 <?php
 
-namespace Aot\MivarTextSemantic\Dictionary;
+namespace Aot\MivarTextSemantic\dictionary;
 
 use Aot\MivarTextSemantic\Dw;
 use Aot\MivarTextSemantic\MorphAttribute;
@@ -22,7 +22,7 @@ class DMivarDictionary
     protected static $dbconn;
 
     //Конструктор, выполняет создание объекта класса DOMDocument из массива уникальных слов
-    //Вход: массив уникальных слов
+    //Вход: массив уникальных сл
     function __construct($words_array, $need_forms = false, $connection_string = \Aot\MivarTextSemantic\Constants::DB_CONNECTION)
     {
         self::$dbconn = pg_connect($connection_string);
@@ -123,7 +123,7 @@ class DMivarDictionary
 
             $this->array_missing_words = array_diff($words_array, $find_word);
             if ($use_predict && $this->array_missing_words) {
-                $miss_words_predict = \Aot\MivarTextSemantic\Dictionary\Helper::getWordFromAllDict($this->array_missing_words);
+                $miss_words_predict = \Aot\MivarTextSemantic\dictionary\Helper::getWordFromAllDict($this->array_missing_words);
                 if ($miss_words_predict) {
                     foreach ($miss_words_predict as $word => $dict_words) {
                         $result[$word] = $dict_words;
