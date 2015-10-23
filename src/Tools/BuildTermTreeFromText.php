@@ -34,9 +34,9 @@ class BuildTermTreeFromText
                     }
                     $tmpl_initial_forms[] = static::fillTemplate($initial_form, $word, $tmpl_definitions);
                 }
-                $tmpl_slova[] = static::fillTemplate($word, $sentence->getSentenceAsString(), $tmpl_initial_forms);
+                $tmpl_slova[] = static::fillTemplate($word, $sentence->getRawSentenceText(), $tmpl_initial_forms);
             }
-            $tmpl_sentences[] = static::fillTemplate($sentence->getSentenceAsString(), "Предложения", $tmpl_slova);
+            $tmpl_sentences[] = static::fillTemplate($sentence->getRawSentenceText(), "Предложения", $tmpl_slova);
         }
         $result = static::fillTemplate("Предложения", null, $tmpl_sentences);
         return $result;

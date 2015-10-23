@@ -22,14 +22,14 @@ class ConvertTextIntoSlova
         $parser->execute($text);
         $parser->render();
         $sentence_words = $parser->getSentenceWords();
+        $sentence_strings = $parser->getSentences();
         /** @var \Aot\Tools\SentenceContainingVariantsSlov[] $sentences */
         $sentences = [];
-        foreach ($sentence_words as $sentence) {
-            $tmp_sentence = \Aot\Tools\SentenceContainingVariantsSlov::create();
+        foreach ($sentence_words as $index => $sentence) {
+            $tmp_sentence = \Aot\Tools\SentenceContainingVariantsSlov::create($sentence_strings[$index]);
             foreach ($sentence as $word) {
                 $slova = (\Aot\RussianMorphology\Factory::getSlova([$word]));
-                if (count($slova)===0)
-                {
+                if (count($slova) === 0) {
                     $tmp_sentence->add($word, [[]]);
                     continue;
                 }
