@@ -1,26 +1,26 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: admin
+ * Date: 23/10/15
+ * Time: 19:10
+ */
 
+namespace Aot\Sviaz\Processors;
 
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
 use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
-use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
-use Aot\Sviaz\Rule\Checker\Registry as LinkCheckerRegistry;
-use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
-use Aot\Sviaz\Rule\AssertedMember\PositionRegistry;
-use Aot\Sviaz\Rule\AssertedMember\PresenceRegistry;
-use Aot\Text\GroupIdRegistry;
 
-class VSOTest extends \AotTest\AotDataStorage
+
+class Aot extends Base
 {
-    protected $cache_nf_member = [];
 
-    /**
-     *
-     */
-    public function testRun()
+    protected $cache_nf_member = [];
+    public function run(\Aot\Sviaz\Sequence $sequence, array $rules)
     {
-        $sequence = $this->getRawSequence();
+        assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true ));
+
         /** @var \Aot\Sviaz\SequenceMember\Base $member */
         $sentence_array = $this->getSentenceArrayBySequence($sequence);
         $sentence_string = join(' ', $sentence_array);
@@ -50,10 +50,7 @@ class VSOTest extends \AotTest\AotDataStorage
         }
 
         print_r($sequence->getSviazi());
-
-
     }
-
     /**
      * Создаем правило
      * @param $role_main
@@ -114,8 +111,8 @@ class VSOTest extends \AotTest\AotDataStorage
         foreach ($sequence as $member) {
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
                 /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
-            } elseif ($member instanceof Aot\Sviaz\SequenceMember\Word\Base) {
-                /** @var Aot\Sviaz\SequenceMember\Word\Base $member */
+            } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
+                /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
                 $sentence_array[] = $member->getSlovo()->getText();
                 $this->cache_nf_member[$member->getSlovo()->getInitialForm()] = $member;
             }
@@ -130,10 +127,9 @@ class VSOTest extends \AotTest\AotDataStorage
      */
     private function getOriginalVSOModel($sentence_string)
     {
-        $mivar = new DMivarText(['txt' => $sentence_string]);
+        $mivar = new \DMivarText(['txt' => $sentence_string]);
         $mivar->semantic_model();
         return $mivar->getSemanticModel();
     }
-
 
 }
