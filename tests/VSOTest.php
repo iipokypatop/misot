@@ -57,7 +57,7 @@ class VSOTest extends \AotTest\AotDataStorage
             }
         }
 
-        print_r($sequence->getSviazi());
+        //print_r($sequence->getSviazi());
 
 
     }
