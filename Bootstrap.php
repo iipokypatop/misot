@@ -20,6 +20,7 @@ class MorphAttribute extends \Aot\MivarTextSemantic\MorphAttribute
 \Overloader\Base::load([
     'txt',
     'mivar-projects',
+    'doctrine',
 ]);
 
 ini_set('display_errors', 1);

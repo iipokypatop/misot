@@ -30,7 +30,7 @@ TEXT
 
         $normalized_matrix = \Aot\Text\NormalizedMatrix::create($matrix);
 
-        $processor = \Aot\Sviaz\Processor\Base::create();
+        $processor = \Aot\Sviaz\Processor::create();
 
         $sequences = $processor->go(
             $normalized_matrix,
