@@ -19,7 +19,7 @@ class Aot extends Base
 
     public function run(\Aot\Sviaz\Sequence $sequence, array $rules)
     {
-        assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true ));
+        assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
 
         /** @var \Aot\Sviaz\SequenceMember\Base $member */
         $sentence_array = $this->getSentenceArrayBySequence($sequence);
@@ -49,6 +49,7 @@ class Aot extends Base
             }
         }
     }
+
     /**
      * Создаем правило
      * @param $role_main
@@ -93,8 +94,8 @@ class Aot extends Base
      */
     private function createSvyaz($seq, $rule, $main_field, $depend_field)
     {
-        $main = $this->cache_nf_member[call_user_func_array([$rule, 'get_name_'.$main_field],[])];
-        $depended = $this->cache_nf_member[call_user_func_array([$rule, 'get_name_'.$depend_field],[])];
+        $main = $this->cache_nf_member[call_user_func_array([$rule, 'get_name_' . $main_field], [])];
+        $depended = $this->cache_nf_member[call_user_func_array([$rule, 'get_name_' . $depend_field], [])];
         $rule = $this->createRule($main_field, $depend_field);
         return \Aot\Sviaz\Podchinitrelnaya\Base::create($main, $depended, $rule, $seq);
     }
@@ -121,13 +122,18 @@ class Aot extends Base
     /**
      * Получение VSO модели через АОТ
      * @param $sentence_string
-     * @return mixed
+     * @return string[] hash map првил
      */
     private function getOriginalVSOModel($sentence_string)
     {
         $mivar = new \DMivarText(['txt' => $sentence_string]);
+
         $mivar->semantic_model();
-        return $mivar->getSemanticModel();
+
+        $result = $mivar->getSemanticModel();
+
+        return !empty($result) ? $result : [];
+
     }
 
 }
