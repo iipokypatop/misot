@@ -69,45 +69,69 @@ class AotDataStorage extends \MivarTest\Base
  проспекте Маршала Баграмяна будут продвигаться вперед по направлению к президентскому дворцу.
 TEXT;
 
-        $esli[0] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
+        $esli[0] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText', 'getInitialForm']);
         PHPUnitHelper::setProtectedProperty($esli[0], 'text', 'если');
-        $esli[1] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
+        PHPUnitHelper::setProtectedProperty($esli[0], 'initial_form', 'если');
+
+        $esli[1] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText', 'getInitialForm']);
         PHPUnitHelper::setProtectedProperty($esli[1], 'text', 'если');
-        $esli[2] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
+        PHPUnitHelper::setProtectedProperty($esli[1], 'initial_form', 'если');
+
+        $esli[2] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText', 'getInitialForm']);
         PHPUnitHelper::setProtectedProperty($esli[2], 'text', 'если');
-        $esli[3] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
+        PHPUnitHelper::setProtectedProperty($esli[2], 'initial_form', 'если');
+
+        $esli[3] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText', 'getInitialForm']);
         PHPUnitHelper::setProtectedProperty($esli[3], 'text', 'если');
+        PHPUnitHelper::setProtectedProperty($esli[3], 'initial_form', 'если');
 
-        $povishenie[0] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
+        $povishenie[0] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText', 'getInitialForm']);
         PHPUnitHelper::setProtectedProperty($povishenie[0], 'text', 'повышение');
-        $povishenie[1] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
+        PHPUnitHelper::setProtectedProperty($povishenie[0], 'initial_form', 'повысить');
+
+        $povishenie[1] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText', 'getInitialForm']);
         PHPUnitHelper::setProtectedProperty($povishenie[1], 'text', 'повышение');
+        PHPUnitHelper::setProtectedProperty($povishenie[1], 'initial_form', 'повысить');
 
-        $tarifov[0] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
+        $tarifov[0] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText', 'getInitialForm']);
         PHPUnitHelper::setProtectedProperty($tarifov[0], 'text', 'тарифов');
-        $tarifov[1] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
+        PHPUnitHelper::setProtectedProperty($tarifov[0], 'initial_form', 'тариф');
+
+
+        $tarifov[1] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText', 'getInitialForm']);
         PHPUnitHelper::setProtectedProperty($tarifov[1], 'text', 'тарифов');
-        $tarifov[2] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
+        PHPUnitHelper::setProtectedProperty($tarifov[1], 'initial_form', 'тариф');
+
+        $tarifov[2] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText', 'getInitialForm']);
         PHPUnitHelper::setProtectedProperty($tarifov[2], 'text', 'тарифов');
+        PHPUnitHelper::setProtectedProperty($tarifov[2], 'initial_form', 'тариф');
 
-        $zapiztaya = $this->getSafeMockLocal(Zapiataya::class, ['getText']);
 
-        $na[0] = $this->getSafeMockLocal(Predlog::class, ['getText'], ['getText']);
+        $zapiztaya = $this->getSafeMockLocal(Zapiataya::class, ['getText', 'getInitialForm']);
+
+        $na[0] = $this->getSafeMockLocal(Predlog::class, ['getText', 'getInitialForm'], ['getText', 'getInitialForm']);
         PHPUnitHelper::setProtectedProperty($na[0], 'text', 'на');
+        PHPUnitHelper::setProtectedProperty($na[0], 'initial_form', 'на');
 
-        $elektoenergiu[0] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText']);
+        $elektoenergiu[0] = $this->getSafeMockLocal(Suschestvitelnoe::class, ['getText', 'getInitialForm']);
         PHPUnitHelper::setProtectedProperty($elektoenergiu[0], 'text', 'электроэнергию');
+        PHPUnitHelper::setProtectedProperty($elektoenergiu[0], 'initial_form', 'электроэнергия');
 
-        $ne[0] = $this->getSafeMockLocal(Chastica::class, ['getText']);
+        $ne[0] = $this->getSafeMockLocal(Chastica::class, ['getText', 'getInitialForm']);
         PHPUnitHelper::setProtectedProperty($ne[0], 'text', 'не');
+        PHPUnitHelper::setProtectedProperty($ne[0], 'initial_form', 'не');
 
-        $budet[0] = $this->getSafeMockLocal(Glagol::class, ['getText']);
+        $budet[0] = $this->getSafeMockLocal(Glagol::class, ['getText', 'getInitialForm']);
         PHPUnitHelper::setProtectedProperty($budet[0], 'text', 'будет');
-        $budet[1] = $this->getSafeMockLocal(Glagol::class, ['getText']);
-        PHPUnitHelper::setProtectedProperty($budet[1], 'text', 'будет');
+        PHPUnitHelper::setProtectedProperty($budet[0], 'initial_form', 'быть');
 
-        $otmeneno[0] = $this->getSafeMockLocal(Deeprichastie::class, ['getText']);
+        $budet[1] = $this->getSafeMockLocal(Glagol::class, ['getText', 'getInitialForm']);
+        PHPUnitHelper::setProtectedProperty($budet[1], 'text', 'будет');
+        PHPUnitHelper::setProtectedProperty($budet[1], 'initial_form', 'быть');
+
+        $otmeneno[0] = $this->getSafeMockLocal(Deeprichastie::class, ['getText', 'getInitialForm']);
         PHPUnitHelper::setProtectedProperty($otmeneno[0], 'text', 'отменено');
+        PHPUnitHelper::setProtectedProperty($otmeneno[0], 'initial_form', 'отменить');
 
         return [
             'esli' => $esli,

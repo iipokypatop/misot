@@ -3,6 +3,12 @@
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Prichastie;
 
 
+
+
+use Aot\MivarTextSemantic\Dw;
+use Aot\MivarTextSemantic\Word;
+
+use Aot\MivarTextSemantic\OldAotConstants;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Factory;
 use MorphAttribute;
 
@@ -37,15 +43,15 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         $false_value = 111;
         return [
-            [NUMBER_ID, $false_value],
-            [TRANSIVITY_ID, $false_value],
-            [CASE_ID, $false_value],
-            [VIEW_ID, $false_value],
-            [\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE(), $false_value],
-            [TIME_ID, $false_value],
-            [DISCHARGE_COMMUNION_ID, $false_value],
-            [\OldAotConstants::WORD_FORM(), $false_value],
-            [GENUS_ID, $false_value]
+            [\Aot\MivarTextSemantic\Constants::NUMBER_ID, $false_value],
+            [\Aot\MivarTextSemantic\Constants::TRANSIVITY_ID, $false_value],
+            [\Aot\MivarTextSemantic\Constants::CASE_ID, $false_value],
+            [\Aot\MivarTextSemantic\Constants::VIEW_ID, $false_value],
+            [OldAotConstants::RETRIEVABLE_IRRETRIEVABLE(), $false_value],
+            [\Aot\MivarTextSemantic\Constants::TIME_ID, $false_value],
+            [\Aot\MivarTextSemantic\Constants::DISCHARGE_COMMUNION_ID, $false_value],
+            [OldAotConstants::WORD_FORM(), $false_value],
+            [\Aot\MivarTextSemantic\Constants::GENUS_ID, $false_value]
         ];
     }
 
@@ -73,7 +79,7 @@ class FactoryTest extends \AotTest\AotDataStorage
 
     protected function buildFactory($point)
     {
-        $dw = new \Dw(
+        $dw = new Dw(
             $point->dw->id_word_form,
             $point->dw->initial_form,
             $point->dw->initial_form,
@@ -82,7 +88,7 @@ class FactoryTest extends \AotTest\AotDataStorage
             $point->dw->parameters
         );
 
-        $word = new \Word(
+        $word = new Word(
             $point->kw,
             $point->dw->initial_form,
             $point->id_sentence

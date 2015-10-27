@@ -9,10 +9,16 @@
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Infinitive;
 
 
+use Aot\MivarTextSemantic\Dw;
+use Aot\MivarTextSemantic\MorphAttribute;
+use Aot\MivarTextSemantic\OldAotConstants;
+use Aot\MivarTextSemanticOldAotConstants;
+use Aot\MivarTextSemantic\Word;
 use Aot\RussianMorphology\ChastiRechi\Infinitive\Factory;
 use Aot\RussianMorphology\FactoryException;
 use MivarTest\PHPUnitHelper;
-use MorphAttribute;
+
+
 
 class FactoryTest extends \AotTest\AotDataStorage
 {
@@ -39,8 +45,8 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Sovershennyj::class, VIEW_PERFECTIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Nesovershennyj::class, VIEW_IMPERFECT_ID]
+            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Sovershennyj::class, \Aot\MivarTextSemantic\Constants::VIEW_PERFECTIVE_ID],
+            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Nesovershennyj::class, \Aot\MivarTextSemantic\Constants::VIEW_IMPERFECT_ID]
         ];
     }
 
@@ -54,7 +60,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Null::class){
-            unset($point->dw->parameters[VIEW_ID]);
+            unset($point->dw->parameters[\Aot\MivarTextSemantic\Constants::VIEW_ID]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getVid', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
             $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Null::class, $result[0]);
@@ -62,9 +68,9 @@ class FactoryTest extends \AotTest\AotDataStorage
         }
         else{
             // создаем новый аттрибут
-            $point->dw->parameters[VIEW_ID] = new MorphAttribute();
+            $point->dw->parameters[\Aot\MivarTextSemantic\Constants::VIEW_ID] = new MorphAttribute();
             // подменяем число
-            $point->dw->parameters[VIEW_ID]->id_value_attr = [$vid => $vid];
+            $point->dw->parameters[\Aot\MivarTextSemantic\Constants::VIEW_ID]->id_value_attr = [$vid => $vid];
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getVid', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
             $this->assertInstanceOf($expectedResult, $result[0]);
@@ -76,8 +82,8 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Perehodnyj::class, \OldAotConstants::TRANSITIVE()],
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Neperehodnyj::class, \OldAotConstants::INTRANSITIVE()]
+            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Perehodnyj::class, OldAotConstants::TRANSITIVE()],
+            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Neperehodnyj::class, OldAotConstants::INTRANSITIVE()]
         ];
     }
 
@@ -91,7 +97,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Null::class){
-            unset($point->dw->parameters[TRANSIVITY_ID]);
+            unset($point->dw->parameters[\Aot\MivarTextSemantic\Constants::TRANSIVITY_ID]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getPerehodnost', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
             $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Null::class, $result[0]);
@@ -99,9 +105,9 @@ class FactoryTest extends \AotTest\AotDataStorage
         }
         else{
             // создаем новый аттрибут
-            $point->dw->parameters[TRANSIVITY_ID] = new MorphAttribute();
+            $point->dw->parameters[\Aot\MivarTextSemantic\Constants::TRANSIVITY_ID] = new MorphAttribute();
             // подменяем переходность
-            $point->dw->parameters[TRANSIVITY_ID]->id_value_attr = [$perehodnost => $perehodnost];
+            $point->dw->parameters[\Aot\MivarTextSemantic\Constants::TRANSIVITY_ID]->id_value_attr = [$perehodnost => $perehodnost];
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getPerehodnost', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
             $this->assertInstanceOf($expectedResult, $result[0]);
@@ -113,8 +119,8 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Vozvratnyj::class, \OldAotConstants::RETRIEVABLE()],
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Nevozvratnyj::class, \OldAotConstants::IRRETRIEVABLE()]
+            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Vozvratnyj::class, OldAotConstants::RETRIEVABLE()],
+            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Nevozvratnyj::class, OldAotConstants::IRRETRIEVABLE()]
         ];
     }
 
@@ -128,7 +134,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Null::class){
-            unset($point->dw->parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()]);
+            unset($point->dw->parameters[OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getVozvratnost', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
             $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Null::class, $result[0]);
@@ -136,9 +142,9 @@ class FactoryTest extends \AotTest\AotDataStorage
         }
         else{
             // создаем новый аттрибут
-            $point->dw->parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()] = new MorphAttribute();
+            $point->dw->parameters[OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()] = new MorphAttribute();
             // подменяем переходность
-            $point->dw->parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()]->id_value_attr = [$vozvratnost => $vozvratnost];
+            $point->dw->parameters[OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()]->id_value_attr = [$vozvratnost => $vozvratnost];
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getVozvratnost', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
             $this->assertInstanceOf($expectedResult, $result[0]);
@@ -149,7 +155,7 @@ class FactoryTest extends \AotTest\AotDataStorage
 
     protected function buildFactory($point)
     {
-        $dw = new \Dw(
+        $dw = new Dw(
             $point->dw->id_word_form,
             $point->dw->initial_form,
             $point->dw->initial_form,
@@ -158,7 +164,7 @@ class FactoryTest extends \AotTest\AotDataStorage
             $point->dw->parameters
         );
 
-        $word = new \Word(
+        $word = new Word(
             $point->kw,
             $point->dw->initial_form,
             $point->id_sentence

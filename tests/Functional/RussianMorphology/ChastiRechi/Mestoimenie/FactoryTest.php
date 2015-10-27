@@ -9,6 +9,12 @@
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Mestoimenie;
 
 
+
+use Aot\MivarTextSemantic\Dw;
+use Aot\MivarTextSemantic\Word;
+
+use Aot\MivarTextSemantic\OldAotConstants;
+
 use Aot\RussianMorphology\ChastiRechi\Mestoimenie\Factory;
 use AotTest\AotDataStorage;
 use MivarTest\PHPUnitHelper;
@@ -110,7 +116,7 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         // подменяем падеж на несуществующий
-        $point->dw->parameters[CASE_ID]->id_value_attr = [111 => 111];
+        $point->dw->parameters[\Aot\MivarTextSemantic\Constants::CASE_ID]->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);
             $this->fail("Не должно было тут быть!");
@@ -126,7 +132,7 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         // подменяем число на несуществующий
-        $point->dw->parameters[NUMBER_ID]->id_value_attr = [111 => 111];
+        $point->dw->parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID]->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);
             $this->fail("Не должно было тут быть!");
@@ -142,7 +148,7 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         // подменяем лицо на несуществующий
-        $point->dw->parameters[PERSON_ID]->id_value_attr = [111 => 111];
+        $point->dw->parameters[\Aot\MivarTextSemantic\Constants::PERSON_ID]->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);
             $this->fail("Не должно было тут быть!");
@@ -157,7 +163,7 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         // подменяем род на несуществующий
-        $point->dw->parameters[GENUS_ID]->id_value_attr = [111 => 111];
+        $point->dw->parameters[\Aot\MivarTextSemantic\Constants::GENUS_ID]->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);
             $this->fail("Не должно было тут быть!");
@@ -172,9 +178,9 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         // создаем новый аттрибут
-        $point->dw->parameters[\OldAotConstants::RANK_PRONOUNS()] = new MorphAttribute();
+        $point->dw->parameters[OldAotConstants::RANK_PRONOUNS()] = new MorphAttribute();
         // подменяем разряд на несуществующий
-        $point->dw->parameters[\OldAotConstants::RANK_PRONOUNS()]->id_value_attr = [111 => 111];
+        $point->dw->parameters[OldAotConstants::RANK_PRONOUNS()]->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);
             $this->fail("Не должно было тут быть!");
@@ -187,7 +193,7 @@ class FactoryTest extends AotDataStorage
 
     private function buildFactory($point)
     {
-        $dw = new \Dw(
+        $dw = new Dw(
             $point->dw->id_word_form,
             $point->dw->initial_form,
             $point->dw->initial_form,
@@ -196,7 +202,7 @@ class FactoryTest extends AotDataStorage
             $point->dw->parameters
         );
 
-        $word = new \Word(
+        $word = new Word(
             $point->kw,
             $point->dw->initial_form,
             $point->id_sentence
@@ -290,12 +296,12 @@ class FactoryTest extends AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Imenitelnij::class, CASE_SUBJECTIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Roditelnij::class, CASE_GENITIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Datelnij::class, CASE_DATIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Vinitelnij::class, CASE_ACCUSATIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Tvoritelnij::class, CASE_INSTRUMENTAL_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Predlozshnij::class, CASE_PREPOSITIONAL_ID]
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Imenitelnij::class, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Roditelnij::class, \Aot\MivarTextSemantic\Constants::CASE_GENITIVE_ID],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Datelnij::class, \Aot\MivarTextSemantic\Constants::CASE_DATIVE_ID],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Vinitelnij::class, \Aot\MivarTextSemantic\Constants::CASE_ACCUSATIVE_ID],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Tvoritelnij::class, \Aot\MivarTextSemantic\Constants::CASE_INSTRUMENTAL_ID],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Predlozshnij::class, \Aot\MivarTextSemantic\Constants::CASE_PREPOSITIONAL_ID]
         ];
     }
 
@@ -309,7 +315,7 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Null::class){
-            unset($point->dw->parameters[CASE_ID]);
+            unset($point->dw->parameters[\Aot\MivarTextSemantic\Constants::CASE_ID]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getPadeszh', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
             $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Null::class, $result[0]);
@@ -317,7 +323,7 @@ class FactoryTest extends AotDataStorage
         }
         else{
             // подменяем падеж
-            $point->dw->parameters[CASE_ID]->id_value_attr = [$padeszh => $padeszh];
+            $point->dw->parameters[\Aot\MivarTextSemantic\Constants::CASE_ID]->id_value_attr = [$padeszh => $padeszh];
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getPadeszh', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
             $this->assertInstanceOf($expectedResult, $result[0]);
@@ -331,15 +337,15 @@ class FactoryTest extends AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Lichnoe::class, \OldAotConstants::PERSONAL_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Vozvratnoe::class, \OldAotConstants::REFLEXIVE_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Prityazhatelnoe::class, \OldAotConstants::POSSESSIVE_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Otricatelnoe::class, \OldAotConstants::NEGATIVE_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Neopredelennoe::class, \OldAotConstants::INDEFINITE_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Voprositelnoe::class, \OldAotConstants::INTERROGATIVE_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Otnositelnoe::class, \OldAotConstants::RELATIVE_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Ukazatelnoe::class, \OldAotConstants::DEMONSTRATIVE_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Opredelitelnoe::class, \OldAotConstants::ATTRIBUTIVE_PRONOUN()]
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Lichnoe::class, OldAotConstants::PERSONAL_PRONOUN()],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Vozvratnoe::class, OldAotConstants::REFLEXIVE_PRONOUN()],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Prityazhatelnoe::class, OldAotConstants::POSSESSIVE_PRONOUN()],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Otricatelnoe::class, OldAotConstants::NEGATIVE_PRONOUN()],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Neopredelennoe::class, OldAotConstants::INDEFINITE_PRONOUN()],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Voprositelnoe::class, OldAotConstants::INTERROGATIVE_PRONOUN()],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Otnositelnoe::class, OldAotConstants::RELATIVE_PRONOUN()],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Ukazatelnoe::class, OldAotConstants::DEMONSTRATIVE_PRONOUN()],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Opredelitelnoe::class, OldAotConstants::ATTRIBUTIVE_PRONOUN()]
         ];
     }
 
@@ -361,9 +367,9 @@ class FactoryTest extends AotDataStorage
         }
         else{
             // создаем новый аттрибут
-            $point->dw->parameters[\OldAotConstants::RANK_PRONOUNS()] = new MorphAttribute();
+            $point->dw->parameters[OldAotConstants::RANK_PRONOUNS()] = new MorphAttribute();
             // задаем значение разряда
-            $point->dw->parameters[\OldAotConstants::RANK_PRONOUNS()]->id_value_attr = [$razryad => $razryad];
+            $point->dw->parameters[OldAotConstants::RANK_PRONOUNS()]->id_value_attr = [$razryad => $razryad];
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getRazryad', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
             $this->assertInstanceOf($expectedResult, $result[0]);

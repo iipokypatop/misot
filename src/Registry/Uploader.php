@@ -28,7 +28,8 @@ trait Uploader
     {
         $config = Config::getConfig();
 
-        return \SemanticPersistence\API\SemanticAPI::getAPI($config[$config['MODE']]['semantic']['db']);
+//        return \SemanticPersistence\API\SemanticAPI::getAPI($config[$config['MODE']]['semantic']['db']);
+        return \SemanticPersistence\API\SemanticAPI::getAPI();
     }
 
     /**

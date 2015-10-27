@@ -241,7 +241,7 @@ class BaseTestRules extends \AotTest\AotDataStorage
 
             $normalized_matrix = \Aot\Text\NormalizedMatrix::create($matrix);
 
-            $processor = \Aot\Sviaz\Processor\Base::create();
+            $processor = \Aot\Sviaz\Processor::create();
 
             $have_link = false; // имеет связь
             // запускаем правило
@@ -266,12 +266,12 @@ class BaseTestRules extends \AotTest\AotDataStorage
     }
 
     /**
-     * @param \Aot\Sviaz\Processor\Base $processor
+     * @param \Aot\Sviaz\Processor $processor
      * @param \Aot\Text\NormalizedMatrix $normalized_matrix
      * @param $rule
      * @return array
      */
-    protected function getStrRule(\Aot\Sviaz\Processor\Base $processor, \Aot\Text\NormalizedMatrix $normalized_matrix, $rule)
+    protected function getStrRule(\Aot\Sviaz\Processor $processor, \Aot\Text\NormalizedMatrix $normalized_matrix, $rule)
     {
         //todo переделать на $this->pretty()
         $sequences = $processor->go($normalized_matrix, [$rule]);

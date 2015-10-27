@@ -255,8 +255,6 @@ TEXT;
     }
 
 
-
-
     /**
      * 13
      * @return \Aot\Sviaz\Rule\Base
@@ -812,7 +810,6 @@ TEXT;
         }
         return $rules;
     }
-
 
 
     /**
