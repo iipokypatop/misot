@@ -267,6 +267,18 @@ class HomogeneityVerification extends Base
      */
     protected function intersect2($homogeneity_supposed, $homogeneity_from_rule, $sequence)
     {
+        foreach ($homogeneity_supposed as $homogeneity) {
+            foreach ($homogeneity as $word) {
+                assert(is_a($word, \Aot\Sviaz\SequenceMember\Word\Base::class, true));
+            }
+        }
+
+        foreach ($homogeneity_from_rule as $homogeneity) {
+            foreach ($homogeneity as $word) {
+                assert(is_a($word, \Aot\Sviaz\SequenceMember\Word\Base::class, true));
+            }
+        }
+
         foreach ($homogeneity_supposed as $supposed) {
             $this->Overlap($supposed, $homogeneity_from_rule, $sequence);
         }
@@ -276,10 +288,19 @@ class HomogeneityVerification extends Base
      * @param $supposed
      * @param $homogeneity_from_rule
      * @param \Aot\Sviaz\Sequence $sequence
-     * @internal param $array_homogeneity_from_rule
      */
-    protected function Overlap($supposed, $homogeneity_from_rule, $sequence)
+    protected function Overlap($supposed, $homogeneity_from_rule, \Aot\Sviaz\Sequence $sequence)
     {
+        foreach ($supposed as $member) {
+            assert(is_a($member, \Aot\Sviaz\SequenceMember\Base::class, true));
+        }
+
+        foreach ($homogeneity_from_rule as $homogeneity) {
+            foreach ($homogeneity as $word) {
+                assert(is_a($word, \Aot\Sviaz\SequenceMember\Word\Base::class, true));
+            }
+        }
+
         $preliminary_set = [];
         $i = 0;
         foreach ($supposed as $member) {
