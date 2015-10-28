@@ -112,7 +112,7 @@ class HomogeneityVerification extends Base
      * @param \Aot\Sviaz\Sequence $sequence
      * @return \Aot\Sviaz\SequenceMember\Base[][]
      */
-    private function getHomogeneitySupposed(\Aot\Sviaz\Sequence $sequence)
+    protected function getHomogeneitySupposed(\Aot\Sviaz\Sequence $sequence)
     {
         $result = [];
         $array_homogeneity_supposed = $sequence->getHomogeneitySupposed();
