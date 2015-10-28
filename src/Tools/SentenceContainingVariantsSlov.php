@@ -11,7 +11,7 @@ namespace Aot\Tools;
 
 class SentenceContainingVariantsSlov implements \Iterator, \Countable
 {
-    const REGULAR_FOR_WHITE_LIST = '/[А-Яа-яёЁ\-]+/u';
+    const REGULAR_FOR_WHITE_LIST = '/[A-Za-zА-Яа-яёЁ\-]+/u';
 
     /** @var int */
     protected $position = 0;
