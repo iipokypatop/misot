@@ -19,9 +19,7 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
     protected $texts = [];
     /** @var \Aot\RussianMorphology\Slovo[][] */
     protected $slova = [];
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $raw_sentence_text;
 
     /** @var SentenceContainingVariantsSlov */
