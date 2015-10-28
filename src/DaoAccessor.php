@@ -73,7 +73,7 @@ trait DaoAccessor
     {
         $config = Config::getConfig();
 
-        return \SemanticPersistence\API\SemanticAPI::getAPI($config[$config['MODE']]['semantic']['db'])->getEntityManager();
+        return \SemanticPersistence\API\SemanticAPI::getAPI()->getEntityManager();
     }
 
     /**

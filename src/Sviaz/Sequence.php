@@ -21,7 +21,7 @@ class Sequence extends \ArrayObject
     /** @var \Aot\Sviaz\Homogeneity\Homogeneity[] */
     protected $homogeneities = [];
     /** @var \Aot\Sviaz\PreProcessors\HomogeneitySupposed[] */
-    protected $homogeneity_supposeds = [];
+    protected $array_homogeneity_supposed = [];
 
     /**
      * @return SubSequence[]
@@ -143,7 +143,7 @@ class Sequence extends \ArrayObject
      */
     public function getHomogeneitySupposed()
     {
-        return $this->homogeneity_supposeds;
+        return $this->array_homogeneity_supposed;
     }
 
     /**
@@ -156,7 +156,7 @@ class Sequence extends \ArrayObject
         foreach ($homogeneity_supposed as $one_homogeneity_supposed) {
             assert(is_a($one_homogeneity_supposed, \Aot\Sviaz\Homogeneity\HomogeneitySupposed::class), true);
         }
-        $this->homogeneity_supposed = $homogeneity_supposed;
+        $this->array_homogeneity_supposed = $homogeneity_supposed;
     }
 
     /**
@@ -166,7 +166,7 @@ class Sequence extends \ArrayObject
      */
     public function addHypothesisSupposed(\Aot\Sviaz\Homogeneity\HomogeneitySupposed $hypothesis_of_homogeneity)
     {
-        $this->homogeneity_supposeds[] = $hypothesis_of_homogeneity;
+        $this->array_homogeneity_supposed[] = $hypothesis_of_homogeneity;
     }
 
     /**

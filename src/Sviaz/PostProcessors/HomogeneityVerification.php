@@ -54,7 +54,7 @@ class HomogeneityVerification extends Base
             $sviaz_a_id = $sviaz_a->getId();
             $main_member_a = $sviaz_a->getMainSequenceMember();
             $depended_member_a = $sviaz_a->getDependedSequenceMember();
-            //todo ТИПЫ ПРАВИЛ!!! пока что только по id
+            //todo Необходимо создать группы правил, в одну группу должны входить те правила, которые могут связать однородные члены. Сейчас этого нет.
             $rule_a_id = $sviaz_a->getRule()->getDao()->getId();
 
             $set_homogeneity[spl_object_hash($depended_member_a)] = $depended_member_a;
@@ -64,11 +64,7 @@ class HomogeneityVerification extends Base
                 if ($main_member_b !== $main_member_a) {
                     continue;
                 }
-                //Поскольку сейчас нет типа правил и тип правил подменён id'ником
-//                $sviaz_b_id = $sviaz_b->getId();
-//                if ($sviaz_b_id === $sviaz_a_id) {
-//                    continue;
-//                }
+                // todo Должна быть проверка на совпадение типа правил, в случае несовпадения "continue"
                 $depended_member_b = $sviaz_b->getDependedSequenceMember();
                 if ($depended_member_b === $depended_member_a) {
                     continue;
@@ -114,13 +110,13 @@ class HomogeneityVerification extends Base
      * @brief Получить массив гипотез в преобразованном виде
      *
      * @param \Aot\Sviaz\Sequence $sequence
-     * @return array
+     * @return \Aot\Sviaz\SequenceMember\Base[][]
      */
-    private function getHomogeneitySupposed($sequence)
+    private function getHomogeneitySupposed(\Aot\Sviaz\Sequence $sequence)
     {
         $result = [];
-        $homogeneity_supposeds = $sequence->getHomogeneitySupposed();
-        foreach ($homogeneity_supposeds as $homogeneity_supposed) {
+        $array_homogeneity_supposed = $sequence->getHomogeneitySupposed();
+        foreach ($array_homogeneity_supposed as $homogeneity_supposed) {
             $result[] = $homogeneity_supposed->getMembers();
         }
         return $result;
