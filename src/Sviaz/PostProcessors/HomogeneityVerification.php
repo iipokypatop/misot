@@ -132,7 +132,7 @@ class HomogeneityVerification extends Base
     /**
      * @brief Поиск пересечения
      *
-     * @param \Aot\Sviaz\SequenceMember\Word\Base[][] $homogeneity_supposed
+     * @param \Aot\Sviaz\SequenceMember\Base[][] $homogeneity_supposed
      * @param \Aot\Sviaz\SequenceMember\Word\Base[][] $homogeneity_from_rule
      * @param \Aot\Sviaz\Sequence $sequence
      * @return void
