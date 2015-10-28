@@ -86,10 +86,9 @@ class HomogeneityVerification extends Base
                 if ($depended_member_b !== $depended_member_a) {
                     continue;
                 }
-//                $sviaz_b_id = $sviaz_a->getId();
-//                if ($sviaz_b_id === $sviaz_a_id) {
-//                    continue;
-//                }
+
+                // todo Должна быть проверка на совпадение типа правил, в случае несовпадения "continue"
+
                 $main_member_b = $sviaz_b->getDependedSequenceMember();
                 if ($main_member_b === $main_member_a) {
                     continue;
