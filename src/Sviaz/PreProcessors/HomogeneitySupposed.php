@@ -19,13 +19,10 @@ class HomogeneitySupposed extends \Aot\Sviaz\PreProcessors\Base
      */
     public function run(\Aot\Sviaz\Sequence $raw_sequence)
     {
-        /*
-         * ТЕСТОВЫЕ ДАННЫЕ ДЛЯ ОДНОРОДНОСТЕЙ!!!
-         *
-        */
+
 
         // todo сделать данный метод!
-
+        /*
         $member6=$raw_sequence->offsetGet(1);
         $member7=$raw_sequence->offsetGet(2);
         $part3= \Aot\Sviaz\Homogeneity\HomogeneitySupposed::create();
@@ -80,7 +77,7 @@ class HomogeneitySupposed extends \Aot\Sviaz\PreProcessors\Base
         $part_end->addMember($member8);
         $part_end->addMember($member9);
         $raw_sequence->addHypothesisSupposed($part_end);
-
+        */
         return $raw_sequence;
     }
 }
