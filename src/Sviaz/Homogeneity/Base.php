@@ -14,18 +14,23 @@ class Base
     protected $members = [];
 
     /**
-     * Homogeneity constructor.
+     * @param \Aot\Sviaz\SequenceMember\Base[] $members
      */
-    protected function __construct()
+    protected function __construct(array $members)
     {
+        foreach ($members as $member) {
+            assert(is_a($member, \Aot\Sviaz\SequenceMember\Base::class), true);
+            $this->addMember($member);
+        }
     }
 
     /**
+     * @param \Aot\Sviaz\SequenceMember\Base[] $members
      * @return static
      */
-    public static function create()
+    public static function create(array $members)
     {
-        return new static();
+        return new static($members);
     }
 
     /**
@@ -45,14 +50,9 @@ class Base
         $this->members[spl_object_hash($member)] = $member;
     }
 
-    /**
-     * @param \Aot\Sviaz\SequenceMember\Base[] $members
-     */
+
     public function setMembers($members)
     {
-        foreach ($members as $member) {
-            assert(is_a($member, \Aot\Sviaz\SequenceMember\Base::class), true);
-            $this->addMember($member);
-        }
+
     }
 }

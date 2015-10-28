@@ -32,8 +32,8 @@ class HomogeneityTest extends \AotTest\AotDataStorage
 {
     public function testLaunch()
     {
-        \Aot\Sviaz\Homogeneity\Homogeneity::create();
-        \Aot\Sviaz\Homogeneity\HomogeneitySupposed::create();
+        \Aot\Sviaz\Homogeneity\Homogeneity::create([]);
+        \Aot\Sviaz\Homogeneity\HomogeneitySupposed::create([]);
     }
 
     public function testCreateSequenceWithHomogeneity()
