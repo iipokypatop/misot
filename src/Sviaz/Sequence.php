@@ -172,11 +172,15 @@ class Sequence extends \ArrayObject
     /**
      * @brief Получить member по номеру позиции в последовательности
      *
-     * @param $position
-     * @return \Aot\Sviaz\SequenceMember\Base
+     * @param int $position
+     * @return \Aot\Sviaz\SequenceMember\Base|Null
      */
     public function getMemberByPosition($position)
     {
-        return $this[$position];
+        assert(is_int($position));
+        if (array_key_exists($position, $this)) {
+            return $this[$position];
+        }
+        return null;
     }
 }
