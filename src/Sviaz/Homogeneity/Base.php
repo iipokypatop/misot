@@ -38,6 +38,7 @@ class Base
 
     /**
      * @param \Aot\Sviaz\SequenceMember\Base $member
+     * @return void
      */
     public function addMember(\Aot\Sviaz\SequenceMember\Base $member)
     {

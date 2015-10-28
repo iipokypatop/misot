@@ -28,7 +28,15 @@ class HomogeneityVerification extends Base
 
         $homogeneity_supposed = $this->getHomogeneitySupposed($sequence);
 
+        if (empty($homogeneity_supposed)) {
+            return;
+        }
+
         $homogeneity_from_rule = $this->findHomogeneityFromSviazi($sviazi);
+
+        if (empty($homogeneity_from_rule)) {
+            return;
+        }
 
         $this->intersect($homogeneity_supposed, $homogeneity_from_rule, $sequence);
 
