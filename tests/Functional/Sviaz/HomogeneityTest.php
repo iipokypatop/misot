@@ -39,7 +39,7 @@ class HomogeneityTest extends \AotTest\AotDataStorage
     public function testCreateSequenceWithHomogeneity()
     {
         //СОздаём процессор
-        $processor = \Aot\Sviaz\Processor\Base::create();
+        $processor = \Aot\Sviaz\Processor::createDefault();
 
         $sequences = $processor->go(
             $this->getNormalizedMatrix1(),
