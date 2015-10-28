@@ -125,14 +125,24 @@ class HomogeneityVerification extends Base
     /**
      * @brief Поиск пересечения
      *
-     * @param $homogeneity_supposed
-     * @param $homogeneity_from_rule
+     * @param \Aot\Sviaz\SequenceMember\Word\Base[][] $homogeneity_supposed
+     * @param \Aot\Sviaz\SequenceMember\Word\Base[][] $homogeneity_from_rule
      * @param \Aot\Sviaz\Sequence $sequence
      * @return void
      */
-    protected function intersect($homogeneity_supposed, $homogeneity_from_rule,\Aot\Sviaz\Sequence $sequence)
+    protected function intersect($homogeneity_supposed, $homogeneity_from_rule, \Aot\Sviaz\Sequence $sequence)
     {
-        //todo добавить проверки?
+        foreach ($homogeneity_supposed as $homogeneity) {
+            foreach ($homogeneity as $word) {
+                assert(is_a($word, \Aot\Sviaz\SequenceMember\Word\Base::class, true));
+            }
+        }
+
+        foreach ($homogeneity_from_rule as $homogeneity) {
+            foreach ($homogeneity as $word) {
+                assert(is_a($word, \Aot\Sviaz\SequenceMember\Word\Base::class, true));
+            }
+        }
 
         foreach ($homogeneity_supposed as $supposed) {
             if ($this->fullOverlap($supposed, $homogeneity_from_rule, $sequence)) {
@@ -151,16 +161,27 @@ class HomogeneityVerification extends Base
      *
      * Если существует хотя бы один набор однородных членов по правилу, перекрывающий все элементы в гипотезе, то это полное покрытие
      *
-     * @param $supposed
-     * @param $array_homogeneity_from_rule
+     * @param \Aot\Sviaz\SequenceMember\Base[] $supposed
+     * @param \Aot\Sviaz\SequenceMember\Word\Base[][] $array_homogeneity_from_rule
      * @param \Aot\Sviaz\Sequence $sequence
      * @return bool
      */
     protected function fullOverlap(
-        $supposed,
-        $array_homogeneity_from_rule,
-        $sequence
+        array $supposed,
+        array $array_homogeneity_from_rule,
+        \Aot\Sviaz\Sequence $sequence
     ) {
+        foreach ($supposed as $member) {
+            assert(is_a($member, \Aot\Sviaz\SequenceMember\Base::class, true));
+        }
+
+        foreach ($array_homogeneity_from_rule as $homogeneity) {
+            foreach ($homogeneity as $word) {
+                assert(is_a($word, \Aot\Sviaz\SequenceMember\Word\Base::class, true));
+            }
+        }
+
+
         foreach ($array_homogeneity_from_rule as $homogeneity_from_rule) {
             $count_members_supposed = count($supposed);///<Количество членов в гипотезе
             $count_intersect = count(array_intersect_key($supposed, $homogeneity_from_rule));
@@ -189,16 +210,25 @@ class HomogeneityVerification extends Base
      * 5) Если кол-во более 2ух, то озвращаем все как единую группу однородностей (в будущем нужна проверка:
      * 6) todo В будущев может появиться: если есть пересечение - добавляем как одну однородность или вообще откидываем, если нет - как несколько
      *
-     * @param $supposed
-     * @param $array_homogeneity_from_rule
-     * @param $sequence
+     * @param \Aot\Sviaz\SequenceMember\Base[] $supposed
+     * @param \Aot\Sviaz\SequenceMember\Word\Base[][] $array_homogeneity_from_rule
+     * @param \Aot\Sviaz\Sequence $sequence
      * @return bool
      */
     protected function partOverlap(
-        $supposed,
-        $array_homogeneity_from_rule,
+        array $supposed,
+        array $array_homogeneity_from_rule,
         \Aot\Sviaz\Sequence $sequence
     ) {
+        foreach ($supposed as $member) {
+            assert(is_a($member, \Aot\Sviaz\SequenceMember\Base::class, true));
+        }
+
+        foreach ($array_homogeneity_from_rule as $homogeneity) {
+            foreach ($homogeneity as $word) {
+                assert(is_a($word, \Aot\Sviaz\SequenceMember\Word\Base::class, true));
+            }
+        }
         $portions = [];
         foreach ($array_homogeneity_from_rule as $homogeneity_from_rule) {
             $intersect = array_intersect_key($supposed, $homogeneity_from_rule);
@@ -232,8 +262,8 @@ class HomogeneityVerification extends Base
     /**
      * @brief Поиск пересечения
      *
-     * @param $homogeneity_supposed
-     * @param $homogeneity_from_rule
+     * @param \Aot\Sviaz\SequenceMember\Base[] $homogeneity_supposed
+     * @param \Aot\Sviaz\SequenceMember\Word\Base[][] $homogeneity_from_rule
      * @param \Aot\Sviaz\Sequence $sequence
      */
     protected function intersect2($homogeneity_supposed, $homogeneity_from_rule, $sequence)
@@ -276,13 +306,12 @@ class HomogeneityVerification extends Base
 
                         foreach ($preliminary_set as $supposed_member_corrected) {
                             //если в элементе есть такой ключ, то добавляем все остальные
-                            if (array_key_exists($key_rule,$supposed_member_corrected))
-                            {
-                                $tmp=$key_rule;
-                                foreach ($keys_rule as $key)
-                                {
-                                    if ($key!==$tmp)
-                                    $supposed_member_corrected[$key]="!!!!!";
+                            if (array_key_exists($key_rule, $supposed_member_corrected)) {
+                                $tmp = $key_rule;
+                                foreach ($keys_rule as $key) {
+                                    if ($key !== $tmp) {
+                                        $supposed_member_corrected[$key] = "!!!!!";
+                                    }
                                 }
                             }
                         }
