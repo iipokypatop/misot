@@ -47,10 +47,10 @@ class HomogeneityVerification extends Base
             assert(is_a($sviaz, \Aot\Sviaz\Podchinitrelnaya\Base::class, true));
         }
 
-        $homogeneity = [];///<Все наборы гомологов
+        $homogeneity = [];//Все наборы гомологов
 
         foreach ($sviazi as $sviaz_a) {
-            $set_homogeneity = [];///<набор гомологов, имеющих одно главное слово
+            $set_homogeneity = [];//набор гомологов, имеющих одно главное слово
             $sviaz_a_id = $sviaz_a->getId();
             $main_member_a = $sviaz_a->getMainSequenceMember();
             $depended_member_a = $sviaz_a->getDependedSequenceMember();
@@ -71,7 +71,7 @@ class HomogeneityVerification extends Base
                 }
                 $rule_b_id = $sviaz_a->getRule()->getDao()->getId();
                 if ($rule_b_id === $rule_a_id) {
-                    $set_homogeneity[spl_object_hash($depended_member_b)] = $depended_member_b; ///< $depended_member_a и $depended_member_b - ОДНОРОДНЫ!
+                    $set_homogeneity[spl_object_hash($depended_member_b)] = $depended_member_b; // $depended_member_a и $depended_member_b - ОДНОРОДНЫ!
                 }
             }
             if (count($set_homogeneity) > 1) {
@@ -96,7 +96,7 @@ class HomogeneityVerification extends Base
                 }
                 $rule_b_id = $sviaz_a->getRule()->getDao()->getId();
                 if ($rule_b_id === $rule_a_id) {
-                    $set_homogeneity[spl_object_hash($main_member_b)] = $main_member_b; ///< $main_member_a и $main_member_b - ОДНОРОДНЫ!
+                    $set_homogeneity[spl_object_hash($main_member_b)] = $main_member_b; // $main_member_a и $main_member_b - ОДНОРОДНЫ!
                 }
             }
             if (count($set_homogeneity) > 1) {
@@ -183,7 +183,7 @@ class HomogeneityVerification extends Base
 
 
         foreach ($array_homogeneity_from_rule as $homogeneity_from_rule) {
-            $count_members_supposed = count($supposed);///<Количество членов в гипотезе
+            $count_members_supposed = count($supposed);//Количество членов в гипотезе
             $count_intersect = count(array_intersect_key($supposed, $homogeneity_from_rule));
 
             if ($count_intersect === $count_members_supposed) {
@@ -232,7 +232,7 @@ class HomogeneityVerification extends Base
         $portions = [];
         foreach ($array_homogeneity_from_rule as $homogeneity_from_rule) {
             $intersect = array_intersect_key($supposed, $homogeneity_from_rule);
-            $count_intersect = count($intersect);///< Количество перекрываемых членов в гипотезе
+            $count_intersect = count($intersect);// Количество перекрываемых членов в гипотезе
 
             if ($count_intersect >= 2) {
                 $portions[] = $intersect;
