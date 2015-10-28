@@ -164,12 +164,30 @@ class FactoryTest extends AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Imenitelnij::class, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Roditelnij::class, \Aot\MivarTextSemantic\Constants::CASE_GENITIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Datelnij::class, \Aot\MivarTextSemantic\Constants::CASE_DATIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Vinitelnij::class, \Aot\MivarTextSemantic\Constants::CASE_ACCUSATIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Tvoritelnij::class, \Aot\MivarTextSemantic\Constants::CASE_INSTRUMENTAL_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Predlozshnij::class, \Aot\MivarTextSemantic\Constants::CASE_PREPOSITIONAL_ID]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Imenitelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Roditelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_GENITIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Datelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_DATIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Vinitelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_ACCUSATIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Tvoritelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_INSTRUMENTAL_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Predlozshnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_PREPOSITIONAL_ID
+            ]
         ];
     }
 
@@ -204,8 +222,14 @@ class FactoryTest extends AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Edinstvennoe::class, \Aot\MivarTextSemantic\Constants::NUMBER_SINGULAR_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Mnozhestvennoe::class, \Aot\MivarTextSemantic\Constants::NUMBER_PLURAL_ID]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Edinstvennoe::class,
+                \Aot\MivarTextSemantic\Constants::NUMBER_SINGULAR_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Mnozhestvennoe::class,
+                \Aot\MivarTextSemantic\Constants::NUMBER_PLURAL_ID
+            ]
         ];
     }
 
@@ -241,9 +265,18 @@ class FactoryTest extends AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Muzhskoy::class, \Aot\MivarTextSemantic\Constants::GENUS_MASCULINE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Sredniy::class, \Aot\MivarTextSemantic\Constants::GENUS_NEUTER_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Zhenskiy::class, \Aot\MivarTextSemantic\Constants::GENUS_FEMININE_ID]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Muzhskoy::class,
+                \Aot\MivarTextSemantic\Constants::GENUS_MASCULINE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Sredniy::class,
+                \Aot\MivarTextSemantic\Constants::GENUS_NEUTER_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Zhenskiy::class,
+                \Aot\MivarTextSemantic\Constants::GENUS_FEMININE_ID
+            ]
         ];
     }
 

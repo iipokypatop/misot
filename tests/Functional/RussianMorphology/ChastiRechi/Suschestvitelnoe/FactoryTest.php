@@ -9,7 +9,6 @@
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Suschestvitelnoe;
 
 
-
 use Aot\MivarTextSemantic\Dw;
 use Aot\MivarTextSemantic\Word;
 use Aot\MivarTextSemantic\OldAotConstants;
@@ -65,12 +64,30 @@ class FactoryTest extends AotDataStorage
         return [
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Null::class, -1],
             ['Exception', 1111],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Imenitelnij::class, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Roditelnij::class, \Aot\MivarTextSemantic\Constants::CASE_GENITIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Datelnij::class, \Aot\MivarTextSemantic\Constants::CASE_DATIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Vinitelnij::class, \Aot\MivarTextSemantic\Constants::CASE_ACCUSATIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Tvoritelnij::class, \Aot\MivarTextSemantic\Constants::CASE_INSTRUMENTAL_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Predlozshnij::class, \Aot\MivarTextSemantic\Constants::CASE_PREPOSITIONAL_ID]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Imenitelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Roditelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_GENITIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Datelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_DATIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Vinitelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_ACCUSATIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Tvoritelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_INSTRUMENTAL_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Predlozshnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_PREPOSITIONAL_ID
+            ]
         ];
     }
 
@@ -115,8 +132,14 @@ class FactoryTest extends AotDataStorage
         return [
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Null::class, -1],
             ['Exception', 1111],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe::class, \Aot\MivarTextSemantic\Constants::NUMBER_SINGULAR_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::class, \Aot\MivarTextSemantic\Constants::NUMBER_PLURAL_ID]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe::class,
+                \Aot\MivarTextSemantic\Constants::NUMBER_SINGULAR_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::class,
+                \Aot\MivarTextSemantic\Constants::NUMBER_PLURAL_ID
+            ]
         ];
     }
 
@@ -163,9 +186,18 @@ class FactoryTest extends AotDataStorage
         return [
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Null::class, -1],
             ['Exception', 1111],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Muzhskoi::class, \Aot\MivarTextSemantic\Constants::GENUS_MASCULINE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij::class, \Aot\MivarTextSemantic\Constants::GENUS_NEUTER_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Zhenskii::class, \Aot\MivarTextSemantic\Constants::GENUS_FEMININE_ID]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Muzhskoi::class,
+                \Aot\MivarTextSemantic\Constants::GENUS_MASCULINE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij::class,
+                \Aot\MivarTextSemantic\Constants::GENUS_NEUTER_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Zhenskii::class,
+                \Aot\MivarTextSemantic\Constants::GENUS_FEMININE_ID
+            ]
         ];
     }
 
@@ -214,8 +246,14 @@ class FactoryTest extends AotDataStorage
         return [
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Null::class, -1],
             ['Exception', 1111],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Odushevlyonnoe::class, \Aot\MivarTextSemantic\Constants::ANIMALITY_ANIMATE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::class, \Aot\MivarTextSemantic\Constants::ANIMALITY_INANIMATE_ID]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Odushevlyonnoe::class,
+                \Aot\MivarTextSemantic\Constants::ANIMALITY_ANIMATE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::class,
+                \Aot\MivarTextSemantic\Constants::ANIMALITY_INANIMATE_ID
+            ]
         ];
     }
 
@@ -261,9 +299,18 @@ class FactoryTest extends AotDataStorage
         return [
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::class, -1],
             ['Exception', 1111],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Pervoe::class, OldAotConstants::DECLENSION_1],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Vtoroe::class, OldAotConstants::DECLENSION_2],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Tretie::class, OldAotConstants::DECLENSION_3]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Pervoe::class,
+                OldAotConstants::DECLENSION_1
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Vtoroe::class,
+                OldAotConstants::DECLENSION_2
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Tretie::class,
+                OldAotConstants::DECLENSION_3
+            ]
         ];
     }
 
@@ -310,8 +357,14 @@ class FactoryTest extends AotDataStorage
         return [
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\Null::class, -1],
             ['Exception', 1111],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaSobstvennoe::class, OldAotConstants::SELF()],
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::class, OldAotConstants::NOMINAL()]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaSobstvennoe::class,
+                OldAotConstants::SELF()
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::class,
+                OldAotConstants::NOMINAL()
+            ]
         ];
     }
 

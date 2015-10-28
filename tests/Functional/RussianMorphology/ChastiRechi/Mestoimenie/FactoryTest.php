@@ -9,7 +9,6 @@
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Mestoimenie;
 
 
-
 use Aot\MivarTextSemantic\Dw;
 use Aot\MivarTextSemantic\Word;
 
@@ -296,12 +295,30 @@ class FactoryTest extends AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Imenitelnij::class, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Roditelnij::class, \Aot\MivarTextSemantic\Constants::CASE_GENITIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Datelnij::class, \Aot\MivarTextSemantic\Constants::CASE_DATIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Vinitelnij::class, \Aot\MivarTextSemantic\Constants::CASE_ACCUSATIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Tvoritelnij::class, \Aot\MivarTextSemantic\Constants::CASE_INSTRUMENTAL_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Predlozshnij::class, \Aot\MivarTextSemantic\Constants::CASE_PREPOSITIONAL_ID]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Imenitelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Roditelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_GENITIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Datelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_DATIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Vinitelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_ACCUSATIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Tvoritelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_INSTRUMENTAL_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Predlozshnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_PREPOSITIONAL_ID
+            ]
         ];
     }
 
@@ -337,15 +354,42 @@ class FactoryTest extends AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Lichnoe::class, OldAotConstants::PERSONAL_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Vozvratnoe::class, OldAotConstants::REFLEXIVE_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Prityazhatelnoe::class, OldAotConstants::POSSESSIVE_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Otricatelnoe::class, OldAotConstants::NEGATIVE_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Neopredelennoe::class, OldAotConstants::INDEFINITE_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Voprositelnoe::class, OldAotConstants::INTERROGATIVE_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Otnositelnoe::class, OldAotConstants::RELATIVE_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Ukazatelnoe::class, OldAotConstants::DEMONSTRATIVE_PRONOUN()],
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Opredelitelnoe::class, OldAotConstants::ATTRIBUTIVE_PRONOUN()]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Lichnoe::class,
+                OldAotConstants::PERSONAL_PRONOUN()
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Vozvratnoe::class,
+                OldAotConstants::REFLEXIVE_PRONOUN()
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Prityazhatelnoe::class,
+                OldAotConstants::POSSESSIVE_PRONOUN()
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Otricatelnoe::class,
+                OldAotConstants::NEGATIVE_PRONOUN()
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Neopredelennoe::class,
+                OldAotConstants::INDEFINITE_PRONOUN()
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Voprositelnoe::class,
+                OldAotConstants::INTERROGATIVE_PRONOUN()
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Otnositelnoe::class,
+                OldAotConstants::RELATIVE_PRONOUN()
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Ukazatelnoe::class,
+                OldAotConstants::DEMONSTRATIVE_PRONOUN()
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Opredelitelnoe::class,
+                OldAotConstants::ATTRIBUTIVE_PRONOUN()
+            ]
         ];
     }
 

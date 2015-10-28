@@ -32,8 +32,9 @@ class complex_predicate extends SyntaxRule
         $this->wdw = $wdw;
         $this->sence_filter = false;
         $this->find_points_wdw = $this->find_morph_complex_predicate($wdw);
-        if (isset($this->complex_predicate['infinitive'], $this->complex_predicate['predicate']))
+        if (isset($this->complex_predicate['infinitive'], $this->complex_predicate['predicate'])) {
             $result = true;
+        }
         //$this->view($this->complex_predicate);
         return $result;
     }
@@ -54,10 +55,12 @@ class complex_predicate extends SyntaxRule
             $this->set_pre1_inf();
         } // есть однородные глаголы
 
-        else if (isset($this->complex_predicate['predicate'], $this->complex_predicate['infinitive']) &&
-            count($this->complex_predicate['predicate']) > 1 && count($this->complex_predicate['infinitive']) >= 1
-        ) {
-            $this->set_pre_inf();
+        else {
+            if (isset($this->complex_predicate['predicate'], $this->complex_predicate['infinitive']) &&
+                count($this->complex_predicate['predicate']) > 1 && count($this->complex_predicate['infinitive']) >= 1
+            ) {
+                $this->set_pre_inf();
+            }
         }
         //$this->view($this->syntax_model_rule);
         return $this->syntax_model_rule;
@@ -73,13 +76,21 @@ class complex_predicate extends SyntaxRule
         foreach ($this->complex_predicate['predicate'] as $pre_key => $pre_word) {
             foreach ($this->complex_predicate['infinitive'] as $inf_key => $inf_word) {
                 if ($pre_word->kw != $inf_word->kw &&
-                    ($pre_word->count_dw == 1 || !$this->find_ps_prev($pre_word->kw - 1, array(\Aot\MivarTextSemantic\Constants::PREPOSITION_CLASS_ID), array(\Aot\MivarTextSemantic\Constants::VERB_CLASS_ID, \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID, \Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID)))
+                    ($pre_word->count_dw == 1 || !$this->find_ps_prev($pre_word->kw - 1,
+                            array(\Aot\MivarTextSemantic\Constants::PREPOSITION_CLASS_ID), array(
+                                \Aot\MivarTextSemantic\Constants::VERB_CLASS_ID,
+                                \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID,
+                                \Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID
+                            )))
                 ) {
                     $pre_word->O = $inf_word->O = 'complex_predicate';
                     $pre_word->Oz = $inf_word->Oz = $uuid;
-                    $this->syntax_model_rule = $this->set_point_rel($this->syntax_model_rule, $pre_word, $inf_word, $uuid);
+                    $this->syntax_model_rule = $this->set_point_rel($this->syntax_model_rule, $pre_word, $inf_word,
+                        $uuid);
                     if ($this->train_system_mode) {
-                        $this->syntax_db->add_syntax_relation($pre_word->dw->initial_form, $inf_word->dw->initial_form, UUID_\Aot\MivarTextSemantic\SyntaxParser\Constants::COMPLEX_PREDICATE_MIVAR, \Aot\MivarTextSemantic\Constants::COMPLEX_PREDICATE_MIVAR);
+                        $this->syntax_db->add_syntax_relation($pre_word->dw->initial_form, $inf_word->dw->initial_form,
+                            UUID_\Aot\MivarTextSemantic\SyntaxParser\Constants::COMPLEX_PREDICATE_MIVAR,
+                            \Aot\MivarTextSemantic\Constants::COMPLEX_PREDICATE_MIVAR);
                     }
                 }
             }
@@ -108,7 +119,13 @@ class complex_predicate extends SyntaxRule
                 foreach ($this->complex_predicate['predicate'] as $pre_key => $pre_word) {
                     // Если глагол находится перед инфинитивами
                     if ($pre_word->kw < $kw_inf && $pre_word->kw > $kw_pre) {
-                        if ($pre_word->count_dw == 1 || !$this->find_ps_prev($pre_word->kw - 1, array(\Aot\MivarTextSemantic\Constants::PREPOSITION_CLASS_ID), array(\Aot\MivarTextSemantic\Constants::VERB_CLASS_ID, \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID, \Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID))) {
+                        if ($pre_word->count_dw == 1 || !$this->find_ps_prev($pre_word->kw - 1,
+                                array(\Aot\MivarTextSemantic\Constants::PREPOSITION_CLASS_ID), array(
+                                    \Aot\MivarTextSemantic\Constants::VERB_CLASS_ID,
+                                    \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID,
+                                    \Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID
+                                ))
+                        ) {
                             $kw_pre = $pre_word->kw;
                             $predicate_to_link = $pre_word;
                         }
@@ -119,7 +136,8 @@ class complex_predicate extends SyntaxRule
                         if ($predicate_to_link->kw != $inf_word->kw) {
                             $predicate_to_link->O = $inf_word->O = 'complex_predicate';
                             $predicate_to_link->Oz = $inf_word->Oz = $uuid;
-                            $this->syntax_model_rule = $this->set_point_rel($this->syntax_model_rule, $predicate_to_link, $inf_word, $uuid);
+                            $this->syntax_model_rule = $this->set_point_rel($this->syntax_model_rule,
+                                $predicate_to_link, $inf_word, $uuid);
                         }
                     }
                 }
@@ -164,8 +182,9 @@ class complex_predicate extends SyntaxRule
                 }
                 $sentence_space_SP[$key] = $point_word;
             }
-            if (isset($point_word->ps))
+            if (isset($point_word->ps)) {
                 $this->complex_predicate[$point_word->ps][$key] = $point_word;
+            }
         }
         return $sentence_space_SP;
     }
@@ -186,25 +205,34 @@ class complex_predicate extends SyntaxRule
             if ($point_word->ps == 'infinitive' && !$predicate) {
                 $infinitive++;
                 $infinitive_bloc[] = $point_word;
-            } else if ($point_word->ps == 'infinitive' && $predicate) {
-                $predicate_blocs[] = $predicate_bloc;
-                $predicate = 0;
-                $infinitive++;
-                $infinitive_bloc = array();
-                $infinitive_bloc[] = $point_word;
-            } else if ($point_word->ps == 'predicate' && !$infinitive) {
-                $predicate++;
-                $predicate_bloc[] = $point_word;
-            } else if ($point_word->ps == 'predicate' && $infinitive) {
-                $infinitive_blocs[] = $infinitive_bloc;
-                $infinitive = 0;
-                $predicate++;
-                $predicate_bloc = array();
-                $predicate_bloc[] = $point_word;
+            } else {
+                if ($point_word->ps == 'infinitive' && $predicate) {
+                    $predicate_blocs[] = $predicate_bloc;
+                    $predicate = 0;
+                    $infinitive++;
+                    $infinitive_bloc = array();
+                    $infinitive_bloc[] = $point_word;
+                } else {
+                    if ($point_word->ps == 'predicate' && !$infinitive) {
+                        $predicate++;
+                        $predicate_bloc[] = $point_word;
+                    } else {
+                        if ($point_word->ps == 'predicate' && $infinitive) {
+                            $infinitive_blocs[] = $infinitive_bloc;
+                            $infinitive = 0;
+                            $predicate++;
+                            $predicate_bloc = array();
+                            $predicate_bloc[] = $point_word;
+                        }
+                    }
+                }
             }
         }
-        if ($infinitive) $infinitive_blocs[] = $infinitive_bloc;
-        else $predicate_blocs[] = $predicate_bloc;
+        if ($infinitive) {
+            $infinitive_blocs[] = $infinitive_bloc;
+        } else {
+            $predicate_blocs[] = $predicate_bloc;
+        }
         return array('infinitive_block' => $infinitive_blocs, 'predicate_block' => $predicate_blocs);
     }
 
@@ -218,8 +246,9 @@ class complex_predicate extends SyntaxRule
     protected function is_word_block($key_word, $block)
     {
         foreach ($block as $bl) {
-            if ($bl->kw == $key_word)
+            if ($bl->kw == $key_word) {
                 return true;
+            }
         }
         return false;
     }

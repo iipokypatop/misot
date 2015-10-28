@@ -33,8 +33,9 @@ class adjunct_verb extends SyntaxRule
         $this->sence_filter = false;
         $this->find_points_wdw = $this->find_morph_adjunct_verb($wdw);
         //$this->view($this->find_points_wdw);
-        if (isset($this->adjunct_verb['adverb'], $this->adjunct_verb['predicate']))
+        if (isset($this->adjunct_verb['adverb'], $this->adjunct_verb['predicate'])) {
             $result = true;
+        }
         //$this->view($this->adjunct_verb);
         return $result;
     }
@@ -75,13 +76,23 @@ class adjunct_verb extends SyntaxRule
         foreach ($this->adjunct_verb['predicate'] as $pre_key => $pre_word) {
             foreach ($this->adjunct_verb['adverb'] as $inf_key => $adj_word) {
                 if ($pre_word->kw != $adj_word->kw &&
-                    ($adj_word->count_dw > 1 || !$this->find_ps_next($adj_word->kw + 1, array(\Aot\MivarTextSemantic\Constants::ADVERB_CLASS_ID, \Aot\MivarTextSemantic\Constants::ADJECTIVE_CLASS_ID), array(\Aot\MivarTextSemantic\Constants::VERB_CLASS_ID, \Aot\MivarTextSemantic\Constants::PARTICIPLE_CLASS_ID, \Aot\MivarTextSemantic\Constants::COMMUNION_CLASS_ID)))
+                    ($adj_word->count_dw > 1 || !$this->find_ps_next($adj_word->kw + 1, array(
+                            \Aot\MivarTextSemantic\Constants::ADVERB_CLASS_ID,
+                            \Aot\MivarTextSemantic\Constants::ADJECTIVE_CLASS_ID
+                        ), array(
+                            \Aot\MivarTextSemantic\Constants::VERB_CLASS_ID,
+                            \Aot\MivarTextSemantic\Constants::PARTICIPLE_CLASS_ID,
+                            \Aot\MivarTextSemantic\Constants::COMMUNION_CLASS_ID
+                        )))
                 ) {
                     $pre_word->O = $adj_word->O = 'adjunct_verb';
                     $pre_word->Oz = $adj_word->Oz = $uuid;
-                    $this->syntax_model_rule = $this->set_point_rel($this->syntax_model_rule, $pre_word, $adj_word, $uuid);
+                    $this->syntax_model_rule = $this->set_point_rel($this->syntax_model_rule, $pre_word, $adj_word,
+                        $uuid);
                     if ($this->train_system_mode) {
-                        $this->syntax_db->add_syntax_relation($pre_word->dw->initial_form, $adj_word->dw->initial_form, UUID_\Aot\MivarTextSemantic\SyntaxParser\Constants::ADJUNCT_VERB_MIVAR, \Aot\MivarTextSemantic\Constants::ADJUNCT_VERB_MIVAR);
+                        $this->syntax_db->add_syntax_relation($pre_word->dw->initial_form, $adj_word->dw->initial_form,
+                            UUID_\Aot\MivarTextSemantic\SyntaxParser\Constants::ADJUNCT_VERB_MIVAR,
+                            \Aot\MivarTextSemantic\Constants::ADJUNCT_VERB_MIVAR);
                     }
                 }
             }
@@ -118,15 +129,19 @@ class adjunct_verb extends SyntaxRule
                 $sentence_space_SP[$key] = $point_word;
             } // проверяем слово на глагол
 
-            else if ($point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::VERB_CLASS_ID, null, null) ||
-                $point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::PARTICIPLE_CLASS_ID, null, null) ||
-                $point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::COMMUNION_CLASS_ID, null, null)
-            ) {
-                $point_word->ps = 'predicate';
-                $sentence_space_SP[$key] = $point_word;
+            else {
+                if ($point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::VERB_CLASS_ID, null, null) ||
+                    $point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::PARTICIPLE_CLASS_ID, null,
+                        null) ||
+                    $point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::COMMUNION_CLASS_ID, null, null)
+                ) {
+                    $point_word->ps = 'predicate';
+                    $sentence_space_SP[$key] = $point_word;
+                }
             }
-            if (isset($point_word->ps))
+            if (isset($point_word->ps)) {
                 $this->adjunct_verb[$point_word->ps][$key] = $point_word;
+            }
         }
         //$this->view($this->adjunct_verb);
         return $sentence_space_SP;

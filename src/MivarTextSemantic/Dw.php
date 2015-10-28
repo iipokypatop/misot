@@ -35,13 +35,14 @@ class Dw
      * @param $parameters - морфологические атрибуты словоформы: массив array(id-морфологического втрибута => значение)
      */
 
-    public function __construct($id_word_form = null,
-                                $word_form = null,
-                                $initial_form = null,
-                                $id_word_class = null,
-                                $name_word_class = null,
-                                $parameters = array())
-    {
+    public function __construct(
+        $id_word_form = null,
+        $word_form = null,
+        $initial_form = null,
+        $id_word_class = null,
+        $name_word_class = null,
+        $parameters = array()
+    ) {
         $this->id_word_form = $id_word_form;
         $this->word_form = $word_form;
         $this->initial_form = $initial_form;

@@ -3,8 +3,6 @@
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Prichastie;
 
 
-
-
 use Aot\MivarTextSemantic\Dw;
 use Aot\MivarTextSemantic\Word;
 

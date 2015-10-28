@@ -119,7 +119,8 @@ class Helper
                         $array_dictionary_word[$word][$id]['id_word_form'] = $id;
                         $array_dictionary_word[$word][$id]['word_form'] = $word;
 
-                        $array_dictionary_word[$word][$id]['initial_form'] = mb_strtolower($initial_form, "utf-8"); // было просто $initial_form[0];
+                        $array_dictionary_word[$word][$id]['initial_form'] = mb_strtolower($initial_form,
+                            "utf-8"); // было просто $initial_form[0];
 
                         if ($info['pos'] == 'С') {
                             $id_word_class = 2;
@@ -409,7 +410,9 @@ class Helper
 
                             }
 
-                            if (empty($param_id)) $param_name = $gram_val;
+                            if (empty($param_id)) {
+                                $param_name = $gram_val;
+                            }
 
                             $array_dictionary_word[$word][$id]['parametrs'][$param_id] = array(
                                 'id_morph_attr' => $param_id,

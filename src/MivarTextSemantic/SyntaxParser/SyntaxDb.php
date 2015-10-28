@@ -55,10 +55,12 @@ class SyntaxDb
 
     public function add_syntax_relation($main_w, $depend_w, $uuid_relation, $alias_relation)
     {
-        $this->points_to_db[md5($main_w . $uuid_relation)][$depend_w] = array('main_w' => mb_strtolower($main_w, 'utf-8'),
+        $this->points_to_db[md5($main_w . $uuid_relation)][$depend_w] = array(
+            'main_w' => mb_strtolower($main_w, 'utf-8'),
             'depend_w' => mb_strtolower($depend_w, 'utf-8'),
             'uuid_relation' => $uuid_relation,
-            'alias_relation' => $alias_relation);
+            'alias_relation' => $alias_relation
+        );
         return $this;
     }
 
@@ -80,7 +82,9 @@ class SyntaxDb
         foreach ($this->points_to_db as $group) {
             $flag_group = true;
             foreach ($group as $depend_w => $relation) {
-                $str_saved_rules .= "(" . check_string($relation['main_w'], $this->dbconn) . ", " . check_uuid($relation['uuid_relation']) . "::uuid, " . check_string($relation['alias_relation'], $this->dbconn) . ", " . check_string($relation['depend_w'], $this->dbconn) . "), ";
+                $str_saved_rules .= "(" . check_string($relation['main_w'],
+                        $this->dbconn) . ", " . check_uuid($relation['uuid_relation']) . "::uuid, " . check_string($relation['alias_relation'],
+                        $this->dbconn) . ", " . check_string($relation['depend_w'], $this->dbconn) . "), ";
             }
         }
         $saved_rules = array();

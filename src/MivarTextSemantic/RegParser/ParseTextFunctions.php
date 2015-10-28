@@ -26,8 +26,9 @@ class ParseTextFunctions
     static public function add_part_number(&$text_unit, $minPoz, $lastMinPoz, $name_unit)
     {
 
-        if (!isset($lastMinPoz["regText"]))
+        if (!isset($lastMinPoz["regText"])) {
             $lastMinPoz["regText"] = "";
+        }
         mb_ereg("((\d)+.)+", $lastMinPoz["regText"], $arr);
         $num = mb_strrchr(mb_substr($arr[0], 0, mb_strlen($arr[0]) - 1, 'UTF-8'), ".", true);
         $result['name'] = $name_unit;
@@ -42,8 +43,9 @@ class ParseTextFunctions
 
         if ($minPoz["rezText"]) {
             $result['name'] = $name_unit;
-            if (!isset($minPoz["regText"]))
+            if (!isset($minPoz["regText"])) {
                 $minPoz["regText"] = "";
+            }
             $result['text'] = $minPoz["rezText"] . mb_substr($minPoz["regText"], 0, 1, 'UTF-8');
             $text_unit['items'][] = $result;
         }
@@ -54,13 +56,15 @@ class ParseTextFunctions
     {
         if ($minPoz["rezText"]) {
             $result['name'] = $name_unit;
-            if (!isset($minPoz["regText"]))
+            if (!isset($minPoz["regText"])) {
                 $minPoz["regText"] = "";
+            }
             $result['endchar'] = mb_substr($minPoz["regText"], 0, 1, 'UTF-8');
             $result['id_sentence'] = uniqid('', true);
             $result['text'] = $minPoz["rezText"] . mb_substr($minPoz["regText"], 0, 1, 'UTF-8');
-            if (isset($minPoz["reg"]) && $minPoz["reg"] == "[\.\?!](\s)+[А-Я]")
+            if (isset($minPoz["reg"]) && $minPoz["reg"] == "[\.\?!](\s)+[А-Я]") {
                 $minPoz["poz"] = $minPoz["poz"] - strlen(mb_substr($minPoz["regText"], -1, 1, 'UTF-8'));
+            }
             $text_unit['items'][] = $result;
         }
     }
@@ -107,8 +111,9 @@ class ParseTextFunctions
     */
     static private function add_data(&$text_unit, $minPoz, $lastMinPoz, $name_unit, $result)
     {
-        if (!isset($lastMinPoz["regText"]))
+        if (!isset($lastMinPoz["regText"])) {
             $lastMinPoz["regText"] = "";
+        }
         $lastMinPoz["regText"] = trim($lastMinPoz["regText"]);
         $result['name'] = $name_unit;
         $result['text'] = $lastMinPoz["regText"];
@@ -123,8 +128,9 @@ class ParseTextFunctions
     static protected function addSpecialAttributesToWord(&$text_unit)
     {
         if (mb_ereg("[А-ЯЁ_\-]+", $text_unit['text'], $regText) && $regText[0] == $text_unit['text']) {
-            if (($text_unit['text'] != 'Я') && ($text_unit['text'] != 'У') && ($text_unit['text'] != 'С') && ($text_unit['text'] != 'К') && ($text_unit['text'] != 'О') && ($text_unit['text'] != 'В'))
+            if (($text_unit['text'] != 'Я') && ($text_unit['text'] != 'У') && ($text_unit['text'] != 'С') && ($text_unit['text'] != 'К') && ($text_unit['text'] != 'О') && ($text_unit['text'] != 'В')) {
                 $text_unit['abbr'] = true;
+            }
         }
     }
 

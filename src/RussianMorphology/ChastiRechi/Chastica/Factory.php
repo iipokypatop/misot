@@ -9,7 +9,6 @@
 namespace Aot\RussianMorphology\ChastiRechi\Chastica;
 
 
-
 use Aot\MivarTextSemantic\Dw;
 use Aot\MivarTextSemantic\Word;
 

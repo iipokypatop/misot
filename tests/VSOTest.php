@@ -106,8 +106,8 @@ class VSOTest extends \AotTest\AotDataStorage
      */
     private function createSvyaz($seq, $rule, $main_field, $depend_field)
     {
-        $main = $this->cache_nf_member[call_user_func_array([$rule, 'get_name_'.$main_field],[])];
-        $depended = $this->cache_nf_member[call_user_func_array([$rule, 'get_name_'.$depend_field],[])];
+        $main = $this->cache_nf_member[call_user_func_array([$rule, 'get_name_' . $main_field], [])];
+        $depended = $this->cache_nf_member[call_user_func_array([$rule, 'get_name_' . $depend_field], [])];
         $rule = $this->createRule($main_field, $depend_field);
         return \Aot\Sviaz\Podchinitrelnaya\Base::create($main, $depended, $rule, $seq);
     }

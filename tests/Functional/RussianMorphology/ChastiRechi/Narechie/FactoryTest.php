@@ -9,7 +9,6 @@
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Narechie;
 
 
-
 use Aot\MivarTextSemantic\Dw;
 use Aot\MivarTextSemantic\Word;
 
