@@ -118,7 +118,7 @@ class Sequence extends \ArrayObject
      *
      * @param Homogeneity[] $homogeneities
      */
-    public function setHomogeneities($homogeneities)
+    public function setHomogeneities(array $homogeneities)
     {
         foreach ($homogeneities as $homogeneity) {
             assert(is_a($homogeneity, \Aot\Sviaz\Homogeneity\Homogeneity::class), true);
