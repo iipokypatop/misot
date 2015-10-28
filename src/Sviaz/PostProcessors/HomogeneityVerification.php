@@ -226,6 +226,7 @@ class HomogeneityVerification extends Base
         array $array_homogeneity_from_rule,
         \Aot\Sviaz\Sequence $sequence
     ) {
+        //todo Улучшить алгоритм наложения
         foreach ($supposed as $member) {
             assert(is_a($member, \Aot\Sviaz\SequenceMember\Base::class, true));
         }
