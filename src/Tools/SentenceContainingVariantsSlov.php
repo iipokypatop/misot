@@ -11,6 +11,8 @@ namespace Aot\Tools;
 
 class SentenceContainingVariantsSlov implements \Iterator, \Countable
 {
+    const REGULAR_FOR_WHITE_LIST = '/[А-Яю-яёЁ\-]+/';
+
     /** @var int */
     protected $position = 0;
     /** @var string[] */
@@ -123,7 +125,7 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
     {
         $obj = new static($this->raw_sentence_text);
         foreach ($this->texts as $key => $text) {
-            if (!preg_match('/[А-Яю-яёЁ\-]+/', $text)) {
+            if (!preg_match(static::REGULAR_FOR_WHITE_LIST, $text)) {
                 continue;
             }
             $obj->add($this->texts[$key], [$this->slova[$key]]);
