@@ -3,7 +3,7 @@
 MODE = DEVELOP
 
 [DEVELOP]
-semantic.db.host = 192.168.10.51
+semantic.db.host = test-db.mivar.pro
 semantic.db.port = 5432
 semantic.db.user = postgres
 semantic.db.password = @Mivar123User@

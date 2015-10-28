@@ -9,6 +9,10 @@
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Narechie;
 
 
+
+use Aot\MivarTextSemantic\Dw;
+use Aot\MivarTextSemantic\Word;
+
 use Aot\RussianMorphology\ChastiRechi\Narechie\Factory;
 use Aot\RussianMorphology\FactoryException;
 use MorphAttribute;
@@ -41,7 +45,7 @@ class NarechieTest extends \AotTest\AotDataStorage
 
     protected function buildFactory($point)
     {
-        $dw = new \Dw(
+        $dw = new Dw(
             $point->dw->id_word_form,
             $point->dw->initial_form,
             $point->dw->initial_form,
@@ -50,7 +54,7 @@ class NarechieTest extends \AotTest\AotDataStorage
             $point->dw->parameters
         );
 
-        $word = new \Word(
+        $word = new Word(
             $point->kw,
             $point->dw->initial_form,
             $point->id_sentence

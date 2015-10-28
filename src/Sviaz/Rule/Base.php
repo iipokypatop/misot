@@ -26,9 +26,6 @@ class Base
     /** @var  \Aot\Sviaz\Rule\AssertedMember\Depended */
     protected $asserted_depended;
 
-    /** @var  \Aot\Sviaz\Rule\AssertedMember\Third */
-    protected $asserted_third;
-
 
     /** @var \Aot\Sviaz\Rule\AssertedMatching\Base[] */
     protected $asserted_matchings = [];

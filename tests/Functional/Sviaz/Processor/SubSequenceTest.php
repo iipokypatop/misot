@@ -52,7 +52,7 @@ class SubSequenceTest extends \AotTest\AotDataStorage
      */
     public function testDetectSubSequencesNoSviaz()
     {
-        $processor = \Aot\Sviaz\Processor\Base::create();
+        $processor = \Aot\Sviaz\Processors\Misot::create();
         $sequence = \Aot\Sviaz\Sequence::create();
         $result = PHPUnitHelper::callProtectedMethod($processor, "detectSubSequences", [$sequence]);
         $this->assertEquals(1, count($sequence->getSubSequences()));
@@ -127,7 +127,7 @@ class SubSequenceTest extends \AotTest\AotDataStorage
             ->will($this->returnValue($position_depended));
 
 
-        $processor = \Aot\Sviaz\Processor\Base::create();
+        $processor = \Aot\Sviaz\Processors\Misot::create();
         $result = PHPUnitHelper::callProtectedMethod($processor, "detectSubSequences", [$sequence]);
         $this->assertNull($result);
 
@@ -263,7 +263,7 @@ class SubSequenceTest extends \AotTest\AotDataStorage
             ->will($this->returnValue($position_depended));
 
 
-        $processor = \Aot\Sviaz\Processor\Base::create();
+        $processor = \Aot\Sviaz\Processors\Misot::create();
         $result = PHPUnitHelper::callProtectedMethod($processor, "detectSubSequences", [$sequence]);
 
         $sub_sequences = $sequence->getSubSequences();
@@ -397,7 +397,7 @@ class SubSequenceTest extends \AotTest\AotDataStorage
             ->method('setSubSequence');
 
 
-        $processor = \Aot\Sviaz\Processor\Base::create();
+        $processor = \Aot\Sviaz\Processor::create();
         $result = PHPUnitHelper::callProtectedMethod($processor, "detectSubSequences", [$sequence]);
 
         $this->assertNull($result);
@@ -489,7 +489,7 @@ class SubSequenceTest extends \AotTest\AotDataStorage
         }
 
 
-        $processor = \Aot\Sviaz\Processor\Base::create();
+        $processor = \Aot\Sviaz\Processors\Misot::create();
         $result = PHPUnitHelper::callProtectedMethod($processor, "detectSubSequences", [$sequence]);
 
         $sub_sequences = $sequence->getSubSequences();

@@ -9,7 +9,7 @@
 require $imports['ShowParseResult']['model'];
 
 
-$processor = \Aot\Sviaz\Processor\Base::create();
+$processor = \Aot\Sviaz\Processor::create();
 
 $sequences = $processor->go(
     $normalized_matrix,

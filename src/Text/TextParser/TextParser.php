@@ -234,4 +234,9 @@ class TextParser
     }
 
 
+    public static function joinSentenceWordAndPunctuation(array $words_and_punct)
+    {
+
+    }
+
 }

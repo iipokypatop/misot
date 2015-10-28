@@ -9,15 +9,18 @@
 namespace Aot\Tools;
 
 
-class Config {
+class Config
+{
 
     private static $instance;
 
-    private function __construct() {
+    private function __construct()
+    {
 
     }
 
-    public static function getConfig() {
+    public static function getConfig()
+    {
         if (!isset(self::$instance)) {
 
             $file_path = __DIR__ . '/../../config/config.ini';

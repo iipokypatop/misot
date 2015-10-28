@@ -8,6 +8,7 @@
 
 namespace Aot\RussianMorphology\ChastiRechi\Deeprichastie;
 
+use Aot\MivarTextSemantic\OldAotConstants;
 use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Neperehodnyj;
 use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Perehodnyj;
 use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Null as NullPerehodnost;
@@ -21,8 +22,8 @@ use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Vozvr
 use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Null as NullVozvratnost;
 
 
-use Dw;
-use Word;
+use Aot\MivarTextSemantic\Dw;
+use Aot\MivarTextSemantic\Word;
 
 class Factory extends \Aot\RussianMorphology\Factory
 {
@@ -36,7 +37,7 @@ class Factory extends \Aot\RussianMorphology\Factory
     {
         $text = $dw->word_form;
         $words = [];
-        if (isset($word->word) && intval($dw->id_word_class) === PARTICIPLE_CLASS_ID) {
+        if (isset($word->word) && intval($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::PARTICIPLE_CLASS_ID) {
 
             # вид
             $vid = $this->getVid($dw->parameters);
@@ -72,16 +73,16 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     private function getVid($parameters)
     {
-        if (empty($parameters[VIEW_ID])) {
+        if (empty($parameters[\Aot\MivarTextSemantic\Constants::VIEW_ID])) {
             return [NullVid::create()];
         }
 
-        $param = $parameters[VIEW_ID];
+        $param = $parameters[\Aot\MivarTextSemantic\Constants::VIEW_ID];
         $vid = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === VIEW_PERFECTIVE_ID) {
+            if (intval($val) === \Aot\MivarTextSemantic\Constants::VIEW_PERFECTIVE_ID) {
                 $vid[] = Sovershennyj::create();
-            } elseif (intval($val) === VIEW_IMPERFECT_ID) {
+            } elseif (intval($val) === \Aot\MivarTextSemantic\Constants::VIEW_IMPERFECT_ID) {
                 $vid[] = Nesovershennyj::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -97,16 +98,16 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     private function getPerehodnost($parameters)
     {
-        if (empty($parameters[TRANSIVITY_ID])) {
+        if (empty($parameters[\Aot\MivarTextSemantic\Constants::TRANSIVITY_ID])) {
             return [NullPerehodnost::create()];
         }
 
-        $param = $parameters[TRANSIVITY_ID];
+        $param = $parameters[\Aot\MivarTextSemantic\Constants::TRANSIVITY_ID];
         $perehodnost = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === \OldAotConstants::TRANSITIVE()) {
+            if (intval($val) === OldAotConstants::TRANSITIVE()) {
                 $perehodnost[] = Perehodnyj::create();
-            } elseif (intval($val) === \OldAotConstants::INTRANSITIVE()) {
+            } elseif (intval($val) === OldAotConstants::INTRANSITIVE()) {
                 $perehodnost[] = Neperehodnyj::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
@@ -122,17 +123,17 @@ class Factory extends \Aot\RussianMorphology\Factory
      */
     private function getVozvratnost($parameters)
     {
-        if (empty($parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()])) {
+        if (empty($parameters[OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()])) {
             return [NullVozvratnost::create()];
         }
 
-        $param = $parameters[\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()];
+        $param = $parameters[OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()];
 
         $vozvratnost = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === \OldAotConstants::RETRIEVABLE()) {
+            if (intval($val) === OldAotConstants::RETRIEVABLE()) {
                 $vozvratnost[] = Vozvratnyj::create();
-            } elseif (intval($val) === \OldAotConstants::IRRETRIEVABLE()) {
+            } elseif (intval($val) === OldAotConstants::IRRETRIEVABLE()) {
                 $vozvratnost[] = Nevozvratnyj::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));

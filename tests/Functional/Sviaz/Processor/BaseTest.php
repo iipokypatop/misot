@@ -32,7 +32,7 @@ class BaseTest extends \AotTest\AotDataStorage
 {
     public function testLaunch()
     {
-        $processor = \Aot\Sviaz\Processor\Base::create();
+        $processor = \Aot\Sviaz\Processor::create();
 
         $rule = $this->getRule1();
         $rule = $this->getRule2();
@@ -194,7 +194,7 @@ RULE;
     {
         //$this->markTestSkipped();
 
-        $processor = \Aot\Sviaz\Processor\Base::create();
+        $processor = \Aot\Sviaz\Processor::create();
 
         $rule = $this->getRule1();
 
@@ -220,7 +220,7 @@ RULE;
     public function testSecond()
     {
 
-        $processor = \Aot\Sviaz\Processor\Base::create();
+        $processor = \Aot\Sviaz\Processor::create();
 
 
         $sequences = $processor->go(

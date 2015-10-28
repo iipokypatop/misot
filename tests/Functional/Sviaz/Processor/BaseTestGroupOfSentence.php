@@ -34,7 +34,7 @@ class BaseTestGroupOfSentence extends \AotTest\AotDataStorage
     public function testMain()
     {
 
-        $processor = \Aot\Sviaz\Processor\Base::create();
+        $processor = \Aot\Sviaz\Processor::create();
 
         $sequences = $processor->go(
             $this->getNormalizedMatrix1(),

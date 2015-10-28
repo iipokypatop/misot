@@ -238,7 +238,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
     public function getSequencesForTests()
     {
         //СОздаём процессор
-        $processor = \Aot\Sviaz\Processor\Base::create();
+        $processor = \Aot\Sviaz\Processor::create();
 
         //Получаем два правила, причё они будут противоречить друг другу
         $rule1 = $this->getRule1();
