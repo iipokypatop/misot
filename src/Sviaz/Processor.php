@@ -144,7 +144,7 @@ class Processor
         $new_sviazi = $sviazi;
 
         foreach ($this->post_processing_engines as $engine) {
-            $new_sviazi = $engine->run($new_sviazi);
+            $new_sviazi = $engine->run($sequence, $new_sviazi);
         }
 
         return $new_sviazi;

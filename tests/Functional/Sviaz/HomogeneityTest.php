@@ -44,7 +44,6 @@ class HomogeneityTest extends \AotTest\AotDataStorage
         $sequences = $processor->go(
             $this->getNormalizedMatrix1(),
             [
-
                 $this->getRule1(),
                 $this->getRule2(),
                 $this->getRule3(),
