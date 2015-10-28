@@ -50,9 +50,4 @@ class Base
         $this->members[spl_object_hash($member)] = $member;
     }
 
-
-    public function setMembers($members)
-    {
-
-    }
 }
