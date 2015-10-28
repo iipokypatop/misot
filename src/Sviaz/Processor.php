@@ -19,35 +19,21 @@ class Processor
     /**
      * @var \Aot\Sviaz\PreProcessors\Base[]
      */
-    protected $pre_processing_engines;
+    protected $pre_processing_engines = [];
 
     /**
      * @var \Aot\Sviaz\Processors\Base[]
      */
-    protected $processing_engines;
+    protected $processing_engines = [];
 
     /**
      * @var \Aot\Sviaz\PostProcessors\Base[]
      */
-    protected $post_processing_engines;
+    protected $post_processing_engines = [];
 
     public function __construct()
     {
         $this->raw_member_builder = \Aot\Sviaz\SequenceMember\RawMemberBuilder::create();
-
-
-        $this->pre_processing_engines = [
-            \Aot\Sviaz\PreProcessors\Predlog::create(),
-        ];
-
-        $this->processing_engines = [
-            \Aot\Sviaz\Processors\Misot::create(),
-        ];
-
-
-        $this->post_processing_engines = [
-            \Aot\Sviaz\PostProcessors\Duplicate::create(),
-        ];
     }
 
     public static function create()
@@ -57,8 +43,50 @@ class Processor
 
     public static function createDefault()
     {
-        return new static();
+        $obj = static::create()
+            ->attachPreProcessor(
+                \Aot\Sviaz\PreProcessors\Predlog::create()
+            )
+            ->attachProcessor(
+                \Aot\Sviaz\Processors\Misot::create()
+            )
+            ->attachPostProcessor(
+                \Aot\Sviaz\PostProcessors\Duplicate::create()
+            );
+
+        return $obj;
     }
+
+    /**
+     * @param PreProcessors\Base $base
+     * @return $this
+     */
+    public function attachPreProcessor(\Aot\Sviaz\PreProcessors\Base $base)
+    {
+        $this->pre_processing_engines[] = $base;
+        return $this;
+    }
+
+    /**
+     * @param Processors\Base $base
+     * @return $this
+     */
+    public function attachProcessor(\Aot\Sviaz\Processors\Base $base)
+    {
+        $this->processing_engines[] = $base;
+        return $this;
+    }
+
+    /**
+     * @param PostProcessors\Base $base
+     * @return $this
+     */
+    public function attachPostProcessor(\Aot\Sviaz\PostProcessors\Base $base)
+    {
+        $this->post_processing_engines[] = $base;
+        return $this;
+    }
+
 
 
     /**
