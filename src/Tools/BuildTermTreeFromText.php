@@ -21,8 +21,9 @@ class BuildTermTreeFromText
         $sentences = \Aot\Tools\ConvertTextIntoSlova::convert($text);
         $tmpl_sentences = [];
         foreach ($sentences as $sentence) {
+            $sentence_without_punctuation = $sentence->getSentenceWithoutPunctuation();
             $tmpl_slova = [];
-            foreach ($sentence as $word => $slova) {
+            foreach ($sentence_without_punctuation as $word => $slova) {
                 $tmpl_initial_forms = [];
                 foreach ($slova as $slovo) {
                     $initial_form = $slovo->getInitialForm();
@@ -33,9 +34,9 @@ class BuildTermTreeFromText
                     }
                     $tmpl_initial_forms[] = static::fillTemplate($initial_form, $word, $tmpl_definitions);
                 }
-                $tmpl_slova[] = static::fillTemplate($word, $sentence->getRawSentenceText(), $tmpl_initial_forms);
+                $tmpl_slova[] = static::fillTemplate($word, $sentence_without_punctuation->getRawSentenceText(), $tmpl_initial_forms);
             }
-            $tmpl_sentences[] = static::fillTemplate($sentence->getRawSentenceText(), "Предложения", $tmpl_slova);
+            $tmpl_sentences[] = static::fillTemplate($sentence_without_punctuation->getRawSentenceText(), "Предложения", $tmpl_slova);
         }
         return [static::fillTemplate("Предложения", null, $tmpl_sentences)];
     }
