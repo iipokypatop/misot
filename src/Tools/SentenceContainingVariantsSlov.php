@@ -123,12 +123,12 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
      */
     public function getSentenceWithoutPunctuation()
     {
-        $obj = new static($this->raw_sentence_text);
-        foreach ($this->texts as $key => $text) {
+        $obj = static::create($this->raw_sentence_text);
+        foreach ($this->texts as $index => $text) {
             if (!preg_match(static::REGULAR_FOR_WHITE_LIST, $text)) {
                 continue;
             }
-            $obj->add($this->texts[$key], [$this->slova[$key]]);
+            $obj->add($this->texts[$index], [$this->slova[$index]]);
         }
         $obj->previous = $this;
         return $obj;
