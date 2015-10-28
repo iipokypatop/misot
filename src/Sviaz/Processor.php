@@ -55,6 +55,11 @@ class Processor
         return new static();
     }
 
+    public static function createDefault()
+    {
+        return new static();
+    }
+
 
     /**
      * @param \Aot\Sviaz\Sequence $sequence

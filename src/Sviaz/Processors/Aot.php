@@ -122,13 +122,18 @@ class Aot extends Base
     /**
      * Получение VSO модели через АОТ
      * @param $sentence_string
-     * @return mixed
+     * @return string[] hash map првил
      */
     private function getOriginalVSOModel($sentence_string)
     {
         $mivar = new \DMivarText(['txt' => $sentence_string]);
+
         $mivar->semantic_model();
-        return $mivar->getSemanticModel();
+
+        $result = $mivar->getSemanticModel();
+
+        return !empty($result) ? $result : [];
+
     }
 
 }
