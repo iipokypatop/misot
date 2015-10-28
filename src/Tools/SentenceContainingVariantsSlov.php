@@ -22,6 +22,9 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
      */
     protected $raw_sentence_text;
 
+    /** @var SentenceContainingVariantsSlov */
+    protected $previous;
+
     /**
      * @param string $raw_sentence_text
      * @return SentenceContainingVariantsSlov
@@ -111,5 +114,29 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
     public function getRawSentenceText()
     {
         return $this->raw_sentence_text;
+    }
+
+    /**
+     * @return SentenceContainingVariantsSlov
+     */
+    public function getSentenceWithoutPunctuation()
+    {
+        $obj = new static($this->raw_sentence_text);
+        foreach ($this->texts as $key => $text) {
+            if (!preg_match('/[А-Яю-яёЁ\-]+/', $text)) {
+                continue;
+            }
+            $obj->add($this->texts[$key], [$this->slova[$key]]);
+        }
+        $obj->previous = $this;
+        return $obj;
+    }
+
+    /**
+     * @return SentenceContainingVariantsSlov
+     */
+    public function getPrevious()
+    {
+        return $this->previous;
     }
 }
