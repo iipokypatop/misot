@@ -51,24 +51,47 @@ class BuildTermTreeFromText
                         if (static::checkConcept($concept, $true_concepts)) {
                             static::fillState();
                         }
-                        $tmpl_concept = static::fillTemplate($concept->getDescription(),
-                            $term->getDefinition(), static::cutState('concept'), []);
-                        $tmpl_definitions[] = static::fillTemplate($term->getDefinition(), $initial_form,
+                        $tmpl_concept = static::fillTemplate(
+                            $concept->getDescription(),
+                            $term->getDefinition(),
+                            static::cutState('concept'),
+                            []
+                        );
+                        $tmpl_definitions[] = static::fillTemplate(
+                            $term->getDefinition(),
+                            $initial_form,
                             static::cutState('term'),
-                            $tmpl_concept);
+                            $tmpl_concept
+                        );
                     }
-                    $tmpl_initial_forms[] = static::fillTemplate($initial_form, $word, static::cutState('initial_form'),
-                        $tmpl_definitions);
+                    $tmpl_initial_forms[] = static::fillTemplate(
+                        $initial_form, $word,
+                        static::cutState('initial_form'),
+                        $tmpl_definitions
+                    );
                 }
-                $tmpl_slova[] = static::fillTemplate($word, $sentence->getRawSentenceText(),
+                $tmpl_slova[] = static::fillTemplate(
+                    $word,
+                    $sentence->getRawSentenceText(),
                     static::cutState('word_form'),
-                    $tmpl_initial_forms);
+                    $tmpl_initial_forms
+                );
             }
-            $tmpl_sentences[] = static::fillTemplate($sentence->getRawSentenceText(), "Предложения",
+            $tmpl_sentences[] = static::fillTemplate(
+                $sentence->getRawSentenceText(),
+                "Предложения",
                 static::cutState('sentence'),
-                $tmpl_slova);
+                $tmpl_slova
+            );
         }
-        return [static::fillTemplate("Предложения", null, 1, $tmpl_sentences)];
+        return [
+            static::fillTemplate(
+                "Предложения",
+                null,
+                1,
+                $tmpl_sentences
+            )
+        ];
     }
 
     /**
