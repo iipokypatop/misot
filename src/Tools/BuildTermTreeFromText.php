@@ -11,13 +11,15 @@ namespace Aot\Tools;
 
 class BuildTermTreeFromText
 {
+    const FALSE_VERTEX = 0;
+    const TRUE_VERTEX = 1;
 
     static $states = [
-        'sentence' => 0,
-        'word_form' => 0,
-        'initial_form' => 0,
-        'term' => 0,
-        'concept' => 0,
+        'sentence',
+        'word_form',
+        'initial_form',
+        'term',
+        'concept',
     ];
 
     /**
@@ -102,6 +104,9 @@ class BuildTermTreeFromText
         return $result;
     }
 
+    /**
+     * @return array
+     */
     protected static function fillTemplate($name, $parent, $state, array $children)
     {
         return [
@@ -113,6 +118,8 @@ class BuildTermTreeFromText
     }
 
     /**
+     * @brief Проверка, есть ли данный концепт в результирующем графе
+     *
      * @param \SemanticPersistence\Entities\SemanticEntities\Concept $concept
      * @param \SemanticPersistence\Entities\SemanticEntities\Concept[] $true_concepts
      * @return bool
@@ -129,28 +136,37 @@ class BuildTermTreeFromText
         return false;
     }
 
+    /**
+     * @return void
+     */
     protected static function resetState()
     {
-        static::$states ['sentence'] = 0;
-        static::$states ['word_form'] = 0;
-        static::$states ['initial_form'] = 0;
-        static::$states ['term'] = 0;
-        static::$states ['concept'] = 0;
+        static::$states ['sentence'] = static::FALSE_VERTEX;
+        static::$states ['word_form'] = static::FALSE_VERTEX;
+        static::$states ['initial_form'] = static::FALSE_VERTEX;
+        static::$states ['term'] = static::FALSE_VERTEX;
+        static::$states ['concept'] = static::FALSE_VERTEX;
     }
 
+    /**
+     * @return void
+     */
     protected static function fillState()
     {
-        static::$states ['sentence'] = 1;
-        static::$states ['word_form'] = 1;
-        static::$states ['initial_form'] = 1;
-        static::$states ['term'] = 1;
-        static::$states ['concept'] = 1;
+        static::$states ['sentence'] = static::TRUE_VERTEX;
+        static::$states ['word_form'] = static::TRUE_VERTEX;
+        static::$states ['initial_form'] = static::TRUE_VERTEX;
+        static::$states ['term'] = static::TRUE_VERTEX;
+        static::$states ['concept'] = static::TRUE_VERTEX;
     }
 
+    /**
+     * @return int
+     */
     protected static function cutState($level)
     {
         $state = static::$states [$level];
-        static::$states [$level] = 0;
+        static::$states [$level] = static::FALSE_VERTEX;
         return $state;
     }
 
