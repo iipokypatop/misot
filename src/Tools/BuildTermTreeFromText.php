@@ -11,14 +11,30 @@ namespace Aot\Tools;
 
 class BuildTermTreeFromText
 {
+
+    static $states = [
+        'sentence' => 0,
+        'word_form' => 0,
+        'initial_form' => 0,
+        'term' => 0,
+        'concept' => 0,
+    ];
+
     /**
      * @param string $text
+     * @param \SemanticPersistence\Entities\SemanticEntities\Concept[] $true_concepts
      * @return array предназначенный для вывода на интерфейс
      */
-    public static function run($text)
+    public static function run($text, array $true_concepts = [])
     {
         assert(is_string($text));
+        foreach ($true_concepts as $true_concept) {
+            assert(is_a($true_concept, \SemanticPersistence\Entities\SemanticEntities\Concept::class, true));
+        }
+
         $sentences = \Aot\Tools\ConvertTextIntoSlova::convert($text);
+
+        static::resetState();
         $tmpl_sentences = [];
         foreach ($sentences as $sentence) {
             $tmpl_slova = [];
@@ -29,15 +45,28 @@ class BuildTermTreeFromText
                     $terms = static::getTermsForInitialForm($initial_form);
                     $tmpl_definitions = [];
                     foreach ($terms as $term) {
-                        $tmpl_definitions[] = static::fillTemplate($term->getDefinition(), $initial_form, []);
+                        $concept = $term->getConcept();
+                        if (static::checkConcept($concept, $true_concepts)) {
+                            static::fillState();
+                        }
+                        $tmpl_concept = static::fillTemplate($concept->getDescription(),
+                            $term->getDefinition(), static::cutState('concept'), []);
+                        $tmpl_definitions[] = static::fillTemplate($term->getDefinition(), $initial_form,
+                            static::cutState('term'),
+                            $tmpl_concept);
                     }
-                    $tmpl_initial_forms[] = static::fillTemplate($initial_form, $word, $tmpl_definitions);
+                    $tmpl_initial_forms[] = static::fillTemplate($initial_form, $word, static::cutState('initial_form'),
+                        $tmpl_definitions);
                 }
-                $tmpl_slova[] = static::fillTemplate($word, $sentence->getRawSentenceText(), $tmpl_initial_forms);
+                $tmpl_slova[] = static::fillTemplate($word, $sentence->getRawSentenceText(),
+                    static::cutState('word_form'),
+                    $tmpl_initial_forms);
             }
-            $tmpl_sentences[] = static::fillTemplate($sentence->getRawSentenceText(), "Предложения", $tmpl_slova);
+            $tmpl_sentences[] = static::fillTemplate($sentence->getRawSentenceText(), "Предложения",
+                static::cutState('sentence'),
+                $tmpl_slova);
         }
-        return [static::fillTemplate("Предложения", null, $tmpl_sentences)];
+        return [static::fillTemplate("Предложения", null, 1, $tmpl_sentences)];
     }
 
     /**
@@ -73,12 +102,56 @@ class BuildTermTreeFromText
         return $result;
     }
 
-    protected static function fillTemplate($name, $parent, array $children)
+    protected static function fillTemplate($name, $parent, $state, array $children)
     {
         return [
             'name' => $name,
             'parent' => $parent,
+            'state' => $state,
             'children' => $children
         ];
     }
+
+    /**
+     * @param \SemanticPersistence\Entities\SemanticEntities\Concept $concept
+     * @param \SemanticPersistence\Entities\SemanticEntities\Concept[] $true_concepts
+     * @return bool
+     */
+    protected static function checkConcept(
+        \SemanticPersistence\Entities\SemanticEntities\Concept $concept,
+        array $true_concepts
+    ) {
+        foreach ($true_concepts as $true_concept) {
+            if ($concept->getId() === $true_concept->getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected static function resetState()
+    {
+        static::$states ['sentence'] = 0;
+        static::$states ['word_form'] = 0;
+        static::$states ['initial_form'] = 0;
+        static::$states ['term'] = 0;
+        static::$states ['concept'] = 0;
+    }
+
+    protected static function fillState()
+    {
+        static::$states ['sentence'] = 1;
+        static::$states ['word_form'] = 1;
+        static::$states ['initial_form'] = 1;
+        static::$states ['term'] = 1;
+        static::$states ['concept'] = 1;
+    }
+
+    protected static function cutState($level)
+    {
+        $state = static::$states [$level];
+        static::$states [$level] = 0;
+        return $state;
+    }
+
 }
