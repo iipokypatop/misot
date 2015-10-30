@@ -20,7 +20,7 @@ abstract class Factory
             case '(':
                 return \Aot\RussianSyntacsis\Punctuaciya\Skobki\Otkrivauchaya::create($text);
             case ')':
-                return \Aot\RussianSyntacsis\Punctuaciya\Skobki\Otkrivauchaya::create($text);
+                return \Aot\RussianSyntacsis\Punctuaciya\Skobki\Zakrivauchaya::create($text);
             case ':':
                 return \Aot\RussianSyntacsis\Punctuaciya\Dvoetochie::create($text);
             case '-':
