@@ -15,22 +15,24 @@ class Base
 
     /**
      * @param \Aot\Sviaz\SequenceMember\Base[] $members
+     * @param \Aot\Sviaz\Sequence $sequence
      */
-    protected function __construct(array $members)
+    protected function __construct(array $members, \Aot\Sviaz\Sequence $sequence)
     {
         foreach ($members as $member) {
             assert(is_a($member, \Aot\Sviaz\SequenceMember\Base::class), true);
-            $this->addMember($member);
+            $this->addMember($member, $sequence);
         }
     }
 
     /**
      * @param \Aot\Sviaz\SequenceMember\Base[] $members
+     * @param \Aot\Sviaz\Sequence $sequence
      * @return static
      */
-    public static function create(array $members)
+    public static function create(array $members, \Aot\Sviaz\Sequence $sequence)
     {
-        return new static($members);
+        return new static($members, $sequence);
     }
 
     /**
@@ -43,11 +45,14 @@ class Base
 
     /**
      * @param \Aot\Sviaz\SequenceMember\Base $member
+     * @param \Aot\Sviaz\Sequence $sequence
      * @return void
      */
-    public function addMember(\Aot\Sviaz\SequenceMember\Base $member)
+    public function addMember(\Aot\Sviaz\SequenceMember\Base $member, \Aot\Sviaz\Sequence $sequence)
     {
-        $this->members[spl_object_hash($member)] = $member;
+        if (!is_null($sequence->getPosition($member))) {
+            $this->members[spl_object_hash($member)] = $member;
+        }
     }
 
 }

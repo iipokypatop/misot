@@ -194,7 +194,7 @@ class HomogeneityVerification extends Base
             $count_intersect = count(array_intersect_key($supposed, $homogeneity_from_rule));
 
             if ($count_intersect === $count_members_supposed) {
-                $homogeneity = \Aot\Sviaz\Homogeneity\Homogeneity::create($homogeneity_from_rule);
+                $homogeneity = \Aot\Sviaz\Homogeneity\Homogeneity::create($homogeneity_from_rule, $sequence);
                 $sequence->addHomogeneity($homogeneity);
                 return true;
             }
@@ -248,7 +248,7 @@ class HomogeneityVerification extends Base
         if (count($portions) === 0) {
             return false;
         } elseif (count($portions) === 1) {
-            $homogeneity = \Aot\Sviaz\Homogeneity\Homogeneity::create(current($portions));
+            $homogeneity = \Aot\Sviaz\Homogeneity\Homogeneity::create(current($portions), $sequence);
             $sequence->addHomogeneity($homogeneity);
             return true;
         } else {
@@ -257,7 +257,7 @@ class HomogeneityVerification extends Base
                 $tmp_array = array_merge($tmp_array, $portion);
             }
             $array_members = array_unique($tmp_array, SORT_REGULAR);
-            $homogeneity = \Aot\Sviaz\Homogeneity\Homogeneity::create($array_members);
+            $homogeneity = \Aot\Sviaz\Homogeneity\Homogeneity::create($array_members, $sequence);
             $sequence->addHomogeneity($homogeneity);
             return true;
         }
