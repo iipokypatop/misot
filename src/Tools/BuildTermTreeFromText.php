@@ -87,7 +87,7 @@ class BuildTermTreeFromText
         }
         return [
             static::fillTemplate(
-                "Предложения",
+                " ",
                 null,
                 static::TRUE_VERTEX,
                 $tmpl_sentences
