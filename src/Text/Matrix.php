@@ -26,12 +26,16 @@ class Matrix
                 continue;
             }
 
-            if (is_array($value) && $value[0] instanceof \Aot\RussianMorphology\Slovo) {
+            if (!is_array($value)) {
+                continue;
+            }
+
+            if ($value[0] instanceof \Aot\RussianMorphology\Slovo) {
                 $this->appendWordsForm($value);
                 continue;
             }
 
-            if (is_array($value) && $value[0] instanceof \Aot\RussianSyntacsis\Punctuaciya\Base) {
+            if ($value[0] instanceof \Aot\RussianSyntacsis\Punctuaciya\Base) {
                 $this->appendPunctuation($value);
                 continue;
             }
