@@ -12,5 +12,9 @@ use Aot\RussianMorphology\Slovo;
  */
 class Base extends Slovo
 {
+    public static function create($text)
+    {
+        return new static($text);
+    }
 
 }

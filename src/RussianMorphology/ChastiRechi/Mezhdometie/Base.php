@@ -1,16 +1,14 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Ivan
+ */
 
-
-namespace Aot\RussianMorphology\ChastiRechi\Soyuz;
+namespace Aot\RussianMorphology\ChastiRechi\Mezhdometie;
 
 use Aot\RussianMorphology\Slovo;
 
-/**
- * Created by PhpStorm.
- * User: p.semenyuk
- * Date: 17.06.2015
- * Time: 22:14
- */
+
 class Base extends Slovo
 {
     public static function create($text)
