@@ -14,7 +14,7 @@ class BuildTermTreeFromText
     const FALSE_VERTEX = 0;
     const TRUE_VERTEX = 1;
 
-    static $states = [
+    protected static $states = [
         'sentence' => self::FALSE_VERTEX,
         'word_form' => self::FALSE_VERTEX,
         'initial_form' => self::FALSE_VERTEX,
