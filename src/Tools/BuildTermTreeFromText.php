@@ -39,8 +39,9 @@ class BuildTermTreeFromText
         static::resetState();
         $tmpl_sentences = [];
         foreach ($sentences as $sentence) {
+            $sentence_without_punctuation = $sentence->getSentenceWithoutPunctuation();
             $tmpl_slova = [];
-            foreach ($sentence as $word => $slova) {
+            foreach ($sentence_without_punctuation as $word => $slova) {
                 $tmpl_initial_forms = [];
                 foreach ($slova as $slovo) {
                     $initial_form = $slovo->getInitialForm();
@@ -72,13 +73,13 @@ class BuildTermTreeFromText
                 }
                 $tmpl_slova[] = static::fillTemplate(
                     $word,
-                    $sentence->getRawSentenceText(),
+                    $sentence_without_punctuation->getRawSentenceText(),
                     static::cutState('word_form'),
                     $tmpl_initial_forms
                 );
             }
             $tmpl_sentences[] = static::fillTemplate(
-                $sentence->getRawSentenceText(),
+                $sentence_without_punctuation->getRawSentenceText(),
                 "Предложения",
                 static::cutState('sentence'),
                 $tmpl_slova
