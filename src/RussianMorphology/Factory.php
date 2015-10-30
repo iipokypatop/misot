@@ -109,7 +109,7 @@ abstract class Factory
             if (preg_match(static::REGULAR_FOR_WHITE_LIST, $word)) {
                 $array_words[$index] = static::getSlova([$word])[0];
             } else {
-                $array_words_slova[$index][] = \Aot\RussianSyntacsis\Punctuaciya\Factory::build($word);
+                $array_words_slova[$index][] = \Aot\RussianSyntacsis\Punctuaciya\Factory::getInstance()->build($word);
             }
         }
 
