@@ -28,16 +28,19 @@ class Matrix
 
             if (is_array($value) && $value[0] instanceof \Aot\RussianMorphology\Slovo) {
                 $this->appendWordsForm($value);
+                continue;
             }
 
-            if ($value instanceof \Aot\RussianSyntacsis\Punctuaciya\Base) {
+            if (is_array($value) && $value[0] instanceof \Aot\RussianSyntacsis\Punctuaciya\Base) {
                 $this->appendPunctuation($value);
+                continue;
             }
         }
     }
 
     /**
      * @param Slovo[] $word_forms
+     * @return void
      */
     public function appendWordsForm(array $word_forms)
     {
@@ -52,9 +55,20 @@ class Matrix
         $this->sentence_matrix[] = $word_forms;
     }
 
-    public function appendPunctuation(\Aot\RussianSyntacsis\Punctuaciya\Base $punctuaciya)
+    /**
+     * @param \Aot\RussianSyntacsis\Punctuaciya\Base[] $punctuaciya
+     * @return void
+     */
+    public function appendPunctuation(array $punctuaciya)
     {
-        $this->register($punctuaciya);
+        assert(!empty($punctuaciya));
+
+        foreach ($punctuaciya as $one_punctuaciya) {
+            assert(is_a($one_punctuaciya, \Aot\RussianSyntacsis\Punctuaciya\Base::class, true));
+            $this->register($one_punctuaciya);
+        }
+
+
         $this->sentence_matrix[] = $punctuaciya;
     }
 
