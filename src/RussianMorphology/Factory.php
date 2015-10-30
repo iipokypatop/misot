@@ -17,8 +17,6 @@ use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
  */
 abstract class Factory
 {
-    const REGULAR_FOR_WHITE_LIST = '/[A-Za-zА-Яа-яёЁ]+/u';
-
     protected static $uniqueInstances = null;
 
     protected function __construct()
