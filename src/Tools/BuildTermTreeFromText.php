@@ -62,7 +62,7 @@ class BuildTermTreeFromText
                             $term->getDefinition(),
                             $initial_form,
                             static::cutState('term'),
-                            $tmpl_concept
+                            [$tmpl_concept]
                         );
                     }
                     $tmpl_initial_forms[] = static::fillTemplate(
