@@ -98,7 +98,7 @@ class ChastiRechiRegistry
             static::SOYUZ => Soyuz\Factory::get(),
 
             static::MEZHDOMETIE => Mezhdometie\Factory::get(),
-            static::PRISTAVKA => Pristavka\Factory::get(),
+            //static::PRISTAVKA => Pristavka\Factory::get(),
         ];
     }
 
