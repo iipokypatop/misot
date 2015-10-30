@@ -4,7 +4,7 @@
  * User: Ivan
  */
 
-namespace Aot\RussianMorphology\ChastiRechi\Mejdometie;
+namespace Aot\RussianMorphology\ChastiRechi\Mezhdometie;
 
 use Aot\RussianMorphology\Slovo;
 
