@@ -4,7 +4,7 @@
  * User: Ivan
  */
 
-namespace Aot\RussianMorphology\ChastiRechi\Mejdometie;
+namespace Aot\RussianMorphology\ChastiRechi\Mezhdometie;
 
 use Aot\MivarTextSemantic\Dw;
 use Aot\MivarTextSemantic\Word;
@@ -14,7 +14,7 @@ class Factory extends \Aot\RussianMorphology\Factory
     /**
      * @param Dw $dw
      * @param Word $word
-     * @return \Aot\RussianMorphology\ChastiRechi\Mejdometie\Base[]
+     * @return \Aot\RussianMorphology\ChastiRechi\Mezhdometie\Base[]
      */
     public function build(Dw $dw, Word $word)
     {

@@ -29,7 +29,7 @@ class ChastiRechiRegistry
     const SOYUZ = 20;
     const CHASTICA = 21;
 
-    const MEJDOMETIE = 22;
+    const MEZHDOMETIE = 22;
     const PRISTAVKA = 23;
 
 
@@ -51,7 +51,7 @@ class ChastiRechiRegistry
             static::SOYUZ => 'союз',
             static::CHASTICA => 'частица',
 
-            static::MEJDOMETIE => 'междометие',
+            static::MEZHDOMETIE => 'междометие',
             static::PRISTAVKA => 'приставка',
         ];
     }
@@ -73,7 +73,7 @@ class ChastiRechiRegistry
             static::SOYUZ => Soyuz\Base::class,
             static::CHASTICA => Chastica\Base::class,
 
-            static::MEJDOMETIE => Mejdometie\Base::class,
+            static::MEZHDOMETIE => Mezhdometie\Base::class,
             static::PRISTAVKA => Pristavka\Base::class,
         ];
     }
@@ -97,8 +97,8 @@ class ChastiRechiRegistry
             static::PREDLOG => Predlog\Factory::get(),
             static::SOYUZ => Soyuz\Factory::get(),
 
-            static::MEJDOMETIE => Mejdometie\Factory::get(),
-            static::PRISTAVKA => Pristavka\Factory::get(),
+            static::MEZHDOMETIE => Mezhdometie\Factory::get(),
+            //static::PRISTAVKA => Pristavka\Factory::get(),
         ];
     }
 
