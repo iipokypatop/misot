@@ -16,9 +16,12 @@ use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
 class Aot extends Base
 {
     protected $cache_nf_member = [];
+    protected $cache_z_hash_member2;
 
     public function run(\Aot\Sviaz\Sequence $sequence, array $rules)
     {
+        assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
+
         assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
 
         /** @var \Aot\Sviaz\SequenceMember\Base $member */
@@ -27,27 +30,65 @@ class Aot extends Base
 
         $vso = $this->getOriginalVSOModel($sentence_string);
 
-        /** @var \Objects\Rule $rule */
-        foreach ($vso as $rule) {
-            if ($rule->get_name_V() !== null && !empty($this->cache_nf_member[$rule->get_name_V()])) {
+        $sorted_vso = $this->sortVSO($vso);
 
-                if ($rule->get_name_O() !== null && !empty($this->cache_nf_member[$rule->get_name_O()])) {
-                    if ($rule->get_type_relation() === 'x') {
-                        $sequence->addSviaz($this->createSvyaz($sequence, $rule, 'V', 'O'));
-
-                    } else {
-                        $sequence->addSviaz($this->createSvyaz($sequence, $rule, 'O', 'V'));
+        foreach ($sorted_vso as $type_rule => $rules) {
+            /** @var \Objects\Rule $rule */
+            foreach ($rules as $rule) {
+//            \Doctrine\Common\Util\Debug::dump($rule, 3);
+                $sviaz = null;
+                if ($type_rule === 'VO') {
+                    $sviaz = $this->createSvyaz($sequence, $rule, 'V', 'O');
+                    if ($sviaz !== false) {
+                        $sequence->addSviaz($sviaz);
                     }
-
-                } elseif ($rule->get_name_SV() !== null && !empty($this->cache_nf_member[$rule->get_name_SV()])) {
-                    $sequence->addSviaz($this->createSvyaz($sequence, $rule, 'V', 'SV'));
+                } elseif ($type_rule === 'OV') {
+                    $sviaz = $this->createSvyaz($sequence, $rule, 'O', 'V');
+                    if ($sviaz !== false) {
+                        $sequence->addSviaz($sviaz);
+                    }
+                } elseif ($type_rule === 'VS') {
+                    $sviaz = $this->createSvyaz($sequence, $rule, 'V', 'SV');
+                    if ($sviaz !== false) {
+                        $sequence->addSviaz($sviaz);
+                    }
+                } elseif ($type_rule === 'OS') {
+                    $sviaz = $this->createSvyaz($sequence, $rule, 'O', 'SO');
+                    if ($sviaz !== false) {
+                        $sequence->addSviaz($sviaz);
+                    }
                 }
-            } elseif ($rule->get_name_O() !== null && !empty($this->cache_nf_member[$rule->get_name_O()])
-                && $rule->get_name_SO() !== null && !empty($this->cache_nf_member[$rule->get_name_SO()])
-            ) {
-                $sequence->addSviaz($this->createSvyaz($sequence, $rule, 'O', 'SO'));
             }
         }
+    }
+
+    /**
+     * Сортируем ВСО
+     * @param \Objects\Rule[] $vso
+     * @return array
+     */
+    private function sortVSO(array $vso)
+    {
+        $sorted_vso = [];
+        foreach ($vso as $key_rule => $rule) {
+            if ($rule->get_name_V() !== null && !empty($this->cache_nf_member[$rule->get_name_V()])) {
+
+                if ($rule->get_name_O() !== null /*&& !empty($this->cache_nf_member[$rule->get_name_O()])*/) {
+                    if ($rule->get_type_relation() === 'x') {
+                        $sorted_vso['VO'][$key_rule] = $rule;
+                    } else {
+                        $sorted_vso['OV'][$key_rule] = $rule;
+                    }
+                } elseif ($rule->get_name_SV() !== null && !empty($this->cache_nf_member[$rule->get_name_SV()])) {
+                    $sorted_vso['VS'][$key_rule] = $rule;
+                }
+            } elseif ($rule->get_name_O() !== null && !empty($this->cache_nf_member[$rule->get_name_O()])
+                && $rule->get_name_SO() !== null && !empty($this->cache_nf_member[mb_strtolower($rule->get_name_SO(), 'utf-8')])
+            ) {
+                $sorted_vso['OS'][$key_rule] = $rule;
+            }
+        }
+        return $sorted_vso;
     }
 
     /**
@@ -94,15 +135,95 @@ class Aot extends Base
      */
     private function createSvyaz($seq, $rule, $main_field, $depend_field)
     {
-        $main = $this->cache_nf_member[call_user_func_array([$rule, 'get_name_' . $main_field], [])];
-        $depended = $this->cache_nf_member[call_user_func_array([$rule, 'get_name_' . $depend_field], [])];
+        $main = $this->getNeedleMember($rule, $main_field);
+        $depended = $this->getNeedleMember($rule, $depend_field);
+        if ($main === false || $depended === false) {
+            return false;
+        }
         $rule = $this->createRule($main_field, $depend_field);
         return \Aot\Sviaz\Podchinitrelnaya\Base::create($main, $depended, $rule, $seq);
     }
 
     /**
+     * Получение необходимого member для генерации связи
+     * @param \Objects\Rule $rule
+     * @param $field
+     * @return \Aot\Sviaz\SequenceMember\Word\Base
+     */
+    private function getNeedleMember($rule, $field)
+    {
+        $need_prepose = false;
+        $rule_prepose = $rule->get_name_PVO();
+        // определяем нужен ли предлог для мембера
+        if ($field === 'V' && $rule->get_type_relation() === 'y' && $rule_prepose !== null) {
+            $need_prepose = true;
+        }
+
+
+        $member_name = mb_strtolower(call_user_func_array([$rule, 'get_name_' . $field], []), 'utf-8');
+        $z = call_user_func_array([$rule, 'get_' . $field . 'z'], []);
+
+        // создание мембера "пропуск"
+        if ($field === 'O' && $member_name === 'пропуск' && empty($this->cache_z_hash_member2[$z][$member_name])) {
+            $new_member = $this->createSkipMember();
+            $this->cache_nf_member['пропуск'][spl_object_hash($new_member)] = $new_member;
+        }
+
+        if ($z === null) {
+            $z = call_user_func_array([$rule, 'get_Oz'], []);
+        }
+        $members = $this->cache_nf_member[$member_name];
+        if (empty($members)) {
+            throw new \RuntimeException('does not have members with name = ' . $member_name);
+        }
+        $needle_member = null;
+        # данный мембер уже участвовал в связи
+        if (!empty($this->cache_z_hash_member2[$z][$member_name])) {
+            $hash_member = $this->cache_z_hash_member2[$z][$member_name];
+            if (empty($members[$hash_member])) {
+                return false;
+            }
+            $needle_member = $members[$hash_member];
+        } else {
+            if ($need_prepose) {
+                # поиск мембера с предлогом
+                foreach ($members as $hash_member => $member) {
+                    /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
+                    if (is_a($member, \Aot\Sviaz\SequenceMember\Word\WordWithPreposition::class, true)
+                        && $member->getPredlog()->getInitialForm() === $rule_prepose
+                    ) {
+                        $needle_member = $member;
+                        $this->cache_z_hash_member2[$z][$member_name] = $hash_member;
+                        break;
+                    }
+                }
+            } elseif (!$need_prepose) {
+                # поиск мембера без предлога
+                foreach ($members as $hash_member => $member) {
+                    /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
+                    if (!is_a($member, \Aot\Sviaz\SequenceMember\Word\WordWithPreposition::class, true)) {
+                        $needle_member = $member;
+                        $this->cache_z_hash_member2[$z][$member_name] = $hash_member;
+                        break;
+                    }
+                }
+            }
+            # если все еще нет мембера, то берем первый попавшийся
+            if ($needle_member === null) {
+                foreach ($members as $hash_member => $member) {
+                    $needle_member = $member;
+                    $this->cache_z_hash_member2[$z][$member_name] = $hash_member;
+                    break;
+                }
+            }
+        }
+        return $needle_member;
+
+    }
+
+    /**
      * @param $sequence
-     * @return array
+     * @return string[]
      */
     private function getSentenceArrayBySequence($sequence)
     {
@@ -113,7 +234,10 @@ class Aot extends Base
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
                 $sentence_array[] = $member->getSlovo()->getText();
-                $this->cache_nf_member[$member->getSlovo()->getInitialForm()] = $member;
+                $hash_member = spl_object_hash($member);
+                $initial_form_member = $member->getSlovo()->getInitialForm();
+                // начальная форма - хэш объекта - объект
+                $this->cache_nf_member[$initial_form_member][$hash_member] = $member;
             }
         }
         return $sentence_array;
@@ -122,7 +246,7 @@ class Aot extends Base
     /**
      * Получение VSO модели через АОТ
      * @param $sentence_string
-     * @return string[] hash map првил
+     * @return \Objects\Rule[]
      */
     private function getOriginalVSOModel($sentence_string)
     {
@@ -134,6 +258,29 @@ class Aot extends Base
 
         return !empty($result) ? $result : [];
 
+    }
+
+    /**
+     * Создание member "пропуск"
+     * return \Aot\Sviaz\SequenceMember\Word\Base
+     */
+    private function createSkipMember()
+    {
+        $slovo = \Aot\RussianMorphology\ChastiRechi\Glagol\Base::create(
+            'пропуск',
+            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Null::create(),
+            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Null::create(),
+            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Null::create(),
+            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Null::create(),
+            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Null::create(),
+            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Null::create(),
+            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Null::create(),
+            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie\Null::create(),
+            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Null::create(),
+            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::create()
+        );
+
+        return \Aot\Sviaz\SequenceMember\Word\Base::create($slovo);
     }
 
 }
