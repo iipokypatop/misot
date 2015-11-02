@@ -108,7 +108,6 @@ abstract class Factory
                 $result[$index] = [\Aot\RussianSyntacsis\Punctuaciya\Factory::getInstance()->build($word)];
             }
         }
-
         return $result;
     }
 
