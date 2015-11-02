@@ -22,8 +22,6 @@ class Aot extends Base
     {
         assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
 
-        assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
-
         /** @var \Aot\Sviaz\SequenceMember\Base $member */
         $sentence_array = $this->getSentenceArrayBySequence($sequence);
         $sentence_string = join(' ', $sentence_array);
