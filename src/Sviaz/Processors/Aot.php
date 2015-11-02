@@ -17,10 +17,13 @@ class Aot extends Base
 {
     protected $cache_nf_member = [];
     protected $cache_z_hash_member2;
+    /** @var  \Aot\Sviaz\Sequence */
+    protected $sequence;
 
     public function run(\Aot\Sviaz\Sequence $sequence, array $rules)
     {
         assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
+        $this->sequence = $sequence;
 
         /** @var \Aot\Sviaz\SequenceMember\Base $member */
         $sentence_array = $this->getSentenceArrayBySequence($sequence);
@@ -33,7 +36,6 @@ class Aot extends Base
         foreach ($sorted_vso as $type_rule => $rules) {
             /** @var \Objects\Rule $rule */
             foreach ($rules as $rule) {
-//            \Doctrine\Common\Util\Debug::dump($rule, 3);
                 $sviaz = null;
                 if ($type_rule === 'VO') {
                     $sviaz = $this->createSvyaz($sequence, $rule, 'V', 'O');
@@ -70,7 +72,6 @@ class Aot extends Base
         $sorted_vso = [];
         foreach ($vso as $key_rule => $rule) {
             if ($rule->get_name_V() !== null && !empty($this->cache_nf_member[$rule->get_name_V()])) {
-
                 if ($rule->get_name_O() !== null /*&& !empty($this->cache_nf_member[$rule->get_name_O()])*/) {
                     if ($rule->get_type_relation() === 'x') {
                         $sorted_vso['VO'][$key_rule] = $rule;
@@ -163,8 +164,7 @@ class Aot extends Base
 
         // создание мембера "пропуск"
         if ($field === 'O' && $member_name === 'пропуск' && empty($this->cache_z_hash_member2[$z][$member_name])) {
-            return false;
-            # todo fix bug:
+//            return false;
             $new_member = $this->createSkipMember();
             $this->cache_nf_member['пропуск'][spl_object_hash($new_member)] = $new_member;
         }
@@ -280,7 +280,10 @@ class Aot extends Base
             \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::create()
         );
 
-        return \Aot\Sviaz\SequenceMember\Word\Base::create($slovo);
+        $slovo->setInitialForm('пропуск');
+        $new_member =  \Aot\Sviaz\SequenceMember\Word\Base::create($slovo);
+        $this->sequence->append($new_member);
+        return $new_member;
     }
 
 }
