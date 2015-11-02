@@ -28,7 +28,7 @@ class ConvertTextIntoSlova
         foreach ($sentence_words as $index => $sentence) {
             $tmp_sentence = \Aot\Tools\SentenceContainingVariantsSlov::create($sentence_strings[$index]);
             foreach ($sentence as $word) {
-                $slova = (\Aot\RussianMorphology\Factory::getSlova([$word]));
+                $slova = (\Aot\RussianMorphology\Factory::getSlovaWithPunctuation([$word]));
                 if (count($slova) === 0) {
                     $tmp_sentence->add($word, [[]]);
                     continue;

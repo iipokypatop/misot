@@ -17,6 +17,8 @@ use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
  */
 abstract class Factory
 {
+    const REGULAR_FOR_WHITE_LIST = '/[A-Za-zА-Яа-яёЁ]+/u';
+
     protected static $uniqueInstances = null;
 
     protected function __construct()
@@ -85,6 +87,30 @@ abstract class Factory
         return $slova;
 
     }
+
+
+    /**
+     * @brief Метод для генерирования слов и пунктуации с сохранением их последовательности
+     *
+     * @param string[] $words
+     * @return \Aot\RussianMorphology\Slovo[][]|\Aot\RussianSyntacsis\Punctuaciya\Zapiataya[][]
+     */
+    public static function getSlovaWithPunctuation(array $words)
+    {
+        foreach ($words as $word) {
+            assert(is_string($word));
+        }
+        $result = [];
+        foreach ($words as $index => $word) {
+            if (preg_match(static::REGULAR_FOR_WHITE_LIST, $word)) {
+                $result[$index] = static::getSlova([$word])[0];
+            } else {
+                $result[$index] = [\Aot\RussianSyntacsis\Punctuaciya\Factory::getInstance()->build($word)];
+            }
+        }
+        return $result;
+    }
+
 
     abstract public function build(Dw $dw, Word $word);
 }

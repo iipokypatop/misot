@@ -9,7 +9,28 @@
 namespace Aot\RussianSyntacsis\Punctuaciya;
 
 
-class Base
+class Base implements \Aot\Unit
 {
+    protected $text;
+
+    /**
+     * @param string $text
+     * @return static
+     */
+    public static function create($text)
+    {
+        assert((is_string($text)));
+        return new static($text);
+    }
+
+    protected function __construct($text)
+    {
+        $this->text = $text;
+    }
+
+    public function getText()
+    {
+        return $this->text;
+    }
 
 }
