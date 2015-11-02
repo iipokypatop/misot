@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: admin
+ * User: s.kharchenko
  * Date: 23/10/15
  * Time: 19:10
  */
@@ -78,11 +78,11 @@ class Aot extends Base
                     } else {
                         $sorted_vso['OV'][$key_rule] = $rule;
                     }
-                } elseif ($rule->get_name_SV() !== null && !empty($this->cache_nf_member[$rule->get_name_SV()])) {
+                } elseif ($rule->get_name_SV() !== null /*&& !empty($this->cache_nf_member[$rule->get_name_SV()])*/) {
                     $sorted_vso['VS'][$key_rule] = $rule;
                 }
             } elseif ($rule->get_name_O() !== null && !empty($this->cache_nf_member[$rule->get_name_O()])
-                && $rule->get_name_SO() !== null && !empty($this->cache_nf_member[mb_strtolower($rule->get_name_SO(), 'utf-8')])
+                && $rule->get_name_SO() !== null /*&& !empty($this->cache_nf_member[mb_strtolower($rule->get_name_SO(), 'utf-8')])*/
             ) {
                 $sorted_vso['OS'][$key_rule] = $rule;
             }
@@ -162,20 +162,21 @@ class Aot extends Base
         $member_name = mb_strtolower(call_user_func_array([$rule, 'get_name_' . $field], []), 'utf-8');
         $z = call_user_func_array([$rule, 'get_' . $field . 'z'], []);
 
-        // создание мембера "пропуск"
-        if ($field === 'O' && $member_name === 'пропуск' && empty($this->cache_z_hash_member2[$z][$member_name])) {
+        // создание фейкового мембера из АОТа
+        if (call_user_func_array([$rule, 'get_type_concept_' . $field], []) === 's' && empty($this->cache_z_hash_member2[$z][$member_name])) {
 //            return false;
-            $new_member = $this->createSkipMember();
-            $this->cache_nf_member['пропуск'][spl_object_hash($new_member)] = $new_member;
+            $new_member = $this->createFakeMember($member_name);
+            $this->cache_nf_member[$member_name][spl_object_hash($new_member)] = $new_member;
         }
 
         if ($z === null) {
             $z = call_user_func_array([$rule, 'get_Oz'], []);
         }
-        $members = $this->cache_nf_member[$member_name];
-        if (empty($members)) {
-            throw new \RuntimeException('does not have members with name = ' . $member_name);
+        if (empty($this->cache_nf_member[$member_name])) {
+            return false;
+//            throw new \RuntimeException('does not have members with name = ' . $member_name);
         }
+        $members = $this->cache_nf_member[$member_name];
         $needle_member = null;
         # данный мембер уже участвовал в связи
         if (!empty($this->cache_z_hash_member2[$z][$member_name])) {
@@ -263,11 +264,13 @@ class Aot extends Base
     /**
      * Создание member "пропуск"
      * return \Aot\Sviaz\SequenceMember\Word\Base
+     * @param $name
+     * @return static
      */
-    private function createSkipMember()
+    private function createFakeMember($name)
     {
         $slovo = \Aot\RussianMorphology\ChastiRechi\Glagol\Base::create(
-            'пропуск',
+            $name,
             \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Null::create(),
             \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Null::create(),
             \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Null::create(),
@@ -280,7 +283,7 @@ class Aot extends Base
             \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::create()
         );
 
-        $slovo->setInitialForm('пропуск');
+        $slovo->setInitialForm($name);
         $new_member =  \Aot\Sviaz\SequenceMember\Word\Base::create($slovo);
         $this->sequence->append($new_member);
         return $new_member;
