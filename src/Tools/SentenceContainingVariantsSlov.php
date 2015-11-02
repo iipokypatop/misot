@@ -54,7 +54,7 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
         assert(is_string($text));
         assert(count($slova) === 1);
         foreach ($slova[0] as $slovo) {
-            assert(is_a($slovo, \Aot\RussianMorphology\Slovo::class, true));
+            assert($slovo instanceof \Aot\Unit);
         }
         $this->texts [] = $text;
         $this->slova [] = $slova[0];
