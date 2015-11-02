@@ -17,5 +17,4 @@ namespace Aot;
  */
 interface Unit
 {
-    public static function create($text);
 }
