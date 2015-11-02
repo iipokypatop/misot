@@ -163,6 +163,8 @@ class Aot extends Base
 
         // создание мембера "пропуск"
         if ($field === 'O' && $member_name === 'пропуск' && empty($this->cache_z_hash_member2[$z][$member_name])) {
+            return false;
+            # todo fix bug:
             $new_member = $this->createSkipMember();
             $this->cache_nf_member['пропуск'][spl_object_hash($new_member)] = $new_member;
         }
