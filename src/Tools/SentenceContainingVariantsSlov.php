@@ -139,4 +139,12 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
     {
         return $this->previous;
     }
+
+    /**
+     * @return \Aot\RussianMorphology\Slovo[][]
+     */
+    public function getSlova()
+    {
+        return $this->slova;
+    }
 }
