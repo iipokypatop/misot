@@ -9,7 +9,7 @@
 namespace Aot\RussianSyntacsis\Punctuaciya;
 
 
-class Base implements \Aot\UnitSentence
+class Base implements \Aot\Unit
 {
     protected $text;
 

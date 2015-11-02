@@ -11,7 +11,7 @@ namespace Aot\Sviaz\SequenceMember\Word;
 use Aot\RussianMorphology\Slovo;
 use Aot\Sviaz\SequenceMember\Base as SequenceMemberBase;
 
-class Base extends SequenceMemberBase implements \Aot\UnitSentence
+class Base extends SequenceMemberBase implements \Aot\Unit
 {
 
     protected $slovo;
