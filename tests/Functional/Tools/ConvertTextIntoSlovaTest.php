@@ -51,7 +51,7 @@ class ConvertTextIntoSlovaTest extends \AotTest\AotDataStorage
             foreach ($sentence as $key => $value) {
                 $this->assertEquals($words[$i], $key);
                 foreach ($value as $slovo) {
-                    $this->assertInstanceOf(\Aot\RussianMorphology\Slovo::class, $slovo);
+                    $this->assertInstanceOf(\Aot\Unit::class, $slovo);
                 }
                 $i++;
             }
