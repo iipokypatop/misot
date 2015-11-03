@@ -80,4 +80,6 @@ class HomogeneitySupposed extends \Aot\Sviaz\PreProcessors\Base
         */
         return $raw_sequence;
     }
+
+
 }
