@@ -50,7 +50,7 @@ class Base
      */
     public function addMember(\Aot\Sviaz\SequenceMember\Base $member, \Aot\Sviaz\Sequence $sequence)
     {
-        if (!is_null($sequence->getPosition($member))) {
+        if (is_null($sequence->getPosition($member))) {
             throw new \RuntimeException("member не принадлежит данному sequence");
         }
         $this->members[spl_object_hash($member)] = $member;
