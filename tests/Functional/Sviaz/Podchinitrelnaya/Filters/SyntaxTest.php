@@ -451,7 +451,6 @@ TEXT;
         $serye[1]->rod = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::create();
         $serye[1]->stepen_sravneniia = \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Null::create();
 
-        $zapiztaya[1] = $this->getMock(Zapiataya::class, ['_']);
 
         #     $s[0] = $this->getSafeMockLocal1(Predlog::class);
         $s[0] = $this->getMock(Predlog::class, ['_']);

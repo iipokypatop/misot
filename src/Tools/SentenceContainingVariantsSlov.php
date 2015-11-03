@@ -11,16 +11,19 @@ namespace Aot\Tools;
 
 class SentenceContainingVariantsSlov implements \Iterator, \Countable
 {
+    const REGULAR_FOR_WHITE_LIST = '/[A-Za-zА-Яа-яёЁ]+/u';
+
     /** @var int */
     protected $position = 0;
     /** @var string[] */
     protected $texts = [];
     /** @var \Aot\RussianMorphology\Slovo[][] */
     protected $slova = [];
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $raw_sentence_text;
+
+    /** @var SentenceContainingVariantsSlov */
+    protected $previous;
 
     /**
      * @param string $raw_sentence_text
@@ -51,7 +54,7 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
         assert(is_string($text));
         assert(count($slova) === 1);
         foreach ($slova[0] as $slovo) {
-            assert(is_a($slovo, \Aot\RussianMorphology\Slovo::class, true));
+            assert($slovo instanceof \Aot\Unit);
         }
         $this->texts [] = $text;
         $this->slova [] = $slova[0];
@@ -111,5 +114,37 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
     public function getRawSentenceText()
     {
         return $this->raw_sentence_text;
+    }
+
+    /**
+     * @return SentenceContainingVariantsSlov
+     */
+    public function getSentenceWithoutPunctuation()
+    {
+        $obj = static::create($this->raw_sentence_text);
+        foreach ($this->texts as $index => $text) {
+            if (!preg_match(static::REGULAR_FOR_WHITE_LIST, $text)) {
+                continue;
+            }
+            $obj->add($this->texts[$index], [$this->slova[$index]]);
+        }
+        $obj->previous = $this;
+        return $obj;
+    }
+
+    /**
+     * @return SentenceContainingVariantsSlov
+     */
+    public function getPrevious()
+    {
+        return $this->previous;
+    }
+
+    /**
+     * @return \Aot\RussianMorphology\Slovo[][]
+     */
+    public function getSlova()
+    {
+        return $this->slova;
     }
 }

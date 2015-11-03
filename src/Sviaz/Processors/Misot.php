@@ -49,11 +49,16 @@ class Misot extends Base
                 if (!$rule->getAssertedMain()->attempt($main_candidate)) {
                     continue;
                 }
+                if (!is_a($main_candidate, \Aot\Sviaz\SequenceMember\Word\Base::class, true)) {
+                    continue;
+                }
                 $sub_sequences = $sequence->findSubSequencesForMember($main_candidate);
 
                 /* @var \Aot\Sviaz\SequenceMember\Word\Base $depended_candidate */
                 foreach ($sequence as $depended_candidate) {
-
+                    if (!is_a($depended_candidate, \Aot\Sviaz\SequenceMember\Word\Base::class, true)) {
+                        continue;
+                    }
 
                     if ($depended_candidate === $main_candidate) {
                         continue;
