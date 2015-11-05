@@ -54,7 +54,7 @@ class BuildTermTreeFromText
                             if (static::checkConcept($concept, $true_concepts)) {
                                 static::fillState();
                             }
-                            $tmpl_concept = static::fillTemplate(
+                            $tmpl_concept[] = static::fillTemplate(
                                 $concept->getDescription(),
                                 $term->getDefinition(),
                                 static::cutState('concept'),
