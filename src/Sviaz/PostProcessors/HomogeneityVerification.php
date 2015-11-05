@@ -32,6 +32,16 @@ class HomogeneityVerification extends Base
             return;
         }
 
+        $members = [];
+        foreach ($sequence as $item) {
+            $members[] = $item;
+        }
+
+
+        foreach ($sequence->getSviazi() as $item) {
+            print_r($item->getMainSequenceMember()->getSlovo()->getText() . "->" . $item->getDependedSequenceMember()->getSlovo()->getText() . "\n");
+        }
+
         $homogeneity_from_rule = $this->findHomogeneityFromSviazi($sviazi);
 
         if (empty($homogeneity_from_rule)) {

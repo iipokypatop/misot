@@ -117,6 +117,7 @@ class Processor
             assert(is_a($_rule, \Aot\Sviaz\Rule\Base::class));
         }
 
+
         foreach ($this->processing_engines as $processing_engine) {
             $processing_engine->run($sequence, $rules);
         }
@@ -170,10 +171,12 @@ class Processor
 
             $sequence = $this->preProcess($raw_sequence);
 
+
             $this->process(
                 $sequence,
                 $rules
             );
+
 
             $this->postProcess($sequence);
 
