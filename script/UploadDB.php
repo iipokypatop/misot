@@ -55,7 +55,7 @@ class UploadDB extends \Aot\Script\Base
         }
         catch(Exception $e)
         {
-            return false;
+            return print_r(var_export($e,1));
         }
 
     }
@@ -64,7 +64,4 @@ class UploadDB extends \Aot\Script\Base
 if (\UploadDB::run()) {
     print_r("Done!");
 }
-else
-{
-    print_r("Error!");
-}
+
