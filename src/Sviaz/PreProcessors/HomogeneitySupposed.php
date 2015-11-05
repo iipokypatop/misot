@@ -45,7 +45,7 @@ class HomogeneitySupposed extends \Aot\Sviaz\PreProcessors\Base
                 if (array_key_exists(spl_object_hash($other_member), $hash_gomogeneity)) {
                     continue;
                 }
-                if (!$this->check($base_member, $other_member)) {
+                if (!$this->check($base_member, $other_member, $raw_sequence)) {
                     continue;
                 }
 
@@ -73,12 +73,19 @@ class HomogeneitySupposed extends \Aot\Sviaz\PreProcessors\Base
      */
     protected function check(
         \Aot\Sviaz\SequenceMember\Word\Base $first_member,
-        \Aot\Sviaz\SequenceMember\Word\Base $second_member
+        \Aot\Sviaz\SequenceMember\Word\Base $second_member,
+        \Aot\Sviaz\Sequence $sequence
     ) {
         foreach (static::getAllRules() as $rule) {
             if (
-                $rule->getAssertedMain()->attempt($first_member) && $rule->getAssertedDepended()->attempt($second_member) ||
-                $rule->getAssertedMain()->attempt($second_member) && $rule->getAssertedDepended()->attempt($first_member)
+                (
+                    $rule->getAssertedMain()->attempt($first_member) && $rule->getAssertedDepended()->attempt($second_member) ||
+                    $rule->getAssertedMain()->attempt($second_member) && $rule->getAssertedDepended()->attempt($first_member)
+                ) &&
+                (
+                    $rule->attemptLink($first_member, $second_member, $sequence) ||
+                    $rule->attemptLink($second_member, $first_member, $sequence)
+                )
             ) {
                 return true;
             }
@@ -94,7 +101,7 @@ class HomogeneitySupposed extends \Aot\Sviaz\PreProcessors\Base
         //todo Надо переделать
         $rules = [];
         $rules = array_merge($rules, static::getRule1());
-        /*$rules = array_merge($rules, static::getRule2());
+        $rules = array_merge($rules, static::getRule2());
         $rules = array_merge($rules, static::getRule3());
         $rules = array_merge($rules, static::getRule4());
         $rules = array_merge($rules, static::getRule5());
@@ -103,7 +110,7 @@ class HomogeneitySupposed extends \Aot\Sviaz\PreProcessors\Base
         $rules = array_merge($rules, static::getRule8());
         $rules = array_merge($rules, static::getRule9());
         $rules = array_merge($rules, static::getRule10());
-        $rules = array_merge($rules, static::getRule11());*/
+        $rules = array_merge($rules, static::getRule11());
 
         return $rules;
     }
