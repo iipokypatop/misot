@@ -39,7 +39,7 @@ class HomogeneityTest extends \AotTest\AotDataStorage
     public function testHomogeneitySupposed()
     {
         $creator = \Aot\Sviaz\CreateSequenceFromText::create();
-        $creator->convert("Мама прибежала, помыла полы и легла спать.");
+        $creator->convert("По дороге в школу я встретил Сашу, Мишу и тебя.");
         $sequences = $creator->getSequence();
         $homogeneity = $sequences[0]->getHomogeneities();
     }
