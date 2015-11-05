@@ -8,7 +8,9 @@
  */
 namespace Script;
 
-require_once __DIR__ . "/../Bootstrap.php";
+if (!class_exists('\Aot\Script\Base')) {
+    require_once __DIR__ . "/../Bootstrap.php";
+}
 
 class UploadDB extends \Aot\Script\Base
 {
