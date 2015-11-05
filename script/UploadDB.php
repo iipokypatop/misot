@@ -13,8 +13,6 @@ class UploadDB extends \Aot\Script\Base
 {
     public static function run()
     {
-        try
-        {
             # chastiRechi
             $registry = new \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry();
             $registry->save();
@@ -50,21 +48,11 @@ class UploadDB extends \Aot\Script\Base
             #operator
             $registry = new \Aot\Sviaz\Rule\AssertedMatching\OperatorRegistry();
             $registry->save();
-
             return true;
-        }
-        catch(Exception $e)
-        {
-            return $e;
-        }
-
     }
 }
 
 if (\UploadDB::run()) {
-    print_r("Done!");
-}
-else{
-    print_r(var_export($e,1));
+    print_r("Done!\n");
 }
 
