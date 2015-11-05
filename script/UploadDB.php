@@ -18,8 +18,6 @@ class UploadDB extends \Aot\Script\Base
         $registry = new \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry();
         $registry->save();
 
-        echo "ok";
-        return;
         # morphology
         $registry = new \Aot\RussianMorphology\ChastiRechi\MorphologyRegistry();
         $registry->save();
