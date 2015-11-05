@@ -94,7 +94,7 @@ class HomogeneitySupposed extends \Aot\Sviaz\PreProcessors\Base
         //todo Надо переделать
         $rules = [];
         $rules = array_merge($rules, static::getRule1());
-        $rules = array_merge($rules, static::getRule2());
+        /*$rules = array_merge($rules, static::getRule2());
         $rules = array_merge($rules, static::getRule3());
         $rules = array_merge($rules, static::getRule4());
         $rules = array_merge($rules, static::getRule5());
@@ -103,7 +103,7 @@ class HomogeneitySupposed extends \Aot\Sviaz\PreProcessors\Base
         $rules = array_merge($rules, static::getRule8());
         $rules = array_merge($rules, static::getRule9());
         $rules = array_merge($rules, static::getRule10());
-        $rules = array_merge($rules, static::getRule11());
+        $rules = array_merge($rules, static::getRule11());*/
 
         return $rules;
     }
