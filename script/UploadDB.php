@@ -52,6 +52,10 @@ class UploadDB extends \Aot\Script\Base
         $registry = new \Aot\Sviaz\Rule\AssertedMatching\OperatorRegistry();
         $registry->save();
 
+        #role
+        $registry = new \Aot\Sviaz\Role\Registry();
+        $registry->save();
+
     }
 }
 
