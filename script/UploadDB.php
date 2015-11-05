@@ -6,8 +6,9 @@
  * Date: 05.11.2015
  * Time: 13:08
  */
+namespace Script;
 
-require_once "../Bootstrap.php";
+require_once __DIR__ . "/../Bootstrap.php";
 
 class UploadDB extends \Aot\Script\Base
 {
@@ -17,6 +18,8 @@ class UploadDB extends \Aot\Script\Base
         $registry = new \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry();
         $registry->save();
 
+        echo "ok";
+        return;
         # morphology
         $registry = new \Aot\RussianMorphology\ChastiRechi\MorphologyRegistry();
         $registry->save();
@@ -48,11 +51,10 @@ class UploadDB extends \Aot\Script\Base
         #operator
         $registry = new \Aot\Sviaz\Rule\AssertedMatching\OperatorRegistry();
         $registry->save();
-        return true;
+
     }
 }
 
-if (\UploadDB::run()) {
-    print_r("Done!\n");
-}
+UploadDB::run();
+die(0);
 
