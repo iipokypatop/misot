@@ -22,6 +22,9 @@ class Aot extends Base
 
     public function run(\Aot\Sviaz\Sequence $sequence, array $rules)
     {
+        $this->cache_nf_member = [];
+        $this->cache_z_hash_member2 = [];
+        $this->sequence = null;
         assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
         $this->sequence = $sequence;
 
