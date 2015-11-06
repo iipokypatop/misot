@@ -39,9 +39,22 @@ class HomogeneityTest extends \AotTest\AotDataStorage
     public function testHomogeneitySupposed()
     {
         $creator = \Aot\Sviaz\CreateSequenceFromText::create();
-        $creator->convert("По засыпанной красными и жёлтыми листями дороге в новую деревенскую школу я встретил Сашу, Мишу и тебя.");
+        //$creator->convert("По засыпанной красными и жёлтыми листьями дороге в новую деревенскую школу я встретил Сашу, Мишу и тебя.");
+        //$creator->convert("Деревья и травы летом и в самом начале осени сочны и свежи.");
+        $creator->convert("Пушкин собирал песни и сказки и в Одессе, и в Кишинёве, и в Псковской губернии.");
         $sequences = $creator->getSequence();
-        $homogeneity = $sequences[0]->getHomogeneities();
+
+        $members = [];
+        foreach ($sequences[0] as $member) {
+            $members[] = $member;
+        }
+
+        $homogeneities = [];
+        foreach ($sequences as $sequence) {
+            $homogeneities[] = $sequence->getHomogeneitySupposed();
+        }
+
+
     }
 
 

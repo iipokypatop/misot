@@ -199,10 +199,12 @@ class CreateSequenceFromText
             $processor->attachProcessor(\Aot\Sviaz\Processors\Aot::create());
             $processor->attachPreProcessor(\Aot\Sviaz\PreProcessors\Predlog::create());
             $processor->attachPreProcessor(\Aot\Sviaz\PreProcessors\HomogeneitySupposed::create());
-            $processor->attachPostProcessor(\Aot\Sviaz\PostProcessors\HomogeneityVerification::create());
+            //$processor->attachPostProcessor(\Aot\Sviaz\PostProcessors\HomogeneityVerification::create());
             $matrix = $this->getMatrix($sentence);
             $normalized_matrix = $this->getNormalizedMatrix($matrix);
+            $start = microtime(true);
             $sequences = $processor->go($normalized_matrix, $this->getRuleOne());
+            print_r("Затраченное время на обработку последовательностей: " . (microtime(true) - $start) . "\n");
             $result_sequences[] = $sequences[0];
         }
         $this->sequences = $result_sequences;

@@ -15,6 +15,7 @@ class BuildTermTreeFromTextTest extends \AotTest\AotDataStorage
     public function testLaunch()
     {
         $text = "Толстуха собралась стирать пижаму. Папа пропал, цепь привлекла глаз. Полка.";
+        $text = "Мальчик пошёл охотиться и взял с собой лук";
         $res = \Aot\Tools\BuildTermTreeFromText::run($text);
         //print_r($res);
     }

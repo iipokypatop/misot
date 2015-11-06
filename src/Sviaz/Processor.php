@@ -88,7 +88,6 @@ class Processor
     }
 
 
-
     /**
      * @param \Aot\Sviaz\Sequence $sequence
      * @return \Aot\Sviaz\Sequence
@@ -164,7 +163,12 @@ class Processor
             assert(is_a($rule, \Aot\Sviaz\Rule\Base::class, true));
         }
 
-        $raw_sequences = $this->raw_member_builder->getRawSequences($normalized_matrix);
+        //todo добавить проверку на аот и мисот
+        if (false) {
+            $raw_sequences = $this->raw_member_builder->getRawSequences($normalized_matrix);
+        } else {
+            $raw_sequences = $this->raw_member_builder->getRawOneSequence($normalized_matrix);
+        }
 
         $sequences = [];
         foreach ($raw_sequences as $index => $raw_sequence) {
@@ -181,6 +185,11 @@ class Processor
             $this->postProcess($sequence);
 
             $sequences[] = $sequence;
+
+            //если АОТ
+            if (true) {
+                break;
+            }
 
         }
 
