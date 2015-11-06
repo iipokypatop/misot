@@ -181,11 +181,11 @@ class Processor
 
         }
 
-        usort ($sequences, '\Aot\Sviaz\Processor::SortSequences');
+        usort ($sequences, '\Aot\Sviaz\Processor::sortSequences');
         return $sequences;
     }
 
-    protected function SortSequences(\Aot\Sviaz\Sequence $a, \Aot\Sviaz\Sequence $b)
+    protected function sortSequences(\Aot\Sviaz\Sequence $a, \Aot\Sviaz\Sequence $b)
     {
         $a_count_sviaz=count($a->getSviazi());
         $b_count_sviaz=count($b->getSviazi());
