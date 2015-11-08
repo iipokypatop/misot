@@ -20,9 +20,7 @@ class TextParser
 {
 
 
-    /**
-     * @var \Aot\Text\TextParser\Registry
-     */
+    /** Registry */
     protected $registry; // реестр замен и тд
     protected $sentences = []; // массив предложений
     protected $sentence_words = []; // массив слов предложений
@@ -44,12 +42,22 @@ class TextParser
         "/\\}\\}/u",
     ];
 
+    /** @var Spaces  */
     protected $filterSpaces;
+
+    /** @var NoValid  */
     protected $filterNoValid;
 
+    /** @var FIO  */
     protected $replaceFIO;
+
+    /** @var Hooks  */
     protected $replaceHooks;
+
+    /** @var Short  */
     protected $replaceShort;
+
+    /** @var Numbers  */
     protected $replaceNumbers;
 
 
