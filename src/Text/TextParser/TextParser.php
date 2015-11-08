@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: admin
+ * User: s.kharchenko
  * Date: 27/07/15
  * Time: 19:21
  */
@@ -18,8 +18,6 @@ use Aot\Text\TextParser\Replacement\Short;
 
 class TextParser
 {
-
-
     /** Registry */
     protected $registry; // реестр замен и тд
     protected $sentences = []; // массив предложений
@@ -42,22 +40,22 @@ class TextParser
         "/\\}\\}/u",
     ];
 
-    /** @var Spaces  */
+    /** @var Spaces */
     protected $filterSpaces;
 
-    /** @var NoValid  */
+    /** @var NoValid */
     protected $filterNoValid;
 
-    /** @var FIO  */
+    /** @var FIO */
     protected $replaceFIO;
 
-    /** @var Hooks  */
+    /** @var Hooks */
     protected $replaceHooks;
 
-    /** @var Short  */
+    /** @var Short */
     protected $replaceShort;
 
-    /** @var Numbers  */
+    /** @var Numbers */
     protected $replaceNumbers;
 
 
@@ -66,9 +64,11 @@ class TextParser
         return new static();
     }
 
+    /**
+     * TextParser constructor.
+     */
     public function __construct()
     {
-
         $this->logger = Logger::create();
         $this->filterSpaces = Spaces::create($this->logger);
         $this->filterNoValid = NoValid::create($this->logger);
@@ -80,6 +80,10 @@ class TextParser
         $this->replaceNumbers = Numbers::create($this->registry, $this->logger);
     }
 
+    /**
+     * Прогоняем текст через фильтры
+     * @param $text
+     */
     public function execute($text)
     {
         // чистим от лишних пробельных символов
@@ -103,6 +107,9 @@ class TextParser
         $this->setProcessedText($text);
     }
 
+    /**
+     * Обрабатываем текст, прогнанный через фильтры
+     */
     public function render()
     {
         // разбиваем текст на предложения
@@ -117,11 +124,13 @@ class TextParser
     }
 
     /**
+     * Разбиение текста на предложения
      * @param string $text
      * @return array
      */
     protected function splitInSentences($text)
     {
+        assert(is_string($text));
         preg_match_all(static::PATTERN_SENTENCE_DELIMITER, $text, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
         $shift_pos = 0; // смещение позиции
         foreach ($matches as $match) {
@@ -150,6 +159,7 @@ class TextParser
     }
 
     /**
+     * Разбиение предложений на слова
      * @param array $sentences
      * @return array
      */
@@ -202,7 +212,7 @@ class TextParser
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getProcessedText()
     {
@@ -210,7 +220,7 @@ class TextParser
     }
 
     /**
-     * @param mixed $processed_text
+     * @param string $processed_text
      */
     protected function setProcessedText($processed_text)
     {
