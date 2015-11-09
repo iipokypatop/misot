@@ -12,8 +12,10 @@ abstract class Chasti
 Chasti--*Predlodzenie
 
 abstract class ChleniPredlodzenia extends Chasti
-
+class INOE extends Chasti
 abstract class Punctuacia extends Chasti
+
+
 
 class Tochka extends Punctuacia
 class Zapitaya extends Punctuacia
