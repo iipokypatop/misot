@@ -85,12 +85,10 @@ namespace Sentence{
     Sentence.Sentence *-- Sentence.Member.Relation
     Sentence.Sentence *-- Sentence.Member.Base
 
-
-
-
-
-
     Sentence.Sentence "1" *-- "1..M" Sentence.SimpleSentence.SimpleSentence
+
+    class Sentence.Sentence
+    note right: Класс такого понятия, как предложение. \nОн может включать в себя неограниченное число\nподпредложений (составные части сложного предложения)
 
 }
 
