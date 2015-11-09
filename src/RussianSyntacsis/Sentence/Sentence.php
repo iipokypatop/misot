@@ -74,7 +74,7 @@ class Sentence
     /**
      * @param \Aot\RussianSyntacsis\Sentence\Member\Relation $relation
      */
-    public function setRelation(\Aot\RussianSyntacsis\Sentence\Member\Relation $relation)
+    public function addRelation(\Aot\RussianSyntacsis\Sentence\Member\Relation $relation)
     {
         $this->relations[] = $relation;
     }
