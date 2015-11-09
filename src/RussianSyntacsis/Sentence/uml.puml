@@ -28,7 +28,12 @@ namespace Sentence{
             +cretate()
         }
         class Word extends Base{
+            #role
+            --
             +cretate()
+            --
+            +getRole()
+            +setRole()
         }
 
         class Relation{
@@ -37,6 +42,20 @@ namespace Sentence{
             +cretate()
         }
 
+
+        namespace Role{
+            abstract class Base
+            class Podlezhachee extends Base
+            class Skazuemoe extends Base
+            class Opredelenie extends Base
+            class Dopolnenie extends Base
+            class Obstoyatelstvo extends Base
+
+        }
+
+
+
+        Sentence.Member.Word "1" <-- "1" Sentence.Member.Role.Base
         Sentence.Member.Relation *-- Sentence.Member.Word
         Sentence.Member.Relation *-- Sentence.Member.Word
     }

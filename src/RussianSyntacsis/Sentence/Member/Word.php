@@ -11,6 +11,9 @@ namespace Aot\RussianSyntacsis\Sentence\Member;
 
 class Word extends Base
 {
+    /** @var  \Aot\RussianSyntacsis\Sentence\Member\Role\Base */
+    protected $role;
+
     /**
      * @return Word
      */
@@ -23,4 +26,22 @@ class Word extends Base
     {
 
     }
+
+    /**
+     * @return Role\Base
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param Role\Base $role
+     */
+    public function setRole(Role\Base $role)
+    {
+        $this->role = $role;
+    }
+
+
 }
