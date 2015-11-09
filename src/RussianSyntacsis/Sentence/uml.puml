@@ -3,31 +3,43 @@
 namespace Sentence{
 
     class Sentence{
-        #sub_sentences = []
+        #simple_sentences = []
         #members = []
         #relations =[]
+        --
+        +cretate()
+        --
+        +addSimpleSentence()
+        +addMember()
+        +addRelation()
+        +getSimpleSentences()
+        +getMembers()
+        +getRelations()
     }
 
 
     namespace Member{
         abstract class Base{
             #text :string
+            +setText()
+            +getText()
         }
-        class Punctuation extends Base
-        class Word extends Base
+        class Punctuation extends Base{
+            +cretate()
+        }
+        class Word extends Base{
+            +cretate()
+        }
 
+        class Relation{
+            #main
+            #depended
+            +cretate()
+        }
 
-                class Relation{
-                    #main
-                    #depended
-                }
-
-                Sentence.Member.Relation *-- Sentence.Member.Word
-                Sentence.Member.Relation *-- Sentence.Member.Word
-            }
-
-
-
+        Sentence.Member.Relation *-- Sentence.Member.Word
+        Sentence.Member.Relation *-- Sentence.Member.Word
+    }
 
 
 
@@ -35,15 +47,31 @@ namespace Sentence{
         class SimpleSentence{
             #members = []
             #type
+            --
+            +cretate()
+            --
+            +addMember()
+            +getMembers()
+            +getType()
+            +setType()
         }
 
         namespace Type{
             abstract class Base{
-                $description
+                #description :string
+                +getDescription()
+                +setDescription()
             }
                 class Difficult extends Base{
                     #depended_sub_sentences=[]
                     #main_sub_sentences=[]
+                    --
+                    +create()
+                    --
+                    +addMainSimpleSentence()
+                    +addDependedSimpleSentence()
+                    +getMainSimpleSentences()
+                    +getDependedSimpleSentences()
                 }
         }
 
