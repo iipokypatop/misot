@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: admin
+ * User: s.kharchenko
  * Date: 27/07/15
  * Time: 20:41
  */
@@ -18,7 +18,6 @@ class Spaces extends Base
     protected function getPatterns()
     {
         return [
-//            '/\\s/',
             '/(\\s+)/' => '',
         ];
 
