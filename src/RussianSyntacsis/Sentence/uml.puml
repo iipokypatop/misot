@@ -1,0 +1,70 @@
+@startuml
+
+namespace Sentence{
+
+    class Sentence{
+        #sub_sentences = []
+        #members = []
+        #relations =[]
+    }
+
+
+    namespace Member{
+        abstract class Base{
+            #text :string
+        }
+        class Punctuation extends Base
+        class Word extends Base
+
+
+                class Relation{
+                    #main
+                    #depended
+                }
+
+                Sentence.Member.Relation *-- Sentence.Member.Word
+                Sentence.Member.Relation *-- Sentence.Member.Word
+            }
+
+
+
+
+
+
+    namespace SimpleSentence{
+        class SimpleSentence{
+            #members = []
+            #type
+        }
+
+        namespace Type{
+            abstract class Base{
+                $description
+            }
+                class Difficult extends Base{
+                    #depended_sub_sentences=[]
+                    #main_sub_sentences=[]
+                }
+        }
+
+
+        Sentence.SimpleSentence.SimpleSentence "1" <-- "1" Sentence.SimpleSentence.Type.Base
+        Sentence.SimpleSentence.SimpleSentence *-- Sentence.Member.Base
+
+
+    }
+
+    Sentence.Sentence *-- Sentence.Member.Relation
+    Sentence.Sentence *-- Sentence.Member.Base
+
+
+
+
+
+
+    Sentence.Sentence "1" *-- "1..M" Sentence.SimpleSentence.SimpleSentence
+
+}
+
+
+@enduml
