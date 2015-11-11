@@ -18,12 +18,18 @@ class Sentence
     /** @var \Aot\RussianSyntacsis\Sentence\Member\Relation[] */
     protected $relations = [];
 
+    /** @var  string */
+    protected $text;
+
     /**
      * @return Sentence
      */
-    public static function create()
+    public static function create($text)
     {
-        return new static();
+        assert(is_string($text));
+        $obj = new static();
+        $obj->text = $text;
+        return $obj;
     }
 
     protected function __construct()

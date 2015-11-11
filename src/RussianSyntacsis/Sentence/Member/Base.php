@@ -34,6 +34,7 @@ abstract class Base
         return $obj;
     }
 
+
     protected function __construct()
     {
 

@@ -11,23 +11,5 @@ namespace Aot\RussianSyntacsis\Sentence\SimpleSentence\Type;
 
 abstract class Base
 {
-    /** @var  string */
-    protected $description;
 
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
-    {
-        assert(is_string($description));
-        $this->description = $description;
-    }
 }
