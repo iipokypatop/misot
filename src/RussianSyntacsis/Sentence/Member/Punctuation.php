@@ -11,16 +11,4 @@ namespace Aot\RussianSyntacsis\Sentence\Member;
 
 class Punctuation extends Base
 {
-    /**
-     * @return Punctuation
-     */
-    public static function create()
-    {
-        return new static();
-    }
-
-    protected function __construct()
-    {
-
-    }
 }

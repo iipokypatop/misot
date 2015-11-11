@@ -15,19 +15,6 @@ class Word extends Base
     protected $role;
 
     /**
-     * @return Word
-     */
-    public static function create()
-    {
-        return new static();
-    }
-
-    protected function __construct()
-    {
-
-    }
-
-    /**
      * @return Role\Base
      */
     public function getRole()

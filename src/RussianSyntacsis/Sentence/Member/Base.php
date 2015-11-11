@@ -24,10 +24,18 @@ abstract class Base
 
     /**
      * @param string $text
+     * @return \Aot\RussianSyntacsis\Sentence\Member\Base
      */
-    public function setText($text)
+    public static function create($text)
     {
         assert(is_string($text));
-        $this->text = $text;
+        $obj = new static();
+        $obj->text = $text;
+        return $obj;
+    }
+
+    protected function __construct()
+    {
+
     }
 }
