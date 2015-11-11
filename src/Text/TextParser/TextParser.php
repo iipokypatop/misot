@@ -104,7 +104,10 @@ class TextParser
         // числительные
         $text = $this->replaceNumbers->replace($text);
 
-        $this->setProcessedText($text);
+        // преобразования в тексте
+        $text = $this->textСonversion($text);
+
+        $this->processed_text = $text;
     }
 
     /**
@@ -255,6 +258,39 @@ class TextParser
     public static function joinSentenceWordAndPunctuation(array $words_and_punct)
     {
 
+    }
+
+    /**
+     * Преобразование в тексте
+     * @param string $text
+     * @return string
+     */
+    private function textСonversion($text)
+    {
+        assert(is_string($text));
+
+        if (preg_match_all("/[а-яё]+([\\.\\!\\?])([а-яёА-ЯЁ])/u", $text, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
+
+            $shift_pos = 0; // смещение позиции
+            foreach ($matches as $match) {
+                $text = substr_replace(
+                    $text,
+                    $match[1][0] . ' ',
+                    $match[1][1] + $shift_pos,
+                    strlen($match[1][0])
+                );
+
+                $shift_pos += 1; // +1 - тк пробел
+
+                $text = substr_replace(
+                    $text,
+                    mb_convert_case($match[2][0], MB_CASE_TITLE, "UTF-8"),
+                    $match[2][1] + $shift_pos, // начало
+                    strlen($match[2][0]) // длина
+                );
+            }
+        }
+        return $text;
     }
 
 }

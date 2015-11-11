@@ -43,9 +43,17 @@ class Short extends Base
             "/" . static::START_SHORT . "[Мм]лрд(.|$)/u",
             "/([\\d\\s])[гт]([^а-яА-ЯёЁ])/u", // грамм/тонна TODO: без семантики могут быть ошибки
             "/(\\d\\s?)с\\.?([\\,\\;])/u", // секунда TODO: без семантики могут быть ошибки
-            "/" . static::START_SHORT . "[Чч]ел\\.(.|$)/u",
-            "/" . static::START_SHORT . "[Ээ]кз\\.(.|$)/u",
+            "/" . static::START_SHORT . "[Чч]ел\\.(.|$)/u", // чел.
+            "/" . static::START_SHORT . "[Ээ]кз\\.(.|$)/u", // экз.
             "/" . static::START_SHORT . "к\\.\\s?[тгиюмпфх]\\.\\s?н." . static::END_SHORT . "/u", //  к.т.н., к.г.н.
+            "/" . static::START_SHORT . "н\\.\\s?вр?." . static::END_SHORT . "/u", //  н.в.
+            "/" . static::START_SHORT . "наст\\.\\s?вр?." . static::END_SHORT . "/u", //  н.в.
+            "/" . static::START_SHORT . "б\\.\\s?вр?." . static::END_SHORT . "/u", //  б.в.
+            "/" . static::START_SHORT . "буд\\.\\s?вр?." . static::END_SHORT . "/u", //  буд.в.
+            "/" . static::START_SHORT . "будущ\\.\\s?вр?." . static::END_SHORT . "/u", //  будущ.в.
+            "/" . static::START_SHORT . "пр\\.\\s?вр?." . static::END_SHORT . "/u", //  пр.в.
+            "/" . static::START_SHORT . "прош\\.\\s?вр?." . static::END_SHORT . "/u", //  прош.в.
+            "/" . static::START_SHORT . "прошедш\\.\\s?вр?." . static::END_SHORT . "/u", //  прошед.в.
             "/([^а-яА-ЯЁё])[дп]р(\\.|$)/u", // и др. и пр.
         ];
     }
