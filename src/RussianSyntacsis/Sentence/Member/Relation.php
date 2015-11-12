@@ -25,14 +25,15 @@ class Relation
         \Aot\RussianSyntacsis\Sentence\Member\Word $main,
         \Aot\RussianSyntacsis\Sentence\Member\Word $depended
     ) {
-        $obj = new static();
-        $obj->main = $main;
-        $obj->depended = $depended;
+        $obj = new static($main, $depended);
         return $obj;
     }
 
-    protected function __construct()
-    {
-
+    protected function __construct(
+        \Aot\RussianSyntacsis\Sentence\Member\Word $main,
+        \Aot\RussianSyntacsis\Sentence\Member\Word $depended
+    ) {
+        $this->main = $main;
+        $this->depended = $depended;
     }
 }

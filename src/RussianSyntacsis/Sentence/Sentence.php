@@ -17,7 +17,7 @@ class Sentence
     protected $members = [];
     /** @var \Aot\RussianSyntacsis\Sentence\Member\Relation[] */
     protected $relations = [];
-    /** @var \Aot\RussianSyntacsis\Sentence\Communication\Communication[] */
+    /** @var \Aot\RussianSyntacsis\Sentence\Communication\Base[] */
     protected $communications = [];
 
     /** @var  string */
@@ -28,15 +28,14 @@ class Sentence
      */
     public static function create($text)
     {
-        assert(is_string($text));
-        $obj = new static();
-        $obj->text = $text;
+        $obj = new static($text);
         return $obj;
     }
 
-    protected function __construct()
+    protected function __construct($text)
     {
-
+        assert(is_string($text));
+        $this->text = $text;
     }
 
     /**
@@ -88,7 +87,7 @@ class Sentence
     }
 
     /**
-     * @return Communication\Communication[]
+     * @return Communication\Base[]
      */
     public function getCommunications()
     {
@@ -96,9 +95,9 @@ class Sentence
     }
 
     /**
-     * @param Communication\Communication $communication
+     * @param Communication\Base $communication
      */
-    public function addCommunication(\Aot\RussianSyntacsis\Sentence\Communication\Communication $communication)
+    public function addCommunication(\Aot\RussianSyntacsis\Sentence\Communication\Base $communication)
     {
         $this->communications = $communication;
     }

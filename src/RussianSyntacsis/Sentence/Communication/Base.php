@@ -8,7 +8,7 @@
  */
 namespace Aot\RussianSyntacsis\Sentence\Communication;
 
-class Communication
+class Base
 {
     /** @var \Aot\RussianSyntacsis\Sentence\SimpleSentence\SimpleSentence */
     protected $main;
@@ -18,20 +18,21 @@ class Communication
     /**
      * @param \Aot\RussianSyntacsis\Sentence\SimpleSentence\SimpleSentence $main
      * @param \Aot\RussianSyntacsis\Sentence\SimpleSentence\SimpleSentence $depended
-     * @return Communication
+     * @return Base
      */
     public static function create(
         \Aot\RussianSyntacsis\Sentence\SimpleSentence\SimpleSentence $main,
         \Aot\RussianSyntacsis\Sentence\SimpleSentence\SimpleSentence $depended
     ) {
-        $obj = new static();
-        $obj->main = $main;
-        $obj->depended = $depended;
+        $obj = new static($main, $depended);
         return $obj;
     }
 
-    protected function __construct()
-    {
-
+    protected function __construct(
+        \Aot\RussianSyntacsis\Sentence\SimpleSentence\SimpleSentence $main,
+        \Aot\RussianSyntacsis\Sentence\SimpleSentence\SimpleSentence $depended
+    ) {
+        $this->main = $main;
+        $this->depended = $depended;
     }
 }

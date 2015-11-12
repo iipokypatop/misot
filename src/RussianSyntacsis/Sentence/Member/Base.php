@@ -28,15 +28,15 @@ abstract class Base
      */
     public static function create($text)
     {
-        assert(is_string($text));
-        $obj = new static();
-        $obj->text = $text;
+        $obj = new static($text);
         return $obj;
+
     }
 
 
-    protected function __construct()
+    protected function __construct($text)
     {
-
+        assert(is_string($text));
+        $this->text = $text;
     }
 }
