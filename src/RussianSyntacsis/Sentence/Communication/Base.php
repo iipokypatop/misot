@@ -35,4 +35,20 @@ class Base
         $this->main = $main;
         $this->depended = $depended;
     }
+
+    /**
+     * @return \Aot\RussianSyntacsis\Sentence\SimpleSentence\SimpleSentence
+     */
+    public function getMain()
+    {
+        return $this->main;
+    }
+
+    /**
+     * @return \Aot\RussianSyntacsis\Sentence\SimpleSentence\SimpleSentence
+     */
+    public function getDepended()
+    {
+        return $this->depended;
+    }
 }
