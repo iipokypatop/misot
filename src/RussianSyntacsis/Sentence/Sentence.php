@@ -17,6 +17,8 @@ class Sentence
     protected $members = [];
     /** @var \Aot\RussianSyntacsis\Sentence\Member\Relation[] */
     protected $relations = [];
+    /** @var \Aot\RussianSyntacsis\Sentence\Communication\Communication[] */
+    protected $communications = [];
 
     /** @var  string */
     protected $text;
@@ -83,6 +85,22 @@ class Sentence
     public function addRelation(\Aot\RussianSyntacsis\Sentence\Member\Relation $relation)
     {
         $this->relations[] = $relation;
+    }
+
+    /**
+     * @return Communication\Communication[]
+     */
+    public function getCommunications()
+    {
+        return $this->communications;
+    }
+
+    /**
+     * @param Communication\Communication $communication
+     */
+    public function addCommunication(\Aot\RussianSyntacsis\Sentence\Communication\Communication $communication)
+    {
+        $this->communications = $communication;
     }
 
 
