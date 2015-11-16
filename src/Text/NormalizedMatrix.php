@@ -111,7 +111,7 @@ class NormalizedMatrix implements \Iterator
             $row_periods[$index] = $elements_total / $period;
             $row_value_repeat_count[$index] = $row_periods[$index] / $row_sizes[$index];
         }
-        print_r((memory_get_usage(true) / 1000000) . "\n");
+        //print_r((memory_get_usage(true) / 1000000) . "\n");
 
 
 //        $this->storage = array_fill(
@@ -135,7 +135,7 @@ class NormalizedMatrix implements \Iterator
         }
 
 
-        print_r((memory_get_usage(true) / 1000000) . "\n");
+        //print_r((memory_get_usage(true) / 1000000) . "\n");
 
 
         $C = pow(10, ceil(log10(count($this->matrix_id_mask))));
@@ -162,7 +162,7 @@ class NormalizedMatrix implements \Iterator
             }
 
         }
-        print_r((memory_get_usage(true) / 1000000) . "\n");
+        //print_r((memory_get_usage(true) / 1000000) . "\n");
     }
 
     /**
