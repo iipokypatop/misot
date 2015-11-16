@@ -62,6 +62,7 @@ class NarechieTest extends \AotTest\AotDataStorage
         $point = unserialize($ser);
         $point->id_sentence = '11111';
         $point->dw->parameters[15] = new MorphAttribute();
+        $point->dw->parameters[15]->id_morph_attr = 15;
         $point->dw->parameters[15]->id_value_attr = [ '42' => 42 ];
         return $point;
     }

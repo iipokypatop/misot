@@ -175,6 +175,7 @@ class FactoryTest extends AotDataStorage
         // создаем новый аттрибут
         $point->dw->parameters[OldAotConstants::RANK_PRONOUNS()] = new MorphAttribute();
         // подменяем разряд на несуществующий
+        $point->dw->parameters[OldAotConstants::RANK_PRONOUNS()]->id_morph_attr = OldAotConstants::RANK_PRONOUNS();
         $point->dw->parameters[OldAotConstants::RANK_PRONOUNS()]->id_value_attr = [111 => 111];
         try{
             $result = $this->buildFactory($point);

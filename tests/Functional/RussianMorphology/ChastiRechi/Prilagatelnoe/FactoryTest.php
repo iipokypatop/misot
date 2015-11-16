@@ -181,7 +181,9 @@ class FactoryTest extends \AotTest\AotDataStorage
         $point = unserialize($ser);
         $point->id_sentence = '11111';
         $point->dw->parameters[15] = new MorphAttribute();
+        $point->dw->parameters[15]->id_morph_attr = 15;
         $point->dw->parameters[15]->id_value_attr = ['43' => 43];
+        $point->dw->parameters[13]->id_morph_attr = 13;
         $point->dw->parameters[13]->id_value_attr = ['32' => 32, '35' => 35];
         return $point;
     }

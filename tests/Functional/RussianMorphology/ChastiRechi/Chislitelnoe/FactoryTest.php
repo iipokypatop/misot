@@ -94,9 +94,12 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         // создаем новый аттрибут
+
         $point->dw->parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID] = new MorphAttribute();
         // подменяем род на несуществующий
         $point->dw->parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID]->id_value_attr = [111 => 111];
+        $point->dw->parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID]->id_morph_attr = \Aot\MivarTextSemantic\Constants::NUMBER_ID;
+
         try{
             $result = $this->buildFactory($point);
             $this->fail("Не должно было тут быть!");

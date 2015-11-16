@@ -60,6 +60,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $point = $this->getPoint();
         if( empty($point->dw->parameters[$parameter]) ){
             $point->dw->parameters[$parameter] = new MorphAttribute();
+            $point->dw->parameters[$parameter]->id_morph_attr = $parameter;
         }
         $point->dw->parameters[$parameter]->id_value_attr = [$false_value => $false_value];
         try {
@@ -95,6 +96,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $point = unserialize($ser);
         $point->id_sentence = '11111';
         $point->dw->parameters[13] = new MorphAttribute();
+        $point->dw->parameters[13]->id_morph_attr = 13;
         $point->dw->parameters[13]->id_value_attr = ['32' => 32, '33' => 33];
         return $point;
     }
