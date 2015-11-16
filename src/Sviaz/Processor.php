@@ -31,6 +31,8 @@ class Processor
      */
     protected $post_processing_engines = [];
 
+    public static $for_destructor_of_judy = [];
+
     public function __construct()
     {
         $this->raw_member_builder = \Aot\Sviaz\SequenceMember\RawMemberBuilder::create();
@@ -163,8 +165,9 @@ class Processor
             assert(is_a($rule, \Aot\Sviaz\Rule\Base::class, true));
         }
 
+        //$raw_sequences = $this->raw_member_builder->getOneRawSequences($normalized_matrix);
         $raw_sequences = $this->raw_member_builder->getRawSequences($normalized_matrix);
-
+        static::$for_destructor_of_judy = $normalized_matrix;
         $sequences = [];
         foreach ($raw_sequences as $index => $raw_sequence) {
 
@@ -179,6 +182,7 @@ class Processor
 
             $sequences[] = $sequence;
 
+            break;
         }
 
         usort ($sequences, '\Aot\Sviaz\Processor::sortSequences');

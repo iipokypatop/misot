@@ -9,7 +9,7 @@
 namespace Aot\Sviaz;
 
 
-class Sequence extends \ArrayObject
+class Sequence extends \Judy
 {
 
     protected $id;
@@ -26,11 +26,16 @@ class Sequence extends \ArrayObject
         return $this->sub_sequences;
     }
 
+
+    //public static $zombie_link = [];
+
     public static function create()
     {
-        $ob = new static();
+        $ob = new static(\Judy::INT_TO_MIXED);
 
         $ob->id = spl_object_hash($ob);
+
+        //static::$zombie_link[] = $ob;
 
         return $ob;
     }
@@ -102,5 +107,13 @@ class Sequence extends \ArrayObject
             assert(is_a($sub_sequence, \Aot\Sviaz\SubSequence::class, true));
         }
         $this->sub_sequences = $sub_sequences;
+    }
+
+    public function append($value)
+    {
+        $this->offsetSet(
+            $this->last() + 1,
+            $value
+        );
     }
 }

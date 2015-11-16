@@ -32,11 +32,12 @@ class RawMemberBuilder
         return new static();
     }
 
+    public static $for_destructor_of_judy = [];
     /**
      * @param $ob
      * @return \Aot\Sviaz\SequenceMember\Base
      */
-    protected function build($ob)
+    public function build($ob)
     {
         $id = $this->registry->registerMember($ob);
 
@@ -60,11 +61,55 @@ class RawMemberBuilder
         throw new \RuntimeException("unsupported object type ");
     }
 
+    //protected $pre_cache = [];
     /**
      * @param \Aot\Text\NormalizedMatrix $normalized_matrix
      * @return \Aot\Sviaz\Sequence[]
      */
     public function getRawSequences(\Aot\Text\NormalizedMatrix $normalized_matrix)
+    {
+        $sequences = [];
+
+        $tmpl = \Aot\Sviaz\Sequence::create();
+
+
+        $normalized_matrix->recreateMatrix([$this, 'build']);
+
+        $normalized_matrix->build();
+
+
+        foreach ($normalized_matrix->storage as $array) {
+
+            $sequences[] = $sequence = clone($tmpl);
+            static::$for_destructor_of_judy[] = $sequence;
+            foreach ($array as $member) {
+
+                //$pre_hash = spl_object_hash($member);
+                /*$pre_hash= $member->pre_hash;
+                if (isset($this->pre_cache[$pre_hash])) {
+                    $raw_member = $this->pre_cache[$pre_hash];
+                } else {
+                    $raw_member = $this->build($member);
+
+                    $this->pre_cache[$pre_hash] = $raw_member;
+                }*/
+
+                //$raw_member = $this->build($member);
+
+                //$sequence->append($raw_member);
+                //$sequence[]=$raw_member;
+                $sequence[]=$member;
+            }
+        }
+
+
+        return $sequences;
+    }
+
+
+
+
+    public function getOneRawSequences(\Aot\Text\NormalizedMatrix $normalized_matrix)
     {
         $sequences = [];
 
@@ -78,6 +123,7 @@ class RawMemberBuilder
 
                 $sequence->append($raw_member);
             }
+            break;
         }
 
         return $sequences;
