@@ -27,15 +27,11 @@ class Sequence extends \Judy
     }
 
 
-    //public static $zombie_link = [];
-
     public static function create()
     {
         $ob = new static(\Judy::INT_TO_MIXED);
 
         $ob->id = spl_object_hash($ob);
-
-        //static::$zombie_link[] = $ob;
 
         return $ob;
     }

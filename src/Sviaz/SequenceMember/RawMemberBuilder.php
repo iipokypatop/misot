@@ -61,7 +61,6 @@ class RawMemberBuilder
         throw new \RuntimeException("unsupported object type ");
     }
 
-    //protected $pre_cache = [];
     /**
      * @param \Aot\Text\NormalizedMatrix $normalized_matrix
      * @return \Aot\Sviaz\Sequence[]

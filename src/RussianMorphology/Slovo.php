@@ -55,9 +55,7 @@ abstract class Slovo implements \Aot\Unit
         foreach ($this->getMorphology() as $name => $class) {
             $this->storage[$name] = null;
         }
-        //$this->pre_hash = spl_object_hash($this);
     }
-    //public $pre_hash;
 
     /**
      * @return string[]

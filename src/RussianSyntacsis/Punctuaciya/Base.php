@@ -12,7 +12,6 @@ namespace Aot\RussianSyntacsis\Punctuaciya;
 class Base implements \Aot\Unit
 {
     protected $text;
-    //public $pre_hash;
 
     /**
      * @param string $text
@@ -27,7 +26,6 @@ class Base implements \Aot\Unit
     protected function __construct($text)
     {
         $this->text = $text;
-        //$this->pre_hash = spl_object_hash($this);
     }
 
     public function getText()

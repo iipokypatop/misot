@@ -165,7 +165,6 @@ class Processor
             assert(is_a($rule, \Aot\Sviaz\Rule\Base::class, true));
         }
 
-        //$raw_sequences = $this->raw_member_builder->getOneRawSequences($normalized_matrix);
         $raw_sequences = $this->raw_member_builder->getRawSequences($normalized_matrix);
         static::$for_destructor_of_judy = $normalized_matrix;
         $sequences = [];
