@@ -36,22 +36,18 @@ use Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\Srednij;
 use Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\Zhenskij;
 use Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\Null as NullRod;
 
-use Aot\MivarTextSemantic\Dw;
-use Aot\MivarTextSemantic\Word;
-
 class Factory extends \Aot\RussianMorphology\Factory
 {
 
     /**
-     * @param Dw $dw
-     * @param Word $word
+     * @param \DictionaryWord $dw
      * @return \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Base[]
      */
-    public function build(Dw $dw, Word $word)
+    public function build(\DictionaryWord $dw)
     {
         $text = $dw->word_form;
         $words = [];
-        if (isset($word->word) && intval($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID) {
+        if (intval($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID) {
 
             # число
             $chislo = $this->getChislo($dw->parameters);

@@ -8,9 +8,6 @@
 
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Chislitelnoe;
 
-
-use Aot\MivarTextSemantic\Dw;
-use Aot\MivarTextSemantic\Word;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Factory;
 use AotTest\AotDataStorage;
 use MivarTest\PHPUnitHelper;
@@ -319,7 +316,7 @@ class FactoryTest extends AotDataStorage
     {
         //var_export($point);die;
 
-        $dw = new Dw(
+        $dw = new \DictionaryWord(
             $point->dw->id_word_form,
             $point->dw->initial_form,
             $point->dw->initial_form,
@@ -328,12 +325,7 @@ class FactoryTest extends AotDataStorage
             $point->dw->parameters
         );
 
-        $word = new Word(
-            $point->kw,
-            $point->dw->initial_form,
-            $point->id_sentence
-        );
-        return Factory::get()->build($dw, $word);
+        return Factory::get()->build($dw);
     }
 
 }

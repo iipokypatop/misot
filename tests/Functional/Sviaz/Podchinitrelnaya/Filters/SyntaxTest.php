@@ -39,6 +39,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
      */
     public function testCase1()
     {
+        $this->markTestSkipped();
         //Создаём фильтр
         $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
 
@@ -79,6 +80,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
      */
     public function testCase2()
     {
+        $this->markTestSkipped();
         //Создаём фильтр
         $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
         /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $conflicting_group_of_sviazey */
@@ -112,6 +114,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
      */
     public function testCase3()
     {
+        $this->markTestSkipped();
         //Создаём фильтр
         $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
         /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $conflicting_group_of_sviazey */
@@ -140,6 +143,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
      */
     public function testCase4()
     {
+        $this->markTestSkipped();
         //Создаём фильтр
         $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
         /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $conflicting_group_of_sviazey */
@@ -174,6 +178,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
      */
     public function testCase5()
     {
+        $this->markTestSkipped();
         //Создаём фильтр
         $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
 
