@@ -42,7 +42,52 @@ class VSOTest extends \AotTest\AotDataStorage
 
 
 //        die();
-        $vso = $this->getOriginalVSOModel($sentence_string);
+        $syntax_model = $this->getOriginalSyntaxModel($sentence_string);
+//        print_r($syntax_model);
+        $factories = \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::getFactories();
+//        print_r($factories);
+        $sorted_points = [];
+        foreach ($syntax_model as $key => $point) {
+            // приходит только по одному предложению => ks не нужен
+            $sorted_points[$point->kw][$point->dw->id_word_class] = $key;
+        }
+        ksort($sorted_points);
+//        print_r($cache);
+        # todo создать новую последовательность с новыми мемберами
+
+        $new_sequence = \Aot\Sviaz\Sequence::create();
+
+        // соответвие id части речи из морфика и в мисоте
+        $conformity = [
+            1 => 12,
+            2 => 10,
+            3 => 11,
+            5 => 14,
+            6 => 19,
+            9 => 21,
+        ];
+        foreach ($sorted_points as $key_word => $items) {
+            $first_element_key = array_shift($items);
+//            print_r([$syntax_model[$first_element_key]->dw->id_word_class => $syntax_model[$first_element_key]->dw->name_word_class]);
+            $id_word_class = $syntax_model[$first_element_key]->dw->id_word_class;
+            $factory = $factories[$conformity[$id_word_class]];
+            $point_dw = $syntax_model[$first_element_key]->dw;
+            // берём форму слова из исходной последовательности
+            $point_dw->word_form = 'лала';
+            $member = $factory->get()->build($point_dw);
+            // новый member
+            $sequence->append($member);
+        }
+
+        die();
+        # заполнить её связями
+
+        $linked_pairs = [];
+        foreach ($syntax_model as $key => $point) {
+            $linked_pairs[$point->Oz][$key] = $point;
+        }
+        print_r($linked_pairs);
+        die();
 
         $sorted_vso = $this->sortVSO($vso);
 //        \Doctrine\Common\Util\Debug::dump($vso, 3);
@@ -271,17 +316,17 @@ class VSOTest extends \AotTest\AotDataStorage
     }
 
     /**
-     * Получение VSO модели через АОТ
+     * Получение синтаксической модели через АОТ
      * @param $sentence_string
      * @return \Objects\Rule[]
      */
-    private function getOriginalVSOModel($sentence_string)
+    private function getOriginalSyntaxModel($sentence_string)
     {
         $mivar = new \DMivarText(['txt' => $sentence_string]);
 
-        $mivar->semantic_model();
+        $mivar->syntax_model();
 
-        $result = $mivar->getSemanticModel();
+        $result = $mivar->getSyntaxModel();
 
         return !empty($result) ? $result : [];
 

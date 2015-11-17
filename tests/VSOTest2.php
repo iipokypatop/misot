@@ -1,31 +1,29 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: s.kharchenko
- * Date: 23/10/15
- * Time: 19:10
- */
-
-namespace Aot\Sviaz\Processors;
 
 use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
-use DefinesAot;
-use Sentence_space_SP_Rel;
 
-
-class Aot extends Base
+class VSOTest extends \AotTest\AotDataStorage
 {
     protected $link_kw_member_id = []; // связь по слову в предложению и id мембера
     protected $sentence_array = [];
-    /** @var  \Aot\Sviaz\Sequence */
-    protected $sequence;
 
-    public function run(\Aot\Sviaz\Sequence $sequence, array $rules)
+
+    public function testRunInClass()
     {
-        $this->link_kw_member_id = [];
-        $this->sentence_array = [];
-        $this->sequence = null;
+        $sequence = $this->getRawSequence();
+        $misot_to_aot = \Aot\Sviaz\Processors\Aot::create();
+        $misot_to_aot->run($sequence, []);
+        \Doctrine\Common\Util\Debug::dump($sequence->getSviazi(), 3);
+    }
+
+    /**
+     *
+     */
+    public function testRun()
+    {
+        $sequence = $this->getRawSequence();
+
         assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
 
         /** @var \Aot\Sviaz\SequenceMember\Base $member */
@@ -41,93 +39,8 @@ class Aot extends Base
 
         # заполняем её связями
         $this->fillRelations($new_sequence, $syntax_model);
-    }
 
-    /**
-     * Формируем массив слов предложений
-     * @param \Aot\Sviaz\Sequence $sequence
-     * @return string[]
-     */
-    private function getSentenceArrayBySequence(\Aot\Sviaz\Sequence $sequence)
-    {
-        assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
-        $sentence_array = [];
-        foreach ($sequence as $member) {
-            if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
-                /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
-            } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
-                /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
-                $sentence_array[] = $member->getSlovo()->getText();
-            }
-        }
-        return $sentence_array;
-    }
-
-    /**
-     * Получение синтаксической модели через АОТ
-     * @param string $sentence_string
-     * @return \Objects\Rule[]
-     */
-    private function getOriginalSyntaxModel($sentence_string)
-    {
-        assert(is_string($sentence_string));
-
-        $mivar = new \DMivarText(['txt' => $sentence_string]);
-
-        $mivar->syntax_model();
-
-        $result = $mivar->getSyntaxModel();
-
-        return !empty($result) ? $result : [];
-
-    }
-
-    /**
-     * Создание новой последовательности
-     * @param \Aot\Sviaz\Sequence $old_sequence
-     * @param array $syntax_model
-     * @return \Aot\Sviaz\Sequence
-     */
-    protected function createNewSequence(\Aot\Sviaz\Sequence $old_sequence, array $syntax_model)
-    {
-        assert(is_array($syntax_model) && !empty($syntax_model));
-
-        $factories = \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::getFactories();
-        $sorted_points = [];
-        foreach ($syntax_model as $key => $point) {
-            // приходит только по одному предложению => ks не нужен
-            $sorted_points[$point->kw][$point->dw->id_word_class] = $key;
-        }
-        ksort($sorted_points);
-
-        $new_sequence = \Aot\Sviaz\Sequence::create();
-
-        foreach ($this->sentence_array as $key_word => $word_form) {
-            // если нет точки для данного слова и она есть в старой последовательности, тогда берем её оттуда
-            if (empty($sorted_points[$key_word]) && !empty($old_sequence[$key_word])) {
-                $new_sequence[$key_word] = clone $old_sequence[$key_word];
-                continue;
-            }
-
-            $items = $sorted_points[$key_word];
-            $first_element_key = array_shift($items);
-            $id_word_class = $syntax_model[$first_element_key]->dw->id_word_class;
-            $factory = $factories[$this->conformityPartsOfSpeech($id_word_class)];
-            $point = $syntax_model[$first_element_key];
-
-            // берём форму слова из исходной последовательности
-            $point->dw->word_form = $word_form;
-            $slovo = $factory->get()->build($point->dw);
-            $member = \Aot\Sviaz\SequenceMember\Word\Base::create($slovo[0]);
-
-            // новый member
-            $new_sequence[$key_word] = $member;
-
-            // сохраняем связь между элементом в предложении и id мембера
-            $this->link_kw_member_id[$key_word] = $new_sequence->getPosition($member);
-        }
-
-        return $new_sequence;
+        \Doctrine\Common\Util\Debug::dump($new_sequence, 4);
     }
 
     /**
@@ -298,6 +211,93 @@ class Aot extends Base
         $member_this_prepose = \Aot\Sviaz\SequenceMember\Word\WordWithPreposition::create($slovo[0], $prepose[0]);
         $seq[$replaced_member_id] = $member_this_prepose;
     }
+
+    /**
+     * @param \Aot\Sviaz\Sequence $sequence
+     * @return string[]
+     */
+    private function getSentenceArrayBySequence(\Aot\Sviaz\Sequence $sequence)
+    {
+        assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
+        $sentence_array = [];
+        foreach ($sequence as $member) {
+            if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
+                /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
+            } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
+                /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
+                $sentence_array[] = $member->getSlovo()->getText();
+            }
+        }
+        return $sentence_array;
+    }
+
+    /**
+     * Получение синтаксической модели через АОТ
+     * @param string $sentence_string
+     * @return \Objects\Rule[]
+     */
+    private function getOriginalSyntaxModel($sentence_string)
+    {
+        assert(is_string($sentence_string));
+
+        $mivar = new \DMivarText(['txt' => $sentence_string]);
+
+        $mivar->syntax_model();
+
+        $result = $mivar->getSyntaxModel();
+
+        return !empty($result) ? $result : [];
+
+    }
+
+    /**
+     * Создание новой последовательности
+     * @param \Aot\Sviaz\Sequence $old_sequence
+     * @param array $syntax_model
+     * @return \Aot\Sviaz\Sequence
+     */
+    protected function createNewSequence(\Aot\Sviaz\Sequence $old_sequence, array $syntax_model)
+    {
+        assert(is_array($syntax_model) && !empty($syntax_model));
+
+        $factories = \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::getFactories();
+        $sorted_points = [];
+        foreach ($syntax_model as $key => $point) {
+            // приходит только по одному предложению => ks не нужен
+            $sorted_points[$point->kw][$point->dw->id_word_class] = $key;
+        }
+        ksort($sorted_points);
+
+        $new_sequence = \Aot\Sviaz\Sequence::create();
+
+        foreach ($this->sentence_array as $key_word => $word_form) {
+            // если нет точки для данного слова и она есть в старой последовательности, тогда берем её оттуда
+            if (empty($sorted_points[$key_word]) && !empty($old_sequence[$key_word])) {
+                $new_sequence[$key_word] = clone $old_sequence[$key_word];
+                continue;
+            }
+
+            $items = $sorted_points[$key_word];
+            $first_element_key = array_shift($items);
+            $id_word_class = $syntax_model[$first_element_key]->dw->id_word_class;
+            $factory = $factories[$this->conformityPartsOfSpeech($id_word_class)];
+            $point = $syntax_model[$first_element_key];
+
+            // берём форму слова из исходной последовательности
+            $point->dw->word_form = $word_form;
+            $slovo = $factory->get()->build($point->dw);
+            $member = \Aot\Sviaz\SequenceMember\Word\Base::create($slovo[0]);
+
+            // новый member
+            $new_sequence[$key_word] = $member;
+
+            // сохраняем связь между элементом в предложении и id мембера
+            $this->link_kw_member_id[$key_word] = $new_sequence->getPosition($member);
+        }
+
+        return $new_sequence;
+    }
+
 
     /**
      * Возвращаем соответствующий id части речи МИСОТа по id части речи АОТа
