@@ -18,14 +18,17 @@ class Aot extends Base
 {
     protected $link_kw_member_id = []; // связь по слову в предложению и id мембера
     protected $sentence_array = [];
-    /** @var  \Aot\Sviaz\Sequence */
-    protected $sequence;
 
+    /**
+     * Создаём новую последовательность
+     * @param \Aot\Sviaz\Sequence $sequence
+     * @param array $rules
+     * @return \Aot\Sviaz\Sequence $new_sequence
+     */
     public function run(\Aot\Sviaz\Sequence $sequence, array $rules)
     {
         $this->link_kw_member_id = [];
         $this->sentence_array = [];
-        $this->sequence = null;
         assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
 
         /** @var \Aot\Sviaz\SequenceMember\Base $member */
@@ -41,6 +44,8 @@ class Aot extends Base
 
         # заполняем её связями
         $this->fillRelations($new_sequence, $syntax_model);
+
+        return $new_sequence;
     }
 
     /**
