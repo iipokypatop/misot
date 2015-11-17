@@ -107,9 +107,11 @@ class Sequence extends \Judy
 
     public function append($value)
     {
-        $this->offsetSet(
-            $this->last() + 1,
-            $value
-        );
+        if (is_null($this->last())) {
+            $index = 0;
+        } else {
+            $index = $this->last() + 1;
+        }
+        $this->offsetSet($index, $value);
     }
 }
