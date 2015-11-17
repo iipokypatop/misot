@@ -185,6 +185,13 @@ class Processor
         }
 
         usort ($sequences, '\Aot\Sviaz\Processor::sortSequences');
+
+        if (memory_get_usage(true)>2000000000)
+        {
+            static::$for_destructor_of_judy=[];
+        }
+
+
         return $sequences;
     }
 
