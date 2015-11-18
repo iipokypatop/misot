@@ -29,10 +29,9 @@ class Aot extends Base
     {
         $this->link_kw_member_id = [];
         $this->sentence_array = [];
-        assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
 
         /** @var \Aot\Sviaz\SequenceMember\Base $member */
-        $this->sentence_array = $this->getSentenceArrayBySequence($sequence);
+        $this->sentence_array = $this->getSentenceWordsBySequence($sequence);
 
         # восстановление предложения
         $sentence_string = join(' ', $this->sentence_array);
@@ -45,21 +44,25 @@ class Aot extends Base
         # заполняем её связями
         $this->fillRelations($new_sequence, $syntax_model);
 
+        $rebuilded_sequence = $this->rebuild($new_sequence);
         return $new_sequence;
     }
 
     /**
-     * Формируем массив слов предложений
+     * Формируем массив слов предложения
      * @param \Aot\Sviaz\Sequence $sequence
      * @return string[]
      */
-    private function getSentenceArrayBySequence(\Aot\Sviaz\Sequence $sequence)
+    protected function getSentenceWordsBySequence(\Aot\Sviaz\Sequence $sequence)
     {
-        assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
         $sentence_array = [];
         foreach ($sequence as $member) {
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
-                /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
+                # пропускаем, поскольку АОТ игнорирует знаки препинания
+            } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
+                /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
+                $sentence_array[] = $member->getPredlog()->getText();
+                $sentence_array[] = $member->getSlovo()->getText();
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
                 $sentence_array[] = $member->getSlovo()->getText();
@@ -71,9 +74,9 @@ class Aot extends Base
     /**
      * Получение синтаксической модели через АОТ
      * @param string $sentence_string
-     * @return \Objects\Rule[]
+     * @return \Sentence_space_SP_Rel[]
      */
-    private function getOriginalSyntaxModel($sentence_string)
+    protected function getOriginalSyntaxModel($sentence_string)
     {
         assert(is_string($sentence_string));
 
@@ -90,7 +93,7 @@ class Aot extends Base
     /**
      * Создание новой последовательности
      * @param \Aot\Sviaz\Sequence $old_sequence
-     * @param array $syntax_model
+     * @param \Sentence_space_SP_Rel[] $syntax_model
      * @return \Aot\Sviaz\Sequence
      */
     protected function createNewSequence(\Aot\Sviaz\Sequence $old_sequence, array $syntax_model)
@@ -118,12 +121,15 @@ class Aot extends Base
             $first_element_key = array_shift($items);
             $id_word_class = $syntax_model[$first_element_key]->dw->id_word_class;
             $factory = $factories[$this->conformityPartsOfSpeech($id_word_class)];
-            $point = $syntax_model[$first_element_key];
-
-            // берём форму слова из исходной последовательности
-            $point->dw->word_form = $word_form;
-            $slovo = $factory->get()->build($point->dw);
-            $member = \Aot\Sviaz\SequenceMember\Word\Base::create($slovo[0]);
+            if ($factory === null) {
+                $member = clone $old_sequence[$key_word];
+            } else {
+                $point = $syntax_model[$first_element_key];
+                // берём форму слова из исходной последовательности
+                $point->dw->word_form = $word_form;
+                $slovo = $factory->get()->build($point->dw);
+                $member = \Aot\Sviaz\SequenceMember\Word\Base::create($slovo[0]);
+            }
 
             // новый member
             $new_sequence[$key_word] = $member;
@@ -137,23 +143,16 @@ class Aot extends Base
 
     /**
      * Создаем правило
-     * @param Sentence_space_SP_Rel $main_point - главная точка
-     * @param Sentence_space_SP_Rel $depended_point - зависимая точка
-     * @return \Aot\Sviaz\Rule\Base|false
+     * @param \Sentence_space_SP_Rel $main_point - главная точка
+     * @param \Sentence_space_SP_Rel $depended_point - зависимая точка
+     * @param array $roles
+     * @return \Aot\Sviaz\Rule\Base
      */
-    private function createRule($main_point, $depended_point)
+    protected function createRule(\Sentence_space_SP_Rel $main_point, \Sentence_space_SP_Rel $depended_point, array $roles)
     {
-        assert(is_a($main_point, Sentence_space_SP_Rel::class, true));
-        assert(is_a($depended_point, Sentence_space_SP_Rel::class, true));
+        assert(count($roles) === 2);
 
-        $role_main = $role_dep = null;
-
-        // конкретизируем роли главного и зависимого
-        $this->roleSpecification($main_point, $role_main, $role_dep);
-
-        if ($role_main === null || $role_dep === null) {
-            return false;
-        }
+        list($role_main, $role_dep) = $roles;
 
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
@@ -177,13 +176,11 @@ class Aot extends Base
 
     /**
      * Конкретизация роли элемента
-     * @param Sentence_space_SP_Rel $point - зависима или главная точка, не имеет значения
-     * @param $role_main
-     * @param $role_dep
+     * @param \Sentence_space_SP_Rel $point - зависима или главная точка, не имеет значения
+     * @return int[]
      */
-    protected function roleSpecification(Sentence_space_SP_Rel $point, &$role_main, &$role_dep)
+    protected function roleSpecification(\Sentence_space_SP_Rel $point)
     {
-        assert(is_a($point, Sentence_space_SP_Rel::class, true));
         // подлежащее-сказуемое
         if ($point->O === DefinesAot::BASIS_MIVAR) {
             $role_main = RoleRegistry::VESCH;
@@ -238,17 +235,21 @@ class Aot extends Base
             $role_dep = RoleRegistry::SVOISTVO;
         }
 
+        if (!isset($role_main) || !isset($role_dep)) {
+            return [];
+        }
+
+        return [$role_main, $role_dep];
     }
 
     /**
      * Создание связи в пространстве МИСОТ
-     * @param \Aot\Sviaz\Sequence $seq - последовательность
-     * @param array $pair_points - пара связанных точек
-     * @return \Aot\Sviaz\Podchinitrelnaya\Base|false
+     * @param \Aot\Sviaz\Sequence $sequence - последовательность
+     * @param \Sentence_space_SP_Rel[] $pair_points - пара связанных точек
+     * @return \Aot\Sviaz\Podchinitrelnaya\Base
      */
-    private function createSvyaz($seq, array $pair_points)
+    protected function createSvyaz(\Aot\Sviaz\Sequence $sequence, array $pair_points)
     {
-        assert(is_a($seq, \Aot\Sviaz\Sequence::class, true));
         $main_point = $depended_point = null;
         foreach ($pair_points as $key_point => $point) {
             if ($point->direction === 'x') {
@@ -258,38 +259,38 @@ class Aot extends Base
             }
         }
         if ($main_point === null || $depended_point === null) {
-            return false;
+            return null;
         }
 
         // заменяем обычный мембер на мембер с предлогом
         if ($main_point->O === DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
 
-            $this->replaceSequenceMember($seq, $main_point, $depended_point);
-            return false;
+            $this->replaceSequenceMember($sequence, $main_point, $depended_point);
+            return null;
         }
 
+        $main = $sequence[$this->link_kw_member_id[$main_point->kw]];
+        $depended = $sequence[$this->link_kw_member_id[$depended_point->kw]];
 
-        $main = $seq[$this->link_kw_member_id[$main_point->kw]];
-        $depended = $seq[$this->link_kw_member_id[$depended_point->kw]];
-        $rule = $this->createRule($main_point, $depended_point);
-        if ($rule === false) {
-            return false;
+        // конкретизируем роли главного и зависимого
+        $roles = $this->roleSpecification($main_point);
+
+        if (!empty($roles)) {
+            $rule = $this->createRule($main_point, $depended_point, $roles);
+            return \Aot\Sviaz\Podchinitrelnaya\Base::create($main, $depended, $rule, $sequence);
         }
-        return \Aot\Sviaz\Podchinitrelnaya\Base::create($main, $depended, $rule, $seq);
+        return null;
+
     }
 
     /**
      * Замена элемента в последовательности
      * @param \Aot\Sviaz\Sequence $seq
-     * @param Sentence_space_SP_Rel $main_point
-     * @param Sentence_space_SP_Rel $depended_point
+     * @param \Sentence_space_SP_Rel $main_point
+     * @param \Sentence_space_SP_Rel $depended_point
      */
     protected function replaceSequenceMember(\Aot\Sviaz\Sequence $seq, Sentence_space_SP_Rel $main_point, Sentence_space_SP_Rel $depended_point)
     {
-        assert(is_a($seq, \Aot\Sviaz\Sequence::class, true));
-        assert(is_a($main_point, Sentence_space_SP_Rel::class, true));
-        assert(is_a($depended_point, Sentence_space_SP_Rel::class, true));
-
         $factories = \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::getFactories();
         $factory_main = $factories[$this->conformityPartsOfSpeech($main_point->dw->id_word_class)];
         $main_point->dw->word_form = $this->sentence_array[$main_point->kw];
@@ -300,8 +301,12 @@ class Aot extends Base
         $slovo = $factory_depend->get()->build($depended_point->dw);
 
         $replaced_member_id = $this->link_kw_member_id[$depended_point->kw];
-        $member_this_prepose = \Aot\Sviaz\SequenceMember\Word\WordWithPreposition::create($slovo[0], $prepose[0]);
-        $seq[$replaced_member_id] = $member_this_prepose;
+        $member_with_prepose = \Aot\Sviaz\SequenceMember\Word\WordWithPreposition::create($slovo[0], $prepose[0]);
+        $seq[$replaced_member_id] = $member_with_prepose;
+        #TODO: нужно убрать еще и $seq[$replaced_member_id-1] ??
+        if (isset($seq[$replaced_member_id - 1])) {
+            unset($seq[$replaced_member_id - 1]);
+        }
     }
 
     /**
@@ -311,6 +316,7 @@ class Aot extends Base
      */
     protected function conformityPartsOfSpeech($id_part_of_speech_aot)
     {
+        assert(is_int($id_part_of_speech_aot));
         // соответвие id части речи из морфика и в мисоте
         $conformity = [
             1 => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::GLAGOL, // гл
@@ -332,20 +338,20 @@ class Aot extends Base
             # 15 =>\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::, // сокращение
         ];
 
-        assert(!empty($conformity[$id_part_of_speech_aot]));
-
         return $conformity[$id_part_of_speech_aot];
     }
 
     /**
      * Наполнение последовательности связями
      * @param \Aot\Sviaz\Sequence $sequence
-     * @param array $syntax_model
+     * @param \Sentence_space_SP_Rel[] $syntax_model
      */
     protected function fillRelations(\Aot\Sviaz\Sequence $sequence, array $syntax_model)
     {
-        assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
         assert(!empty($syntax_model));
+        foreach ($syntax_model as $point) {
+            assert(is_a($point, \Sentence_space_SP_Rel::class, true));
+        }
 
         $linked_pairs = [];
         foreach ($syntax_model as $key => $point) {
@@ -353,10 +359,30 @@ class Aot extends Base
         }
         foreach ($linked_pairs as $id_pair => $pair_elements) {
             $sviaz = $this->createSvyaz($sequence, $pair_elements);
-            if ($sviaz !== false) {
+            if ($sviaz !== null) {
                 $sequence->addSviaz($sviaz);
             }
         }
+    }
+
+    /**
+     * Собираем новую последовательность
+     * @param \Aot\Sviaz\Sequence $new_sequence
+     * @return \Aot\Sviaz\Sequence
+     */
+    protected function rebuild(\Aot\Sviaz\Sequence $new_sequence)
+    {
+        $rebuilding_sequence = \Aot\Sviaz\Sequence::create();
+        # переносим мемберы
+        foreach ($new_sequence as $member) {
+            $rebuilding_sequence->append($member);
+        }
+        # переносим связи
+        foreach ($new_sequence->getSviazi() as $sviaz) {
+            $rebuilding_sequence->addSviaz($sviaz);
+        }
+
+        return $rebuilding_sequence;
     }
 
 }

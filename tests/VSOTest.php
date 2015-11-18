@@ -299,17 +299,31 @@ class VSOTest extends \AotTest\AotDataStorage
      */
     private function getSentenceArrayBySequence($sequence)
     {
+//        $sentence_array = [];
+//        foreach ($sequence as $member) {
+//            if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
+//                /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
+//            } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
+//                /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
+//                $sentence_array[] = $member->getSlovo()->getText();
+//                $hash_member = spl_object_hash($member);
+//                $initial_form_member = $member->getSlovo()->getInitialForm();
+//                // начальная форма - хэш объекта - объект
+//                $this->cache_nf_member[$initial_form_member][$hash_member] = $member;
+//            }
+//        }
+//        return $sentence_array;
         $sentence_array = [];
         foreach ($sequence as $member) {
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
                 /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
+            } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
+                /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
+                $sentence_array[] = $member->getPredlog()->getText();
+                $sentence_array[] = $member->getSlovo()->getText();
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
                 $sentence_array[] = $member->getSlovo()->getText();
-                $hash_member = spl_object_hash($member);
-                $initial_form_member = $member->getSlovo()->getInitialForm();
-                // начальная форма - хэш объекта - объект
-                $this->cache_nf_member[$initial_form_member][$hash_member] = $member;
             }
         }
         return $sentence_array;

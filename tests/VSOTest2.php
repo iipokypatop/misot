@@ -12,9 +12,13 @@ class VSOTest extends \AotTest\AotDataStorage
     public function testRunInClass()
     {
         $sequence = $this->getRawSequence();
+        $predlog = \Aot\Sviaz\PreProcessors\Predlog::create();
+        /** @var \Aot\Sviaz\Sequence $sequence */
+        $sequence = $predlog->run($sequence);
+
         $misot_to_aot = \Aot\Sviaz\Processors\Aot::create();
         $new_sequence = $misot_to_aot->run($sequence, []);
-//        \Doctrine\Common\Util\Debug::dump($new_sequence->getSviazi(), 5);
+        \Doctrine\Common\Util\Debug::dump($new_sequence, 4);
     }
 
     /**
