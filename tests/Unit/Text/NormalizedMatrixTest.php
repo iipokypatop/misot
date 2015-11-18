@@ -18,10 +18,6 @@ class NormalizedMatrixTest extends \AotTest\AotDataStorage
 {
     public function testNormalize()
     {
-
-        //todo Чинить ли тест???
-        //$this->markTestSkipped("Тест поломан из-за изменение нормализованной матрицы");
-
         # подменяем поведение метода
         $data = [
             1 => [$this->getUniqueString() => $this->getUniqueString()],
