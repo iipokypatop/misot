@@ -57,8 +57,13 @@ class ParserManager
      * @param $connection_string - строка подключения к БД
      */
 
-    public function __construct($train_system_mode = false, $context = 1, $vl = 1, $origin = "", $connection_string = \Aot\MivarTextSemantic\Constants::DB_MIVAR_INTELLIGENCE)
-    {
+    public function __construct(
+        $train_system_mode = false,
+        $context = 1,
+        $vl = 1,
+        $origin = "",
+        $connection_string = \Aot\MivarTextSemantic\Constants::DB_MIVAR_INTELLIGENCE
+    ) {
         //$this->reg_parser = new RegParser;
         $this->reg_parser = new Text;
         $this->current_dictionary = new DMivarDictionary(array());

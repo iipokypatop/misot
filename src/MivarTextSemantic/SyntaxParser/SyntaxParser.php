@@ -65,12 +65,18 @@ class SyntaxParser extends Module
         $module_node = $this->page->appendChild(new \DOMElement('syntax_parser_module'));
         if (isset($_POST['request'], $_POST['text']) && $_POST['request'] == 'syntax_parser_perfom' && $_POST['request']) {
             $this->syntax_parser_perfom($_POST['text'], $module_node);
-        } else if (isset($_POST['request'], $_POST['text']) && $_POST['request'] == 'syntax_parser_train' && $_POST['request']) {
-            $this->syntax_parser_train($_POST['text'], $module_node);
-        } else if (isset($_POST['request'], $_POST['text']) && $_POST['request'] == 'syntax_parser_wdw' && $_POST['request']) {
-            $this->syntax_parser_wdw($_POST['text'], $module_node);
-        } else if (isset($_POST['request'], $_POST['text']) && $_POST['request'] == 'glossary_parser_perfom' && $_POST['request']) {
-            $this->glossary_parser_perfom($_POST['text'], $module_node);
+        } else {
+            if (isset($_POST['request'], $_POST['text']) && $_POST['request'] == 'syntax_parser_train' && $_POST['request']) {
+                $this->syntax_parser_train($_POST['text'], $module_node);
+            } else {
+                if (isset($_POST['request'], $_POST['text']) && $_POST['request'] == 'syntax_parser_wdw' && $_POST['request']) {
+                    $this->syntax_parser_wdw($_POST['text'], $module_node);
+                } else {
+                    if (isset($_POST['request'], $_POST['text']) && $_POST['request'] == 'glossary_parser_perfom' && $_POST['request']) {
+                        $this->glossary_parser_perfom($_POST['text'], $module_node);
+                    }
+                }
+            }
         }
         //$this->syntax_parser_wdw("Мама мыла раму. Папа рубил брова.", $module_node);
         add_array_to_xml($module_node->appendChild(new \DOMElement('parameter')), $_POST, array('text', 'request'));
@@ -96,8 +102,9 @@ class SyntaxParser extends Module
             $syntax_model = $syntax_parser->create_syntax_model($text);
             if ($syntax_model) {
                 $pic = $graph_viz->createGraphFromDot($graph_viz->makeDot_wdw($syntax_model));
-                if ($pic)
+                if ($pic) {
                     $parent_node->setAttribute('pic', HTTP_ROOT . $pic);
+                }
             }
         }
         return $this;
@@ -125,8 +132,9 @@ class SyntaxParser extends Module
             $parent_node->setAttribute('count_saved_rules', $syntax_parser->count_saved_rules);
             if ($syntax_model) {
                 $pic = $graph_viz->createGraphFromDot($graph_viz->makeDot_wdw($syntax_model));
-                if ($pic)
+                if ($pic) {
                     $parent_node->setAttribute('pic', HTTP_ROOT . $pic);
+                }
             }
 
             /*$xhprof_data = xhprof_disable();
@@ -212,8 +220,9 @@ class SyntaxParser extends Module
 
             if ($glossary_model) {
                 $pic = $graph_viz->createGraphFromDot($graph_viz->makeDot_wdw($glossary_model));
-                if ($pic)
+                if ($pic) {
                     $parent_node->setAttribute('pic', HTTP_ROOT . $pic);
+                }
             }
 
             //$this->view(ROOT_PATH);

@@ -81,16 +81,23 @@ abstract class SyntaxRule
 
         foreach ($point_space->get_space() as $point) {
             if (isset($point->Oz) && $point->Oz == $uuid_rel) {
-                if ($point->kw == $word1->kw)
+                if ($point->kw == $word1->kw) {
                     $save_w1 = false;
-                else if ($point->kw == $word2->kw)
-                    $save_w2 = false;
+                } else {
+                    if ($point->kw == $word2->kw) {
+                        $save_w2 = false;
+                    }
+                }
             }
         }
-        if ($save_w1)
-            $point_space->add_point($word1->create_point_wdwOOz($word1->O, $word1->Oz, $word1->direction, $word1->w->id_sentence));
-        if ($save_w2)
-            $point_space->add_point($word2->create_point_wdwOOz($word2->O, $word2->Oz, $word2->direction, $word2->w->id_sentence));
+        if ($save_w1) {
+            $point_space->add_point($word1->create_point_wdwOOz($word1->O, $word1->Oz, $word1->direction,
+                $word1->w->id_sentence));
+        }
+        if ($save_w2) {
+            $point_space->add_point($word2->create_point_wdwOOz($word2->O, $word2->Oz, $word2->direction,
+                $word2->w->id_sentence));
+        }
         //$this->view($point_space);
         return $point_space;
     }
@@ -109,8 +116,9 @@ abstract class SyntaxRule
             if (isset($dict_word1->parameters[$param])) {
                 if (isset($dict_word2->parameters[$param])) {
                     foreach ($dict_word1->parameters[$param]->id_value_attr as $id_value) {
-                        if (!in_array($id_value, $dict_word2->parameters[$param]->id_value_attr))
+                        if (!in_array($id_value, $dict_word2->parameters[$param]->id_value_attr)) {
                             return false;
+                        }
                     }
                 }
             }
@@ -141,8 +149,9 @@ abstract class SyntaxRule
                     }
                 }
                 foreach ($stop_ps as $sps) {
-                    if ($point_wdw->dw->check_parameter($sps, null, null))
+                    if ($point_wdw->dw->check_parameter($sps, null, null)) {
                         break 3;
+                    }
                 }
             }
         }
@@ -172,8 +181,9 @@ abstract class SyntaxRule
                     }
                 }
                 foreach ($stop_ps as $sps) {
-                    if ($point_wdw->dw->check_parameter($sps, null, null))
+                    if ($point_wdw->dw->check_parameter($sps, null, null)) {
                         break 3;
+                    }
                 }
             }
         }
@@ -208,7 +218,9 @@ abstract class SyntaxRule
                 if (isset($point_wdw->w) && $point_wdw->w->check_word(array(",", "-", "и"))) {
                     $result = true;
                     break 2;
-                } else $result = false;
+                } else {
+                    $result = false;
+                }
             }
         }
         return $result;

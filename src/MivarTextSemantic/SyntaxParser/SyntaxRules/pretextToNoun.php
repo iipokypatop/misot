@@ -1,6 +1,7 @@
 <?php
 
 namespace Aot\MivarTextSemantic\SyntaxParser\SyntaxRules;
+
 use Aot\MivarTextSemantic\MivarSpaceWdwOOz;
 use Aot\MivarTextSemantic\SyntaxParser\SyntaxRule;
 
@@ -11,7 +12,6 @@ use Aot\MivarTextSemantic\SyntaxParser\SyntaxRule;
  * @brief Класс для поиска подлежащего и сказуемого в простом предложении, когда 1 подлежащее и одно или несколько сказуемых
  *
  */
-
 class pretextToNoun extends SyntaxRule
 {
 
@@ -26,11 +26,15 @@ class pretextToNoun extends SyntaxRule
 
             if ($one_wdw->dw->check_parameter(\Aot\MivarTextSemantic\Constants::PREPOSITION_CLASS_ID)) {
                 $pretext = $one_wdw;
-            } else if ($one_wdw->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID) && (!is_null($pretext))) {
-                $hypothesis[] = array('pretext' => $pretext, 'noun' => $one_wdw);
-                $pretext = NULL;
-            } else if (in_array($one_wdw->w->word, array(','))) {
-                $pretext = NULL;
+            } else {
+                if ($one_wdw->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID) && (!is_null($pretext))) {
+                    $hypothesis[] = array('pretext' => $pretext, 'noun' => $one_wdw);
+                    $pretext = null;
+                } else {
+                    if (in_array($one_wdw->w->word, array(','))) {
+                        $pretext = null;
+                    }
+                }
             }
         }
         if (count($hypothesis) > 0) {

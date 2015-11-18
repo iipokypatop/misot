@@ -82,4 +82,28 @@ class RawMemberBuilder
 
         return $sequences;
     }
+
+    /**
+     * @param \Aot\Text\NormalizedMatrix $normalized_matrix
+     * @return \Aot\Sviaz\Sequence[]
+     */
+    public function getRawOneSequence(\Aot\Text\NormalizedMatrix $normalized_matrix)
+    {
+        $sequences = [];
+
+        foreach ($normalized_matrix as $array) {
+
+            $sequences[] = $sequence = \Aot\Sviaz\Sequence::create();
+
+            foreach ($array as $member) {
+
+                $raw_member = $this->build($member);
+
+                $sequence->append($raw_member);
+            }
+            break;
+        }
+
+        return $sequences;
+    }
 }

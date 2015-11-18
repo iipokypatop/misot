@@ -29,9 +29,10 @@ class TextUnit
      * @param $text - текст блока
      */
 
-    public function __construct($index = 0,
-                                $text = "")
-    {
+    public function __construct(
+        $index = 0,
+        $text = ""
+    ) {
         $this->index = (is_integer($index)) ? $index : 0;
         $this->text = (is_string($text)) ? $text : "";
         $this->parse_text($this->text);
@@ -87,8 +88,11 @@ class TextUnit
             $lastMinPoz = $minPoz;
             mb_ereg_search_init($text);
         }
-        if ($length > $poz) $minPoz["rezText"] = trim(mb_strcut($text, $poz));
-        else $minPoz["rezText"] = "";
+        if ($length > $poz) {
+            $minPoz["rezText"] = trim(mb_strcut($text, $poz));
+        } else {
+            $minPoz["rezText"] = "";
+        }
         $obj_text_unit->$array_reg_parts[$lastReg]($minPoz, $lastMinPoz);
         return $obj_text_unit;
     }
@@ -130,8 +134,11 @@ class TextUnit
                 }
             }
         }
-        if ($rez) return array("reg" => $reg, "poz" => $poz, "regText" => $regText, "rezText" => $rezText);
-        else return false;
+        if ($rez) {
+            return array("reg" => $reg, "poz" => $poz, "regText" => $regText, "rezText" => $rezText);
+        } else {
+            return false;
+        }
     }
 
     /**

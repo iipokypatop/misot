@@ -88,7 +88,6 @@ class Processor
     }
 
 
-
     /**
      * @param \Aot\Sviaz\Sequence $sequence
      * @return \Aot\Sviaz\Sequence
@@ -117,6 +116,7 @@ class Processor
             assert(is_a($_rule, \Aot\Sviaz\Rule\Base::class));
         }
 
+
         foreach ($this->processing_engines as $processing_engine) {
             $processing_engine->run($sequence, $rules);
         }
@@ -144,7 +144,7 @@ class Processor
         $new_sviazi = $sviazi;
 
         foreach ($this->post_processing_engines as $engine) {
-            $new_sviazi = $engine->run($new_sviazi);
+            $new_sviazi = $engine->run($sequence, $new_sviazi);
         }
 
         return $new_sviazi;
@@ -163,21 +163,33 @@ class Processor
             assert(is_a($rule, \Aot\Sviaz\Rule\Base::class, true));
         }
 
-        $raw_sequences = $this->raw_member_builder->getRawSequences($normalized_matrix);
+        //todo добавить проверку на аот и мисот
+        if (false) {
+            $raw_sequences = $this->raw_member_builder->getRawSequences($normalized_matrix);
+        } else {
+            $raw_sequences = $this->raw_member_builder->getRawOneSequence($normalized_matrix);
+        }
 
         $sequences = [];
         foreach ($raw_sequences as $index => $raw_sequence) {
 
             $sequence = $this->preProcess($raw_sequence);
 
+
             $this->process(
                 $sequence,
                 $rules
             );
 
+
             $this->postProcess($sequence);
 
             $sequences[] = $sequence;
+
+            //если АОТ
+            if (true) {
+                break;
+            }
 
         }
 
