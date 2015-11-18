@@ -38,6 +38,7 @@ class HomogeneityTest extends \AotTest\AotDataStorage
 
     public function testHomogeneitySupposed()
     {
+        $this->markTestSkipped("очень медленно выполняется. пропускаем..");
         $creator = \Aot\Sviaz\CreateSequenceFromText::create();
         //$creator->convert("По засыпанной красными и жёлтыми листьями дороге в новую деревенскую школу я встретил Сашу, Мишу и тебя.");
         //$creator->convert("Деревья и травы летом и в самом начале осени сочны и свежи.");
