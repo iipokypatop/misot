@@ -10,7 +10,7 @@ namespace Aot\Sviaz\Processors;
 
 use Aot\Sviaz\Sequence;
 
-use Aot\RussianSyntacsis\Predlozhenie\Chasti\Registry as ChastiPredlozhenieRegistry;
+use \Aot\RussianSyntacsis\Sentence\Member\Role\Registry as ChastiPredlozhenieRegistry;
 
 class Misot extends Base
 {
