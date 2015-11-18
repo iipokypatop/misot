@@ -20,7 +20,7 @@ class NormalizedMatrixTest extends \AotTest\AotDataStorage
     {
 
         //todo Чинить ли тест???
-        $this->markTestSkipped("Тест поломан из-за изменение нормализованной матрицы");
+        //$this->markTestSkipped("Тест поломан из-за изменение нормализованной матрицы");
 
         # подменяем поведение метода
         $data = [
@@ -30,7 +30,7 @@ class NormalizedMatrixTest extends \AotTest\AotDataStorage
 
 
         # получаем подделку NormalizedMatrix
-        $normalizedMatrix = $this->getMock(NormalizedMatrix::class, ['register', 'build'], [], '', false);
+        $normalizedMatrix = $this->getMock(NormalizedMatrix::class, ['build'], [], '', false);
 
         $i = RunkitMock::interceptFunction('is_array'); // подменяем функцию
 
@@ -53,35 +53,22 @@ class NormalizedMatrixTest extends \AotTest\AotDataStorage
 
         $matrix_id_mask = [];
         $test_index = 0;
-        $register_value = $this->getUniqueValue();
 
         foreach ($data as $index => $element) {
             if ($index === 1) {
                 foreach ($element as $value) {
-                    $normalizedMatrix
-                        ->expects($this->at($test_index++))
-                        ->method('register')
-                        ->with($value)
-                        ->will($this->returnValue($register_value));
 
-                    $matrix_id_mask[$index][] = $register_value;
+
+                    $matrix_id_mask[$index][] = $value;
 
                 }
             } elseif ($index === 2) {
-                $normalizedMatrix
-                    ->expects($this->at($test_index++))
-                    ->method('register')
-                    ->with($element)
-                    ->will($this->returnValue($register_value));
 
-                $matrix_id_mask[$index][] = $register_value;
+
+                $matrix_id_mask[$index][] = $element;
             }
         }
 
-        $normalizedMatrix
-            ->expects($this->at($test_index++))
-            ->method('build')
-            ->with();
 
 
         $res = PHPUnitHelper::callProtectedMethod($normalizedMatrix, 'normalize', []);
