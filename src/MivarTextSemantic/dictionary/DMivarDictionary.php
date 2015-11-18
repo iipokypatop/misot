@@ -23,11 +23,8 @@ class DMivarDictionary
 
     //Конструктор, выполняет создание объекта класса DOMDocument из массива уникальных слов
     //Вход: массив уникальных слов
-    function __construct(
-        $words_array,
-        $need_forms = false,
-        $connection_string = \Aot\MivarTextSemantic\Constants::DB_CONNECTION
-    ) {
+    function __construct($words_array, $need_forms = false, $connection_string = \Aot\MivarTextSemantic\Constants::DB_CONNECTION)
+    {
         self::$dbconn = pg_connect($connection_string);
         $this->array_words = $words_array;
         $this->array_current_dictionary = $this->get_words($words_array, $need_forms);
@@ -130,9 +127,8 @@ class DMivarDictionary
                 if ($miss_words_predict) {
                     foreach ($miss_words_predict as $word => $dict_words) {
                         $result[$word] = $dict_words;
-                        foreach ($dict_words as $dict_word) {
+                        foreach ($dict_words as $dict_word)
                             $result[$word]['id_word_classes'][$dict_word['id_word_class']] = $dict_word['id_word_class'];
-                        }
                         $result[$word]['initial_forms'][$dict_word['initial_form']] = $dict_word['initial_form'];
                     }
                 }
@@ -154,20 +150,18 @@ class DMivarDictionary
                                     $param['short_value'],
                                     isset($param['value']) ? $param['value'] : array());
                             }
-                            $dw = new Dw ($dw['id_word_form'],
+                            $dw = new \DictionaryWord($dw['id_word_form'],
                                 $dw['word_form'],
                                 $dw['initial_form'],
                                 $dw['id_word_class'],
                                 $dw['name_word_class'],
                                 $dw['parametrs']);
-                        } else {
-                            if (isset($dw['id_word_form'])) {
-                                $dw = new Dw ($dw['id_word_form'],
-                                    $dw['word_form'],
-                                    $dw['initial_form'],
-                                    $dw['id_word_class'],
-                                    $dw['name_word_class']);
-                            }
+                        } else if (isset($dw['id_word_form'])) {
+                            $dw = new \DictionaryWord($dw['id_word_form'],
+                                $dw['word_form'],
+                                $dw['initial_form'],
+                                $dw['id_word_class'],
+                                $dw['name_word_class']);
                         }
                     }
                 }
@@ -195,9 +189,8 @@ class DMivarDictionary
         foreach ($parameters as $param) {
             if (isset($dict_word1['parametrs'][$param], $dict_word2['parametrs'][$param])) {
                 foreach ($dict_word1['parametrs'][$param]['id_value_attr'] as $id_value) {
-                    if (!in_array($id_value, $dict_word2['parametrs'][$param]['id_value_attr'])) {
+                    if (!in_array($id_value, $dict_word2['parametrs'][$param]['id_value_attr']))
                         return false;
-                    }
                 }
             }
         }

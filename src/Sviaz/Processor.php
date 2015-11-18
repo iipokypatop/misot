@@ -193,6 +193,17 @@ class Processor
 
         }
 
+        usort ($sequences, '\Aot\Sviaz\Processor::sortSequences');
         return $sequences;
+    }
+
+    protected function sortSequences(\Aot\Sviaz\Sequence $a, \Aot\Sviaz\Sequence $b)
+    {
+        $a_count_sviaz=count($a->getSviazi());
+        $b_count_sviaz=count($b->getSviazi());
+        if ($a_count_sviaz === $b_count_sviaz) {
+            return 0;
+        }
+        return ($a_count_sviaz > $b_count_sviaz) ? -1 : 1;
     }
 }

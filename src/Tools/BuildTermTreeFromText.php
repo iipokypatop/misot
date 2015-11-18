@@ -49,20 +49,23 @@ class BuildTermTreeFromText
                     $tmpl_definitions = [];
                     foreach ($terms as $term) {
                         $concept = $term->getConcept();
-                        if (static::checkConcept($concept, $true_concepts)) {
-                            static::fillState();
+                        $tmpl_concept = [];
+                        if (!is_null($concept)) {
+                            if (static::checkConcept($concept, $true_concepts)) {
+                                static::fillState();
+                            }
+                            $tmpl_concept[] = static::fillTemplate(
+                                $concept->getDescription(),
+                                $term->getDefinition(),
+                                static::cutState('concept'),
+                                []
+                            );
                         }
-                        $tmpl_concept = static::fillTemplate(
-                            $concept->getDescription(),
-                            $term->getDefinition(),
-                            static::cutState('concept'),
-                            []
-                        );
                         $tmpl_definitions[] = static::fillTemplate(
                             $term->getDefinition(),
                             $initial_form,
                             static::cutState('term'),
-                            [$tmpl_concept]
+                            $tmpl_concept
                         );
                     }
                     $tmpl_initial_forms[] = static::fillTemplate(

@@ -22,6 +22,9 @@ class Aot extends Base
 
     public function run(\Aot\Sviaz\Sequence $sequence, array $rules)
     {
+        $this->cache_nf_member = [];
+        $this->cache_z_hash_member2 = [];
+        $this->sequence = null;
         assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
         $this->sequence = $sequence;
 
@@ -232,6 +235,14 @@ class Aot extends Base
         foreach ($sequence as $member) {
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
                 /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
+            } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
+                /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
+                $sentence_array[] = $member->getPredlog()->getText();
+                $sentence_array[] = $member->getSlovo()->getText();
+                $hash_member = spl_object_hash($member);
+                $initial_form_member = $member->getSlovo()->getInitialForm();
+                // начальная форма - хэш объекта - объект
+                $this->cache_nf_member[$initial_form_member][$hash_member] = $member;
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
                 $sentence_array[] = $member->getSlovo()->getText();

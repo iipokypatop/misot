@@ -1,13 +1,12 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: admin
+ * User: s.kharchenko
  * Date: 27/07/15
  * Time: 20:45
  */
 
 namespace Aot\Text\TextParser\Replacement;
-
 
 abstract class Base
 {
@@ -31,6 +30,11 @@ abstract class Base
         return new static($registry, $logger);
     }
 
+    /**
+     * Base constructor.
+     * @param \Aot\Text\TextParser\Registry $registry
+     * @param \Aot\Text\TextParser\Logger $logger
+     */
     public function __construct(\Aot\Text\TextParser\Registry $registry, \Aot\Text\TextParser\Logger $logger)
     {
         $this->registry = $registry;
@@ -53,6 +57,7 @@ abstract class Base
     }
 
     /**
+     * Вставка шаблона
      * @param $preg_replace_matches
      * @return null
      */
@@ -68,7 +73,6 @@ abstract class Base
 
             if ($preg_replace_matches[2] === '.') {
                 $record_replace .= '.';
-//                $preg_replace_matches[2] = '.';
             }
             $index = $this->registry->add($record_replace);
 
@@ -89,8 +93,16 @@ abstract class Base
         return $this->format($index);
     }
 
-    protected function format($index, $sides = [])
+    /**
+     * Вставка в строку символов, указывающих на замененные элементы
+     * @param integer $index
+     * @param array $sides
+     * @return string
+     */
+    protected function format($index, array $sides = [])
     {
+        assert(is_int($index));
+
         if (empty($sides)) {
             return static::START . $index . static::END;
         }
@@ -99,6 +111,7 @@ abstract class Base
     }
 
     /**
+     * Получение шаблонов для замены
      * @return array
      */
     abstract protected function getPatterns();

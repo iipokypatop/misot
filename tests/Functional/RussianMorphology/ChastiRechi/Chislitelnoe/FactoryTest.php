@@ -8,9 +8,6 @@
 
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Chislitelnoe;
 
-
-use Aot\MivarTextSemantic\Dw;
-use Aot\MivarTextSemantic\Word;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Factory;
 use AotTest\AotDataStorage;
 use MivarTest\PHPUnitHelper;
@@ -97,9 +94,12 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         // создаем новый аттрибут
+
         $point->dw->parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID] = new MorphAttribute();
         // подменяем род на несуществующий
         $point->dw->parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID]->id_value_attr = [111 => 111];
+        $point->dw->parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID]->id_morph_attr = \Aot\MivarTextSemantic\Constants::NUMBER_ID;
+
         try{
             $result = $this->buildFactory($point);
             $this->fail("Не должно было тут быть!");
@@ -352,7 +352,7 @@ class FactoryTest extends AotDataStorage
     {
         //var_export($point);die;
 
-        $dw = new Dw(
+        $dw = new \DictionaryWord(
             $point->dw->id_word_form,
             $point->dw->initial_form,
             $point->dw->initial_form,
@@ -361,12 +361,7 @@ class FactoryTest extends AotDataStorage
             $point->dw->parameters
         );
 
-        $word = new Word(
-            $point->kw,
-            $point->dw->initial_form,
-            $point->id_sentence
-        );
-        return Factory::get()->build($dw, $word);
+        return Factory::get()->build($dw);
     }
 
 }
