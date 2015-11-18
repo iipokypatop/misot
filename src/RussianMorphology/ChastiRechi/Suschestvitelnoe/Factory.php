@@ -27,8 +27,6 @@ use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Perv
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Tretie;
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Vtoroe;
 
-use Aot\MivarTextSemantic\Dw;
-use Aot\MivarTextSemantic\Word;
 
 
 /**
@@ -40,16 +38,15 @@ use Aot\MivarTextSemantic\Word;
 class Factory extends \Aot\RussianMorphology\Factory
 {
     /**
-     * @param Dw $dw
-     * @param Word $word
+     * @param \DictionaryWord $dw
      * @return static
      * @throws \Exception
      */
-    public function build(Dw $dw, Word $word)
+    public function build(\DictionaryWord $dw)
     {
         $text = $dw->word_form;
         $words = [];
-        if (isset($word->word) && intval($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID) {
+        if (intval($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID) {
             # одушевленность
             $odushevlyonnost = $this->getOdushevlennost($dw->parameters);
 
