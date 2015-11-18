@@ -1,0 +1,115 @@
+@startuml
+
+namespace Sentence{
+
+    class Sentence{
+        #simple_sentences = []
+        #members = []
+        #relations =[]
+        --
+        +cretate()
+        --
+        +addSimpleSentence()
+        +addMember()
+        +addRelation()
+        +getSimpleSentences()
+        +getMembers()
+        +getRelations()
+    }
+
+
+    namespace Member{
+        abstract class Base{
+            #text :string
+            +setText()
+            +getText()
+        }
+        class Punctuation extends Base{
+            +cretate()
+        }
+        class Word extends Base{
+            #role
+            --
+            +cretate()
+            --
+            +getRole()
+            +setRole()
+        }
+
+        class Relation{
+            #main
+            #depended
+            +cretate()
+        }
+
+
+        namespace Role{
+            abstract class Base
+            class Podlezhachee extends Base
+            class Skazuemoe extends Base
+            class Opredelenie extends Base
+            class Dopolnenie extends Base
+            class Obstoyatelstvo extends Base
+
+        }
+
+
+
+        Sentence.Member.Word "1" <-- "1" Sentence.Member.Role.Base
+        Sentence.Member.Relation *-- Sentence.Member.Word
+        Sentence.Member.Relation *-- Sentence.Member.Word
+    }
+
+
+
+    namespace SimpleSentence{
+        class SimpleSentence{
+            #members = []
+            #type
+            --
+            +cretate()
+            --
+            +addMember()
+            +getMembers()
+            +getType()
+            +setType()
+        }
+
+        namespace Type{
+            abstract class Base{
+                #description :string
+                +getDescription()
+                +setDescription()
+            }
+                class Difficult extends Base{
+                    #depended_sub_sentences=[]
+                    #main_sub_sentences=[]
+                    --
+                    +create()
+                    --
+                    +addMainSimpleSentence()
+                    +addDependedSimpleSentence()
+                    +getMainSimpleSentences()
+                    +getDependedSimpleSentences()
+                }
+        }
+
+
+        Sentence.SimpleSentence.SimpleSentence "1" <-- "1" Sentence.SimpleSentence.Type.Base
+        Sentence.SimpleSentence.SimpleSentence *-- Sentence.Member.Base
+
+
+    }
+
+    Sentence.Sentence *-- Sentence.Member.Relation
+    Sentence.Sentence *-- Sentence.Member.Base
+
+    Sentence.Sentence "1" *-- "1..M" Sentence.SimpleSentence.SimpleSentence
+
+    class Sentence.Sentence
+    note right: Класс такого понятия, как предложение. \nОн может включать в себя неограниченное число\nподпредложений (составные части сложного предложения)
+
+}
+
+
+@enduml

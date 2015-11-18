@@ -379,7 +379,7 @@ class Base
     {
         assert(is_int($chast_id));
 
-        if (empty(\Aot\RussianSyntacsis\Predlozhenie\Chasti\Registry::getClasses()[$chast_id])) {
+        if (empty(\Aot\RussianSyntacsis\Sentence\Member\Role\Registry::getClasses()[$chast_id])) {
             throw new \RuntimeException("unsupported chast predlozhenya id = " . var_export($chast_id, 1));
         }
 

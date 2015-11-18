@@ -10,7 +10,7 @@ namespace Aot\Sviaz\Rule\AssertedMember\Builder;
 
 use Aot\RussianMorphology\ChastiRechi\MorphologyRegistry;
 use Aot\Sviaz\Rule\AssertedMember\Checker\Registry as MemberCheckerRegistry;
-use Aot\RussianSyntacsis\Predlozhenie\Chasti\Registry as ChastiPredlozhenieRegistry;
+use \Aot\RussianSyntacsis\Sentence\Member\Role\Registry as ChastiPredlozhenieRegistry;
 
 
 abstract class Base
