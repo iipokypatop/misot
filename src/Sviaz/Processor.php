@@ -163,12 +163,7 @@ class Processor
             assert(is_a($rule, \Aot\Sviaz\Rule\Base::class, true));
         }
 
-        //todo добавить проверку на аот и мисот
-        if (false) {
-            $raw_sequences = $this->raw_member_builder->getRawSequences($normalized_matrix);
-        } else {
-            $raw_sequences = $this->raw_member_builder->getRawOneSequence($normalized_matrix);
-        }
+        $raw_sequences = $this->raw_member_builder->getRawSequences($normalized_matrix);
 
         $sequences = [];
         foreach ($raw_sequences as $index => $raw_sequence) {
@@ -185,22 +180,16 @@ class Processor
             $this->postProcess($sequence);
 
             $sequences[] = $sequence;
-
-            //если АОТ
-            if (true) {
-                break;
-            }
-
         }
 
-        usort ($sequences, '\Aot\Sviaz\Processor::sortSequences');
+        usort($sequences, [\Aot\Sviaz\Processor::class, 'sortSequences']);
         return $sequences;
     }
 
     protected function sortSequences(\Aot\Sviaz\Sequence $a, \Aot\Sviaz\Sequence $b)
     {
-        $a_count_sviaz=count($a->getSviazi());
-        $b_count_sviaz=count($b->getSviazi());
+        $a_count_sviaz = count($a->getSviazi());
+        $b_count_sviaz = count($b->getSviazi());
         if ($a_count_sviaz === $b_count_sviaz) {
             return 0;
         }
