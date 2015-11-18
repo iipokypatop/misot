@@ -6,22 +6,18 @@
 
 namespace Aot\RussianMorphology\ChastiRechi\Pristavka;
 
-use Aot\MivarTextSemantic\Dw;
-use Aot\MivarTextSemantic\Word;
-
 class Factory extends \Aot\RussianMorphology\Factory
 {
     /**
-     * @param Dw $dw
-     * @param Word $word
+     * @param \DictionaryWord $dw
      * @return \Aot\RussianMorphology\ChastiRechi\Pristavka\Base[]
      */
-    public function build(Dw $dw, Word $word)
+    public function build(\DictionaryWord $dw)
     {
         $text = $dw->word_form;
         $words = [];
 
-        if (isset($word->word) && intval($dw->id_word_class) === 999) {
+        if (intval($dw->id_word_class) === 999) {
             $words[] = $word = Base::create($text);
             $word->setInitialForm($dw->initial_form);
         }

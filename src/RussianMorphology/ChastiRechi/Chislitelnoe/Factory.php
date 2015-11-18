@@ -39,22 +39,19 @@ use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Kolichestvenni
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Poryadkoviy;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Null as NullVid;
 
-use Aot\MivarTextSemantic\Dw;
-use Aot\MivarTextSemantic\Word;
 class Factory extends \Aot\RussianMorphology\Factory
 {
 
     /**
-     * @param Dw $dw
-     * @param Word $word
+     * @param \DictionaryWord $dw
      * @return \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base[]
      */
-    public function build(Dw $dw, Word $word)
+    public function build(\DictionaryWord $dw)
     {
         $text = $dw->word_form;
         $words = [];
 
-        if (isset($word->word) && intval($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::NUMERAL_CLASS_ID) {
+        if (intval($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::NUMERAL_CLASS_ID) {
 
             # вид
             $vid = $this->getVid($dw->parameters);

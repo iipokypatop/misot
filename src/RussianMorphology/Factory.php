@@ -78,7 +78,7 @@ abstract class Factory
                 foreach ($factory_list as $factory) {
                     $slova[$index] = array_merge(
                         $slova[$index],
-                        $factory->build($point->dw, $point->w)
+                        $factory->build($point->dw)
                     );
                 }
             }
@@ -112,7 +112,7 @@ abstract class Factory
     }
 
 
-    abstract public function build(Dw $dw, Word $word);
+    abstract public function build(\DictionaryWord $dw);
 }
 
 class FactoryException extends \RuntimeException
