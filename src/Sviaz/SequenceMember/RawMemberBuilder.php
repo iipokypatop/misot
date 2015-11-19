@@ -11,6 +11,7 @@ namespace Aot\Sviaz\SequenceMember;
 
 class RawMemberBuilder
 {
+    const MAX_MEMORY_USAGE = 2E9;
     /**
      * MemberBuilder constructor.
      */
@@ -35,15 +36,11 @@ class RawMemberBuilder
      */
     public function getRawSequences(\Aot\Text\NormalizedMatrix $normalized_matrix)
     {
-        $sequences = [];
-
-        $tmpl = \Aot\Sviaz\Sequence::create();
-
-        $renderer = \Aot\Sviaz\SequenceMember\Render::create();
-        $normalized_matrix->recreateMatrix($renderer);
-
+        $normalized_matrix->recreateMatrix(\Aot\Sviaz\SequenceMember\Render::create());
         $normalized_matrix->build();
 
+        $sequences = [];
+        $tmpl = \Aot\Sviaz\Sequence::create();
         foreach ($normalized_matrix->storage as $array) {
 
             $sequences[] = $sequence = clone($tmpl);
@@ -53,7 +50,7 @@ class RawMemberBuilder
             }
         }
 
-        if (memory_get_usage(true) > 2000000000) {
+        if (memory_get_usage(true) > static::MAX_MEMORY_USAGE) {
             static::$for_destructor_of_judy = [];
         }
 
