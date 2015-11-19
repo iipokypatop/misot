@@ -76,12 +76,17 @@ class NormalizedMatrix implements \Iterator
         return $this->increment;
     }
 
-    public function recreateMatrix(callable $callable)
+    /**
+     * @param \Aot\Sviaz\SequenceMember\Render $renderer
+     *
+     * @return void
+     */
+    public function recreateMatrix(\Aot\Sviaz\SequenceMember\Render $renderer)
     {
         $new_matrix_id_mask = [];
         foreach ($this->matrix_id_mask as $k1 => $v1) {
             foreach ($v1 as $k2 => $v2) {
-                $new_matrix_id_mask [$k1][$k2] = $callable($v2);
+                $new_matrix_id_mask [$k1][$k2] = $renderer->run($v2);
             }
         }
 
