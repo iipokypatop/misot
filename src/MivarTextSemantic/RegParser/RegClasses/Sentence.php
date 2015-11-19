@@ -2,6 +2,7 @@
 
 
 namespace Aot\MivarTextSemantic\RegParser\RegClasses;
+
 use Aot\MivarTextSemantic\RegParser\TextUnit;
 
 /**
@@ -21,12 +22,14 @@ class Sentence extends TextUnit
 
     /**< Массив регулярок для разбивки предложения на слова и функция обработки найденных шаблонов */
 
-    protected $array_reg = array("[^А-Яа-яA-Za-z0-9ёЁ_\-]+" => "add_word",
+    protected $array_reg = array(
+        "[^А-Яа-яA-Za-z0-9ёЁ_\-]+" => "add_word",
         "(([0-9]{1,2}\.[0-9]{1,2}\.){0,1}[0-9]{4}(\s)*г\.)" => "add_date",
         "(([А-Я]\.(\s)*){0,1}[А-Я]\.(\s)*[А-Я][а-яё]*)" => "add_name",
         "((\s)*[\(\),:;«»\[\]](\s)*)" => "add_stop",
         "((\s)+[\–\-](\s)+)" => "add_stop",
-        "[А-Яа-яA-Za-z0-9ёЁ_\-]+\.(\s)+" => "add_cut");
+        "[А-Яа-яA-Za-z0-9ёЁ_\-]+\.(\s)+" => "add_cut"
+    );
 
     /**
      * @brief Конструктор класса
@@ -35,10 +38,11 @@ class Sentence extends TextUnit
      * @param $endchar - cимвол конца предложения
      */
 
-    public function __construct($index = 0,
-                                $text = "",
-                                $endchar = "")
-    {
+    public function __construct(
+        $index = 0,
+        $text = "",
+        $endchar = ""
+    ) {
         $this->endchar = (is_string($endchar)) ? $endchar : "";
         $this->id_sentence = uniqid('', true);
         parent::__construct($index,
@@ -55,8 +59,9 @@ class Sentence extends TextUnit
     {
         $result = array();
         foreach ($this->items as $word) {
-            if (!$word->has_flag())
+            if (!$word->has_flag()) {
                 $result[$word->text] = $word->text;
+            }
         }
         return $result;
     }
@@ -104,8 +109,9 @@ class Sentence extends TextUnit
 
     private function add_data($minPoz, $lastMinPoz, $type)
     {
-        if (!isset($lastMinPoz["regText"]))
+        if (!isset($lastMinPoz["regText"])) {
             $lastMinPoz["regText"] = "";
+        }
         $lastMinPoz["regText"] = trim($lastMinPoz["regText"]);
         $this->items[] = new \Aot\MivarTextSemantic\RegParser\RegClasses\Word(count($this->items),
             $lastMinPoz["regText"],
@@ -173,8 +179,9 @@ class Sentence extends TextUnit
     {
         $result = array();
         if (mb_ereg("[А-ЯЁ_\-]+", $text, $regText) && $regText[0] == $text) {
-            if (!in_array($text, array('Я', 'У', 'С', 'К', 'О', 'В')))
+            if (!in_array($text, array('Я', 'У', 'С', 'К', 'О', 'В'))) {
                 $result['abbr'] = true;
+            }
         }
         return $result;
     }

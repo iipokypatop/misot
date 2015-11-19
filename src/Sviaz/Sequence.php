@@ -8,15 +8,20 @@
 
 namespace Aot\Sviaz;
 
+use Aot\Sviaz\Homogeneity\Homogeneity;
 
 class Sequence extends \Judy
 {
 
     protected $id;
-    /**
-     * @var \Aot\Sviaz\SubSequence[]
-     */
+    /** @var \Aot\Sviaz\SubSequence[] */
     protected $sub_sequences = [];
+    /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] */
+    protected $sviazi = [];
+    /** @var \Aot\Sviaz\Homogeneity\Homogeneity[] */
+    protected $homogeneities = [];
+    /** @var \Aot\Sviaz\PreProcessors\HomogeneitySupposed[] */
+    protected $array_homogeneity_supposed = [];
 
     /**
      * @return SubSequence[]
@@ -25,7 +30,6 @@ class Sequence extends \Judy
     {
         return $this->sub_sequences;
     }
-
 
     public static function create()
     {
@@ -46,11 +50,6 @@ class Sequence extends \Judy
 
         return null;
     }
-
-    /**
-     * @var \Aot\Sviaz\Podchinitrelnaya\Base[]
-     */
-    protected $sviazi = [];
 
     public function addSviaz(\Aot\Sviaz\Podchinitrelnaya\Base $sviaz)
     {
@@ -113,5 +112,86 @@ class Sequence extends \Judy
             $index = $this->last() + 1;
         }
         $this->offsetSet($index, $value);
+    }
+
+    /**
+     * @brief Получить массив гомогенных групп членов предложения
+     *
+     * @return Homogeneity[]
+     */
+    public function getHomogeneities()
+    {
+        return $this->homogeneities;
+    }
+
+    /**
+     * @brief Задать массив гомогенных групп членов предложения
+     *
+     * @param Homogeneity[] $homogeneities
+     */
+    public function setHomogeneities(array $homogeneities)
+    {
+        foreach ($homogeneities as $homogeneity) {
+            assert(is_a($homogeneity, \Aot\Sviaz\Homogeneity\Homogeneity::class), true);
+        }
+        $this->homogeneities = $homogeneities;
+    }
+
+    /**
+     * @brief Добавить одну гомогенную группу членов
+     *
+     * @param Homogeneity $homogeneity
+     */
+    public function addHomogeneity(\Aot\Sviaz\Homogeneity\Homogeneity $homogeneity)
+    {
+        $this->homogeneities[] = $homogeneity;
+    }
+
+    /**
+     * @brief Получить наборы гипотез о гомогенных группах
+     *
+     * @return Homogeneity[]
+     */
+    public function getHomogeneitySupposed()
+    {
+        return $this->array_homogeneity_supposed;
+    }
+
+    /**
+     * @brief Задать массив гипотез о гомогенных группах членов предложений
+     *
+     * @param \Aot\Sviaz\Homogeneity\HomogeneitySupposed[] $homogeneity_supposed
+     */
+    public function setHomogeneitySupposed(array $homogeneity_supposed)
+    {
+        foreach ($homogeneity_supposed as $one_homogeneity_supposed) {
+            assert(is_a($one_homogeneity_supposed, \Aot\Sviaz\Homogeneity\HomogeneitySupposed::class), true);
+        }
+        $this->array_homogeneity_supposed = $homogeneity_supposed;
+    }
+
+    /**
+     * @brief Добавить одну гипотезу о гомогенной группе членов предложения
+     *
+     * @param \Aot\Sviaz\Homogeneity\HomogeneitySupposed $hypothesis_of_homogeneity
+     */
+    public function addHypothesisSupposed(\Aot\Sviaz\Homogeneity\HomogeneitySupposed $hypothesis_of_homogeneity)
+    {
+        $this->array_homogeneity_supposed[] = $hypothesis_of_homogeneity;
+    }
+
+    /**
+     * @brief Получить member по номеру позиции в последовательности
+     *
+     * @param int $position
+     * @return \Aot\Sviaz\SequenceMember\Base|Null
+     */
+    public function getMemberByPosition($position)
+    {
+        assert(is_int($position));
+        if (array_key_exists($position, $this)) {
+            return $this[$position];
+        }
+        return null;
     }
 }

@@ -2,6 +2,7 @@
 
 
 namespace Aot\MivarTextSemantic\RegParser\RegClasses;
+
 use Aot\MivarTextSemantic\RegParser\TextUnit;
 
 /**
@@ -27,10 +28,11 @@ class Part extends TextUnit
      * @param $number - номер части
      */
 
-    public function __construct($index = 0,
-                                $text = "",
-                                $number = null)
-    {
+    public function __construct(
+        $index = 0,
+        $text = "",
+        $number = null
+    ) {
         $this->number = (is_string($number)) ? $number : null;
         parent::__construct($index,
             $text);
@@ -96,8 +98,9 @@ class Part extends TextUnit
     {
 
         if ($minPoz["rezText"]) {
-            if (!isset($minPoz["regText"]))
+            if (!isset($minPoz["regText"])) {
                 $minPoz["regText"] = "";
+            }
             $this->items[] = new Paragraph(count($this->items),
                 $minPoz["rezText"] . mb_substr($minPoz["regText"], 0, 1, 'UTF-8'));
         }

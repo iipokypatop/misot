@@ -90,6 +90,7 @@ class Processor
     }
 
 
+
     /**
      * @param \Aot\Sviaz\Sequence $sequence
      * @return \Aot\Sviaz\Sequence
@@ -145,7 +146,7 @@ class Processor
         $new_sviazi = $sviazi;
 
         foreach ($this->post_processing_engines as $engine) {
-            $new_sviazi = $engine->run($new_sviazi);
+            $new_sviazi = $engine->run($sequence, $new_sviazi);
         }
 
         return $new_sviazi;
@@ -184,20 +185,18 @@ class Processor
             break;
         }
 
-        usort($sequences, '\Aot\Sviaz\Processor::sortSequences');
-
         if (memory_get_usage(true) > 2000000000) {
             static::$for_destructor_of_judy = [];
         }
 
-
+        usort($sequences, [\Aot\Sviaz\Processor::class, 'sortSequences']);
         return $sequences;
     }
 
     protected function sortSequences(\Aot\Sviaz\Sequence $a, \Aot\Sviaz\Sequence $b)
     {
-        $a_count_sviaz = count($a->getSviazi());
-        $b_count_sviaz = count($b->getSviazi());
+        $a_count_sviaz=count($a->getSviazi());
+        $b_count_sviaz=count($b->getSviazi());
         if ($a_count_sviaz === $b_count_sviaz) {
             return 0;
         }

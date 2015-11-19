@@ -93,7 +93,7 @@ TEXT;
         );
 
 
-        $ob->run($sviazi);
+        $ob->run($raw_sequence, $sviazi);
     }
 
 
@@ -136,7 +136,7 @@ TEXT;
             ->method('alertUser')
             ->with([$sviazi[1], $sviazi[3], $sviazi[4]]);
 
-        $ob->run($sviazi);
+        $ob->run($raw_sequence, $sviazi);
 
     }
 }

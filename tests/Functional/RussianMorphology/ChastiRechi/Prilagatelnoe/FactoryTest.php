@@ -9,9 +9,6 @@
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Prilagatelnoe;
 
 
-use Aot\MivarTextSemantic\Dw;
-use Aot\MivarTextSemantic\Word;
-
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Factory;
 use MorphAttribute;
 
@@ -111,7 +108,7 @@ class FactoryTest extends \AotTest\AotDataStorage
 
     private function buildFactory($point)
     {
-        $dw = new Dw(
+        $dw = new \DictionaryWord(
             $point->dw->id_word_form,
             $point->dw->initial_form,
             $point->dw->initial_form,
@@ -120,12 +117,7 @@ class FactoryTest extends \AotTest\AotDataStorage
             $point->dw->parameters
         );
 
-        $word = new Word(
-            $point->kw,
-            $point->dw->initial_form,
-            $point->id_sentence
-        );
-        return Factory::get()->build($dw, $word);
+        return Factory::get()->build($dw);
     }
 
     /**
@@ -189,7 +181,9 @@ class FactoryTest extends \AotTest\AotDataStorage
         $point = unserialize($ser);
         $point->id_sentence = '11111';
         $point->dw->parameters[15] = new MorphAttribute();
+        $point->dw->parameters[15]->id_morph_attr = 15;
         $point->dw->parameters[15]->id_value_attr = ['43' => 43];
+        $point->dw->parameters[13]->id_morph_attr = 13;
         $point->dw->parameters[13]->id_value_attr = ['32' => 32, '35' => 35];
         return $point;
     }

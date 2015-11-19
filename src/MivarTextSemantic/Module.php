@@ -25,8 +25,9 @@ abstract class Module
         global $page, $__dom;
         $this->page = $page;
         $this->dom = $__dom;
-        if ($reset)
+        if ($reset) {
             unset($_SESSION[get_class($this)]);
+        }
     }
 
     /**

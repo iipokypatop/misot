@@ -21,10 +21,11 @@ class Duplicate extends Base
     }
 
     /**
+     * @param \Aot\Sviaz\Sequence $sequence
      * @param \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi
      * @return \Aot\Sviaz\Podchinitrelnaya\Base[]|void
      */
-    public function run(array $sviazi)
+    public function run(\Aot\Sviaz\Sequence $sequence, array $sviazi)
     {
         $directions = [];
         foreach ($sviazi as $sviaz) {

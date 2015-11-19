@@ -22,8 +22,10 @@ class RegParser
 
     /**< Массив регулярок для разбивки текста на части и функция обработки найденных шаблонов */
 
-    protected $array_reg_part = array("\n(\s)*\n" => "add_text_unit",
-        "\n(\s)*([0-9]+\.)+" => "add_part_number");
+    protected $array_reg_part = array(
+        "\n(\s)*\n" => "add_text_unit",
+        "\n(\s)*([0-9]+\.)+" => "add_part_number"
+    );
 
     /**< Массив регулярок для разбивки части на абзацы и функция обработки найденных шаблонов */
 
@@ -31,17 +33,21 @@ class RegParser
 
     /**< Массив регулярок для разбивки абзаца на предложения и функция обработки найденных шаблонов */
 
-    protected $array_reg_sentence = array("[\.\?!](\s)+[А-Я]" => "add_sentence",
-        "[\.\?!](\s)*$" => "add_sentence");
+    protected $array_reg_sentence = array(
+        "[\.\?!](\s)+[А-Я]" => "add_sentence",
+        "[\.\?!](\s)*$" => "add_sentence"
+    );
 
     /**< Массив регулярок для разбивки предложения на слова и функция обработки найденных шаблонов */
 
-    protected $array_reg_word = array("[^А-Яа-яA-Za-z0-9ёЁ_\-]+" => "add_word",
+    protected $array_reg_word = array(
+        "[^А-Яа-яA-Za-z0-9ёЁ_\-]+" => "add_word",
         "(([0-9]{1,2}\.[0-9]{1,2}\.){0,1}[0-9]{4}(\s)*г\.)" => "add_date",
         "(([А-Я]\.(\s)*){0,1}[А-Я]\.(\s)*[А-Я][а-яё]*)" => "add_name",
         "((\s)*[\(\),:;«»\[\]](\s)*)" => "add_stop",
         "((\s)+[\–\-](\s)+)" => "add_stop",
-        "[А-Яа-яA-Za-z0-9ёЁ_\-]+\.(\s)+" => "add_cut");
+        "[А-Яа-яA-Za-z0-9ёЁ_\-]+\.(\s)+" => "add_cut"
+    );
 
     /**
      * @brief Метод для парсинга текста по регулярным выражениям
@@ -126,8 +132,11 @@ class RegParser
             $lastReg = $minPoz["reg"];
             $lastMinPoz = $minPoz;
         }
-        if ($length > $poz) $minPoz["rezText"] = trim(mb_strcut($text, $poz));
-        else $minPoz["rezText"] = "";
+        if ($length > $poz) {
+            $minPoz["rezText"] = trim(mb_strcut($text, $poz));
+        } else {
+            $minPoz["rezText"] = "";
+        }
         ParseTextFunctions::$array_reg_parts[$lastReg]($text_unit, $minPoz, $lastMinPoz, $name_unit);
         return $text_unit;
     }
@@ -165,7 +174,10 @@ class RegParser
                 }
             }
         }
-        if ($rez) return array("reg" => $reg, "poz" => $poz, "regText" => $regText, "rezText" => $rezText);
-        else return false;
+        if ($rez) {
+            return array("reg" => $reg, "poz" => $poz, "regText" => $regText, "rezText" => $rezText);
+        } else {
+            return false;
+        }
     }
 }

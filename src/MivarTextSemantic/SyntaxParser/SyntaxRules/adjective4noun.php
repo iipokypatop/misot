@@ -1,6 +1,7 @@
 <?php
 
 namespace Aot\MivarTextSemantic\SyntaxParser\SyntaxRules;
+
 use Aot\MivarTextSemantic\MivarSpaceWdwOOz;
 use Aot\MivarTextSemantic\SyntaxParser\SyntaxRule;
 
@@ -11,7 +12,6 @@ use Aot\MivarTextSemantic\SyntaxParser\SyntaxRule;
  * @brief Класс для поиска прилагательных к существительному
  *
  */
-
 class adjective4noun extends SyntaxRule
 {
 
@@ -35,11 +35,13 @@ class adjective4noun extends SyntaxRule
                 if (!$wordIsPunctuationMark) {
                     $adjArray[] = $one_wdw;
                 }
-            } else if ($one_wdw->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID)) {
-                $hypothesis[] = array('adj' => $adjArray, 'noun' => $one_wdw);
-                $adjArray = array();
             } else {
-                $adjArray = array();
+                if ($one_wdw->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID)) {
+                    $hypothesis[] = array('adj' => $adjArray, 'noun' => $one_wdw);
+                    $adjArray = array();
+                } else {
+                    $adjArray = array();
+                }
             }
         }
 

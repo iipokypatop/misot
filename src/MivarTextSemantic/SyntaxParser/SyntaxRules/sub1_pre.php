@@ -37,8 +37,9 @@ class sub1_pre extends SyntaxRule
         //$this->create_kw_index($wdw);
         $this->sence_filter = $this->similar_filter = false;
         $this->find_points_wdw = $this->find_morph_subject_predicate($wdw);
-        if (isset($this->subject_predicate['subject'], $this->subject_predicate['predicate']))
+        if (isset($this->subject_predicate['subject'], $this->subject_predicate['predicate'])) {
             $result = true;
+        }
         //$this->view($this->subject_predicate);
         return $result;
     }
@@ -59,10 +60,12 @@ class sub1_pre extends SyntaxRule
             $this->set_sub1_pre();
         } // есть однородные подлежащие
 
-        else if (!$this->train_system_mode && isset($this->subject_predicate['subject'], $this->subject_predicate['predicate']) &&
-            count($this->subject_predicate['subject']) > 1 && count($this->subject_predicate['predicate']) >= 1
-        ) {
-            $this->set_sub_pre();
+        else {
+            if (!$this->train_system_mode && isset($this->subject_predicate['subject'], $this->subject_predicate['predicate']) &&
+                count($this->subject_predicate['subject']) > 1 && count($this->subject_predicate['predicate']) >= 1
+            ) {
+                $this->set_sub_pre();
+            }
         }
         //$this->view($this->subject_predicate);
         return $this->syntax_model_rule;
@@ -84,9 +87,15 @@ class sub1_pre extends SyntaxRule
                         //$this->view($this->train_system_mode);
                         $pre_word->O = $sub_word->O = 'subject_predicate';
                         $pre_word->Oz = $sub_word->Oz = $uuid;
-                        $this->syntax_model_rule = $this->set_point_rel($this->syntax_model_rule, $sub_word, $pre_word, $uuid);
-                        if ($this->train_system_mode && !$sub_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID, null, null)) {
-                            $this->syntax_db->add_syntax_relation($sub_word->dw->initial_form, $pre_word->dw->initial_form, UUD_\Aot\MivarTextSemantic\SyntaxParser\Constants::BASIS_MIVAR, \Aot\MivarTextSemantic\Constants::BASIS_MIVAR);
+                        $this->syntax_model_rule = $this->set_point_rel($this->syntax_model_rule, $sub_word, $pre_word,
+                            $uuid);
+                        if ($this->train_system_mode && !$sub_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID,
+                                null, null)
+                        ) {
+                            $this->syntax_db->add_syntax_relation($sub_word->dw->initial_form,
+                                $pre_word->dw->initial_form,
+                                UUD_\Aot\MivarTextSemantic\SyntaxParser\Constants::BASIS_MIVAR,
+                                \Aot\MivarTextSemantic\Constants::BASIS_MIVAR);
                         }
                     }
                 }
@@ -118,16 +127,19 @@ class sub1_pre extends SyntaxRule
                         $sub_word->parameters['similar_parts'] = count($block);
                         //$this->find_points_wdw[$sub_key]->parameters['key_block'] = $key_block;
                         //$this->find_points_wdw[$sub_key]->parameters['similar_parts'] = count($block);
-                        if ($subject_count_dw === null || $subject_count_dw > $sub_word->count_dw)
+                        if ($subject_count_dw === null || $subject_count_dw > $sub_word->count_dw) {
                             $subject_count_dw = $sub_word->count_dw;
+                        }
                         break;
                     }
                 }
                 if ($sub_word->count_dw == 1 && $subject_block === null) {
                     $subject_block = $sub_word->parameters['key_block'];
-                } else if ($sub_word->count_dw == 1 && $subject_block != $sub_word->parameters['key_block']) {
-                    $error = true;
-                    $this->error = 'Разбросанные подлежащие!';
+                } else {
+                    if ($sub_word->count_dw == 1 && $subject_block != $sub_word->parameters['key_block']) {
+                        $error = true;
+                        $this->error = 'Разбросанные подлежащие!';
+                    }
                 }
             }
         }
@@ -145,41 +157,52 @@ class sub1_pre extends SyntaxRule
                     if ($subject_block === $sub_word->parameters['key_block']) {
                         if ($sub_word->parameters['similar_parts'] > 1) {
                             // проверка множественного числа у сказуемого
-                            if ($pre_word->dw->check_parameter(null, \Aot\MivarTextSemantic\Constants::NUMBER_ID, \Aot\MivarTextSemantic\Constants::NUMBER_PLURAL_ID))
+                            if ($pre_word->dw->check_parameter(null, \Aot\MivarTextSemantic\Constants::NUMBER_ID,
+                                \Aot\MivarTextSemantic\Constants::NUMBER_PLURAL_ID)
+                            ) {
                                 $res = true;
-                            //$res = self::combination_subject_predicate($sub_word, $pre_word);
-                            else if ($subject_count_dw == $sub_word->count_dw) {
-                                $res = $this->combination_subject_predicate($sub_word, $pre_word);
+                            } //$res = self::combination_subject_predicate($sub_word, $pre_word);
+                            else {
+                                if ($subject_count_dw == $sub_word->count_dw) {
+                                    $res = $this->combination_subject_predicate($sub_word, $pre_word);
+                                }
                             }
-                        } else if (!$res = $this->combination_subject_predicate($sub_word, $pre_word)) {
-                            //$error = true;
-                            //$sentence['error'] = 'Несогласуется подлежащие и сказуемое!';
-                            continue;
+                        } else {
+                            if (!$res = $this->combination_subject_predicate($sub_word, $pre_word)) {
+                                //$error = true;
+                                //$sentence['error'] = 'Несогласуется подлежащие и сказуемое!';
+                                continue;
+                            }
                         }
                     } //$subject_block == null когда не определился блок с подлежащим однозначно
 
-                    else if ($subject_block === null) {
-                        //dpm($sub_word);
-                        $res = $this->combination_subject_predicate($sub_word, $pre_word);
+                    else {
+                        if ($subject_block === null) {
+                            //dpm($sub_word);
+                            $res = $this->combination_subject_predicate($sub_word, $pre_word);
+                        }
                     }
                     if ($res && ($subject_block === null || ($subject_block == $sub_word->parameters['key_block']))) {
                         $pre_word->O = $sub_word->O = 'subject_predicate';
                         $pre_word->Oz = $sub_word->Oz = $uuid;
 
-                        $this->syntax_model_rule = $this->set_point_rel($this->syntax_model_rule, $sub_word, $pre_word, $uuid);
+                        $this->syntax_model_rule = $this->set_point_rel($this->syntax_model_rule, $sub_word, $pre_word,
+                            $uuid);
 
                         // Если связываем подлежащие из разных блоков необходим смысловой фильтр
 
                         $pre_subject_block[$sub_word->parameters['key_block']] = $sub_word->parameters['key_block'];
-                        if (count($pre_subject_block) > 1)
+                        if (count($pre_subject_block) > 1) {
                             $this->sence_filter = true;
+                        }
 
                         // если есть несколько связанных подлежащих в одном блоке - то проверка однородных членов
 
                         $pre_subjects[$sub_word->kw] = $sub_word->kw;
                         $pre_predicates[$pre_word->kw] = $pre_word->kw;
-                        if (count($pre_subjects) > 1 || count($pre_predicates) > 1)
+                        if (count($pre_subjects) > 1 || count($pre_predicates) > 1) {
                             $this->similar_filter = true;
+                        }
                     }
                 }
             }
@@ -202,13 +225,21 @@ class sub1_pre extends SyntaxRule
 
         // существительное и глагол в третьем лице
         if ($sub_word->dw->id_word_class == \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID && $pre_word->dw->id_word_class == \Aot\MivarTextSemantic\Constants::VERB_CLASS_ID &&
-            (!isset($pre_word->dw->parameters[\Aot\MivarTextSemantic\Constants::PERSON_ID]) || in_array(\Aot\MivarTextSemantic\Constants::PERSON_THIRD_ID, $pre_word->dw->parameters[\Aot\MivarTextSemantic\Constants::PERSON_ID]->id_value_attr))
+            (!isset($pre_word->dw->parameters[\Aot\MivarTextSemantic\Constants::PERSON_ID]) || in_array(\Aot\MivarTextSemantic\Constants::PERSON_THIRD_ID,
+                    $pre_word->dw->parameters[\Aot\MivarTextSemantic\Constants::PERSON_ID]->id_value_attr))
         ) {
             // проверка совпадения рода и числа
-            $res = $this->compare_parameters($sub_word->dw, $pre_word->dw, array(\Aot\MivarTextSemantic\Constants::NUMBER_ID, \Aot\MivarTextSemantic\Constants::GENUS_ID));
+            $res = $this->compare_parameters($sub_word->dw, $pre_word->dw,
+                array(\Aot\MivarTextSemantic\Constants::NUMBER_ID, \Aot\MivarTextSemantic\Constants::GENUS_ID));
         } // местоимение и глагол в нужном лице
-        else if ($sub_word->dw->id_word_class == \Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID && $pre_word->dw->id_word_class == \Aot\MivarTextSemantic\Constants::VERB_CLASS_ID) {
-            $res = $this->compare_parameters($sub_word->dw, $pre_word->dw, array(\Aot\MivarTextSemantic\Constants::NUMBER_ID, \Aot\MivarTextSemantic\Constants::PERSON_ID, \Aot\MivarTextSemantic\Constants::GENUS_ID));
+        else {
+            if ($sub_word->dw->id_word_class == \Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID && $pre_word->dw->id_word_class == \Aot\MivarTextSemantic\Constants::VERB_CLASS_ID) {
+                $res = $this->compare_parameters($sub_word->dw, $pre_word->dw, array(
+                    \Aot\MivarTextSemantic\Constants::NUMBER_ID,
+                    \Aot\MivarTextSemantic\Constants::PERSON_ID,
+                    \Aot\MivarTextSemantic\Constants::GENUS_ID
+                ));
+            }
         }
 
         return $res;
@@ -238,10 +269,21 @@ class sub1_pre extends SyntaxRule
             // проверяем слово на имя существительное в именительном падеже
             // проверяем слово на местоимение в именительном падеже
 
-            if (($point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID, \Aot\MivarTextSemantic\Constants::CASE_ID, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID) ||
-                    ($point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID, \Aot\MivarTextSemantic\Constants::CASE_ID, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID)
-                        && !$point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID, \Aot\MivarTextSemantic\Constants::TYPE_OF_PRONOUN_ID, \Aot\MivarTextSemantic\Constants::PRONOUN_ADJECTIVE_ID))) &&
-                !$this->find_ps_prev($point_word->kw - 1, array(\Aot\MivarTextSemantic\Constants::PREPOSITION_CLASS_ID), array(\Aot\MivarTextSemantic\Constants::VERB_CLASS_ID, \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID, \Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID))
+            if (($point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID,
+                        \Aot\MivarTextSemantic\Constants::CASE_ID,
+                        \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID) ||
+                    ($point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID,
+                            \Aot\MivarTextSemantic\Constants::CASE_ID,
+                            \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID)
+                        && !$point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID,
+                            \Aot\MivarTextSemantic\Constants::TYPE_OF_PRONOUN_ID,
+                            \Aot\MivarTextSemantic\Constants::PRONOUN_ADJECTIVE_ID))) &&
+                !$this->find_ps_prev($point_word->kw - 1, array(\Aot\MivarTextSemantic\Constants::PREPOSITION_CLASS_ID),
+                    array(
+                        \Aot\MivarTextSemantic\Constants::VERB_CLASS_ID,
+                        \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID,
+                        \Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID
+                    ))
             ) {
                 $point_word->ps = 'subject';
                 $sentence_space_SP[$key] = $point_word;
@@ -250,21 +292,29 @@ class sub1_pre extends SyntaxRule
 
             // проверяем слово на глагол
 
-            if ($point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::VERB_CLASS_ID, null, null) && ($point_word->count_dw == 1 ||
-                    !$this->find_ps_prev($point_word->kw - 1, array(\Aot\MivarTextSemantic\Constants::PREPOSITION_CLASS_ID), array(\Aot\MivarTextSemantic\Constants::VERB_CLASS_ID, \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID, \Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID)))
+            if ($point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::VERB_CLASS_ID, null,
+                    null) && ($point_word->count_dw == 1 ||
+                    !$this->find_ps_prev($point_word->kw - 1,
+                        array(\Aot\MivarTextSemantic\Constants::PREPOSITION_CLASS_ID), array(
+                            \Aot\MivarTextSemantic\Constants::VERB_CLASS_ID,
+                            \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID,
+                            \Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID
+                        )))
             ) {
 
                 // инфинитив или нет
                 if (in_array(mb_substr($point_word->w->word, -2, 2, 'utf-8'), array('ть', 'чь')) ||
                     in_array(mb_substr($point_word->w->word, -4, 4, 'utf-8'), array('ться', 'чься'))
-                )
+                ) {
                     continue;
+                }
 
                 $point_word->ps = 'predicate';
                 $sentence_space_SP[$key] = $point_word;
             }
-            if (isset($point_word->ps))
+            if (isset($point_word->ps)) {
                 $this->subject_predicate[$point_word->ps][$key] = $point_word;
+            }
         }
         //$this->view($this->subject_predicate);
         return $sentence_space_SP;
@@ -287,25 +337,34 @@ class sub1_pre extends SyntaxRule
             if (isset($point_word->ps) && $point_word->ps == 'subject' && !$predicate) {
                 $subject++;
                 $subject_bloc[] = $point_word;
-            } else if (isset($point_word->ps) && $point_word->ps == 'subject' && $predicate) {
-                $predicate_blocs[] = $predicate_bloc;
-                $predicate = 0;
-                $subject++;
-                $subject_bloc = array();
-                $subject_bloc[] = $point_word;
-            } else if (isset($point_word->ps) && $point_word->ps == 'predicate' && !$subject) {
-                $predicate++;
-                $predicate_bloc[] = $point_word;
-            } else if (isset($point_word->ps) && $point_word->ps == 'predicate' && $subject) {
-                $subject_blocs[] = $subject_bloc;
-                $subject = 0;
-                $predicate++;
-                $predicate_bloc = array();
-                $predicate_bloc[] = $point_word;
+            } else {
+                if (isset($point_word->ps) && $point_word->ps == 'subject' && $predicate) {
+                    $predicate_blocs[] = $predicate_bloc;
+                    $predicate = 0;
+                    $subject++;
+                    $subject_bloc = array();
+                    $subject_bloc[] = $point_word;
+                } else {
+                    if (isset($point_word->ps) && $point_word->ps == 'predicate' && !$subject) {
+                        $predicate++;
+                        $predicate_bloc[] = $point_word;
+                    } else {
+                        if (isset($point_word->ps) && $point_word->ps == 'predicate' && $subject) {
+                            $subject_blocs[] = $subject_bloc;
+                            $subject = 0;
+                            $predicate++;
+                            $predicate_bloc = array();
+                            $predicate_bloc[] = $point_word;
+                        }
+                    }
+                }
             }
         }
-        if ($subject) $subject_blocs[] = $subject_bloc;
-        else $predicate_blocs[] = $predicate_bloc;
+        if ($subject) {
+            $subject_blocs[] = $subject_bloc;
+        } else {
+            $predicate_blocs[] = $predicate_bloc;
+        }
         return array('subject_block' => $subject_blocs, 'predicate_block' => $predicate_blocs);
     }
 
@@ -319,8 +378,9 @@ class sub1_pre extends SyntaxRule
     protected function is_word_block($key_word, $block)
     {
         foreach ($block as $bl) {
-            if ($bl->kw == $key_word)
+            if ($bl->kw == $key_word) {
                 return true;
+            }
         }
         return false;
     }

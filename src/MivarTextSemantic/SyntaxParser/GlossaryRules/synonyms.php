@@ -1,6 +1,7 @@
 <?php
 
 namespace Aot\MivarTextSemantic\SyntaxParser\GlossaryRules;
+
 use Aot\MivarTextSemantic\MivarSpaceWdwOOz;
 use Aot\MivarTextSemantic\SyntaxParser\SyntaxRule;
 
@@ -11,7 +12,6 @@ use Aot\MivarTextSemantic\SyntaxParser\SyntaxRule;
  * @brief Класс для поиска общего и частного
  *
  */
-
 class synonyms extends SyntaxRule
 {
 
@@ -31,8 +31,9 @@ class synonyms extends SyntaxRule
         $this->wdw = $wdw;
         //$this->create_kw_index($wdw);
         $this->find_points_wdw = $this->find_morph_synonyms($wdw);
-        if (isset($this->synonyms_part_gen['participal_synonym'], $this->synonyms_part_gen['general_synonym']))
+        if (isset($this->synonyms_part_gen['participal_synonym'], $this->synonyms_part_gen['general_synonym'])) {
             $result = true;
+        }
         return $result;
     }
 
@@ -60,7 +61,8 @@ class synonyms extends SyntaxRule
                 if ($part_word->kw != $gen_word->kw) {
                     $gen_word->O = $part_word->O = 'synonym';
                     $gen_word->Oz = $part_word->Oz = $uuid;
-                    $this->syntax_model_rule = $this->set_point_rel($this->syntax_model_rule, $part_word, $gen_word, $uuid);
+                    $this->syntax_model_rule = $this->set_point_rel($this->syntax_model_rule, $part_word, $gen_word,
+                        $uuid);
                 }
             }
         }
@@ -125,7 +127,9 @@ class synonyms extends SyntaxRule
         }
 
         $result_word = array();
-        if (end($sentence_space->get_space())->kw - $from_key - $this->count_pnt($sentence_space, $from_key, array(",", "и")) == $this->count_pnt($sentence_space, $from_key, array(",", "и"))) {
+        if (end($sentence_space->get_space())->kw - $from_key - $this->count_pnt($sentence_space, $from_key,
+                array(",", "и")) == $this->count_pnt($sentence_space, $from_key, array(",", "и"))
+        ) {
 
             if (isset($sentence_space_SP[0]->dw)) {
                 //for ($i=$from_key; $i<count($sentence_space->get_space()); $i++){
@@ -133,13 +137,16 @@ class synonyms extends SyntaxRule
                     if (isset($sentence_space->get_space()[$i])) {
                         $point_word = $sentence_space->get_space()[$i];
                         if (isset($point_word->dw)) {
-                            if ($point_word->dw->check_parameter($sentence_space_SP[0]->dw->id_word_class, null, null)) {
+                            if ($point_word->dw->check_parameter($sentence_space_SP[0]->dw->id_word_class, null,
+                                null)
+                            ) {
                                 if ($this->combination_participant_general($sentence_space_SP[0], $point_word)) {
                                     $point_word->ps = 'general_synonym';
                                     $sentence_space_SP[$i] = $point_word;
                                 }
-                                if (isset($point_word->ps))
+                                if (isset($point_word->ps)) {
                                     $this->synonyms_part_gen[$point_word->ps][$i] = $point_word;
+                                }
                             }
                         }
                     }
@@ -165,9 +172,13 @@ class synonyms extends SyntaxRule
                 isset($par_word->dw->parameters[\Aot\MivarTextSemantic\Constants::CASE_ID]->id_value_attr[\Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID]) && $par_word->dw->parameters[\Aot\MivarTextSemantic\Constants::CASE_ID]->id_value_attr[\Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID] == \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID
             ) {
                 return /*$res =*/
-                    $this->compare_parameters($par_word->dw, $gen_word->dw, array(\Aot\MivarTextSemantic\Constants::NUMBER_ID));
-            } else return /*$res =*/
-                $this->compare_parameters($par_word->dw, $gen_word->dw, array(\Aot\MivarTextSemantic\Constants::NUMBER_ID));
+                    $this->compare_parameters($par_word->dw, $gen_word->dw,
+                        array(\Aot\MivarTextSemantic\Constants::NUMBER_ID));
+            } else {
+                return /*$res =*/
+                    $this->compare_parameters($par_word->dw, $gen_word->dw,
+                        array(\Aot\MivarTextSemantic\Constants::NUMBER_ID));
+            }
         }
         return $res;
     }

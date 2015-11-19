@@ -18,6 +18,7 @@ class SyntaxParserManagerTeacher extends ParserManager
 
     /**< Массив применяемых правил */
 
-    public $array_rule = array('sub_pre_auto'
+    public $array_rule = array(
+        'sub_pre_auto'
     );
 }

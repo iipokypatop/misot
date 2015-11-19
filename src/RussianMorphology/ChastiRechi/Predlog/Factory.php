@@ -12,16 +12,15 @@ use Aot\MivarTextSemantic\Word;
 class Factory extends \Aot\RussianMorphology\Factory
 {
     /**
-     * @param Dw $dw
-     * @param Word $word
+     * @param \DictionaryWord $dw
      * @return \Aot\RussianMorphology\ChastiRechi\Predlog\Base[]
      */
-    public function build(Dw $dw, Word $word)
+    public function build(\DictionaryWord $dw)
     {
         $text = $dw->word_form;
         $words = [];
 
-        if (isset($word->word) && intval($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::PREPOSITION_CLASS_ID) {
+        if (intval($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::PREPOSITION_CLASS_ID) {
             $words[] = $word = \Aot\RussianMorphology\ChastiRechi\Predlog\Base::create($text);
             $word->setInitialForm($dw->initial_form);
         }

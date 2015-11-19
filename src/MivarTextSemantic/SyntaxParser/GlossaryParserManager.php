@@ -15,6 +15,7 @@ class GlossaryParserManager extends ParserManager
     /**< Путь к правилам от директории с абстрактным классом*/
     /**< Массив применяемых правил */
     public $array_rule = array(
-        'par_gen', 'synonyms'
+        'par_gen',
+        'synonyms'
     );
 }

@@ -8,9 +8,6 @@
 
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Chislitelnoe;
 
-
-use Aot\MivarTextSemantic\Dw;
-use Aot\MivarTextSemantic\Word;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Factory;
 use AotTest\AotDataStorage;
 use MivarTest\PHPUnitHelper;
@@ -97,9 +94,12 @@ class FactoryTest extends AotDataStorage
     {
         $point = $this->getPoint(); // берем точку тестовую
         // создаем новый аттрибут
+
         $point->dw->parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID] = new MorphAttribute();
         // подменяем род на несуществующий
         $point->dw->parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID]->id_value_attr = [111 => 111];
+        $point->dw->parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID]->id_morph_attr = \Aot\MivarTextSemantic\Constants::NUMBER_ID;
+
         try{
             $result = $this->buildFactory($point);
             $this->fail("Не должно было тут быть!");
@@ -164,12 +164,30 @@ class FactoryTest extends AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Imenitelnij::class, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Roditelnij::class, \Aot\MivarTextSemantic\Constants::CASE_GENITIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Datelnij::class, \Aot\MivarTextSemantic\Constants::CASE_DATIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Vinitelnij::class, \Aot\MivarTextSemantic\Constants::CASE_ACCUSATIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Tvoritelnij::class, \Aot\MivarTextSemantic\Constants::CASE_INSTRUMENTAL_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Predlozshnij::class, \Aot\MivarTextSemantic\Constants::CASE_PREPOSITIONAL_ID]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Imenitelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Roditelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_GENITIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Datelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_DATIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Vinitelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_ACCUSATIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Tvoritelnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_INSTRUMENTAL_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Predlozshnij::class,
+                \Aot\MivarTextSemantic\Constants::CASE_PREPOSITIONAL_ID
+            ]
         ];
     }
 
@@ -204,8 +222,14 @@ class FactoryTest extends AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Edinstvennoe::class, \Aot\MivarTextSemantic\Constants::NUMBER_SINGULAR_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Mnozhestvennoe::class, \Aot\MivarTextSemantic\Constants::NUMBER_PLURAL_ID]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Edinstvennoe::class,
+                \Aot\MivarTextSemantic\Constants::NUMBER_SINGULAR_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Mnozhestvennoe::class,
+                \Aot\MivarTextSemantic\Constants::NUMBER_PLURAL_ID
+            ]
         ];
     }
 
@@ -241,9 +265,18 @@ class FactoryTest extends AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Muzhskoy::class, \Aot\MivarTextSemantic\Constants::GENUS_MASCULINE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Sredniy::class, \Aot\MivarTextSemantic\Constants::GENUS_NEUTER_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Zhenskiy::class, \Aot\MivarTextSemantic\Constants::GENUS_FEMININE_ID]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Muzhskoy::class,
+                \Aot\MivarTextSemantic\Constants::GENUS_MASCULINE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Sredniy::class,
+                \Aot\MivarTextSemantic\Constants::GENUS_NEUTER_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Zhenskiy::class,
+                \Aot\MivarTextSemantic\Constants::GENUS_FEMININE_ID
+            ]
         ];
     }
 
@@ -319,7 +352,7 @@ class FactoryTest extends AotDataStorage
     {
         //var_export($point);die;
 
-        $dw = new Dw(
+        $dw = new \DictionaryWord(
             $point->dw->id_word_form,
             $point->dw->initial_form,
             $point->dw->initial_form,
@@ -328,12 +361,7 @@ class FactoryTest extends AotDataStorage
             $point->dw->parameters
         );
 
-        $word = new Word(
-            $point->kw,
-            $point->dw->initial_form,
-            $point->id_sentence
-        );
-        return Factory::get()->build($dw, $word);
+        return Factory::get()->build($dw);
     }
 
 }
