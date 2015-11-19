@@ -9,15 +9,10 @@
 namespace AotTest\Functional\RussianMorphology\ChastiRechi\Infinitive;
 
 
-use Aot\MivarTextSemantic\Dw;
 use Aot\MivarTextSemantic\MorphAttribute;
 use Aot\MivarTextSemantic\OldAotConstants;
-use Aot\MivarTextSemanticOldAotConstants;
-use Aot\MivarTextSemantic\Word;
 use Aot\RussianMorphology\ChastiRechi\Infinitive\Factory;
-use Aot\RussianMorphology\FactoryException;
 use MivarTest\PHPUnitHelper;
-
 
 
 class FactoryTest extends \AotTest\AotDataStorage
@@ -45,8 +40,14 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Sovershennyj::class, \Aot\MivarTextSemantic\Constants::VIEW_PERFECTIVE_ID],
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Nesovershennyj::class, \Aot\MivarTextSemantic\Constants::VIEW_IMPERFECT_ID]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Sovershennyj::class,
+                \Aot\MivarTextSemantic\Constants::VIEW_PERFECTIVE_ID
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Nesovershennyj::class,
+                \Aot\MivarTextSemantic\Constants::VIEW_IMPERFECT_ID
+            ]
         ];
     }
 
@@ -82,8 +83,14 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Perehodnyj::class, OldAotConstants::TRANSITIVE()],
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Neperehodnyj::class, OldAotConstants::INTRANSITIVE()]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Perehodnyj::class,
+                OldAotConstants::TRANSITIVE()
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Neperehodnyj::class,
+                OldAotConstants::INTRANSITIVE()
+            ]
         ];
     }
 
@@ -119,8 +126,14 @@ class FactoryTest extends \AotTest\AotDataStorage
     {
         return [
             [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Null::class, -1],
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Vozvratnyj::class, OldAotConstants::RETRIEVABLE()],
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Nevozvratnyj::class, OldAotConstants::IRRETRIEVABLE()]
+            [
+                \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Vozvratnyj::class,
+                OldAotConstants::RETRIEVABLE()
+            ],
+            [
+                \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Nevozvratnyj::class,
+                OldAotConstants::IRRETRIEVABLE()
+            ]
         ];
     }
 
@@ -155,7 +168,7 @@ class FactoryTest extends \AotTest\AotDataStorage
 
     protected function buildFactory($point)
     {
-        $dw = new Dw(
+        $dw = new \DictionaryWord(
             $point->dw->id_word_form,
             $point->dw->initial_form,
             $point->dw->initial_form,
@@ -164,12 +177,7 @@ class FactoryTest extends \AotTest\AotDataStorage
             $point->dw->parameters
         );
 
-        $word = new Word(
-            $point->kw,
-            $point->dw->initial_form,
-            $point->id_sentence
-        );
-        return Factory::get()->build($dw, $word);
+        return Factory::get()->build($dw);
     }
 
     /**

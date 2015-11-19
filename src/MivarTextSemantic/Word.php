@@ -40,19 +40,21 @@ class Word
      * @param $flags - массив флагов слова: array(ключ => значение)
      */
 
-    public function __construct($kw = null,
-                                $word = null,
-                                $id_sentence = null,
-                                $flags = array())
-    {
+    public function __construct(
+        $kw = null,
+        $word = null,
+        $id_sentence = null,
+        $flags = array()
+    ) {
         $this->kw = $kw;
         $this->word = $word;
         $this->id_sentence = $id_sentence;
 
         if (is_array($flags) && $flags) {
             foreach ($flags as $key => $val) {
-                if (property_exists($this, $key))
+                if (property_exists($this, $key)) {
                     $this->$key = $flags[$key];
+                }
             }
         }
     }

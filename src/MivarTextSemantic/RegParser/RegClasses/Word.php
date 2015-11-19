@@ -36,14 +36,16 @@ class Word extends TextUnit
      * @param $flags - массив флагов слова (имя флага => true, если он есть)
      */
 
-    public function __construct($index = 0,
-                                $text = "",
-                                $flags = array())
-    {
+    public function __construct(
+        $index = 0,
+        $text = "",
+        $flags = array()
+    ) {
         if (is_array($flags) && $flags) {
             foreach ($flags as $key => $val) {
-                if (property_exists($this, $key))
+                if (property_exists($this, $key)) {
                     $this->$key = $flags[$key];
+                }
             }
         }
         parent::__construct($index,
@@ -71,8 +73,9 @@ class Word extends TextUnit
     public function has_flag()
     {
         foreach ($this as $key => $val) {
-            if (!in_array($key, array('index', 'text', 'items', 'array_reg')) && $val)
+            if (!in_array($key, array('index', 'text', 'items', 'array_reg')) && $val) {
                 return true;
+            }
         }
         return false;
     }
@@ -87,8 +90,9 @@ class Word extends TextUnit
     {
         $result = array();
         foreach ($this as $key => $val) {
-            if (!in_array($key, array('index', 'text', 'items', 'array_reg')) && $val)
+            if (!in_array($key, array('index', 'text', 'items', 'array_reg')) && $val) {
                 $result[$key] = $val;
+            }
         }
         return $result;
     }

@@ -13,8 +13,6 @@ class PredlogPeredSlovomTest extends \AotTest\AotDataStorage
 {
     public function testExecuteReturns_TRUE()
     {
-
-        //                           src\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base.php
         /** @var  $Suschestvitelnoe \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base */
         $Suschestvitelnoe = $this->getSafeMock(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class);
 
@@ -25,7 +23,7 @@ class PredlogPeredSlovomTest extends \AotTest\AotDataStorage
         $member[] = \Aot\Sviaz\SequenceMember\Word\Base::create($predlog);
         $member[] = \Aot\Sviaz\SequenceMember\Word\Base::create($Suschestvitelnoe);
 
-        $seq = new \Aot\Sviaz\Sequence;
+        $seq = \Aot\Sviaz\Sequence::create();
 
         $seq->append($member[0]);
         $seq->append($member[1]);
@@ -52,7 +50,7 @@ class PredlogPeredSlovomTest extends \AotTest\AotDataStorage
         $member[] = \Aot\Sviaz\SequenceMember\Word\Base::create($Soyuz);
         $member[] = \Aot\Sviaz\SequenceMember\Word\Base::create($Suschestvitelnoe);
 
-        $seq = new \Aot\Sviaz\Sequence;
+        $seq = \Aot\Sviaz\Sequence::create();
 
         $seq->append($member[0]);
         $seq->append($member[1]);

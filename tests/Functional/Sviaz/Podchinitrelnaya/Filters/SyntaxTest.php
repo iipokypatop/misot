@@ -30,7 +30,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
         $this->markTestSkipped("");
 
         //создаём последовательности из тестового примера
-        $sequences = $this->getSviaziForTests();
+        //$sequences = $this->getSequencesForTests();
         //Создаём фильтр
         $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
         //$this->printSviazi($sequences[16]);
@@ -66,7 +66,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
 
         //создаём последовательности из тестового примера
         $number_sequence = 16;
-        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $sequence = $this->getSequencesForTests()[$number_sequence];
         $number_sviaz1 = 3;
         $number_sviaz2 = 0;
         $number_sviaz3 = 0;
@@ -106,7 +106,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
 
         //создаём последовательности из тестового примера
         $number_sequence = 0;
-        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $sequence = $this->getSequencesForTests()[$number_sequence];
         $number_sviaz1 = 5;
         $number_sviaz2 = 6;
         $number_sviaz3 = 7;
@@ -142,7 +142,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
 
         //создаём последовательности из тестового примера
         $number_sequence = 0;
-        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $sequence = $this->getSequencesForTests()[$number_sequence];
         $number_sviaz1 = 5;
         return [
             $sequence[$number_sviaz1]
@@ -175,7 +175,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
 
         //создаём последовательности из тестового примера
         $number_sequence = 16;
-        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $sequence = $this->getSequencesForTests()[$number_sequence];
         $number_sviaz1 = 8;
         $number_sviaz2 = 7;
         $number_sviaz3 = 9;
@@ -217,7 +217,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
 
         //создаём последовательности из тестового примера
         $number_sequence = 16;
-        $sequence = $this->getSviaziForTests()[$number_sequence];
+        $sequence = $this->getSequencesForTests()[$number_sequence];
         $number_sviaz1 = 0;
         $number_sviaz2 = 3;
         $number_sviaz3 = 0;
@@ -257,7 +257,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
     }
 
 
-    public function getSviaziForTests()
+    public function getSequencesForTests()
     {
         //СОздаём процессор
         $processor = \Aot\Sviaz\Processor::createDefault();
