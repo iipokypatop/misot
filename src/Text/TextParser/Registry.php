@@ -35,7 +35,8 @@ class Registry
      */
     public function get($index)
     {
-        if (assert(is_int($index)) && array_key_exists($index, $this->registry)) {
+        assert(is_int($index));
+        if (array_key_exists($index, $this->registry)) {
             return $this->registry[$index];
         }
 

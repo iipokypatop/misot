@@ -82,6 +82,6 @@ class Factory
             );
         }
 
-        throw new \RuntimeException("unsupported Sviaz class " . var_export($type_class, 1));
+        throw new \LogicException("unsupported Sviaz class " . var_export($type_class, 1));
     }
 }
