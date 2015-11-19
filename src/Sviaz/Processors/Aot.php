@@ -125,7 +125,7 @@ class Aot extends Base
         }
         ksort($sorted_points);
 
-        $new_sequence = $this->builder->createNewSequence();
+        $new_sequence = $this->builder->createSequence();
 
         foreach ($this->sentence_array as $key_word => $word_form) {
             // если нет точки для данного слова и она есть в старой последовательности, тогда берем её оттуда
