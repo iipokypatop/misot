@@ -8,8 +8,6 @@
 
 namespace Aot\Sviaz\Processors;
 
-use Aot\Sviaz\Role\Registry as RoleRegistry;
-use DefinesAot;
 use Sentence_space_SP_Rel;
 
 
@@ -50,7 +48,9 @@ class Aot extends Base
         # заполняем её связями
         $this->fillRelations($new_sequence, $syntax_model);
 
-        $rebuilded_sequence = $this->rebuild($new_sequence);
+        # пересобираем последовательность
+        $rebuilded_sequence = $this->builder->rebuildSequence($new_sequence);
+
         return $rebuilded_sequence;
     }
 
@@ -113,7 +113,7 @@ class Aot extends Base
         }
         ksort($sorted_points);
 
-        $new_sequence = $this->builder->getNewSequence();
+        $new_sequence = $this->builder->createNewSequence();
 
         foreach ($this->sentence_array as $key_word => $word_form) {
             // если нет точки для данного слова и она есть в старой последовательности, тогда берем её оттуда
@@ -132,8 +132,8 @@ class Aot extends Base
                 $point = $syntax_model[$first_element_key];
                 // берём форму слова из исходной последовательности
                 $point->dw->word_form = $word_form;
-                $slovo = $factory->get()->build($point->dw);
-                $member = $this->builder->getMemberBySlovo($slovo[0]);
+                $slovo = $factory->build($point->dw);
+                $member = $this->builder->createMemberBySlovo($slovo[0]);
             }
 
             // новый member
@@ -146,138 +146,29 @@ class Aot extends Base
         return $new_sequence;
     }
 
-
     /**
-     * Конкретизация роли элемента
-     * @param \Sentence_space_SP_Rel $point - зависима или главная точка, не имеет значения
-     * @return int[]
-     */
-    protected function roleSpecification(\Sentence_space_SP_Rel $point)
-    {
-        // подлежащее-сказуемое
-        if ($point->O === DefinesAot::BASIS_MIVAR) {
-            $role_main = RoleRegistry::VESCH;
-            $role_dep = RoleRegistry::OTNOSHENIE;
-        } // составное сказуемое
-        elseif ($point->O === DefinesAot::COMPLEX_PREDICATE_MIVAR) {
-            # todo: создание двух связей?
-            $role_main = RoleRegistry::OTNOSHENIE;
-            $role_dep = RoleRegistry::SVOISTVO;
-        } // косвенное дополнение
-        elseif ($point->O === DefinesAot::INDIRECT_OBJECT_MIVAR) {
-            $role_main = RoleRegistry::OTNOSHENIE;
-            $role_dep = RoleRegistry::VESCH;
-        } // прямое дополнение
-        elseif ($point->O === DefinesAot::DIRECT_OBJECT_MIVAR) {
-            $role_main = RoleRegistry::OTNOSHENIE;
-            $role_dep = RoleRegistry::VESCH;
-        } // не + глагол
-        elseif ($point->O === DefinesAot::NEGATIVE_NUMERAL_MIVAR) {
-            $role_main = RoleRegistry::OTNOSHENIE;
-            $role_dep = RoleRegistry::SVOISTVO;
-        } // предлог + существительное
-        elseif ($point->O === DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
-            # todo: создаём member c предлогом WordWithPreposition, по сути эта связь не нужна
-//            $role_main = RoleRegistry::OTNOSHENIE;
-//            $role_dep = RoleRegistry::VESCH;
-        } // словосочетание (кресло директора)
-        elseif ($point->O === DefinesAot::GENITIVE_PHRASE_MIVAR) {
-            $role_main = RoleRegistry::VESCH;
-            $role_dep = RoleRegistry::SVOISTVO;
-        } //  глагол и наречие
-        elseif ($point->O === DefinesAot::ADVERB_PHRASE_MIVAR) {
-            $role_main = RoleRegistry::OTNOSHENIE;
-            $role_dep = RoleRegistry::SVOISTVO;
-        } // крайне редко
-        elseif ($point->O === DefinesAot::ADJECTIVE_PHRASE_MIVAR) {
-            $role_main = RoleRegistry::VESCH;
-            $role_dep = RoleRegistry::SVOISTVO;
-        } // числительные
-        elseif ($point->O === DefinesAot::NUMERAL_PHRASE_MIVAR) {
-            $role_main = RoleRegistry::VESCH;
-            $role_dep = RoleRegistry::SVOISTVO;
-        } elseif ($point->O === DefinesAot::ATTRIBUTE_NOUN_MIVAR) {
-            $role_main = RoleRegistry::VESCH;
-            $role_dep = RoleRegistry::SVOISTVO;
-        } elseif ($point->O === DefinesAot::ADJUNCT_VERB_MIVAR) {
-            $role_main = RoleRegistry::OTNOSHENIE;
-            $role_dep = RoleRegistry::SVOISTVO;
-        } // дядя Ваня
-        elseif ($point->O === DefinesAot::SEMANTIC_COORDINATION_MIVAR) {
-            $role_main = RoleRegistry::VESCH;
-            $role_dep = RoleRegistry::SVOISTVO;
-        }
-
-        if (!isset($role_main) || !isset($role_dep)) {
-            return [];
-        }
-
-        return [$role_main, $role_dep];
-    }
-
-    /**
-     * Создание связи в пространстве МИСОТ
-     * @param \Aot\Sviaz\Sequence $sequence - последовательность
-     * @param \Sentence_space_SP_Rel[] $pair_points - пара связанных точек
-     * @return \Aot\Sviaz\Podchinitrelnaya\Base
-     */
-    protected function createSvyaz(\Aot\Sviaz\Sequence $sequence, array $pair_points)
-    {
-        $main_point = $depended_point = null;
-        foreach ($pair_points as $key_point => $point) {
-            if ($point->direction === 'x') {
-                $main_point = $point;
-            } else {
-                $depended_point = $point;
-            }
-        }
-        if ($main_point === null || $depended_point === null) {
-            return null;
-        }
-
-        // заменяем обычный мембер на мембер с предлогом
-        if ($main_point->O === DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
-
-            $this->replaceSequenceMember($sequence, $main_point, $depended_point);
-            return null;
-        }
-
-        $main = $sequence[$this->link_kw_member_id[$main_point->kw]];
-        $depended = $sequence[$this->link_kw_member_id[$depended_point->kw]];
-
-        // конкретизируем роли главного и зависимого
-        $roles = $this->roleSpecification($main_point);
-
-        if (!empty($roles)) {
-            $rule = $this->builder->createRule($main_point, $depended_point, $roles);
-            return \Aot\Sviaz\Podchinitrelnaya\Base::create($main, $depended, $rule, $sequence);
-        }
-        return null;
-
-    }
-
-
-    /**
-     * Замена элемента в последовательности
+     * Замена элемента в последовательности без предлога на элемент с предлогом
      * @param \Aot\Sviaz\Sequence $seq
-     * @param \Sentence_space_SP_Rel $main_point
-     * @param \Sentence_space_SP_Rel $depended_point
+     * @param \Sentence_space_SP_Rel $prepose_point
+     * @param \Sentence_space_SP_Rel $word_point
      */
-    protected function replaceSequenceMember(\Aot\Sviaz\Sequence $seq, Sentence_space_SP_Rel $main_point, Sentence_space_SP_Rel $depended_point)
+    protected function replaceSequenceMemberToMemberWithPreposition(\Aot\Sviaz\Sequence $seq, Sentence_space_SP_Rel $prepose_point, Sentence_space_SP_Rel $word_point)
     {
-        $factory_main = $this->builder->getFactory($main_point->dw->id_word_class);
-        $main_point->dw->word_form = $this->sentence_array[$main_point->kw];
-        $prepose = $factory_main->get()->build($main_point->dw);
+        $factory_main = $this->builder->getFactory($prepose_point->dw->id_word_class);
+        $prepose_point->dw->word_form = $this->sentence_array[$prepose_point->kw];
+        $prepose = $factory_main->build($prepose_point->dw);
 
-        $factory_depend = $this->builder->getFactory($depended_point->dw->id_word_class);
-        $depended_point->dw->word_form = $this->sentence_array[$depended_point->kw];
-        $slovo = $factory_depend->get()->build($depended_point->dw);
+        $factory_depend = $this->builder->getFactory($word_point->dw->id_word_class);
+        $word_point->dw->word_form = $this->sentence_array[$word_point->kw];
+        $slovo = $factory_depend->build($word_point->dw);
 
-        $replaced_member_id = $this->link_kw_member_id[$depended_point->kw];
+        $replaced_member_id = $this->link_kw_member_id[$word_point->kw];
         $member_with_prepose = \Aot\Sviaz\SequenceMember\Word\WordWithPreposition::create($slovo[0], $prepose[0]);
         $seq[$replaced_member_id] = $member_with_prepose;
-        #TODO: нужно убрать еще и $seq[$replaced_member_id-1] ??
-        if (isset($seq[$replaced_member_id - 1])) {
+
+        // убираем предудыщий элемент, если он есть и является предлогом
+        /** @var \Aot\Sviaz\SequenceMember\Word\Base[] $seq */
+        if (isset($seq[$replaced_member_id - 1]) && is_a($seq[$replaced_member_id - 1]->getSlovo(), \Aot\RussianMorphology\ChastiRechi\Predlog\Base::class, true)) {
             unset($seq[$replaced_member_id - 1]);
         }
     }
@@ -291,7 +182,11 @@ class Aot extends Base
      */
     protected function fillRelations(\Aot\Sviaz\Sequence $sequence, array $syntax_model)
     {
-        assert(!empty($syntax_model));
+
+        if (empty($syntax_model)) {
+            return;
+        }
+
         foreach ($syntax_model as $point) {
             assert(is_a($point, \Sentence_space_SP_Rel::class, true));
         }
@@ -303,84 +198,69 @@ class Aot extends Base
             return;
         }
 
-        foreach ($linked_pairs as $id_pair => $pair_points) {
+        foreach ($linked_pairs as $pair_points) {
 
-            $defined_pair = $this->getMainAndDependPoints($pair_points);
-            if (empty($defined_pair)) {
-                continue;
-            }
 
-            list($main_point, $depended_point) = $defined_pair;
+            $pair_points = array_values($pair_points);
+
+            $main_id = $this->getIdMainPoint($pair_points[0], $pair_points[1]);
+            $depend_id = ($main_id === 0) ? 1 : 0;
+
 
             // заменяем обычный мембер на мембер с предлогом
-            if ($main_point->O === DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
-                $this->replaceSequenceMember($sequence, $main_point, $depended_point);
+            if ($pair_points[$main_id]->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
+                $this->replaceSequenceMemberToMemberWithPreposition($sequence, $pair_points[$main_id], $pair_points[$depend_id]);
                 continue;
             }
 
-            $main = $sequence[$this->link_kw_member_id[$main_point->kw]];
-            $depended = $sequence[$this->link_kw_member_id[$depended_point->kw]];
+            if (empty($sequence[$this->link_kw_member_id[$pair_points[$main_id]->kw]])) {
+                throw new \LogicException('The sequence does not have a member with id = ' . $pair_points[$main_id]->kw);
+            }
+
+            if (empty($sequence[$this->link_kw_member_id[$pair_points[$depend_id]->kw]])) {
+                throw new \LogicException('The sequence does not have a member with id = ' . $pair_points[$depend_id]->kw);
+            }
+
+            $main = $sequence[$this->link_kw_member_id[$pair_points[$main_id]->kw]];
+            $depended = $sequence[$this->link_kw_member_id[$pair_points[$depend_id]->kw]];
+
             // конкретизируем роли главного и зависимого
-            $roles = $this->roleSpecification($main_point);
+            $roles = \Aot\Sviaz\Processors\RoleSpecification::getRoles($pair_points[$main_id]->O);
 
-            if (!empty($roles)) {
-                $rule = $this->builder->createRule($main_point, $depended_point, $roles);
-                $sviaz = $this->builder->createSviaz($main, $depended, $rule, $sequence);
-                $sequence->addSviaz($sviaz);
-            }
+            $main_point_part_of_speech = $this->builder->conformityPartsOfSpeech($pair_points[$main_id]->dw->id_word_class);
+            $depended_point_part_of_speech = $this->builder->conformityPartsOfSpeech($pair_points[$depend_id]->dw->id_word_class);
+            list($main_role, $depended_role) = $roles;
+            $rule = $this->builder->createRule($main_point_part_of_speech, $depended_point_part_of_speech, $main_role, $depended_role);
+            $sviaz = $this->builder->createSviaz($main, $depended, $rule, $sequence);
+            $sequence->addSviaz($sviaz);
+
         }
     }
 
     /**
-     * Получаем главную и зависимую точку из пары
-     * @param \Sentence_space_SP_Rel[] $pair_points
-     * @return \Sentence_space_SP_Rel[]
+     * Получаем id главной точки из пары
+     *
+     * @param \Sentence_space_SP_Rel $first
+     * @param \Sentence_space_SP_Rel $second
+     * @return int
+     * @throws \LogicException
      */
-    protected function getMainAndDependPoints(array $pair_points)
+    protected function getIdMainPoint(\Sentence_space_SP_Rel $first, \Sentence_space_SP_Rel $second)
     {
-        $main_point = $depended_point = null;
-        foreach ($pair_points as $key_point => $point) {
-            if ($point->direction === 'x') {
-                $main_point = $point;
-            } else {
-                $depended_point = $point;
-            }
+        if ($first->direction === 'x') {
+            return 0;
+        } elseif ($second->direction === 'x') {
+            return 1;
+        } else {
+            throw new \LogicException('The pair of elements does not have valid main element');
         }
-        if ($main_point === null || $depended_point === null) {
-            return [];
-        }
-
-        return [$main_point, $depended_point];
-
-    }
-
-    /**
-     * Собираем новую последовательность
-     * @param \Aot\Sviaz\Sequence $new_sequence
-     * @return \Aot\Sviaz\Sequence
-     */
-    protected function rebuild(\Aot\Sviaz\Sequence $new_sequence)
-    {
-        $rebuilding_sequence = \Aot\Sviaz\Sequence::create();
-
-        # переносим мемберы
-        foreach ($new_sequence as $member) {
-            $rebuilding_sequence->append($member);
-        }
-
-        # переносим связи
-        foreach ($new_sequence->getSviazi() as $sviaz) {
-            $rebuilding_sequence->addSviaz($sviaz);
-        }
-
-        return $rebuilding_sequence;
     }
 
     /**
      * @param \Sentence_space_SP_Rel[] $syntax_model
      * @return \Sentence_space_SP_Rel[]
      */
-    private function getLinkedPairs(array $syntax_model)
+    protected function getLinkedPairs(array $syntax_model)
     {
         $linked_pairs = [];
         foreach ($syntax_model as $key => $point) {

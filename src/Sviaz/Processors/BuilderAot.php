@@ -13,7 +13,6 @@ use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
 /**
  * Билдер для процессора Aot
  * Class Builder
- * @package Aot\Sviaz\Processors
  */
 class BuilderAot
 {
@@ -35,6 +34,7 @@ class BuilderAot
 
     /**
      * Получение фабрики по id класса слова
+     *
      * @param int $id_word_class
      * @return \Aot\RussianMorphology\Factory
      */
@@ -45,19 +45,23 @@ class BuilderAot
     }
 
     /**
+     * Создание новой последовательности
+     *
      * @return \Aot\Sviaz\Sequence
      */
-    public function getNewSequence()
+    public function createNewSequence()
     {
         return \Aot\Sviaz\Sequence::create();
     }
 
 
     /**
+     * Создание мембера по слову
+     *
      * @param \Aot\RussianMorphology\Slovo $slovo
      * @return \Aot\Sviaz\SequenceMember\Word\Base
      */
-    public function getMemberBySlovo(\Aot\RussianMorphology\Slovo $slovo)
+    public function createMemberBySlovo(\Aot\RussianMorphology\Slovo $slovo)
     {
         return \Aot\Sviaz\SequenceMember\Word\Base::create($slovo);
     }
@@ -66,36 +70,38 @@ class BuilderAot
      * @param \Aot\RussianMorphology\Slovo $slovo
      * @return \Aot\Sviaz\SequenceMember\Word\Base
      */
-    public function getSlovoByDw(\Aot\RussianMorphology\Slovo $slovo)
+    public function createSlovoByDw(\Aot\RussianMorphology\Slovo $slovo)
     {
         return \Aot\Sviaz\SequenceMember\Word\Base::create($slovo);
     }
 
     /**
      * Создаем правило
-     * @param \Sentence_space_SP_Rel $main_point - главная точка
-     * @param \Sentence_space_SP_Rel $depended_point - зависимая точка
-     * @param array $roles
+     *
+     * @param int $main_point_part_of_speech - главная точка
+     * @param int $depended_point_part_of_speech - зависимая точка
+     * @param int $main_role
+     * @param int $depended_role
      * @return \Aot\Sviaz\Rule\Base
      */
-    public function createRule(\Sentence_space_SP_Rel $main_point, \Sentence_space_SP_Rel $depended_point, array $roles)
+    public function createRule($main_point_part_of_speech, $depended_point_part_of_speech, $main_role, $depended_role)
     {
-        assert(count($roles) === 2);
-
-        list($role_main, $role_dep) = $roles;
-
+        assert(is_int($main_point_part_of_speech));
+        assert(is_int($depended_point_part_of_speech));
+        assert(is_int($main_role));
+        assert(is_int($depended_role));
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
-                        $this->conformityPartsOfSpeech($main_point->dw->id_word_class),
-                        $role_main
+                        $main_point_part_of_speech,
+                        $main_role
                     )
                 )
                 ->depended(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
-                        $this->conformityPartsOfSpeech($depended_point->dw->id_word_class),
-                        $role_dep
+                        $depended_point_part_of_speech,
+                        $depended_role
                     )
                 )
                 ->link(
@@ -117,7 +123,8 @@ class BuilderAot
         \Aot\Sviaz\SequenceMember\Word\Base $main,
         \Aot\Sviaz\SequenceMember\Word\Base $depended,
         \Aot\Sviaz\Rule\Base $rule,
-        \Aot\Sviaz\Sequence $sequence)
+        \Aot\Sviaz\Sequence $sequence
+    )
     {
         return \Aot\Sviaz\Podchinitrelnaya\Base::create($main, $depended, $rule, $sequence);
     }
@@ -125,33 +132,61 @@ class BuilderAot
 
     /**
      * Возвращаем соответствующий id части речи МИСОТа по id части речи АОТа
+     *
      * @param integer $id_part_of_speech_aot
      * @return integer
      */
-    protected function conformityPartsOfSpeech($id_part_of_speech_aot)
+    public function conformityPartsOfSpeech($id_part_of_speech_aot)
     {
         assert(is_int($id_part_of_speech_aot));
         // соответвие id части речи из морфика и в мисоте
         $conformity = [
-            1 => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::GLAGOL, // гл
-            2 => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::SUSCHESTVITELNOE, // сущ
-            3 => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::PRILAGATELNOE, // прил
-            4 => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::MESTOIMENIE, // мест
-            5 => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::PRICHASTIE, // прич
-            6 => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::PREDLOG, // предлог
+            \DefinesAot::VERB_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::GLAGOL, // гл
+            \DefinesAot::NOUN_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::SUSCHESTVITELNOE, // сущ
+            \DefinesAot::ADJECTIVE_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::PRILAGATELNOE, // прил
+            \DefinesAot::PRONOUN_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::MESTOIMENIE, // мест
+            \DefinesAot::COMMUNION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::PRICHASTIE, // прич
+            \DefinesAot::PREPOSITION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::PREDLOG, // предлог
             # в МИСОТе нет
             # 7 =>\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::, // аббревиатура
-            8 => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::SOYUZ, // союз
-            9 => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::CHASTICA, // част
-            10 => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::MEZHDOMETIE, // межд
-            11 => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::DEEPRICHASTIE, // деепр
-            12 => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::NARECHIE, // нар
-            13 => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::INFINITIVE, // инф
-            14 => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::CHISLITELNOE, // числ
+            \DefinesAot::UNION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::SOYUZ, // союз
+            \DefinesAot::PARTICLE_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::CHASTICA, // част
+            \DefinesAot::INTERJECTION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::MEZHDOMETIE, // межд
+            \DefinesAot::PARTICIPLE_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::DEEPRICHASTIE, // деепр
+            \DefinesAot::ADVERB_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::NARECHIE, // нар
+            \DefinesAot::PREDICATIVE_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::INFINITIVE, // инф
+            \DefinesAot::NUMERAL_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::CHISLITELNOE, // числ
             # в МИСОТе нет
             # 15 =>\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::, // сокращение
         ];
 
         return $conformity[$id_part_of_speech_aot];
+    }
+
+
+    /**
+     * Собираем новую последовательность
+     * @param \Aot\Sviaz\Sequence $new_sequence
+     * @return \Aot\Sviaz\Sequence
+     */
+    public function rebuildSequence(\Aot\Sviaz\Sequence $new_sequence)
+    {
+        $rebuilding_sequence = \Aot\Sviaz\Sequence::create();
+
+        # переносим мемберы
+        foreach ($new_sequence as $member) {
+            $rebuilding_sequence->append($member);
+        }
+
+        # пересоздаём
+        foreach ($new_sequence->getSviazi() as $sviaz) {
+            $main = $sviaz->getMainSequenceMember();
+            $depend = $sviaz->getDependedSequenceMember();
+            $rule = $sviaz->getRule();
+            $rebuilded_sviaz = $this->createSviaz($main, $depend, $rule, $rebuilding_sequence);
+            $rebuilding_sequence->addSviaz($rebuilded_sviaz);
+        }
+
+        return $rebuilding_sequence;
     }
 }
