@@ -28,6 +28,7 @@ use Aot\Sviaz\Role\Registry as RoleRegistry;
 class BaseTest extends \AotTest\AotDataStorage
 {
     use Persister;
+
     public function testAssertTextGroupIdThrowsExceptionAfterDefiningText()
     {
 
@@ -276,8 +277,7 @@ class BaseTest extends \AotTest\AotDataStorage
             if ($id > 5) {
                 try {
                     $rule = Container::$method();
-                    if( is_array($rule))
-                    {
+                    if (is_array($rule)) {
                         foreach ($rule as $rule_item) {
 
                             $link = $rule_item->getLinks()[0];
@@ -286,8 +286,7 @@ class BaseTest extends \AotTest\AotDataStorage
                             $link->flush();
                         }
 
-                    }
-                    else{
+                    } else {
 
                         $link = $rule->getLinks()[0];
 
@@ -323,5 +322,18 @@ class BaseTest extends \AotTest\AotDataStorage
     protected function getEntityClass()
     {
         // TODO: Implement getEntityClass() method.
+    }
+
+    /**
+     * @brief проверка метода \Aot\Sviaz\Rule\AssertedMember\Base::getRoleClass
+     * @see \Aot\Sviaz\Rule\AssertedMember\Base::getRoleClass
+     */
+    public function testGetRoleClass()
+    {
+        $memberBase = \Aot\Sviaz\Rule\AssertedMember\Base::create();
+        $id = new \SemanticPersistence\Entities\SemanticEntities\MivarType;
+        PHPUnitHelper::setProtectedProperty($id, 'id', \Aot\Sviaz\Role\Registry::OTNOSHENIE);
+        $memberBase->getDao()->setMivarType($id);
+        $this->assertNotEmpty($memberBase->getRoleClass());
     }
 }

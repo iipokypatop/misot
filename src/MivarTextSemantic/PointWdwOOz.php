@@ -36,16 +36,17 @@ class PointWdwOOz extends PointWdw
      * @param $id_sentence - id предложения
      */
 
-    public function __construct($kw = null,
-                                $ks = null,
-                                $count_dw = null,
-                                $w = null,
-                                $dw = null,
-                                $o = null,
-                                $oz = null,
-                                $direction = null,
-                                $id_sentence = null)
-    {
+    public function __construct(
+        $kw = null,
+        $ks = null,
+        $count_dw = null,
+        $w = null,
+        $dw = null,
+        $o = null,
+        $oz = null,
+        $direction = null,
+        $id_sentence = null
+    ) {
         parent::__construct($kw,
             $ks,
             $count_dw,

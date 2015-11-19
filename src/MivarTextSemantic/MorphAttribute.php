@@ -35,13 +35,14 @@ class MorphAttribute
      * @param $value массив названий значений морфологического атрибута array(value=>value)
      */
 
-    public function __construct($id_morph_attr = null,
-                                $name = null,
-                                $number_morph_attr = null,
-                                $id_value_attr = array(),
-                                $short_value = array(),
-                                $value = array())
-    {
+    public function __construct(
+        $id_morph_attr = null,
+        $name = null,
+        $number_morph_attr = null,
+        $id_value_attr = array(),
+        $short_value = array(),
+        $value = array()
+    ) {
         $this->id_morph_attr = $id_morph_attr;
         $this->name = $name;
         $this->number_morph_attr = $number_morph_attr;

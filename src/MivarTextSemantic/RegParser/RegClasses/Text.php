@@ -1,8 +1,8 @@
 <?php
 
 
-
 namespace Aot\MivarTextSemantic\RegParser\RegClasses;
+
 use Aot\MivarTextSemantic\RegParser\TextUnit;
 
 /**
@@ -17,8 +17,10 @@ class Text extends TextUnit
 
     /**< Массив регулярок для разбивки текста на части и функция обработки найденных шаблонов */
 
-    protected $array_reg = array('\n(\s)*\n' => "add_text_unit",
-        '(^|\n)(\s)*([0-9]+\.)+' => "add_part_number");
+    protected $array_reg = array(
+        '\n(\s)*\n' => "add_text_unit",
+        '(^|\n)(\s)*([0-9]+\.)+' => "add_part_number"
+    );
 
     /**
      * @brief Метод для парсинга текста по регулярным выражениям
@@ -73,8 +75,9 @@ class Text extends TextUnit
 
     public function add_part_number($minPoz, $lastMinPoz)
     {
-        if (!isset($lastMinPoz["regText"]))
+        if (!isset($lastMinPoz["regText"])) {
             $lastMinPoz["regText"] = "";
+        }
         mb_ereg("((\d)+\.)+", $lastMinPoz["regText"], $arr);
         $num = mb_strrchr(mb_substr($arr[0], 0, mb_strlen($arr[0]) - 1, 'UTF-8'), ".", true);
         $this->items[] = new Part(count($this->items),

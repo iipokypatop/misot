@@ -34,8 +34,9 @@ class par_gen extends SyntaxRule
         //$this->create_kw_index($wdw);
 
         $this->find_points_wdw = $this->find_morph_participal_general($wdw);
-        if (isset($this->participal_general['participal'], $this->participal_general['general']))
+        if (isset($this->participal_general['participal'], $this->participal_general['general'])) {
             $result = true;
+        }
         return $result;
     }
 
@@ -63,7 +64,8 @@ class par_gen extends SyntaxRule
                 if ($part_word->kw != $gen_word->kw) {
                     $gen_word->O = $part_word->O = 'participal_general';
                     $gen_word->Oz = $part_word->Oz = $uuid;
-                    $this->syntax_model_rule = $this->set_point_rel($this->syntax_model_rule, $part_word, $gen_word, $uuid);
+                    $this->syntax_model_rule = $this->set_point_rel($this->syntax_model_rule, $part_word, $gen_word,
+                        $uuid);
                 }
             }
         }
@@ -93,11 +95,14 @@ class par_gen extends SyntaxRule
                 $from_key = $point_word->kw + 1;
                 break;
             }
-            if (isset($point_word->dw) && $point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID, \Aot\MivarTextSemantic\Constants::CASE_ID, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID)) {
+            if (isset($point_word->dw) && $point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID,
+                    \Aot\MivarTextSemantic\Constants::CASE_ID, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID)
+            ) {
                 $point_word->ps = 'participal';
                 $sentence_space_SP[0] = $point_word;
-                if (isset($point_word->ps))
+                if (isset($point_word->ps)) {
                     $this->participal_general[$point_word->ps][$key] = $point_word;
+                }
             }
             //unset($sentence_space->get_space()[$key]);
         }
@@ -109,18 +114,24 @@ class par_gen extends SyntaxRule
                 for ($i = $from_key; $i < count($sentence_space->get_space()); $i++) {
                     $point_word = $sentence_space->get_space()[$i];
                     if (isset($point_word->dw)) {
-                        if ($point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID, \Aot\MivarTextSemantic\Constants::CASE_ID, \Aot\MivarTextSemantic\Constants::CASE_PREPOSITIONAL_ID)) {
+                        if ($point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID,
+                            \Aot\MivarTextSemantic\Constants::CASE_ID,
+                            \Aot\MivarTextSemantic\Constants::CASE_PREPOSITIONAL_ID)
+                        ) {
                             if ($this->combination_participant_general($sentence_space_SP[0], $point_word)) {
                                 $point_word->ps = 'general';
                                 $sentence_space_SP[$i] = $point_word;
                             }
-                            if (isset($point_word->ps))
+                            if (isset($point_word->ps)) {
                                 $this->participal_general[$point_word->ps][$i] = $point_word;
+                            }
                         }
                     }
                 }
             } else {
-                if ($sentence_space_SP[0]->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID, \Aot\MivarTextSemantic\Constants::CASE_ID, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID)) {//проверяем частное на имя существительное в именительном падеже
+                if ($sentence_space_SP[0]->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID,
+                    \Aot\MivarTextSemantic\Constants::CASE_ID, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID)
+                ) {//проверяем частное на имя существительное в именительном падеже
                     for ($i = $from_key; $i < count($sentence_space->get_space()); $i++) {
                         if (isset($sentence_space->get_space()[$i])) {
                             $point_word = $sentence_space->get_space()[$i];
@@ -133,8 +144,11 @@ class par_gen extends SyntaxRule
                                             $point_word_sub = $sentence_space->get_space()[$j];
                                             $case_accusative = false;//наличие винительного падежа
                                             if ($point_word_sub->kw == $point_word->kw &&
-                                                $point_word_sub->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID, \Aot\MivarTextSemantic\Constants::CASE_ID, \Aot\MivarTextSemantic\Constants::CASE_ACCUSATIVE_ID) &&
-                                                $this->combination_participant_general($sentence_space_SP[0], $point_word_sub)
+                                                $point_word_sub->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID,
+                                                    \Aot\MivarTextSemantic\Constants::CASE_ID,
+                                                    \Aot\MivarTextSemantic\Constants::CASE_ACCUSATIVE_ID) &&
+                                                $this->combination_participant_general($sentence_space_SP[0],
+                                                    $point_word_sub)
                                             ) {
                                                 $case_accusative = true;
                                                 break;
@@ -142,28 +156,50 @@ class par_gen extends SyntaxRule
                                         }
                                     }
                                     // берем из нашедших общие в и.п.
-                                    if ($case_accusative == true && $point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID, \Aot\MivarTextSemantic\Constants::CASE_ID, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID)) {
+                                    if ($case_accusative == true && $point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID,
+                                            \Aot\MivarTextSemantic\Constants::CASE_ID,
+                                            \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID)
+                                    ) {
                                         //проверяем, не стоит ли после глагола, причастия, деепричастия  \Aot\MivarTextSemantic\SyntaxParser\Constants::ADJECTIVE_CLASS_ID,\Aot\MivarTextSemantic\SyntaxParser\Constants::NOUN_CLASS_ID, \Aot\MivarTextSemantic\SyntaxParser\Constants::NOUN_CLASS_ID
-                                        if (!$this->find_ps_prev($point_word->kw - 1, array(\Aot\MivarTextSemantic\Constants::VERB_CLASS_ID, \Aot\MivarTextSemantic\Constants::COMMUNION_CLASS_ID, \Aot\MivarTextSemantic\Constants::PARTICIPLE_CLASS_ID), array(), array("-"))) {
-                                            if ($this->find_ps_between($point_word->kw - 1, \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID, \Aot\MivarTextSemantic\Constants::CASE_ID, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID)) {
-                                                if ($this->combination_participant_general($sentence_space_SP[0], $point_word)) {
+                                        if (!$this->find_ps_prev($point_word->kw - 1, array(
+                                            \Aot\MivarTextSemantic\Constants::VERB_CLASS_ID,
+                                            \Aot\MivarTextSemantic\Constants::COMMUNION_CLASS_ID,
+                                            \Aot\MivarTextSemantic\Constants::PARTICIPLE_CLASS_ID
+                                        ), array(), array("-"))
+                                        ) {
+                                            if ($this->find_ps_between($point_word->kw - 1,
+                                                \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID,
+                                                \Aot\MivarTextSemantic\Constants::CASE_ID,
+                                                \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID)
+                                            ) {
+                                                if ($this->combination_participant_general($sentence_space_SP[0],
+                                                    $point_word)
+                                                ) {
                                                     $point_word->ps = 'general';
                                                     $sentence_space_SP[$j] = $point_word;
                                                 }
-                                                if (isset($point_word->ps))
+                                                if (isset($point_word->ps)) {
                                                     $this->participal_general[$point_word->ps][$j] = $point_word;
+                                                }
                                             }
                                         }
                                     }
-                                } else
-                                    if ($point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID, \Aot\MivarTextSemantic\Constants::CASE_ID, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID)) {
-                                        if ($this->combination_participant_general($sentence_space_SP[0], $point_word)) {
+                                } else {
+                                    if ($point_word->dw->check_parameter(\Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID,
+                                        \Aot\MivarTextSemantic\Constants::CASE_ID,
+                                        \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID)
+                                    ) {
+                                        if ($this->combination_participant_general($sentence_space_SP[0],
+                                            $point_word)
+                                        ) {
                                             $point_word->ps = 'general';
                                             $sentence_space_SP[$i] = $point_word;
                                         }
-                                        if (isset($point_word->ps))
+                                        if (isset($point_word->ps)) {
                                             $this->participal_general[$point_word->ps][$i] = $point_word;
+                                        }
                                     }
+                                }
                             }
                         }
                     }
@@ -187,7 +223,8 @@ class par_gen extends SyntaxRule
             $gen_word->dw->id_word_class == \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID && $par_word->dw->id_word_class == \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID
         ) {
             //\Aot\MivarTextSemantic\SyntaxParser\Constants::ANIMALITY_ID
-            $res = $this->compare_parameters($par_word->dw, $gen_word->dw, array(\Aot\MivarTextSemantic\Constants::NUMBER_ID));
+            $res = $this->compare_parameters($par_word->dw, $gen_word->dw,
+                array(\Aot\MivarTextSemantic\Constants::NUMBER_ID));
         }
         return $res;
     }

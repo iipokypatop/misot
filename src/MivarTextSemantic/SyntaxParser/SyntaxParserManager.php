@@ -18,7 +18,8 @@ class SyntaxParserManager extends ParserManager
 
     /**< Массив применяемых правил */
 
-    public $array_rule = array('sub1_pre',
+    public $array_rule = array(
+        'sub1_pre',
         'complex_predicate',
         'adjunct_verb',
         'adjective4noun',

@@ -34,12 +34,13 @@ class PointWdw extends Point
      * @param $dw - словарная статья: объект класса Dw
      */
 
-    public function __construct($kw = null,
-                                $ks = null,
-                                $count_dw = null,
-                                $w = null,
-                                $dw = null)
-    {
+    public function __construct(
+        $kw = null,
+        $ks = null,
+        $count_dw = null,
+        $w = null,
+        $dw = null
+    ) {
         $this->key_point = null;
         $this->kw = (is_numeric($kw)) ? $kw : null;
         $this->ks = (is_numeric($ks)) ? $ks : null;

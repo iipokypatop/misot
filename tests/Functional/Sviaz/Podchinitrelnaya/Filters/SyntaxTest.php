@@ -30,7 +30,7 @@ class SyntaxTest extends \AotTest\AotDataStorage
         $this->markTestSkipped("");
 
         //создаём последовательности из тестового примера
-        $sequences = $this->getSequencesForTests();
+        //$sequences = $this->getSequencesForTests();
         //Создаём фильтр
         $filter_syntax = \Aot\Sviaz\Podchinitrelnaya\Filters\Syntax::create();
         //$this->printSviazi($sequences[16]);
