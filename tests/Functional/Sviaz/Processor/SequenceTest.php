@@ -76,7 +76,7 @@ class SequenceTest extends \AotTest\AotDataStorage
         $member_search=$this->getMock(\Aot\Sviaz\SequenceMember\Base::class);
         $sequence->append($member_search);
         //забиваем последовательность элементами после искомого элемента
-        for ($i=4;$i<6;$i++)
+        for ($i = 3; $i <= 6; $i++)
         {
             $member=$this->getMock(\Aot\Sviaz\SequenceMember\Base::class);
             $sequence->append($member);

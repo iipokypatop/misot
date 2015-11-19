@@ -8,11 +8,11 @@
 
 namespace Aot\Sviaz;
 
-
 use Aot\Sviaz\Homogeneity\Homogeneity;
 
-class Sequence extends \ArrayObject
+class Sequence extends \Judy
 {
+
     protected $id;
     /** @var \Aot\Sviaz\SubSequence[] */
     protected $sub_sequences = [];
@@ -33,7 +33,7 @@ class Sequence extends \ArrayObject
 
     public static function create()
     {
-        $ob = new static();
+        $ob = new static(\Judy::INT_TO_MIXED);
 
         $ob->id = spl_object_hash($ob);
 
@@ -92,6 +92,7 @@ class Sequence extends \ArrayObject
         return $result;
     }
 
+
     /**
      * @param \Aot\Sviaz\SubSequence[] $sub_sequences
      */
@@ -101,6 +102,16 @@ class Sequence extends \ArrayObject
             assert(is_a($sub_sequence, \Aot\Sviaz\SubSequence::class, true));
         }
         $this->sub_sequences = $sub_sequences;
+    }
+
+    public function append($value)
+    {
+        if (is_null($this->last())) {
+            $index = 0;
+        } else {
+            $index = $this->last() + 1;
+        }
+        $this->offsetSet($index, $value);
     }
 
     /**
