@@ -8,296 +8,250 @@
 
 namespace Aot\Sviaz\Processors;
 
-use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry as ChastiRechiRegistry;
-use Aot\Sviaz\Role\Registry as RoleRegistry;
-use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
+use Sentence_space_SP_Rel;
 
 
 class Aot extends Base
 {
-    protected $cache_nf_member = [];
-    protected $cache_z_hash_member2;
-    /** @var  \Aot\Sviaz\Sequence */
-    protected $sequence;
+    const MAIN_POINT = 'x';
+    const DEPENDED_POINT = 'y';
+    protected $link_kw_member_id = []; // связь по слову в предложению и id мембера
+    protected $sentence_array = [];
+    /** @var \Aot\Sviaz\Processors\BuilderAot */
+    protected $builder;
 
+    protected function __construct()
+    {
+        $this->builder = \Aot\Sviaz\Processors\BuilderAot::create();
+    }
+
+    /**
+     * Создаём новую последовательность
+     * @param \Aot\Sviaz\Sequence $sequence
+     * @param array $rules
+     * @return \Aot\Sviaz\Sequence $new_sequence
+     */
     public function run(\Aot\Sviaz\Sequence $sequence, array $rules)
     {
-        $this->cache_nf_member = [];
-        $this->cache_z_hash_member2 = [];
-        $this->sequence = null;
-        assert(is_a($sequence, \Aot\Sviaz\Sequence::class, true));
-        $this->sequence = $sequence;
+        $this->link_kw_member_id = [];
+        $this->sentence_array = [];
 
-        /** @var \Aot\Sviaz\SequenceMember\Base $member */
-        $sentence_array = $this->getSentenceArrayBySequence($sequence);
-        $sentence_string = join(' ', $sentence_array);
+        $this->sentence_array = $this->getSentenceWordsBySequence($sequence);
 
-        $vso = $this->getOriginalVSOModel($sentence_string);
+        $syntax_model = $this->getOriginalSyntaxModel();
 
-        $sorted_vso = $this->sortVSO($vso);
-
-        foreach ($sorted_vso as $type_rule => $rules) {
-            /** @var \Objects\Rule $rule */
-            foreach ($rules as $rule) {
-                $sviaz = null;
-                if ($type_rule === 'VO') {
-                    $sviaz = $this->createSvyaz($sequence, $rule, 'V', 'O');
-                    if ($sviaz !== false) {
-                        $sequence->addSviaz($sviaz);
-                    }
-                } elseif ($type_rule === 'OV') {
-                    $sviaz = $this->createSvyaz($sequence, $rule, 'O', 'V');
-                    if ($sviaz !== false) {
-                        $sequence->addSviaz($sviaz);
-                    }
-                } elseif ($type_rule === 'VS') {
-                    $sviaz = $this->createSvyaz($sequence, $rule, 'V', 'SV');
-                    if ($sviaz !== false) {
-                        $sequence->addSviaz($sviaz);
-                    }
-                } elseif ($type_rule === 'OS') {
-                    $sviaz = $this->createSvyaz($sequence, $rule, 'O', 'SO');
-                    if ($sviaz !== false) {
-                        $sequence->addSviaz($sviaz);
-                    }
-                }
-            }
+        if (empty($syntax_model)) {
+            # пересобираем последовательность
+            return $this->builder->rebuildSequence($sequence);
         }
+
+        # создаём новую последовательность
+        $new_sequence = $this->createNewSequence($sequence, $syntax_model);
+
+        # заполняем её связями
+        $this->fillRelations($new_sequence, $syntax_model);
+
+        # пересобираем последовательность
+        $rebuilded_sequence = $this->builder->rebuildSequence($new_sequence);
+
+        return $rebuilded_sequence;
     }
 
     /**
-     * Сортируем ВСО
-     * @param \Objects\Rule[] $vso
-     * @return array
-     */
-    private function sortVSO(array $vso)
-    {
-        $sorted_vso = [];
-        foreach ($vso as $key_rule => $rule) {
-            if ($rule->get_name_V() !== null && !empty($this->cache_nf_member[$rule->get_name_V()])) {
-                if ($rule->get_name_O() !== null /*&& !empty($this->cache_nf_member[$rule->get_name_O()])*/) {
-                    if ($rule->get_type_relation() === 'x') {
-                        $sorted_vso['VO'][$key_rule] = $rule;
-                    } else {
-                        $sorted_vso['OV'][$key_rule] = $rule;
-                    }
-                } elseif ($rule->get_name_SV() !== null /*&& !empty($this->cache_nf_member[$rule->get_name_SV()])*/) {
-                    $sorted_vso['VS'][$key_rule] = $rule;
-                }
-            } elseif ($rule->get_name_O() !== null && !empty($this->cache_nf_member[$rule->get_name_O()])
-                && $rule->get_name_SO() !== null /*&& !empty($this->cache_nf_member[mb_strtolower($rule->get_name_SO(), 'utf-8')])*/
-            ) {
-                $sorted_vso['OS'][$key_rule] = $rule;
-            }
-        }
-        return $sorted_vso;
-    }
-
-    /**
-     * Создаем правило
-     * @param $role_main
-     * @param $role_dep
-     * @return \Aot\Sviaz\Rule\Base
-     */
-    private function createRule($role_main, $role_dep)
-    {
-        $roles_map = [
-            'V' => RoleRegistry::VESCH,
-            'O' => RoleRegistry::OTNOSHENIE,
-            'SV' => RoleRegistry::SVOISTVO,
-            'SO' => RoleRegistry::SVOISTVO,
-        ];
-        $builder =
-            \Aot\Sviaz\Rule\Builder2::create()
-                ->main(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
-                        ChastiRechiRegistry::SUSCHESTVITELNOE,
-                        $roles_map[$role_main]
-                    )
-                )
-                ->depended(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
-                        ChastiRechiRegistry::SUSCHESTVITELNOE,
-                        $roles_map[$role_dep]
-                    )
-                )
-                ->link(
-                    AssertedLinkBuilder::create()
-                );
-        return $builder->get();
-    }
-
-    /**
-     * Создание связи в пространстве МИСОТ
-     * @param $seq - последовательность
-     * @param $rule
-     * @param string $main_field - поле главного элемента
-     * @param string $depend_field - поле зависимого элемента
-     * @return \Aot\Sviaz\Podchinitrelnaya\Base
-     */
-    private function createSvyaz($seq, $rule, $main_field, $depend_field)
-    {
-        $main = $this->getNeedleMember($rule, $main_field);
-        $depended = $this->getNeedleMember($rule, $depend_field);
-        if ($main === false || $depended === false) {
-            return false;
-        }
-        $rule = $this->createRule($main_field, $depend_field);
-        return \Aot\Sviaz\Podchinitrelnaya\Base::create($main, $depended, $rule, $seq);
-    }
-
-    /**
-     * Получение необходимого member для генерации связи
-     * @param \Objects\Rule $rule
-     * @param $field
-     * @return \Aot\Sviaz\SequenceMember\Word\Base
-     */
-    private function getNeedleMember($rule, $field)
-    {
-        $need_prepose = false;
-        $rule_prepose = $rule->get_name_PVO();
-        // определяем нужен ли предлог для мембера
-        if ($field === 'V' && $rule->get_type_relation() === 'y' && $rule_prepose !== null) {
-            $need_prepose = true;
-        }
-
-
-        $member_name = mb_strtolower(call_user_func_array([$rule, 'get_name_' . $field], []), 'utf-8');
-        $z = call_user_func_array([$rule, 'get_' . $field . 'z'], []);
-
-        // создание фейкового мембера из АОТа
-        if (call_user_func_array([$rule, 'get_type_concept_' . $field], []) === 's' && empty($this->cache_z_hash_member2[$z][$member_name])) {
-//            return false;
-            $new_member = $this->createFakeMember($member_name);
-            $this->cache_nf_member[$member_name][spl_object_hash($new_member)] = $new_member;
-        }
-
-        if ($z === null) {
-            $z = call_user_func_array([$rule, 'get_Oz'], []);
-        }
-        if (empty($this->cache_nf_member[$member_name])) {
-            return false;
-//            throw new \RuntimeException('does not have members with name = ' . $member_name);
-        }
-        $members = $this->cache_nf_member[$member_name];
-        $needle_member = null;
-        # данный мембер уже участвовал в связи
-        if (!empty($this->cache_z_hash_member2[$z][$member_name])) {
-            $hash_member = $this->cache_z_hash_member2[$z][$member_name];
-            if (empty($members[$hash_member])) {
-                return false;
-            }
-            $needle_member = $members[$hash_member];
-        } else {
-            if ($need_prepose) {
-                # поиск мембера с предлогом
-                foreach ($members as $hash_member => $member) {
-                    /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
-                    if (is_a($member, \Aot\Sviaz\SequenceMember\Word\WordWithPreposition::class, true)
-                        && $member->getPredlog()->getInitialForm() === $rule_prepose
-                    ) {
-                        $needle_member = $member;
-                        $this->cache_z_hash_member2[$z][$member_name] = $hash_member;
-                        break;
-                    }
-                }
-            } elseif (!$need_prepose) {
-                # поиск мембера без предлога
-                foreach ($members as $hash_member => $member) {
-                    /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
-                    if (!is_a($member, \Aot\Sviaz\SequenceMember\Word\WordWithPreposition::class, true)) {
-                        $needle_member = $member;
-                        $this->cache_z_hash_member2[$z][$member_name] = $hash_member;
-                        break;
-                    }
-                }
-            }
-            # если все еще нет мембера, то берем первый попавшийся
-            if ($needle_member === null) {
-                foreach ($members as $hash_member => $member) {
-                    $needle_member = $member;
-                    $this->cache_z_hash_member2[$z][$member_name] = $hash_member;
-                    break;
-                }
-            }
-        }
-        return $needle_member;
-
-    }
-
-    /**
-     * @param $sequence
+     * Формируем массив слов предложения
+     * @param \Aot\Sviaz\Sequence $sequence
      * @return string[]
      */
-    private function getSentenceArrayBySequence($sequence)
+    protected function getSentenceWordsBySequence(\Aot\Sviaz\Sequence $sequence)
     {
         $sentence_array = [];
         foreach ($sequence as $member) {
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
-                /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
+                # пропускаем, поскольку АОТ игнорирует знаки препинания
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
                 $sentence_array[] = $member->getPredlog()->getText();
                 $sentence_array[] = $member->getSlovo()->getText();
-                $hash_member = spl_object_hash($member);
-                $initial_form_member = $member->getSlovo()->getInitialForm();
-                // начальная форма - хэш объекта - объект
-                $this->cache_nf_member[$initial_form_member][$hash_member] = $member;
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
                 $sentence_array[] = $member->getSlovo()->getText();
-                $hash_member = spl_object_hash($member);
-                $initial_form_member = $member->getSlovo()->getInitialForm();
-                // начальная форма - хэш объекта - объект
-                $this->cache_nf_member[$initial_form_member][$hash_member] = $member;
             }
         }
         return $sentence_array;
     }
 
     /**
-     * Получение VSO модели через АОТ
-     * @param $sentence_string
-     * @return \Objects\Rule[]
+     * Получение синтаксической модели через АОТ
+     * @return \Sentence_space_SP_Rel[]
      */
-    private function getOriginalVSOModel($sentence_string)
+    protected function getOriginalSyntaxModel()
     {
+        if (empty($this->sentence_array)) {
+            return [];
+        }
+
+        # восстановление предложения
+        $sentence_string = join(' ', $this->sentence_array);
+
         $mivar = new \DMivarText(['txt' => $sentence_string]);
 
-        $mivar->semantic_model();
+        $mivar->syntax_model();
 
-        $result = $mivar->getSemanticModel();
+        $result = $mivar->getSyntaxModel();
 
-        return !empty($result) ? $result : [];
+        return $result ?: [];
 
     }
 
     /**
-     * Создание member "пропуск"
-     * return \Aot\Sviaz\SequenceMember\Word\Base
-     * @param $name
-     * @return static
+     * Создание новой последовательности
+     * @param \Aot\Sviaz\Sequence $old_sequence
+     * @param \Sentence_space_SP_Rel[] $syntax_model
+     * @return \Aot\Sviaz\Sequence
      */
-    private function createFakeMember($name)
+    protected function createNewSequence(\Aot\Sviaz\Sequence $old_sequence, array $syntax_model)
     {
-        $slovo = \Aot\RussianMorphology\ChastiRechi\Glagol\Base::create(
-            $name,
-            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Null::create(),
-            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Null::create(),
-            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Naklonenie\Null::create(),
-            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Null::create(),
-            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Null::create(),
-            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Null::create(),
-            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Null::create(),
-            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Spryazhenie\Null::create(),
-            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Null::create(),
-            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::create()
-        );
 
-        $slovo->setInitialForm($name);
-        $new_member =  \Aot\Sviaz\SequenceMember\Word\Base::create($slovo);
-        $this->sequence->append($new_member);
-        return $new_member;
+        assert(!empty($syntax_model));
+
+        foreach ($syntax_model as $point) {
+            assert(is_a($point, \Sentence_space_SP_Rel::class, true));
+        }
+
+        $sorted_points = [];
+        foreach ($syntax_model as $key => $point) {
+            // приходит только по одному предложению => ks не нужен
+            $sorted_points[$point->kw][$point->dw->id_word_class] = $key;
+        }
+        ksort($sorted_points);
+
+        $new_sequence = $this->builder->createSequence();
+
+        foreach ($this->sentence_array as $key_word => $word_form) {
+            // если нет точки для данного слова и она есть в старой последовательности, тогда берем её оттуда
+            if (empty($sorted_points[$key_word]) && !empty($old_sequence[$key_word])) {
+                $new_sequence[$key_word] = clone $old_sequence[$key_word];
+                continue;
+            }
+
+            $items = $sorted_points[$key_word];
+            $first_element_key = array_shift($items);
+            $id_word_class = $syntax_model[$first_element_key]->dw->id_word_class;
+            $factory = $this->builder->getFactory($id_word_class);
+            if ($factory === null) {
+                $member = clone $old_sequence[$key_word];
+            } else {
+                $point = $syntax_model[$first_element_key];
+                // берём форму слова из исходной последовательности
+                $point->dw->word_form = $word_form;
+                $slovo = $factory->build($point->dw);
+                $member = $this->builder->createMemberBySlovo($slovo[0]);
+            }
+
+            // новый member
+            $new_sequence[$key_word] = $member;
+
+            // сохраняем связь между элементом в предложении и id мембера
+            $this->link_kw_member_id[$key_word] = $new_sequence->getPosition($member);
+        }
+
+        return $new_sequence;
+    }
+
+    /**
+     * Замена элемента в последовательности без предлога на элемент с предлогом
+     * @param \Aot\Sviaz\Sequence $seq
+     * @param \Sentence_space_SP_Rel $prepose_point
+     * @param \Sentence_space_SP_Rel $word_point
+     */
+    protected function replaceSequenceMemberToMemberWithPreposition(\Aot\Sviaz\Sequence $seq, Sentence_space_SP_Rel $prepose_point, Sentence_space_SP_Rel $word_point)
+    {
+        $factory_main = $this->builder->getFactory($prepose_point->dw->id_word_class);
+        $prepose_point->dw->word_form = $this->sentence_array[$prepose_point->kw];
+        $prepose = $factory_main->build($prepose_point->dw);
+
+        $factory_depend = $this->builder->getFactory($word_point->dw->id_word_class);
+        $word_point->dw->word_form = $this->sentence_array[$word_point->kw];
+        $slovo = $factory_depend->build($word_point->dw);
+
+        $replaced_member_id = $this->link_kw_member_id[$word_point->kw];
+        $member_with_prepose = \Aot\Sviaz\SequenceMember\Word\WordWithPreposition::create($slovo[0], $prepose[0]);
+        $seq[$replaced_member_id] = $member_with_prepose;
+
+        // убираем предудыщий элемент, если он есть и является предлогом
+        /** @var \Aot\Sviaz\SequenceMember\Word\Base[] $seq */
+        if (isset($seq[$replaced_member_id - 1]) && is_a($seq[$replaced_member_id - 1]->getSlovo(), \Aot\RussianMorphology\ChastiRechi\Predlog\Base::class, true)) {
+            unset($seq[$replaced_member_id - 1]);
+        }
+    }
+
+
+    /**
+     * Наполнение последовательности связями
+     * @param \Aot\Sviaz\Sequence $sequence
+     * @param \Sentence_space_SP_Rel[] $syntax_model
+     * @return void
+     */
+    protected function fillRelations(\Aot\Sviaz\Sequence $sequence, array $syntax_model)
+    {
+
+        if (empty($syntax_model)) {
+            return;
+        }
+
+        foreach ($syntax_model as $point) {
+            assert(is_a($point, \Sentence_space_SP_Rel::class, true));
+        }
+
+        $linked_pairs = $this->getLinkedPairs($syntax_model);
+
+        if (empty($linked_pairs)) {
+            return;
+        }
+
+        foreach ($linked_pairs as $pair_points) {
+
+            // заменяем обычный мембер на мембер с предлогом
+            if ($pair_points[self::MAIN_POINT]->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
+                $this->replaceSequenceMemberToMemberWithPreposition($sequence, $pair_points[self::MAIN_POINT], $pair_points[self::DEPENDED_POINT]);
+                continue;
+            }
+
+            if (empty($sequence[$this->link_kw_member_id[$pair_points[self::MAIN_POINT]->kw]])) {
+                throw new \LogicException('The sequence does not have a member with id = ' . $pair_points[self::MAIN_POINT]->kw);
+            }
+
+            if (empty($sequence[$this->link_kw_member_id[$pair_points[self::DEPENDED_POINT]->kw]])) {
+                throw new \LogicException('The sequence does not have a member with id = ' . $pair_points[self::DEPENDED_POINT]->kw);
+            }
+
+            $main = $sequence[$this->link_kw_member_id[$pair_points[self::MAIN_POINT]->kw]];
+            $depended = $sequence[$this->link_kw_member_id[$pair_points[self::DEPENDED_POINT]->kw]];
+
+            // конкретизируем роли главного и зависимого
+            $roles = \Aot\Sviaz\Processors\RoleSpecification::getRoles($pair_points[self::MAIN_POINT]->O);
+
+            $main_point_part_of_speech = $this->builder->conformityPartsOfSpeech($pair_points[self::MAIN_POINT]->dw->id_word_class);
+            $depended_point_part_of_speech = $this->builder->conformityPartsOfSpeech($pair_points[self::DEPENDED_POINT]->dw->id_word_class);
+            list($main_role, $depended_role) = $roles;
+            $rule = $this->builder->createRule($main_point_part_of_speech, $depended_point_part_of_speech, $main_role, $depended_role);
+            $sviaz = $this->builder->createSviaz($main, $depended, $rule, $sequence);
+            $sequence->addSviaz($sviaz);
+
+        }
+    }
+
+    /**
+     * @param \Sentence_space_SP_Rel[] $syntax_model
+     * @return \Sentence_space_SP_Rel[]
+     */
+    protected function getLinkedPairs(array $syntax_model)
+    {
+        $linked_pairs = [];
+        foreach ($syntax_model as $key => $point) {
+            $linked_pairs[$point->Oz][$point->direction] = $point;
+        }
+        return $linked_pairs;
     }
 
 }

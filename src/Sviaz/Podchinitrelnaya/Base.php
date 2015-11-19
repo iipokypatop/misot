@@ -69,7 +69,7 @@ class Base
     }
 
     /**
-     * @return \Aot\Sviaz\SequenceMember\Base
+     * @return \Aot\Sviaz\SequenceMember\Word\Base
      */
     public function getMainSequenceMember()
     {
@@ -77,7 +77,7 @@ class Base
     }
 
     /**
-     * @return \Aot\Sviaz\SequenceMember\Base
+     * @return \Aot\Sviaz\SequenceMember\Word\Base
      */
     public function getDependedSequenceMember()
     {
