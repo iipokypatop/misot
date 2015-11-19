@@ -69,9 +69,6 @@ class SubSequenceTest extends \AotTest\AotDataStorage
      */
     public function testDetectSubSequencesOneSviaz()
     {
-        //todo Чинить ли тест???
-        $this->markTestSkipped("Тест поломан из-за Judy");
-
         $main = $this->getMock(\Aot\Sviaz\SequenceMember\Base::class);///<Главное слово
         $depended = $this->getMock(\Aot\Sviaz\SequenceMember\Base::class);///<Зависимое слово
 
@@ -96,9 +93,15 @@ class SubSequenceTest extends \AotTest\AotDataStorage
 
         //Создаём последовательность
         /** @var  \Aot\Sviaz\Sequence | \PHPUnit_Framework_MockObject_MockObject $sequence */
-        $sequence = $this->getMock(\Aot\Sviaz\Sequence::class,
+        /*$sequence = $this->getMock(\Aot\Sviaz\Sequence::class,
             ['getSviazi', 'getPosition']
-        );
+        );*/
+
+        $sequence = $this
+            ->getMockBuilder(\Aot\Sviaz\Sequence::class)
+            ->setMethods(['getSviazi', 'getPosition'])
+            ->setConstructorArgs([\Judy::INT_TO_MIXED])
+            ->getMock();
 
         $length_sequence = 10;
         for ($i = 0; $i < $length_sequence; $i++) {
