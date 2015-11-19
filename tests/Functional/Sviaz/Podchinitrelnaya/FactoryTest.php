@@ -1,5 +1,6 @@
 <?php
 namespace AotTest\Functional\Sviaz\Podchinitrelnaya;
+
 use MivarTest\PHPUnitHelper;
 
 /**
@@ -8,7 +9,6 @@ use MivarTest\PHPUnitHelper;
  * Date: 17.11.2015
  * Time: 17:52
  */
-
 class FactoryTest extends \AotTest\AotDataStorage
 {
     public function dataProviderBuild()
@@ -70,14 +70,11 @@ class FactoryTest extends \AotTest\AotDataStorage
     }
 
     /**
-     * @param $main_sequence_member
-     * @param $depended_sequence_member
-     * @param $rule
-     * @param $sequence
+     * @param \Aot\Sviaz\Rule\Base $rule
      * @param \Aot\Sviaz\Podchinitrelnaya\Base $expected_result
      * @dataProvider dataProviderBuild
      */
-    public function testBuild_Return_Correct_Object_Type($rule, $expected_result)
+    public function testBuild_Returns_Correct_Object_Type($rule, $expected_result)
     {
         $mockSlovo = $this
             ->getMockBuilder(\Aot\RussianMorphology\Slovo::class)
@@ -96,7 +93,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(get_class($expected_result), $result);
     }
 
-    public function testBuild_Return_Exeption()
+    public function testBuild_Throws_Exeption()
     {
         $mockSlovo = $this
             ->getMockBuilder(\Aot\RussianMorphology\Slovo::class)
@@ -111,7 +108,7 @@ class FactoryTest extends \AotTest\AotDataStorage
 
         PHPUnitHelper::setProtectedProperty($rule_exeption, 'type_class', 111);
 
-        try{
+        try {
             $result = \Aot\Sviaz\Podchinitrelnaya\Factory::get()->build(
                 $main_sequence_member,
                 $depended_sequence_member,
@@ -119,8 +116,7 @@ class FactoryTest extends \AotTest\AotDataStorage
                 $sequence
             );
             $this->fail("Не должно было сработать");
-        }
-        catch(\LogicException $e){
+        } catch (\LogicException $e) {
             $this->assertEquals("unsupported Sviaz class 111", $e->getMessage());
         }
 
