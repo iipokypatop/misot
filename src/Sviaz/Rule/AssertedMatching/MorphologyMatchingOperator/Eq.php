@@ -21,18 +21,18 @@ class Eq extends Base
     public function match(MorphologyBase $left, MorphologyBase $right)
     {
         if ($left === $right) {
-            throw new \RuntimeException("wtf?!");
+            throw new \LogicException("Must not be equal");
         }
 
         if (get_class($left) === get_class($right)) {
             return true;
         }
 
-        if ($left === \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Null::class) {
+        if (get_class($left) === \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Null::class) {
             return true;
         }
 
-        if ($right === \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Null::class) {
+        if (get_class($right) === \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Null::class) {
             return true;
         }
 

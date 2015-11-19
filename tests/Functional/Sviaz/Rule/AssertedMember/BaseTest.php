@@ -324,4 +324,18 @@ class BaseTest extends \AotTest\AotDataStorage
     {
         // TODO: Implement getEntityClass() method.
     }
+
+
+    /**
+     * @brief проверка метода GetRuleClass
+     */
+
+    public function testGetRoleClass()
+    {
+        $memberBase = \Aot\Sviaz\Rule\AssertedMember\Base::create();
+        $id = new \SemanticPersistence\Entities\SemanticEntities\MivarType;
+        PHPUnitHelper::setProtectedProperty($id, 'id', \Aot\Sviaz\Role\Registry::OTNOSHENIE);
+        $memberBase->getDao()->setMivarType($id);
+        $this->assertNotEmpty($memberBase->getRoleClass());
+    }
 }
