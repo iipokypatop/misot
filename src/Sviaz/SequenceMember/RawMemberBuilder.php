@@ -11,7 +11,7 @@ namespace Aot\Sviaz\SequenceMember;
 
 class RawMemberBuilder
 {
-    const MAX_MEMORY_USAGE = 2E9;
+    const MAX_MEMORY_USAGE = 2e9;
     /**
      * MemberBuilder constructor.
      */
