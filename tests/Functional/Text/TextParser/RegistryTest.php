@@ -29,7 +29,7 @@ class RegistryTest extends \AotTest\AotDataStorage
     }
 
     /**
-     * @brief тестирование метода         $registry = \Aot\Text\TextParser\Registry::get
+     * @brief тестирование метода \Aot\Text\TextParser\Registry::get
      * @param int $index
      * @param array $expected_result
      * @dataProvider dataProviderGet
@@ -37,7 +37,6 @@ class RegistryTest extends \AotTest\AotDataStorage
     public function testGet($index, array $expected_result)
     {
         assert(is_int($index));
-        assert(is_array($expected_result));
         $registry = \Aot\Text\TextParser\Registry::create();
         PHPUnitHelper::setProtectedProperty($registry, 'registry', $expected_result);
         if ($index == 111) {
