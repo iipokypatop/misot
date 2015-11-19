@@ -90,7 +90,6 @@ class Processor
     }
 
 
-
     /**
      * @param \Aot\Sviaz\Sequence $sequence
      * @return \Aot\Sviaz\Sequence
@@ -166,7 +165,7 @@ class Processor
         }
 
         $raw_sequences = $this->raw_member_builder->getRawSequences($normalized_matrix);
-        static::$for_destructor_of_judy = $normalized_matrix;
+        static::$for_destructor_of_judy[] = $normalized_matrix;
         $sequences = [];
         foreach ($raw_sequences as $index => $raw_sequence) {
 
@@ -181,14 +180,14 @@ class Processor
 
             $sequences[] = $sequence;
 
+            //TODO НЕБОЛЬШОЙ КОСТЫЛЬ ДЛЯ АОТа. В МИСОТЕ НАДО УБИРАТЬ brake! И оптимизировать МИСОТ
             break;
         }
 
-        usort ($sequences, '\Aot\Sviaz\Processor::sortSequences');
+        usort($sequences, '\Aot\Sviaz\Processor::sortSequences');
 
-        if (memory_get_usage(true)>2000000000)
-        {
-            static::$for_destructor_of_judy=[];
+        if (memory_get_usage(true) > 2000000000) {
+            static::$for_destructor_of_judy = [];
         }
 
 
@@ -197,8 +196,8 @@ class Processor
 
     protected function sortSequences(\Aot\Sviaz\Sequence $a, \Aot\Sviaz\Sequence $b)
     {
-        $a_count_sviaz=count($a->getSviazi());
-        $b_count_sviaz=count($b->getSviazi());
+        $a_count_sviaz = count($a->getSviazi());
+        $b_count_sviaz = count($b->getSviazi());
         if ($a_count_sviaz === $b_count_sviaz) {
             return 0;
         }
