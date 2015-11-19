@@ -41,6 +41,9 @@ class BuilderAot
     public function getFactory($id_word_class)
     {
         assert(is_int($id_word_class));
+        if (empty($this->factories[$this->conformityPartsOfSpeech($id_word_class)])) {
+            throw new \LogicException("Undefined part of speech = " . var_export($this->conformityPartsOfSpeech($id_word_class), 1));
+        }
         return $this->factories[$this->conformityPartsOfSpeech($id_word_class)];
     }
 
@@ -49,7 +52,7 @@ class BuilderAot
      *
      * @return \Aot\Sviaz\Sequence
      */
-    public function createNewSequence()
+    public function createSequence()
     {
         return \Aot\Sviaz\Sequence::create();
     }
@@ -166,20 +169,20 @@ class BuilderAot
 
     /**
      * Собираем новую последовательность
-     * @param \Aot\Sviaz\Sequence $new_sequence
+     * @param \Aot\Sviaz\Sequence $sequence
      * @return \Aot\Sviaz\Sequence
      */
-    public function rebuildSequence(\Aot\Sviaz\Sequence $new_sequence)
+    public function rebuildSequence(\Aot\Sviaz\Sequence $sequence)
     {
         $rebuilding_sequence = \Aot\Sviaz\Sequence::create();
 
         # переносим мемберы
-        foreach ($new_sequence as $member) {
+        foreach ($sequence as $member) {
             $rebuilding_sequence->append($member);
         }
 
         # пересоздаём
-        foreach ($new_sequence->getSviazi() as $sviaz) {
+        foreach ($sequence->getSviazi() as $sviaz) {
             $main = $sviaz->getMainSequenceMember();
             $depend = $sviaz->getDependedSequenceMember();
             $rule = $sviaz->getRule();

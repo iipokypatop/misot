@@ -5,7 +5,7 @@ use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
 
 class ProcessorAotTest extends \AotTest\AotDataStorage
 {
-    public function testRunInClass()
+    public function testLaunch()
     {
         $sequence = $this->getRawSequence();
         $predlog = \Aot\Sviaz\PreProcessors\Predlog::create();

@@ -13,6 +13,8 @@ use Sentence_space_SP_Rel;
 
 class Aot extends Base
 {
+    const MAIN_POINT = 'x';
+    const DEPENDED_POINT = 'y';
     protected $link_kw_member_id = []; // связь по слову в предложению и id мембера
     protected $sentence_array = [];
     /** @var \Aot\Sviaz\Processors\BuilderAot */
@@ -34,13 +36,14 @@ class Aot extends Base
         $this->link_kw_member_id = [];
         $this->sentence_array = [];
 
-        /** @var \Aot\Sviaz\SequenceMember\Base $member */
         $this->sentence_array = $this->getSentenceWordsBySequence($sequence);
 
-        # восстановление предложения
-        $sentence_string = join(' ', $this->sentence_array);
+        $syntax_model = $this->getOriginalSyntaxModel();
 
-        $syntax_model = $this->getOriginalSyntaxModel($sentence_string);
+        if (empty($syntax_model)) {
+            # пересобираем последовательность
+            return $this->builder->rebuildSequence($sequence);
+        }
 
         # создаём новую последовательность
         $new_sequence = $this->createNewSequence($sequence, $syntax_model);
@@ -79,12 +82,16 @@ class Aot extends Base
 
     /**
      * Получение синтаксической модели через АОТ
-     * @param string $sentence_string
      * @return \Sentence_space_SP_Rel[]
      */
-    protected function getOriginalSyntaxModel($sentence_string)
+    protected function getOriginalSyntaxModel()
     {
-        assert(is_string($sentence_string));
+        if (empty($this->sentence_array)) {
+            return [];
+        }
+
+        # восстановление предложения
+        $sentence_string = join(' ', $this->sentence_array);
 
         $mivar = new \DMivarText(['txt' => $sentence_string]);
 
@@ -92,7 +99,7 @@ class Aot extends Base
 
         $result = $mivar->getSyntaxModel();
 
-        return !empty($result) ? $result : [];
+        return $result ?: [];
 
     }
 
@@ -104,7 +111,12 @@ class Aot extends Base
      */
     protected function createNewSequence(\Aot\Sviaz\Sequence $old_sequence, array $syntax_model)
     {
-        assert(is_array($syntax_model) && !empty($syntax_model));
+
+        assert(!empty($syntax_model));
+
+        foreach ($syntax_model as $point) {
+            assert(is_a($point, \Sentence_space_SP_Rel::class, true));
+        }
 
         $sorted_points = [];
         foreach ($syntax_model as $key => $point) {
@@ -191,7 +203,6 @@ class Aot extends Base
             assert(is_a($point, \Sentence_space_SP_Rel::class, true));
         }
 
-
         $linked_pairs = $this->getLinkedPairs($syntax_model);
 
         if (empty($linked_pairs)) {
@@ -200,59 +211,33 @@ class Aot extends Base
 
         foreach ($linked_pairs as $pair_points) {
 
-
-            $pair_points = array_values($pair_points);
-
-            $main_id = $this->getIdMainPoint($pair_points[0], $pair_points[1]);
-            $depend_id = ($main_id === 0) ? 1 : 0;
-
-
             // заменяем обычный мембер на мембер с предлогом
-            if ($pair_points[$main_id]->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
-                $this->replaceSequenceMemberToMemberWithPreposition($sequence, $pair_points[$main_id], $pair_points[$depend_id]);
+            if ($pair_points[self::MAIN_POINT]->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
+                $this->replaceSequenceMemberToMemberWithPreposition($sequence, $pair_points[self::MAIN_POINT], $pair_points[self::DEPENDED_POINT]);
                 continue;
             }
 
-            if (empty($sequence[$this->link_kw_member_id[$pair_points[$main_id]->kw]])) {
-                throw new \LogicException('The sequence does not have a member with id = ' . $pair_points[$main_id]->kw);
+            if (empty($sequence[$this->link_kw_member_id[$pair_points[self::MAIN_POINT]->kw]])) {
+                throw new \LogicException('The sequence does not have a member with id = ' . $pair_points[self::MAIN_POINT]->kw);
             }
 
-            if (empty($sequence[$this->link_kw_member_id[$pair_points[$depend_id]->kw]])) {
-                throw new \LogicException('The sequence does not have a member with id = ' . $pair_points[$depend_id]->kw);
+            if (empty($sequence[$this->link_kw_member_id[$pair_points[self::DEPENDED_POINT]->kw]])) {
+                throw new \LogicException('The sequence does not have a member with id = ' . $pair_points[self::DEPENDED_POINT]->kw);
             }
 
-            $main = $sequence[$this->link_kw_member_id[$pair_points[$main_id]->kw]];
-            $depended = $sequence[$this->link_kw_member_id[$pair_points[$depend_id]->kw]];
+            $main = $sequence[$this->link_kw_member_id[$pair_points[self::MAIN_POINT]->kw]];
+            $depended = $sequence[$this->link_kw_member_id[$pair_points[self::DEPENDED_POINT]->kw]];
 
             // конкретизируем роли главного и зависимого
-            $roles = \Aot\Sviaz\Processors\RoleSpecification::getRoles($pair_points[$main_id]->O);
+            $roles = \Aot\Sviaz\Processors\RoleSpecification::getRoles($pair_points[self::MAIN_POINT]->O);
 
-            $main_point_part_of_speech = $this->builder->conformityPartsOfSpeech($pair_points[$main_id]->dw->id_word_class);
-            $depended_point_part_of_speech = $this->builder->conformityPartsOfSpeech($pair_points[$depend_id]->dw->id_word_class);
+            $main_point_part_of_speech = $this->builder->conformityPartsOfSpeech($pair_points[self::MAIN_POINT]->dw->id_word_class);
+            $depended_point_part_of_speech = $this->builder->conformityPartsOfSpeech($pair_points[self::DEPENDED_POINT]->dw->id_word_class);
             list($main_role, $depended_role) = $roles;
             $rule = $this->builder->createRule($main_point_part_of_speech, $depended_point_part_of_speech, $main_role, $depended_role);
             $sviaz = $this->builder->createSviaz($main, $depended, $rule, $sequence);
             $sequence->addSviaz($sviaz);
 
-        }
-    }
-
-    /**
-     * Получаем id главной точки из пары
-     *
-     * @param \Sentence_space_SP_Rel $first
-     * @param \Sentence_space_SP_Rel $second
-     * @return int
-     * @throws \LogicException
-     */
-    protected function getIdMainPoint(\Sentence_space_SP_Rel $first, \Sentence_space_SP_Rel $second)
-    {
-        if ($first->direction === 'x') {
-            return 0;
-        } elseif ($second->direction === 'x') {
-            return 1;
-        } else {
-            throw new \LogicException('The pair of elements does not have valid main element');
         }
     }
 
@@ -264,7 +249,7 @@ class Aot extends Base
     {
         $linked_pairs = [];
         foreach ($syntax_model as $key => $point) {
-            $linked_pairs[$point->Oz][$key] = $point;
+            $linked_pairs[$point->Oz][$point->direction] = $point;
         }
         return $linked_pairs;
     }
