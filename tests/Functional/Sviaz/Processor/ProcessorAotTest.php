@@ -37,7 +37,7 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
 
 
     /**
-     * Прогоняем предложения и смотрим, что все мемберы из связей совпадают с мемберами из послеовательности
+     * Прогоняем предложения и смотрим, что все мемберы из связей совпадают с мемберами из последовательности
      * @dataProvider dataProviderSentences
      * @param $sentence
      */
@@ -56,6 +56,24 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
         $new_sequence = $misot_to_aot->run($sequence, []);
 
         $this->assertNotEmpty($new_sequence->getSviazi());
+
+        // сравниваем исходное предложение с восстановленным из полученной последовательности
+        $sentence_array = [];
+        foreach ($sequence as $member) {
+            if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
+                // пропускаем, поскольку АОТ игнорирует знаки препинания
+            } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
+                /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
+                $sentence_array[] = $member->getPredlog()->getText();
+                $sentence_array[] = $member->getSlovo()->getText();
+            } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
+                /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
+                $sentence_array[] = $member->getSlovo()->getText();
+            }
+        }
+        $sentence = mb_strtolower($sentence, 'utf-8');
+        $sentence = preg_replace("/[\\,\\.]/u", "",$sentence);
+        $this->assertEquals($sentence, join(" ", $sentence_array));
 
         // проверяем наличие всех мемберов из связей в последовательности
         foreach ($new_sequence->getSviazi() as $sviaz) {
