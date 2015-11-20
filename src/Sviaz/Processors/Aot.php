@@ -165,9 +165,11 @@ class Aot extends Base
      */
     protected function replaceSequenceMemberToMemberWithPreposition(\Aot\Sviaz\Sequence $seq, Sentence_space_SP_Rel $prepose_point, Sentence_space_SP_Rel $word_point)
     {
+
         if ($prepose_point->dw->id_word_class !== \DefinesAot::PREPOSITION_CLASS_ID
             || $word_point->dw->id_word_class !== \DefinesAot::NOUN_CLASS_ID
         ) {
+            // данная ситуация - бага в аоте/конвертере из аота
             return;
         }
         $factory_main = $this->builder->getFactory($prepose_point->dw->id_word_class);
