@@ -182,7 +182,7 @@ class Processor
             $sequences[] = $sequence;
 
             //TODO НЕБОЛЬШОЙ КОСТЫЛЬ ДЛЯ АОТа. В МИСОТЕ НАДО УБИРАТЬ brake! И оптимизировать МИСОТ
-            //break;
+            break;
         }
 
         if (memory_get_usage(true) > 2000000000) {

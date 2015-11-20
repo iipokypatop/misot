@@ -76,6 +76,10 @@ class RoleSpecification
         elseif ($name_relation === DefinesAot::SEMANTIC_COORDINATION_MIVAR) {
             $role_main = RoleRegistry::VESCH;
             $role_dep = RoleRegistry::SVOISTVO;
+        } // sub_conj[1,2,3,4,5,6,7] - связь отношений через подчинительные союзы
+        elseif (preg_match("/sub\\_conj/", $name_relation)) {
+            $role_main = RoleRegistry::OTNOSHENIE;
+            $role_dep = RoleRegistry::SVOISTVO;
         } else {
             throw new \LogicException('Unrecognized name relation between points: ' . var_export($name_relation, 1));
         }

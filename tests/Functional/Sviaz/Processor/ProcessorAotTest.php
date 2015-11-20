@@ -71,6 +71,8 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
                 $sentence_array[] = $member->getSlovo()->getText();
             }
         }
+
+        // проверяем совпадение исходного предложения с восстановленным из новой последовательности
         $sentence = mb_strtolower($sentence, 'utf-8');
         $sentence = preg_replace("/[\\,\\.]/u", "",$sentence);
         $this->assertEquals($sentence, join(" ", $sentence_array));
@@ -93,6 +95,8 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     {
         return [
             ['Мальчик пошел в лес.'],
+            ['Человек пойдет в лес, если дома не будет еды.'],
+            ['Папа, мама и брат пойдут в лес, если дома не будет еды.'],
             ['Дровосек пошел в лес рубить дрова.'],
             ['Папа сжег в лес, в котором рубил дрова.'], // предложение с опечаткой
             ['Папа, мама и бабушка пошли в магазин.'],

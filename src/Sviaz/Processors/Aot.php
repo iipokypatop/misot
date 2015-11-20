@@ -19,6 +19,9 @@ class Aot extends Base
     protected $sentence_words_array = [];
     /** @var \Aot\Sviaz\Processors\BuilderAot */
     protected $builder;
+    protected $offset_by_merged_prepose; // смещение позиции по слитым элементам в МИСОТе
+    protected $offset_by_punctuation; // смещение позиции по пропущенной пунктуации в АОТе
+    protected $nonexistent_aot; // несуществующие элементы в аоте
 
     protected function __construct()
     {
@@ -68,13 +71,55 @@ class Aot extends Base
         foreach ($sequence as $member) {
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
                 // пропускаем, поскольку АОТ игнорирует знаки препинания
+                /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
+                $sentence_array[] = $member->getPunctuaciya()->getText();
+
+                // для id элемента count($sentence_array) смещение будет count($this->offset_by_merged_prepose) + 1
+                if (!empty($this->offset_by_punctuation)) {
+                    $value = end($this->offset_by_punctuation);
+                    $this->offset_by_punctuation[count($sentence_array)] = $value + 1;
+                } else {
+                    $this->offset_by_punctuation[count($sentence_array)] = 1;
+                }
+
+                $this->nonexistent_aot[count($sentence_array) - 1] = 1;
+
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
                 $sentence_array[] = $member->getPredlog()->getText();
+
+                if (!empty($this->offset_by_punctuation)) {
+                    $value = end($this->offset_by_punctuation);
+                    $this->offset_by_punctuation[count($sentence_array)] = $value;
+                }
                 $sentence_array[] = $member->getSlovo()->getText();
+
+                if (!empty($this->offset_by_punctuation)) {
+                    $value = end($this->offset_by_punctuation);
+                    $this->offset_by_punctuation[count($sentence_array)] = $value;
+                }
+
+                // для id элемента count($sentence_array) смещение будет count($this->offset_by_merged_prepose) + 1
+                if (!empty($this->offset_by_merged_prepose)) {
+                    $value = end($this->offset_by_merged_prepose);
+                    $this->offset_by_merged_prepose[count($sentence_array)] = $value + 1;
+                } else {
+                    $this->offset_by_merged_prepose[count($sentence_array)] = 1;
+                }
+
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
                 $sentence_array[] = $member->getSlovo()->getText();
+
+                if (!empty($this->offset_by_merged_prepose)) {
+                    $value = end($this->offset_by_merged_prepose);
+                    $this->offset_by_merged_prepose[count($sentence_array)] = $value;
+                }
+
+                if (!empty($this->offset_by_punctuation)) {
+                    $value = end($this->offset_by_punctuation);
+                    $this->offset_by_punctuation[count($sentence_array)] = $value;
+                }
             }
         }
         return $sentence_array;
@@ -128,17 +173,28 @@ class Aot extends Base
 
         foreach ($this->sentence_words_array as $key_word => $word_form) {
             // если нет точки для данного слова и она есть в старой последовательности, тогда берем её оттуда
-            if (empty($sorted_points[$key_word]) && !empty($old_sequence[$key_word])) {
-                $new_sequence[$key_word] = clone $old_sequence[$key_word];
+            if (!empty($this->nonexistent_aot[$key_word])
+                || empty($sorted_points[$this->getElementKeyUsingPositionOffsetAot($key_word)])
+            ) {
+                # todo: учесть смещение позиции из-за объединения predlog_slovo в один member!
+//                var_dump('start');
+//                var_dump($key_word . ' Нет слова -> ' . $word_form);
+//                var_dump($key_word . ' -> ' . $this->getElementKeyUsingPositionOffsetMisot($key_word));
+//                var_dump($this->sentence_words_array[$this->getElementKeyUsingPositionOffset($key_word)]);
+//                var_dump($old_sequence[$this->getElementKeyUsingPositionOffsetMisot($key_word)]);
+//                var_dump('end');
+                if (!empty($old_sequence[$this->getElementKeyUsingPositionOffsetMisot($key_word)])) {
+                    $new_sequence[$key_word] = clone $old_sequence[$this->getElementKeyUsingPositionOffsetMisot($key_word)];
+                }
                 continue;
             }
 
-            $items = $sorted_points[$key_word];
+            $items = $sorted_points[$this->getElementKeyUsingPositionOffsetAot($key_word)];
             $first_element_key = array_shift($items);
             $id_word_class = $syntax_model[$first_element_key]->dw->id_word_class;
             $factory = $this->builder->getFactory($id_word_class);
             if ($factory === null) {
-                $member = clone $old_sequence[$key_word];
+                $member = clone $old_sequence[$this->getElementKeyUsingPositionOffsetMisot($key_word)];
             } else {
                 $point = $syntax_model[$first_element_key];
                 // берём форму слова из исходной последовательности
@@ -151,10 +207,37 @@ class Aot extends Base
             $new_sequence[$key_word] = $member;
 
             // сохраняем связь между элементом в предложении и id мембера
-            $this->link_kw_member_id[$key_word] = $new_sequence->getPosition($member);
+//            $this->link_kw_member_id[$key_word] = $new_sequence->getPosition($member);
+            $this->link_kw_member_id[$this->getElementKeyUsingPositionOffsetAot($key_word)] = $new_sequence->getPosition($member);
         }
 
         return $new_sequence;
+    }
+
+    /**
+     * Получение ключа элементы с учетом смещения позиции из-за композитных элементов (слово+предлог)
+     * @param int $id
+     * @return int
+     */
+    protected function getElementKeyUsingPositionOffsetMisot($id)
+    {
+        if (!empty($this->offset_by_merged_prepose[$id])) {
+            $id -= $this->offset_by_merged_prepose[$id];
+        }
+        return $id;
+    }
+
+    /**
+     * Получение ключа элементы с учетом смещения позиции по аоту
+     * @param int $id
+     * @return int
+     */
+    protected function getElementKeyUsingPositionOffsetAot($id)
+    {
+        if (!empty($this->offset_by_punctuation[$id])) {
+            $id -= $this->offset_by_punctuation[$id];
+        }
+        return $id;
     }
 
     /**
