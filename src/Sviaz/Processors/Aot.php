@@ -39,7 +39,7 @@ class Aot extends Base
         $this->link_kw_member_id = [];
         $this->sentence_words_array = [];
 
-        $this->sentence_words_array = $this->getSentenceWordsBySequence($sequence);
+        $this->fillSentenceWordsBySequence($sequence);
 
         $syntax_model = $this->getOriginalSyntaxModel();
 
@@ -61,68 +61,42 @@ class Aot extends Base
     }
 
     /**
+     * Добавляем элемент в массив слов предложения
+     * @param $text
+     */
+    protected function addToSentenceWordsArray($text)
+    {
+        assert(is_string($text));
+        $this->sentence_words_array[] = $text;
+    }
+
+    /**
      * Формируем массив слов предложения
      * @param \Aot\Sviaz\Sequence $sequence
      * @return string[]
      */
-    protected function getSentenceWordsBySequence(\Aot\Sviaz\Sequence $sequence)
+    protected function fillSentenceWordsBySequence(\Aot\Sviaz\Sequence $sequence)
     {
-        $sentence_array = [];
         foreach ($sequence as $member) {
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
-                // пропускаем, поскольку АОТ игнорирует знаки препинания
                 /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
-                $sentence_array[] = $member->getPunctuaciya()->getText();
-
-                // для id элемента count($sentence_array) смещение будет count($this->offset_by_merged_prepose) + 1
-                if (!empty($this->offset_by_punctuation)) {
-                    $value = end($this->offset_by_punctuation);
-                    $this->offset_by_punctuation[count($sentence_array)] = $value + 1;
-                } else {
-                    $this->offset_by_punctuation[count($sentence_array)] = 1;
-                }
-
-                $this->nonexistent_aot[count($sentence_array) - 1] = 1;
-
+                $this->addToSentenceWordsArray($member->getPunctuaciya()->getText());
+                $this->refreshPunctuationOffset(1);
+                $this->nonexistent_aot[count($this->sentence_words_array) - 1] = 1;
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
-                $sentence_array[] = $member->getPredlog()->getText();
-
-                if (!empty($this->offset_by_punctuation)) {
-                    $value = end($this->offset_by_punctuation);
-                    $this->offset_by_punctuation[count($sentence_array)] = $value;
-                }
-                $sentence_array[] = $member->getSlovo()->getText();
-
-                if (!empty($this->offset_by_punctuation)) {
-                    $value = end($this->offset_by_punctuation);
-                    $this->offset_by_punctuation[count($sentence_array)] = $value;
-                }
-
-                // для id элемента count($sentence_array) смещение будет count($this->offset_by_merged_prepose) + 1
-                if (!empty($this->offset_by_merged_prepose)) {
-                    $value = end($this->offset_by_merged_prepose);
-                    $this->offset_by_merged_prepose[count($sentence_array)] = $value + 1;
-                } else {
-                    $this->offset_by_merged_prepose[count($sentence_array)] = 1;
-                }
-
+                $this->addToSentenceWordsArray($member->getPredlog()->getText());
+                $this->refreshPunctuationOffset();
+                $this->addToSentenceWordsArray($member->getSlovo()->getText());
+                $this->refreshPunctuationOffset();
+                $this->refreshPrepositionOffset(1);
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
-                $sentence_array[] = $member->getSlovo()->getText();
-
-                if (!empty($this->offset_by_merged_prepose)) {
-                    $value = end($this->offset_by_merged_prepose);
-                    $this->offset_by_merged_prepose[count($sentence_array)] = $value;
-                }
-
-                if (!empty($this->offset_by_punctuation)) {
-                    $value = end($this->offset_by_punctuation);
-                    $this->offset_by_punctuation[count($sentence_array)] = $value;
-                }
+                $this->addToSentenceWordsArray($member->getSlovo()->getText());
+                $this->refreshPrepositionOffset();
+                $this->refreshPunctuationOffset();
             }
         }
-        return $sentence_array;
     }
 
     /**
@@ -155,7 +129,6 @@ class Aot extends Base
      */
     protected function createNewSequence(\Aot\Sviaz\Sequence $old_sequence, array $syntax_model)
     {
-
         assert(!empty($syntax_model));
 
         foreach ($syntax_model as $point) {
@@ -176,15 +149,9 @@ class Aot extends Base
             if (!empty($this->nonexistent_aot[$key_word])
                 || empty($sorted_points[$this->getElementKeyUsingPositionOffsetAot($key_word)])
             ) {
-                # todo: учесть смещение позиции из-за объединения predlog_slovo в один member!
-//                var_dump('start');
-//                var_dump($key_word . ' Нет слова -> ' . $word_form);
-//                var_dump($key_word . ' -> ' . $this->getElementKeyUsingPositionOffsetMisot($key_word));
-//                var_dump($this->sentence_words_array[$this->getElementKeyUsingPositionOffset($key_word)]);
-//                var_dump($old_sequence[$this->getElementKeyUsingPositionOffsetMisot($key_word)]);
-//                var_dump('end');
                 if (!empty($old_sequence[$this->getElementKeyUsingPositionOffsetMisot($key_word)])) {
-                    $new_sequence[$key_word] = clone $old_sequence[$this->getElementKeyUsingPositionOffsetMisot($key_word)];
+                    $new_sequence[$key_word] =
+                        clone $old_sequence[$this->getElementKeyUsingPositionOffsetMisot($key_word)];
                 }
                 continue;
             }
@@ -207,7 +174,6 @@ class Aot extends Base
             $new_sequence[$key_word] = $member;
 
             // сохраняем связь между элементом в предложении и id мембера
-//            $this->link_kw_member_id[$key_word] = $new_sequence->getPosition($member);
             $this->link_kw_member_id[$this->getElementKeyUsingPositionOffsetAot($key_word)] = $new_sequence->getPosition($member);
         }
 
@@ -242,11 +208,15 @@ class Aot extends Base
 
     /**
      * Замена элемента в последовательности без предлога на элемент с предлогом
-     * @param \Aot\Sviaz\Sequence $seq
+     * @param \Aot\Sviaz\Sequence $sequence
      * @param \Sentence_space_SP_Rel $prepose_point
      * @param \Sentence_space_SP_Rel $word_point
      */
-    protected function replaceSequenceMemberToMemberWithPreposition(\Aot\Sviaz\Sequence $seq, Sentence_space_SP_Rel $prepose_point, Sentence_space_SP_Rel $word_point)
+    protected function replaceSequenceMemberToMemberWithPreposition(
+        \Aot\Sviaz\Sequence $sequence,
+        Sentence_space_SP_Rel $prepose_point,
+        Sentence_space_SP_Rel $word_point
+    )
     {
 
         if ($prepose_point->dw->id_word_class !== \DefinesAot::PREPOSITION_CLASS_ID
@@ -265,12 +235,14 @@ class Aot extends Base
 
         $replaced_member_id = $this->link_kw_member_id[$word_point->kw];
         $member_with_prepose = \Aot\Sviaz\SequenceMember\Word\WordWithPreposition::create($slovo[0], $prepose[0]);
-        $seq[$replaced_member_id] = $member_with_prepose;
+        $sequence[$replaced_member_id] = $member_with_prepose;
 
         // убираем предудыщий элемент, если он есть и является предлогом
-        /** @var \Aot\Sviaz\SequenceMember\Word\Base[] $seq */
-        if (isset($seq[$replaced_member_id - 1]) && is_a($seq[$replaced_member_id - 1]->getSlovo(), \Aot\RussianMorphology\ChastiRechi\Predlog\Base::class, true)) {
-            unset($seq[$replaced_member_id - 1]);
+        /** @var \Aot\Sviaz\SequenceMember\Word\Base[] $sequence */
+        if (isset($sequence[$replaced_member_id - 1])
+            && is_a($sequence[$replaced_member_id - 1]->getSlovo(), \Aot\RussianMorphology\ChastiRechi\Predlog\Base::class, true)
+        ) {
+            unset($sequence[$replaced_member_id - 1]);
         }
     }
 
@@ -301,7 +273,10 @@ class Aot extends Base
         // заменяем обычный мембер на мембер с предлогом
         foreach ($linked_pairs as $id_pair => $pair_points) {
             if ($pair_points[self::MAIN_POINT]->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
-                $this->replaceSequenceMemberToMemberWithPreposition($sequence, $pair_points[self::MAIN_POINT], $pair_points[self::DEPENDED_POINT]);
+                $this->replaceSequenceMemberToMemberWithPreposition(
+                    $sequence, $pair_points[self::MAIN_POINT],
+                    $pair_points[self::DEPENDED_POINT]
+                );
                 unset($linked_pairs[$id_pair]);
             }
         }
@@ -342,6 +317,36 @@ class Aot extends Base
             $linked_pairs[$point->Oz][$point->direction] = $point;
         }
         return $linked_pairs;
+    }
+
+    /**
+     * обновляем массив смещения по пунктуации
+     * @param int $offset
+     */
+    protected function refreshPunctuationOffset($offset = 0)
+    {
+        assert(is_int($offset));
+        if (!empty($this->offset_by_punctuation)) {
+            $value = end($this->offset_by_punctuation);
+            $this->offset_by_punctuation[count($this->sentence_words_array)] = $value + $offset;
+        } else {
+            $this->offset_by_punctuation[count($this->sentence_words_array)] = $offset;
+        }
+    }
+
+    /**
+     * обновляем массив смещения по предлогу
+     * @param int $offset
+     */
+    protected function refreshPrepositionOffset($offset = 0)
+    {
+        assert(is_int($offset));
+        if (!empty($this->offset_by_merged_prepose)) {
+            $value = end($this->offset_by_merged_prepose);
+            $this->offset_by_merged_prepose[count($this->sentence_words_array)] = $value + $offset;
+        } else {
+            $this->offset_by_merged_prepose[count($this->sentence_words_array)] = $offset;
+        }
     }
 
 }
