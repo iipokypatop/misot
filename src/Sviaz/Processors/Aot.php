@@ -209,13 +209,15 @@ class Aot extends Base
             return;
         }
 
-        foreach ($linked_pairs as $pair_points) {
-
-            // заменяем обычный мембер на мембер с предлогом
+        // заменяем обычный мембер на мембер с предлогом
+        foreach ($linked_pairs as $id_pair => $pair_points) {
             if ($pair_points[self::MAIN_POINT]->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
                 $this->replaceSequenceMemberToMemberWithPreposition($sequence, $pair_points[self::MAIN_POINT], $pair_points[self::DEPENDED_POINT]);
-                continue;
+                unset($linked_pairs[$id_pair]);
             }
+        }
+
+        foreach ($linked_pairs as $pair_points) {
 
             if (empty($sequence[$this->link_kw_member_id[$pair_points[self::MAIN_POINT]->kw]])) {
                 throw new \LogicException('The sequence does not have a member with id = ' . $pair_points[self::MAIN_POINT]->kw);
@@ -237,7 +239,6 @@ class Aot extends Base
             $rule = $this->builder->createRule($main_point_part_of_speech, $depended_point_part_of_speech, $main_role, $depended_role);
             $sviaz = $this->builder->createSviaz($main, $depended, $rule, $sequence);
             $sequence->addSviaz($sviaz);
-
         }
     }
 
