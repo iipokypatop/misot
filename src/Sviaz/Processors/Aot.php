@@ -16,7 +16,7 @@ class Aot extends Base
     const MAIN_POINT = 'x';
     const DEPENDED_POINT = 'y';
     protected $link_kw_member_id = []; // связь по слову в предложению и id мембера
-    protected $sentence_array = [];
+    protected $sentence_words_array = [];
     /** @var \Aot\Sviaz\Processors\BuilderAot */
     protected $builder;
 
@@ -34,24 +34,24 @@ class Aot extends Base
     public function run(\Aot\Sviaz\Sequence $sequence, array $rules)
     {
         $this->link_kw_member_id = [];
-        $this->sentence_array = [];
+        $this->sentence_words_array = [];
 
-        $this->sentence_array = $this->getSentenceWordsBySequence($sequence);
+        $this->sentence_words_array = $this->getSentenceWordsBySequence($sequence);
 
         $syntax_model = $this->getOriginalSyntaxModel();
 
         if (empty($syntax_model)) {
-            # пересобираем последовательность
+            // пересобираем последовательность
             return $this->builder->rebuildSequence($sequence);
         }
 
-        # создаём новую последовательность
+        // создаём новую последовательность
         $new_sequence = $this->createNewSequence($sequence, $syntax_model);
 
-        # заполняем её связями
+        // заполняем её связями
         $this->fillRelations($new_sequence, $syntax_model);
 
-        # пересобираем последовательность
+        // пересобираем последовательность
         $rebuilded_sequence = $this->builder->rebuildSequence($new_sequence);
 
         return $rebuilded_sequence;
@@ -67,7 +67,7 @@ class Aot extends Base
         $sentence_array = [];
         foreach ($sequence as $member) {
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
-                # пропускаем, поскольку АОТ игнорирует знаки препинания
+                // пропускаем, поскольку АОТ игнорирует знаки препинания
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
                 $sentence_array[] = $member->getPredlog()->getText();
@@ -86,12 +86,12 @@ class Aot extends Base
      */
     protected function getOriginalSyntaxModel()
     {
-        if (empty($this->sentence_array)) {
+        if (empty($this->sentence_words_array)) {
             return [];
         }
 
-        # восстановление предложения
-        $sentence_string = join(' ', $this->sentence_array);
+        // восстановление предложения
+        $sentence_string = join(' ', $this->sentence_words_array);
 
         $mivar = new \DMivarText(['txt' => $sentence_string]);
 
@@ -126,7 +126,7 @@ class Aot extends Base
 
         $new_sequence = $this->builder->createSequence();
 
-        foreach ($this->sentence_array as $key_word => $word_form) {
+        foreach ($this->sentence_words_array as $key_word => $word_form) {
             // если нет точки для данного слова и она есть в старой последовательности, тогда берем её оттуда
             if (empty($sorted_points[$key_word]) && !empty($old_sequence[$key_word])) {
                 $new_sequence[$key_word] = clone $old_sequence[$key_word];
@@ -171,11 +171,11 @@ class Aot extends Base
             return;
         }
         $factory_main = $this->builder->getFactory($prepose_point->dw->id_word_class);
-        $prepose_point->dw->word_form = $this->sentence_array[$prepose_point->kw];
+        $prepose_point->dw->word_form = $this->sentence_words_array[$prepose_point->kw];
         $prepose = $factory_main->build($prepose_point->dw);
 
         $factory_depend = $this->builder->getFactory($word_point->dw->id_word_class);
-        $word_point->dw->word_form = $this->sentence_array[$word_point->kw];
+        $word_point->dw->word_form = $this->sentence_words_array[$word_point->kw];
         $slovo = $factory_depend->build($word_point->dw);
 
         $replaced_member_id = $this->link_kw_member_id[$word_point->kw];

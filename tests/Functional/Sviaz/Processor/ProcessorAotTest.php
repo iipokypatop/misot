@@ -37,15 +37,16 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
 
 
     /**
-     *
+     * Прогоняем предложения и смотрим, что все мемберы из связей совпадают с мемберами из послеовательности
      * @dataProvider dataProviderSentences
      * @param $sentence
      */
-    public function testAAA($sentence)
+    public function testRelationsInSentences($sentence)
     {
         $seq_converter = \Aot\Sviaz\CreateSequenceFromText::create();
         $seq_converter->convert($sentence);
         $sequence = $seq_converter->getSequence()[0];
+
         $predlog = \Aot\Sviaz\PreProcessors\Predlog::create();
         /** @var \Aot\Sviaz\Sequence $sequence */
         $sequence = $predlog->run($sequence);
@@ -67,14 +68,17 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     }
 
 
-
+    /**
+     * @return array
+     */
     public function dataProviderSentences()
     {
         return [
             ['Мальчик пошел в лес.'],
             ['Дровосек пошел в лес рубить дрова.'],
-            ['Папа сжег в лес, в котором рубил дрова.'], // #TODO: предложение с опечаткой, отлавливать
+            ['Папа сжег в лес, в котором рубил дрова.'], // предложение с опечаткой
             ['Папа, мама и бабушка пошли в магазин.'],
+            ['Василий Петрович купил сигареты.'],
             ['Василий, Петрович купил сигареты.'],
         ];
     }
