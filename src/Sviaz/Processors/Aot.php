@@ -100,7 +100,6 @@ class Aot extends Base
         $result = $mivar->getSyntaxModel();
 
         return $result ?: [];
-
     }
 
     /**
@@ -166,6 +165,11 @@ class Aot extends Base
      */
     protected function replaceSequenceMemberToMemberWithPreposition(\Aot\Sviaz\Sequence $seq, Sentence_space_SP_Rel $prepose_point, Sentence_space_SP_Rel $word_point)
     {
+        if ($prepose_point->dw->id_word_class !== \DefinesAot::PREPOSITION_CLASS_ID
+            || $word_point->dw->id_word_class !== \DefinesAot::NOUN_CLASS_ID
+        ) {
+            return;
+        }
         $factory_main = $this->builder->getFactory($prepose_point->dw->id_word_class);
         $prepose_point->dw->word_form = $this->sentence_array[$prepose_point->kw];
         $prepose = $factory_main->build($prepose_point->dw);

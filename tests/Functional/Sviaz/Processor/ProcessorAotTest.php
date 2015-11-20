@@ -36,11 +36,15 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     }
 
 
-    public function testAAA()
+    /**
+     *
+     * @dataProvider dataProviderSentences
+     * @param $sentence
+     */
+    public function testAAA($sentence)
     {
         $seq_converter = \Aot\Sviaz\CreateSequenceFromText::create();
-        $text = 'Мальчик пошел в лес';
-        $seq_converter->convert($text);
+        $seq_converter->convert($sentence);
         $sequence = $seq_converter->getSequence()[0];
         $predlog = \Aot\Sviaz\PreProcessors\Predlog::create();
         /** @var \Aot\Sviaz\Sequence $sequence */
@@ -59,7 +63,20 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
             $this->assertNotNull($pos);
             $this->assertNotNull($pos2);
         }
-        \Doctrine\Common\Util\Debug::dump($new_sequence, 5);
+//        \Doctrine\Common\Util\Debug::dump($new_sequence, 5);
+    }
+
+
+
+    public function dataProviderSentences()
+    {
+        return [
+            ['Мальчик пошел в лес.'],
+            ['Дровосек пошел в лес рубить дрова.'],
+            ['Папа сжег в лес, в котором рубил дрова.'], // #TODO: предложение с опечаткой, отлавливать
+            ['Папа, мама и бабушка пошли в магазин.'],
+            ['Василий, Петрович купил сигареты.'],
+        ];
     }
 
 }
