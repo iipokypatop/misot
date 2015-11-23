@@ -40,6 +40,7 @@ class Aot extends Base
         $this->sentence_words_array = [];
         $this->offset_by_misot = [];
         $this->offset_by_aot = [];
+        $this->nonexistent_aot = [];
 
         $this->fillSentenceWordsBySequence($sequence);
 
