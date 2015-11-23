@@ -38,6 +38,8 @@ class Aot extends Base
     {
         $this->link_kw_member_id = [];
         $this->sentence_words_array = [];
+        $this->offset_by_misot = [];
+        $this->offset_by_aot = [];
 
         $this->fillSentenceWordsBySequence($sequence);
 
