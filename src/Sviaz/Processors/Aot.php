@@ -19,8 +19,8 @@ class Aot extends Base
     protected $sentence_words_array = [];
     /** @var \Aot\Sviaz\Processors\BuilderAot */
     protected $builder;
-    protected $offset_by_merged_prepose; // смещение позиции по слитым элементам в МИСОТе
-    protected $offset_by_punctuation; // смещение позиции по пропущенной пунктуации в АОТе
+    protected $offset_by_misot; // смещение позиции по слитым элементам в МИСОТе
+    protected $offset_by_aot; // смещение позиции по пропущенной пунктуации в АОТе
     protected $nonexistent_aot; // несуществующие элементы в аоте
 
     protected function __construct()
@@ -81,20 +81,20 @@ class Aot extends Base
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
                 /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
                 $this->addToSentenceWordsArray($member->getPunctuaciya()->getText());
-                $this->refreshPunctuationOffset(1);
+                $this->refreshAotOffset(1);
                 $this->nonexistent_aot[count($this->sentence_words_array) - 1] = 1;
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
                 $this->addToSentenceWordsArray($member->getPredlog()->getText());
-                $this->refreshPunctuationOffset();
+                $this->refreshAotOffset();
                 $this->addToSentenceWordsArray($member->getSlovo()->getText());
-                $this->refreshPunctuationOffset();
-                $this->refreshPrepositionOffset(1);
+                $this->refreshAotOffset();
+                $this->refreshMisotOffset(1);
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
                 $this->addToSentenceWordsArray($member->getSlovo()->getText());
-                $this->refreshPrepositionOffset();
-                $this->refreshPunctuationOffset();
+                $this->refreshMisotOffset();
+                $this->refreshAotOffset();
             }
         }
     }
@@ -187,8 +187,8 @@ class Aot extends Base
      */
     protected function getElementKeyUsingPositionOffsetMisot($id)
     {
-        if (!empty($this->offset_by_merged_prepose[$id])) {
-            $id -= $this->offset_by_merged_prepose[$id];
+        if (!empty($this->offset_by_misot[$id])) {
+            $id -= $this->offset_by_misot[$id];
         }
         return $id;
     }
@@ -200,8 +200,8 @@ class Aot extends Base
      */
     protected function getElementKeyUsingPositionOffsetAot($id)
     {
-        if (!empty($this->offset_by_punctuation[$id])) {
-            $id -= $this->offset_by_punctuation[$id];
+        if (!empty($this->offset_by_aot[$id])) {
+            $id -= $this->offset_by_aot[$id];
         }
         return $id;
     }
@@ -320,32 +320,32 @@ class Aot extends Base
     }
 
     /**
-     * обновляем массив смещения по пунктуации
+     * обновляем массив смещения по аоту (пунктуация)
      * @param int $offset
      */
-    protected function refreshPunctuationOffset($offset = 0)
+    protected function refreshAotOffset($offset = 0)
     {
         assert(is_int($offset));
-        if (!empty($this->offset_by_punctuation)) {
-            $value = end($this->offset_by_punctuation);
-            $this->offset_by_punctuation[count($this->sentence_words_array)] = $value + $offset;
+        if (!empty($this->offset_by_aot)) {
+            $value = end($this->offset_by_aot);
+            $this->offset_by_aot[count($this->sentence_words_array)] = $value + $offset;
         } else {
-            $this->offset_by_punctuation[count($this->sentence_words_array)] = $offset;
+            $this->offset_by_aot[count($this->sentence_words_array)] = $offset;
         }
     }
 
     /**
-     * обновляем массив смещения по предлогу
+     * обновляем массив смещения по мисоту (предлог)
      * @param int $offset
      */
-    protected function refreshPrepositionOffset($offset = 0)
+    protected function refreshMisotOffset($offset = 0)
     {
         assert(is_int($offset));
-        if (!empty($this->offset_by_merged_prepose)) {
-            $value = end($this->offset_by_merged_prepose);
-            $this->offset_by_merged_prepose[count($this->sentence_words_array)] = $value + $offset;
+        if (!empty($this->offset_by_misot)) {
+            $value = end($this->offset_by_misot);
+            $this->offset_by_misot[count($this->sentence_words_array)] = $value + $offset;
         } else {
-            $this->offset_by_merged_prepose[count($this->sentence_words_array)] = $offset;
+            $this->offset_by_misot[count($this->sentence_words_array)] = $offset;
         }
     }
 
