@@ -51,6 +51,13 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
         /** @var \Aot\Sviaz\Sequence $sequence */
         $sequence = $predlog->run($sequence);
 
+        /**
+         * TODO: переделать получение последовательности
+         * 1 - slova
+         * 2 - создать матрицу
+         * 3 - получить нормализованную матрицу
+         * 4 - Matrix->getCopyWithOnlyOneRaw...()
+         */
 
         $misot_to_aot = \Aot\Sviaz\Processors\Aot::create();
         $new_sequence = $misot_to_aot->run($sequence, []);
@@ -95,8 +102,8 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     {
         return [
             ['Мальчик пошел в лес.'],
-            ['Человек пойдет в лес, если дома не будет еды.'],
-            ['Папа, мама и брат пойдут в лес, если дома не будет еды.'],
+//            ['Человек пойдет в лес, если дома не будет еды.'],
+//            ['Папа, мама и брат пойдут в лес, если дома не будет еды.'],
             ['Дровосек пошел в лес рубить дрова.'],
             ['Папа сжег в лес, в котором рубил дрова.'], // предложение с опечаткой
             ['Папа, мама и бабушка пошли в магазин.'],
