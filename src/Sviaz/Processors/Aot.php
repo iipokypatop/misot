@@ -23,8 +23,6 @@ class Aot extends Base
     /** @var \Aot\Sviaz\Processors\OffsetManager */
     protected $offsetManager;
 
-    protected $offset_by_misot = []; // смещение позиции по слитым элементам в МИСОТе
-    protected $offset_by_aot = []; // смещение позиции по пропущенной пунктуации в АОТе
     protected $nonexistent_aot = []; // несуществующие элементы в аоте
 
     protected function __construct()
