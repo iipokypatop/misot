@@ -77,7 +77,7 @@ class RoleSpecification
             $role_main = RoleRegistry::VESCH;
             $role_dep = RoleRegistry::SVOISTVO;
         } // sub_conj[1,2,3,4,5,6,7] - связь отношений через подчинительные союзы
-        elseif (preg_match("/sub\\_conj/", $name_relation)) {
+        elseif (strpos($name_relation, "sub_conj") !== false) {
             $role_main = RoleRegistry::OTNOSHENIE;
             $role_dep = RoleRegistry::SVOISTVO;
         } else {

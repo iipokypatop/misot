@@ -41,7 +41,7 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
      * @dataProvider dataProviderSentences
      * @param $sentence
      */
-    public function testRelationsInSentences($sentence)
+    public function testRelationsInSentencesBuildedCorrectly($sentence)
     {
         $seq_converter = \Aot\Sviaz\CreateSequenceFromText::create();
         $seq_converter->convert($sentence);
