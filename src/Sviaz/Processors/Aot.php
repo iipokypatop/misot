@@ -41,20 +41,30 @@ class Aot extends Base
     {
         $this->init();
 
-        $this->fillSentenceWordsBySequence($sequence);
+        $seq_words = SequenceWords::create();
 
-        $syntax_model = $this->getOriginalSyntaxModel();
+        $this->sentence_words_array = $seq_words->getSentenceWordsBySequence($sequence);
+
+        $this->offsetManager = $seq_words->getOffsetManager();
+
+        // восстановление предложения
+        $sentence_string = join(' ', $this->sentence_words_array);
+
+        $syntax_model = AotLauncher::getSyntaxModel($sentence_string);
 
         if (empty($syntax_model)) {
             // пересобираем последовательность
             return $this->builder->rebuildSequence($sequence);
         }
 
+
         // создаём новую последовательность
         $new_sequence = $this->createNewSequence($sequence, $syntax_model);
 
+        $linked_pairs = $this->getLinkedPairsFromSyntaxModel($sequence, $syntax_model);
+
         // заполняем её связями
-        $this->fillRelations($new_sequence, $syntax_model);
+        $this->fillRelations($new_sequence, $linked_pairs);
 
         // пересобираем последовательность
         $rebuilded_sequence = $this->builder->rebuildSequence($new_sequence);
@@ -74,38 +84,6 @@ class Aot extends Base
         end($this->sentence_words_array);
         $key = key($this->sentence_words_array);
         return $key;
-    }
-
-    /**
-     * Формируем массив слов предложения
-     * @param \Aot\Sviaz\Sequence $sequence
-     * @return string[]
-     */
-    protected function fillSentenceWordsBySequence(\Aot\Sviaz\Sequence $sequence)
-    {
-        foreach ($sequence as $member) {
-            if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
-                /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
-                $id = $this->addToSentenceWordsArray($member->getPunctuaciya()->getText());
-                $this->offsetManager->refreshAotOffset($id, 1);
-                $this->offsetManager->refreshMisotOffset($id);
-                $this->addToNonexistentAot();
-            } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
-                /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
-                $id = $this->addToSentenceWordsArray($member->getPredlog()->getText());
-                $this->offsetManager->refreshAotOffset($id);
-                // отдельно элмента предлог в мисоте нет
-                $this->addToNonexistentMisot();
-                $id = $this->addToSentenceWordsArray($member->getSlovo()->getText());
-                $this->offsetManager->refreshAotOffset($id);
-                $this->offsetManager->refreshMisotOffset($id, 1);
-            } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
-                /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
-                $id = $this->addToSentenceWordsArray($member->getSlovo()->getText());
-                $this->offsetManager->refreshMisotOffset($id);
-                $this->offsetManager->refreshAotOffset($id);
-            }
-        }
     }
 
     /**
@@ -154,9 +132,9 @@ class Aot extends Base
 
         foreach ($this->sentence_words_array as $key_word => $word_form) {
             // если нет точки для данного слова и она есть в старой последовательности, тогда берем её оттуда и есть в последовательности
-            if ((!empty($this->nonexistent_aot[$key_word])
+            if ((!empty($this->offsetManager->nonexistent_aot[$key_word])
                 || empty($sorted_points[$this->offsetManager->getAotKeyBySentenceWordKey($key_word)])
-                && empty($this->nonexistent_misot[$key_word]))
+                && empty($this->offsetManager->nonexistent_misot[$key_word]))
             ) {
                 if (!empty($old_sequence[$this->offsetManager->getMisotKeyBySentenceWordKey($key_word)])) {
                     $new_sequence[$key_word] =
@@ -237,35 +215,13 @@ class Aot extends Base
     /**
      * Наполнение последовательности связями
      * @param \Aot\Sviaz\Sequence $sequence
-     * @param \Sentence_space_SP_Rel[] $syntax_model
+     * @param \Sentence_space_SP_Rel[][] $linked_pairs
      * @return void
      */
-    protected function fillRelations(\Aot\Sviaz\Sequence $sequence, array $syntax_model)
+    protected function fillRelations(\Aot\Sviaz\Sequence $sequence, array $linked_pairs)
     {
-
-        if (empty($syntax_model)) {
-            return;
-        }
-
-        foreach ($syntax_model as $point) {
-            assert(is_a($point, \Sentence_space_SP_Rel::class, true));
-        }
-
-        $linked_pairs = $this->getLinkedPairs($syntax_model);
-
         if (empty($linked_pairs)) {
             return;
-        }
-
-        // заменяем обычный мембер на мембер с предлогом
-        foreach ($linked_pairs as $id_pair => $pair_points) {
-            if ($pair_points[self::MAIN_POINT]->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
-                $this->replaceSequenceMemberToMemberWithPreposition(
-                    $sequence, $pair_points[self::MAIN_POINT],
-                    $pair_points[self::DEPENDED_POINT]
-                );
-                unset($linked_pairs[$id_pair]);
-            }
         }
 
         foreach ($linked_pairs as $pair_points) {
@@ -318,19 +274,39 @@ class Aot extends Base
     }
 
     /**
-     * Добавить элемент к списку несуществующих значений АОТа
+     * Получение связанных пар из синтаксической модели
+     * @param \Aot\Sviaz\Sequence $sequence
+     * @param \Sentence_space_SP_Rel[] $syntax_model
+     * @return \Sentence_space_SP_Rel[][]
      */
-    protected function addToNonexistentAot()
+    protected function getLinkedPairsFromSyntaxModel($sequence, $syntax_model)
     {
-        $this->nonexistent_aot[count($this->sentence_words_array) - 1] = 1;
-    }
+        if (empty($syntax_model)) {
+            return [];
+        }
 
-    /**
-     * Добавить элемент к списку несуществующих значений АОТа
-     */
-    protected function addToNonexistentMisot()
-    {
-        $this->nonexistent_misot[count($this->sentence_words_array) - 1] = 1;
+        foreach ($syntax_model as $point) {
+            assert(is_a($point, \Sentence_space_SP_Rel::class, true));
+        }
+
+        $linked_pairs = $this->getLinkedPairs($syntax_model);
+
+        if (empty($linked_pairs)) {
+            [];
+        }
+
+        // заменяем обычный мембер на мембер с предлогом
+        foreach ($linked_pairs as $id_pair => $pair_points) {
+            if ($pair_points[self::MAIN_POINT]->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
+                $this->replaceSequenceMemberToMemberWithPreposition(
+                    $sequence, $pair_points[self::MAIN_POINT],
+                    $pair_points[self::DEPENDED_POINT]
+                );
+                unset($linked_pairs[$id_pair]);
+            }
+        }
+
+        return $linked_pairs ?: [];
     }
 
 }

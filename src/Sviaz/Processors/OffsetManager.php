@@ -12,6 +12,8 @@ class OffsetManager
 {
     public $offset_by_misot = []; // смещение позиции по слитым элементам в МИСОТе
     public $offset_by_aot = []; // смещение позиции по пропущенной пунктуации в АОТе
+    public $nonexistent_aot = [];
+    public $nonexistent_misot = [];
 
     public static function create()
     {
@@ -114,5 +116,26 @@ class OffsetManager
             return $id;
         }
         return $id;
+    }
+
+
+    /**
+     * Добавить элемент к списку несуществующих значений АОТа
+     * @param int $id
+     */
+    public function addToNonexistentAot($id)
+    {
+        assert(is_int($id));
+        $this->nonexistent_aot[$id] = 1;
+    }
+
+    /**
+     * Добавить элемент к списку несуществующих значений МИСОТа
+     * @param int $id
+     */
+    public function addToNonexistentMisot($id)
+    {
+        assert(is_int($id));
+        $this->nonexistent_misot[$id] = 1;
     }
 }
