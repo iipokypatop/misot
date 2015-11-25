@@ -11,11 +11,12 @@ namespace Aot\Sviaz\Processors;
 
 class SequenceWords
 {
+    /** @var \Aot\Sviaz\Processors\OffsetManager */
     protected $offsetManager;
 
-    protected $sentence_words_array;
-    protected $nonexistent_aot;
-    protected $nonexistent_misot;
+    protected $sentence_words_array = [];
+    protected $nonexistent_aot = [];
+    protected $nonexistent_misot = [];
 
     public static function create()
     {

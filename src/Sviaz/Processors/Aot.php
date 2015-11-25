@@ -23,12 +23,17 @@ class Aot extends Base
     /** @var \Aot\Sviaz\Processors\OffsetManager */
     protected $offsetManager;
 
-    protected $nonexistent_aot = []; // несуществующие элементы в аоте
-    protected $nonexistent_misot = []; // несуществующие элементы в мисоте
-
     protected function __construct()
     {
         $this->builder = \Aot\Sviaz\Processors\BuilderAot::create();
+    }
+
+    /**
+     * Задаём значения по умолчанию
+     */
+    protected function init()
+    {
+        $this->link_kw_member_id = [];
     }
 
     /**
@@ -50,18 +55,23 @@ class Aot extends Base
         // восстановление предложения
         $sentence_string = join(' ', $this->sentence_words_array);
 
-        $syntax_model = AotLauncher::getSyntaxModel($sentence_string);
-
-        if (empty($syntax_model)) {
+        $aot_launcher = AotLauncher::create($sentence_string);
+        if ($aot_launcher->isModelEmpty()) {
             // пересобираем последовательность
             return $this->builder->rebuildSequence($sequence);
         }
 
+        $syntax_model = $aot_launcher->getSyntaxModel();
 
         // создаём новую последовательность
         $new_sequence = $this->createNewSequence($sequence, $syntax_model);
 
-        $linked_pairs = $this->getLinkedPairsFromSyntaxModel($sequence, $syntax_model);
+        $linked_pairs = $this->filterLinkedPairs($sequence, $aot_launcher->getLinkedPairs());
+
+        if (empty($linked_pairs)) {
+            // пересобираем последовательность
+            return $this->builder->rebuildSequence($sequence);
+        }
 
         // заполняем её связями
         $this->fillRelations($new_sequence, $linked_pairs);
@@ -70,42 +80,6 @@ class Aot extends Base
         $rebuilded_sequence = $this->builder->rebuildSequence($new_sequence);
 
         return $rebuilded_sequence;
-    }
-
-    /**
-     * Добавляем элемент в массив слов предложения
-     * @param string $text
-     * @return int
-     */
-    protected function addToSentenceWordsArray($text)
-    {
-        assert(is_string($text));
-        $this->sentence_words_array[] = $text;
-        end($this->sentence_words_array);
-        $key = key($this->sentence_words_array);
-        return $key;
-    }
-
-    /**
-     * Получение синтаксической модели через АОТ
-     * @return \Sentence_space_SP_Rel[]
-     */
-    protected function getOriginalSyntaxModel()
-    {
-        if (empty($this->sentence_words_array)) {
-            return [];
-        }
-
-        // восстановление предложения
-        $sentence_string = join(' ', $this->sentence_words_array);
-
-        $mivar = new \DMivarText(['txt' => $sentence_string]);
-
-        $mivar->syntax_model();
-
-        $result = $mivar->getSyntaxModel();
-
-        return $result ?: [];
     }
 
     /**
@@ -249,57 +223,21 @@ class Aot extends Base
         }
     }
 
-    /**
-     * @param \Sentence_space_SP_Rel[] $syntax_model
-     * @return \Sentence_space_SP_Rel[]
-     */
-    protected function getLinkedPairs(array $syntax_model)
-    {
-        $linked_pairs = [];
-        foreach ($syntax_model as $key => $point) {
-            $linked_pairs[$point->Oz][$point->direction] = $point;
-        }
-        return $linked_pairs;
-    }
-
-    /**
-     * Задаём значения по умолчанию
-     */
-    protected function init()
-    {
-        $this->link_kw_member_id = [];
-        $this->sentence_words_array = [];
-        $this->nonexistent_aot = [];
-        $this->offsetManager = \Aot\Sviaz\Processors\OffsetManager::create();
-    }
 
     /**
      * Получение связанных пар из синтаксической модели
      * @param \Aot\Sviaz\Sequence $sequence
-     * @param \Sentence_space_SP_Rel[] $syntax_model
+     * @param \Sentence_space_SP_Rel[][] $linked_pairs
      * @return \Sentence_space_SP_Rel[][]
      */
-    protected function getLinkedPairsFromSyntaxModel($sequence, $syntax_model)
+    protected function filterLinkedPairs(\Aot\Sviaz\Sequence $sequence, array $linked_pairs)
     {
-        if (empty($syntax_model)) {
-            return [];
-        }
-
-        foreach ($syntax_model as $point) {
-            assert(is_a($point, \Sentence_space_SP_Rel::class, true));
-        }
-
-        $linked_pairs = $this->getLinkedPairs($syntax_model);
-
-        if (empty($linked_pairs)) {
-            [];
-        }
-
         // заменяем обычный мембер на мембер с предлогом
         foreach ($linked_pairs as $id_pair => $pair_points) {
             if ($pair_points[self::MAIN_POINT]->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
                 $this->replaceSequenceMemberToMemberWithPreposition(
-                    $sequence, $pair_points[self::MAIN_POINT],
+                    $sequence,
+                    $pair_points[self::MAIN_POINT],
                     $pair_points[self::DEPENDED_POINT]
                 );
                 unset($linked_pairs[$id_pair]);
@@ -308,5 +246,4 @@ class Aot extends Base
 
         return $linked_pairs ?: [];
     }
-
 }

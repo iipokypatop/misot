@@ -11,13 +11,56 @@ namespace Aot\Sviaz\Processors;
 
 class AotLauncher
 {
+    /** @var \Sentence_space_SP_Rel[]  */
+    protected $syntax_model = [];
+
+    public static function create($text)
+    {
+        return new static($text);
+    }
+
+    protected function __construct($text)
+    {
+        assert(is_string($text));
+        $this->syntax_model = $this->createSyntaxModel($text);
+    }
+
 
     /**
      * Получение синтаксической модели через АОТ
-     * @param $text
      * @return \Sentence_space_SP_Rel[]
      */
-    public static function getSyntaxModel($text)
+    public function getSyntaxModel()
+    {
+        return $this->syntax_model;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isModelEmpty(){
+        return empty($this->syntax_model);
+    }
+
+    /**
+     * @return \Sentence_space_SP_Rel[]
+     */
+    public function getLinkedPairs()
+    {
+        $linked_pairs = [];
+        foreach ($this->syntax_model as $key => $point) {
+            $linked_pairs[$point->Oz][$point->direction] = $point;
+        }
+        return $linked_pairs;
+    }
+
+
+    /**
+     * Создание синтаксической модели через АОТ
+     * @param $text
+     * @return array
+     */
+    protected function createSyntaxModel($text)
     {
         assert(is_string($text));
 
@@ -25,8 +68,6 @@ class AotLauncher
 
         $mivar->syntax_model();
 
-        $result = $mivar->getSyntaxModel();
-
-        return $result ?: [];
+        return $mivar->getSyntaxModel();
     }
 }
