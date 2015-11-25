@@ -74,7 +74,6 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
                 /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
                 $sentence_array[] = $member->getPredlog()->getText();
                 $sentence_array[] = $member->getSlovo()->getText();
-//                print_r($member->getSlovo()->getText());
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
                 $sentence_array[] = $member->getSlovo()->getText();
