@@ -70,7 +70,9 @@ class Aot extends Base
     {
         assert(is_string($text));
         $this->sentence_words_array[] = $text;
-        return count($this->sentence_words_array);
+        end($this->sentence_words_array);
+        $key = key($this->sentence_words_array);
+        return $key;
     }
 
     /**
@@ -84,20 +86,20 @@ class Aot extends Base
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
                 /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
                 $id = $this->addToSentenceWordsArray($member->getPunctuaciya()->getText());
-                $this->offsetManager->refreshAotOffset($id, 1);
+                $this->offsetManager->refreshAotOffset($id + 1, 1);
                 $this->addToNonexistentAot();
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
                 $id = $this->addToSentenceWordsArray($member->getPredlog()->getText());
-                $this->offsetManager->refreshAotOffset($id);
+                $this->offsetManager->refreshAotOffset($id + 1);
                 $id = $this->addToSentenceWordsArray($member->getSlovo()->getText());
-                $this->offsetManager->refreshAotOffset($id);
-                $this->offsetManager->refreshMisotOffset($id, 1);
+                $this->offsetManager->refreshAotOffset($id + 1);
+                $this->offsetManager->refreshMisotOffset($id + 1, 1);
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
                 $id = $this->addToSentenceWordsArray($member->getSlovo()->getText());
-                $this->offsetManager->refreshMisotOffset($id);
-                $this->offsetManager->refreshAotOffset($id);
+                $this->offsetManager->refreshMisotOffset($id + 1);
+                $this->offsetManager->refreshAotOffset($id + 1);
             }
         }
     }
