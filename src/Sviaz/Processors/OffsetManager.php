@@ -8,13 +8,10 @@
 
 namespace Aot\Sviaz\Processors;
 
-/**
- * Class OffsetManager
- */
 class OffsetManager
 {
-    protected $offset_by_misot = []; // смещение позиции по слитым элементам в МИСОТе
-    protected $offset_by_aot = []; // смещение позиции по пропущенной пунктуации в АОТе
+    public $offset_by_misot = []; // смещение позиции по слитым элементам в МИСОТе
+    public $offset_by_aot = []; // смещение позиции по пропущенной пунктуации в АОТе
 
     public static function create()
     {
@@ -64,7 +61,7 @@ class OffsetManager
      * @param int $id
      * @return int
      */
-    public function getElementKeyUsingPositionOffsetMisot($id)
+    public function getMisotKeyBySentenceWordKey($id)
     {
         assert(is_int($id));
         if (!empty($this->offset_by_misot[$id])) {
@@ -75,15 +72,45 @@ class OffsetManager
     }
 
     /**
+     * Получение ключа слова из предложения по ключу из МИСОТа
+     * @param int $id
+     * @return int
+     */
+    public function getSentenceWordKeyByMisotKey($id)
+    {
+        assert(is_int($id));
+        if (!empty($this->offset_by_misot[$id])) {
+            $id += $this->offset_by_misot[$id];
+            return $id;
+        }
+        return $id;
+    }
+
+    /**
      * Получение ключа элемента с учетом смещения позиции по аоту
      * @param int $id
      * @return int
      */
-    public function getElementKeyUsingPositionOffsetAot($id)
+    public function getAotKeyBySentenceWordKey($id)
     {
         assert(is_int($id));
         if (!empty($this->offset_by_aot[$id])) {
             $id -= $this->offset_by_aot[$id];
+            return $id;
+        }
+        return $id;
+    }
+
+    /**
+     * Получение ключа слова из предложения по ключу из АОТа
+     * @param int $id
+     * @return int
+     */
+    public function getSentenceWordKeyByAotKey($id)
+    {
+        assert(is_int($id));
+        if (!empty($this->offset_by_aot[$id])) {
+            $id += $this->offset_by_aot[$id];
             return $id;
         }
         return $id;

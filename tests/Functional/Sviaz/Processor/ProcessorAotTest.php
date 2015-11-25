@@ -47,9 +47,9 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
         $seq_converter->convert($sentence);
         $sequence = $seq_converter->getSequence()[0];
 
-        $predlog = \Aot\Sviaz\PreProcessors\Predlog::create();
-        /** @var \Aot\Sviaz\Sequence $sequence */
-        $sequence = $predlog->run($sequence);
+//        die();
+//        $predlog = \Aot\Sviaz\PreProcessors\Predlog::create();
+//        $sequence = $predlog->run($sequence);
 
         /**
          * TODO: переделать получение последовательности
@@ -69,10 +69,12 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
         foreach ($sequence as $member) {
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
                 // пропускаем, поскольку АОТ игнорирует знаки препинания
+//                $sentence_array[] = $member->getPunctuaciya()->getText();
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
                 $sentence_array[] = $member->getPredlog()->getText();
                 $sentence_array[] = $member->getSlovo()->getText();
+//                print_r($member->getSlovo()->getText());
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
                 $sentence_array[] = $member->getSlovo()->getText();
@@ -102,8 +104,8 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     {
         return [
             ['Мальчик пошел в лес.'],
-//            ['Человек пойдет в лес, если дома не будет еды.'],
-//            ['Папа, мама и брат пойдут в лес, если дома не будет еды.'],
+//            ['Человек пойдет в лес, если дома не будет еды.'], // lagging
+//            ['Папа, мама и брат пойдут в лес, если дома не будет еды.'], // lagging
             ['Дровосек пошел в лес рубить дрова.'],
             ['Папа сжег в лес, в котором рубил дрова.'], // предложение с опечаткой
             ['Папа, мама и бабушка пошли в магазин.'],

@@ -110,6 +110,7 @@ class Processor
     /**
      * @param Sequence $sequence
      * @param \Aot\Sviaz\Rule\Base[] $rules
+     * @return Sequence
      */
     protected function process(\Aot\Sviaz\Sequence $sequence, array $rules)
     {
@@ -120,8 +121,9 @@ class Processor
         }
 
         foreach ($this->processing_engines as $processing_engine) {
-            $processing_engine->run($sequence, $rules);
+            $sequence = $processing_engine->run($sequence, $rules);
         }
+        return $sequence;
     }
 
 
@@ -172,7 +174,7 @@ class Processor
 
             $sequence = $this->preProcess($raw_sequence);
 
-            $this->process(
+            $sequence = $this->process(
                 $sequence,
                 $rules
             );

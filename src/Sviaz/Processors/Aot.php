@@ -24,6 +24,7 @@ class Aot extends Base
     protected $offsetManager;
 
     protected $nonexistent_aot = []; // несуществующие элементы в аоте
+    protected $nonexistent_misot = []; // несуществующие элементы в мисоте
 
     protected function __construct()
     {
@@ -86,20 +87,23 @@ class Aot extends Base
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
                 /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
                 $id = $this->addToSentenceWordsArray($member->getPunctuaciya()->getText());
-                $this->offsetManager->refreshAotOffset($id + 1, 1);
+                $this->offsetManager->refreshAotOffset($id, 1);
+                $this->offsetManager->refreshMisotOffset($id);
                 $this->addToNonexistentAot();
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
                 $id = $this->addToSentenceWordsArray($member->getPredlog()->getText());
-                $this->offsetManager->refreshAotOffset($id + 1);
+                $this->offsetManager->refreshAotOffset($id);
+                // отдельно элмента предлог в мисоте нет
+                $this->addToNonexistentMisot();
                 $id = $this->addToSentenceWordsArray($member->getSlovo()->getText());
-                $this->offsetManager->refreshAotOffset($id + 1);
-                $this->offsetManager->refreshMisotOffset($id + 1, 1);
+                $this->offsetManager->refreshAotOffset($id);
+                $this->offsetManager->refreshMisotOffset($id, 1);
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
                 $id = $this->addToSentenceWordsArray($member->getSlovo()->getText());
-                $this->offsetManager->refreshMisotOffset($id + 1);
-                $this->offsetManager->refreshAotOffset($id + 1);
+                $this->offsetManager->refreshMisotOffset($id);
+                $this->offsetManager->refreshAotOffset($id);
             }
         }
     }
@@ -149,23 +153,25 @@ class Aot extends Base
         $new_sequence = $this->builder->createSequence();
 
         foreach ($this->sentence_words_array as $key_word => $word_form) {
-            // если нет точки для данного слова и она есть в старой последовательности, тогда берем её оттуда
-            if (!empty($this->nonexistent_aot[$key_word])
-                || empty($sorted_points[$this->offsetManager->getElementKeyUsingPositionOffsetAot($key_word)])
+            // если нет точки для данного слова и она есть в старой последовательности, тогда берем её оттуда и есть в последовательности
+            if ((!empty($this->nonexistent_aot[$key_word])
+                || empty($sorted_points[$this->offsetManager->getAotKeyBySentenceWordKey($key_word)])
+                && empty($this->nonexistent_misot[$key_word]))
             ) {
-                if (!empty($old_sequence[$this->offsetManager->getElementKeyUsingPositionOffsetMisot($key_word)])) {
+                if (!empty($old_sequence[$this->offsetManager->getMisotKeyBySentenceWordKey($key_word)])) {
                     $new_sequence[$key_word] =
-                        clone $old_sequence[$this->offsetManager->getElementKeyUsingPositionOffsetMisot($key_word)];
+                        clone $old_sequence[$this->offsetManager->getMisotKeyBySentenceWordKey($key_word)];
                 }
                 continue;
             }
 
-            $items = $sorted_points[$this->offsetManager->getElementKeyUsingPositionOffsetAot($key_word)];
+            $items = $sorted_points[$this->offsetManager->getAotKeyBySentenceWordKey($key_word)];
             $first_element_key = array_shift($items);
             $id_word_class = $syntax_model[$first_element_key]->dw->id_word_class;
             $factory = $this->builder->getFactory($id_word_class);
             if ($factory === null) {
-                $member = clone $old_sequence[$this->offsetManager->getElementKeyUsingPositionOffsetMisot($key_word)];
+                $new_sequence[$key_word] = clone $old_sequence[$this->offsetManager->getMisotKeyBySentenceWordKey($key_word)];
+                continue;
             } else {
                 $point = $syntax_model[$first_element_key];
                 // берём форму слова из исходной последовательности
@@ -178,10 +184,9 @@ class Aot extends Base
             $new_sequence[$key_word] = $member;
 
             // сохраняем связь между элементом в предложении и id мембера
-            $this->link_kw_member_id[$this->offsetManager->getElementKeyUsingPositionOffsetAot($key_word)]
+            $this->link_kw_member_id[$point->kw]
                 = $new_sequence->getPosition($member);
         }
-
         return $new_sequence;
     }
 
@@ -204,12 +209,15 @@ class Aot extends Base
             // данная ситуация - бага в аоте/конвертере из аота
             return;
         }
+
         $factory_main = $this->builder->getFactory($prepose_point->dw->id_word_class);
-        $prepose_point->dw->word_form = $this->sentence_words_array[$prepose_point->kw];
+        $prepose_point->dw->word_form =
+            $this->sentence_words_array[$this->offsetManager->getSentenceWordKeyByAotKey($prepose_point->kw)];
         $prepose = $factory_main->build($prepose_point->dw);
 
         $factory_depend = $this->builder->getFactory($word_point->dw->id_word_class);
-        $word_point->dw->word_form = $this->sentence_words_array[$word_point->kw];
+        $word_point->dw->word_form =
+            $this->sentence_words_array[$this->offsetManager->getSentenceWordKeyByAotKey($word_point->kw)];
         $slovo = $factory_depend->build($word_point->dw);
 
         $replaced_member_id = $this->link_kw_member_id[$word_point->kw];
@@ -315,6 +323,14 @@ class Aot extends Base
     protected function addToNonexistentAot()
     {
         $this->nonexistent_aot[count($this->sentence_words_array) - 1] = 1;
+    }
+
+    /**
+     * Добавить элемент к списку несуществующих значений АОТа
+     */
+    protected function addToNonexistentMisot()
+    {
+        $this->nonexistent_misot[count($this->sentence_words_array) - 1] = 1;
     }
 
 }
