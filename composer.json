@@ -16,12 +16,12 @@
     "psr/log": "1.0.0",
     "symfony/yaml": "2.7.*",
     "mivar-projects/test-utils": "dev-master",
-    "mivar-projects/semantic-db-api": "dev-issue-2257",
+    "mivar-projects/semantic-db-api": "dev-develop",
     "mivar-projects/morph-api": "dev-develop",
     "mivar-projects/orthography": "dev-master",
     "iipokypatop/composer-vendor-overloader": ">=1.0.1",
     "mivar-projects/phpmorphy-fork": "dev-master",
-    "mivar-projects/utils": "dev-issue-2257",
+    "mivar-projects/utils": "dev-develop",
     "mivar-projects/text-libraries": "dev-develop"
   },
   "repositories": [

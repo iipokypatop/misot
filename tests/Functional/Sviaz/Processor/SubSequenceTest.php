@@ -104,8 +104,20 @@ class SubSequenceTest extends \AotTest\AotDataStorage
             ->getMock();
 
         $length_sequence = 10;
-        for ($i = 0; $i < $length_sequence; $i++) {
-            $sequence->append($this->getUniqueValue());
+        $position_main = 3;
+        $position_depended = 6;
+
+        for ($i = 0; $i < $position_main; $i++) {
+            $sequence->append($this->getMock(\Aot\Sviaz\SequenceMember\Base::class));
+        }
+        $sequence->append($main);
+
+        for ($i = $position_main + 1; $i < $position_depended; $i++) {
+            $sequence->append($this->getMock(\Aot\Sviaz\SequenceMember\Base::class));
+        }
+        $sequence->append($depended);
+        for ($i = $position_depended + 1; $i < $length_sequence; $i++) {
+            $sequence->append($this->getMock(\Aot\Sviaz\SequenceMember\Base::class));
         }
 
         //Первое что - получить связи, к этому моменту они уже должны существовать
@@ -115,8 +127,6 @@ class SubSequenceTest extends \AotTest\AotDataStorage
             ->with()
             ->will($this->returnValue($sviazi));
 
-        $position_main = 3;
-        $position_depended = 6;
 
         //если результат - все ОК, то мы устанавливаем подпоследовательность
         //Для этого необходимо сначала определить возвращаемые значения двух методов
@@ -174,9 +184,6 @@ class SubSequenceTest extends \AotTest\AotDataStorage
      */
     public function testDetectSubSequencesSomeSviaziWithSameGrammaticalFoundation()
     {
-
-
-
         $main = $this->getMock(\Aot\Sviaz\SequenceMember\Base::class);///<Главное слово
         PHPUnitHelper::setProtectedProperty($main, 'id', 100);
         $depended = $this->getMock(\Aot\Sviaz\SequenceMember\Base::class);///<Зависимое слово
@@ -245,8 +252,21 @@ class SubSequenceTest extends \AotTest\AotDataStorage
             ->getMock();
 
         $length_sequence = 10;
-        for ($i = 0; $i < $length_sequence; $i++) {
-            $sequence->append($this->getUniqueValue());
+        $position_main = 3;
+        $position_depended = 6;
+
+        for ($i = 0; $i < $position_main; $i++) {
+            $sequence->append($this->getMock(\Aot\Sviaz\SequenceMember\Base::class));
+        }
+        $sequence->append($main);
+
+        for ($i = $position_main + 1; $i < $position_depended; $i++) {
+            $sequence->append($this->getMock(\Aot\Sviaz\SequenceMember\Base::class));
+        }
+        $sequence->append($depended);
+
+        for ($i = $position_depended + 1; $i < $length_sequence; $i++) {
+            $sequence->append($this->getMock(\Aot\Sviaz\SequenceMember\Base::class));
         }
 
         //Первое что - получить связи, к этому моменту они уже должны существовать
@@ -256,8 +276,6 @@ class SubSequenceTest extends \AotTest\AotDataStorage
             ->with()
             ->will($this->returnValue($sviazi));
 
-        $position_main = 3;
-        $position_depended = 6;
 
         //если результат - все ОК, то мы устанавливаем подпоследовательность
         //Для этого необходимо сначала определить возвращаемые значения двух методов
@@ -433,8 +451,6 @@ class SubSequenceTest extends \AotTest\AotDataStorage
         $sviazi_config,
         $expected_subsequences_config
     ) {
-
-
         //Создаём последовательность
         /** @var  \Aot\Sviaz\Sequence | \PHPUnit_Framework_MockObject_MockObject $sequence */
         $sequence = $this
@@ -644,17 +660,25 @@ class SubSequenceTest extends \AotTest\AotDataStorage
      */
     public function testCreateSubSequencesDirectOrderOfMainAndDepended()
     {
-        $this->markTestSkipped("Изменились входные данные. Вместо старт и стоп индексов приходят объекты");
         $sequence = \Aot\Sviaz\Sequence::create();
         $main_index = 3;
         $dependent_index = 6;
         $length_sequence = 10;
         for ($i = 0; $i < $length_sequence; $i++) {
-            $sequence->append($this->getMock(\Aot\Sviaz\SequenceMember\Base::class));
+            $member = $this->getMock(\Aot\Sviaz\SequenceMember\Base::class);
+            PHPUnitHelper::setProtectedProperty($member, 'id', $i);
+            $sequence->append($member);
         }
-        $result = \Aot\Sviaz\SubSequence::createSubSequences($sequence,
-            [$sequence[$main_index], $sequence[$dependent_index]]);
+        $result = \Aot\Sviaz\SubSequence::createSubSequences(
+            $sequence,
+            [
+                $sequence[$main_index],
+                $sequence[$dependent_index]
+            ]
+        );
 
+        $x[] = $sequence[$main_index];
+        $x[] = $sequence[$dependent_index];
         $this->assertEquals(3, count($result));///<Всего три подпоследовательности
         //print_r($result);
         $this->assertEquals(0, PHPUnitHelper::getProtectedProperty($result[0], 'index_start'));
@@ -672,15 +696,21 @@ class SubSequenceTest extends \AotTest\AotDataStorage
      */
     public function testCreateSubSequencesReverseOrderOfMainAndDepended()
     {
-        $this->markTestSkipped("Изменились входные данные. Вместо старт и стоп индексов приходят объекты");
         $sequence = \Aot\Sviaz\Sequence::create();
         $main_index = 6;
         $dependent_index = 3;
         $length_sequence = 10;
         for ($i = 0; $i < $length_sequence; $i++) {
-            $sequence->append("");
+            $sequence->append($this->getMock(\Aot\Sviaz\SequenceMember\Base::class));
         }
-        $result = \Aot\Sviaz\SubSequence::createSubSequences($sequence, $main_index, $dependent_index);
+        $result = \Aot\Sviaz\SubSequence::createSubSequences(
+            $sequence,
+            [
+                $sequence[$main_index],
+                $sequence[$dependent_index]
+            ]
+        );
+
         $this->assertEquals(3, count($result));///<Всего три подпоследовательности
         //print_r($result);
         $this->assertEquals(0, PHPUnitHelper::getProtectedProperty($result[0], 'index_start'));
@@ -698,18 +728,22 @@ class SubSequenceTest extends \AotTest\AotDataStorage
      */
     public function testCreateSubSequencesError()
     {
-        $this->markTestSkipped("Изменились входные данные. Вместо старт и стоп индексов приходят объекты");
         $sequence = \Aot\Sviaz\Sequence::create();
         $main_index = 5;
         $dependent_index = 5;
         $length_sequence = 10;
         for ($i = 0; $i < $length_sequence; $i++) {
-            $sequence->append("");
+            $sequence->append($this->getMock(\Aot\Sviaz\SequenceMember\Base::class));
         }
 
         try {
-            $result = \Aot\Sviaz\SubSequence::createSubSequences($sequence, $main_index, $dependent_index);
-            $this->fail("Не должно было тут быть! Должно быть брошен экзепшн");
+            $result = \Aot\Sviaz\SubSequence::createSubSequences(
+                $sequence,
+                [
+                    $sequence[$main_index],
+                    $sequence[$dependent_index]
+                ]
+            );
         } catch (\RuntimeException $e) {
             $this->assertEquals("wtf: последовательность состоит из одного элемента", $e->getMessage());
         }
@@ -804,7 +838,7 @@ class SubSequenceTest extends \AotTest\AotDataStorage
             $length_sequence_part_1 + 2);
 
 
-            $this->assertEquals(false, $sub_sequence->isMemberInSequences($member_search));
+        $this->assertEquals(false, $sub_sequence->isMemberInSequences($member_search));
 
     }
 
