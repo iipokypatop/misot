@@ -196,7 +196,7 @@ class CreateSequenceFromText
         $result_sequences = [];
         foreach ($sentences as $sentence) {
             $processor = \Aot\Sviaz\Processor::create();
-            $processor->attachProcessor(\Aot\Sviaz\Processors\Aot::create());
+            $processor->attachProcessor(Processors\Aot\Base::create());
             $processor->attachPreProcessor(\Aot\Sviaz\PreProcessors\Predlog::create());
             $processor->attachPreProcessor(\Aot\Sviaz\PreProcessors\HomogeneitySupposed::create());
             //$processor->attachPostProcessor(\Aot\Sviaz\PostProcessors\HomogeneityVerification::create());
