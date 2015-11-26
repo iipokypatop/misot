@@ -22,7 +22,7 @@
     "iipokypatop/composer-vendor-overloader": ">=1.0.1",
     "mivar-projects/phpmorphy-fork": "dev-master",
     "mivar-projects/utils": "dev-issue-2257",
-    "mivar-projects/text-libraries": "dev-develop"
+    "mivar-projects/text-libraries": "dev-issue-2257"
   },
   "repositories": [
     {
