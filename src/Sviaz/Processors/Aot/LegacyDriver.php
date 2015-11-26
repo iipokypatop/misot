@@ -6,10 +6,10 @@
  * Time: 19:32
  */
 
-namespace Aot\Sviaz\Processors;
+namespace Aot\Sviaz\Processors\Aot;
 
 
-class AotLauncher
+class LegacyDriver
 {
     /** @var \Sentence_space_SP_Rel[]  */
     protected $syntax_model = [];
@@ -22,9 +22,9 @@ class AotLauncher
     protected function __construct($text)
     {
         assert(is_string($text));
+
         $this->syntax_model = $this->createSyntaxModel($text);
     }
-
 
     /**
      * Получение синтаксической модели через АОТ
@@ -48,7 +48,7 @@ class AotLauncher
     public function getLinkedPairs()
     {
         $linked_pairs = [];
-        foreach ($this->syntax_model as $key => $point) {
+        foreach ($this->syntax_model as $point) {
             $linked_pairs[$point->Oz][$point->direction] = $point;
         }
         return $linked_pairs;

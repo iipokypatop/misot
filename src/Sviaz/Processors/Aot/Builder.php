@@ -6,7 +6,7 @@
  * Time: 19:15
  */
 
-namespace Aot\Sviaz\Processors;
+namespace Aot\Sviaz\Processors\Aot;
 
 use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
 
@@ -14,11 +14,14 @@ use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
  * Билдер для процессора Aot
  * Class Builder
  */
-class BuilderAot
+class Builder
 {
     /** @var \Aot\RussianMorphology\Factory[] */
     protected $factories;
 
+    /**
+     * @return \Aot\Sviaz\Processors\Aot\Builder
+     */
     public static function create()
     {
         return new static();
@@ -41,9 +44,11 @@ class BuilderAot
     public function getFactory($id_word_class)
     {
         assert(is_int($id_word_class));
+
         if (empty($this->factories[$this->conformityPartsOfSpeech($id_word_class)])) {
             throw new \LogicException("Undefined part of speech = " . var_export($this->conformityPartsOfSpeech($id_word_class), 1));
         }
+
         return $this->factories[$this->conformityPartsOfSpeech($id_word_class)];
     }
 

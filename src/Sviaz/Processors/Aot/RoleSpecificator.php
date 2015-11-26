@@ -6,7 +6,7 @@
  * Time: 17:34
  */
 
-namespace Aot\Sviaz\Processors;
+namespace Aot\Sviaz\Processors\Aot;
 
 use Aot\Sviaz\Role\Registry as RoleRegistry;
 use DefinesAot;
@@ -14,7 +14,7 @@ use DefinesAot;
 /**
  * Class RoleSpecification
  */
-class RoleSpecification
+class RoleSpecificator
 {
     /**
      * Конкретизация роли элемента

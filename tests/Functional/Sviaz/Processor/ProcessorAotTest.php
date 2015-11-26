@@ -7,7 +7,7 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
 {
     public function testLaunch()
     {
-        $misot_to_aot = \Aot\Sviaz\Processors\Aot::create();
+        $misot_to_aot = \Aot\Sviaz\Processors\Aot\Base::create();
     }
 
 
@@ -20,7 +20,7 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
         /** @var \Aot\Sviaz\Sequence $sequence */
         $sequence = $predlog->run($sequence);
 
-        $misot_to_aot = \Aot\Sviaz\Processors\Aot::create();
+        $misot_to_aot = \Aot\Sviaz\Processors\Aot\Base::create();
         $new_sequence = $misot_to_aot->run($sequence, []);
 
         $this->assertNotEmpty($new_sequence->getSviazi());
@@ -59,7 +59,7 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
          * 4 - Matrix->getCopyWithOnlyOneRaw...()
          */
 
-        $misot_to_aot = \Aot\Sviaz\Processors\Aot::create();
+        $misot_to_aot = \Aot\Sviaz\Processors\Aot\Base::create();
         $new_sequence = $misot_to_aot->run($sequence, []);
 
         $this->assertNotEmpty($new_sequence->getSviazi());

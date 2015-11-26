@@ -6,7 +6,7 @@
  * Time: 01:15
  */
 
-namespace Aot\Sviaz\Processors;
+namespace Aot\Sviaz\Processors\Aot;
 
 class OffsetManager
 {

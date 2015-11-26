@@ -6,31 +6,35 @@
  * Time: 19:19
  */
 
-namespace Aot\Sviaz\Processors;
+namespace Aot\Sviaz\Processors\Aot\Sequence;
 
 
-class SequenceWords
+use Aot\Sviaz\Processors\Aot;
+
+class SequenceToWordsConverter
 {
-    /** @var \Aot\Sviaz\Processors\OffsetManager */
+    /** @var \Aot\Sviaz\Processors\Aot\OffsetManager */
     protected $offsetManager;
 
     protected $sentence_words_array = [];
     protected $nonexistent_aot = [];
     protected $nonexistent_misot = [];
 
-    public static function create()
+    public static function create(\Aot\Sviaz\Sequence $sequence)
     {
-        return new static();
+        return new static($sequence);
     }
 
 
-    protected function __construct()
+    protected function __construct(\Aot\Sviaz\Sequence $sequence)
     {
-        $this->offsetManager = \Aot\Sviaz\Processors\OffsetManager::create();
+        $this->offsetManager = Aot\OffsetManager::create();
+
+        $this->covert($sequence);
     }
 
     /**
-     * @return \Aot\Sviaz\Processors\OffsetManager
+     * @return \Aot\Sviaz\Processors\Aot\OffsetManager
      */
     public function getOffsetManager()
     {
@@ -40,7 +44,7 @@ class SequenceWords
     /**
      * @return string[]
      */
-    protected function getSentenceWordsArray()
+    public function getSentenceWordsArray()
     {
         return $this->sentence_words_array;
     }
@@ -50,7 +54,7 @@ class SequenceWords
      * @param \Aot\Sviaz\Sequence $sequence
      * @return string[]
      */
-    public function getSentenceWordsBySequence(\Aot\Sviaz\Sequence $sequence)
+    protected function covert(\Aot\Sviaz\Sequence $sequence)
     {
         foreach ($sequence as $member) {
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
@@ -75,7 +79,6 @@ class SequenceWords
                 $this->offsetManager->refreshAotOffset($id);
             }
         }
-        return $this->getSentenceWordsArray();
     }
 
 
@@ -87,11 +90,11 @@ class SequenceWords
     protected function addToSentenceWordsArray($text)
     {
         assert(is_string($text));
+
         $this->sentence_words_array[] = $text;
+
         end($this->sentence_words_array);
-        $key = key($this->sentence_words_array);
-        return $key;
+
+        return key($this->sentence_words_array);
     }
-
-
 }
