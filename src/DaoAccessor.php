@@ -8,7 +8,7 @@
 
 namespace Aot;
 
-use Aot\Tools\Config;
+use MivarUtils\Common\Config;
 
 trait DaoAccessor
 {
