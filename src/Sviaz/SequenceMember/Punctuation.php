@@ -29,4 +29,12 @@ class Punctuation extends Base
 
         return new static($punctuaciya);
     }
+
+    /**
+     * @return \Aot\RussianSyntacsis\Punctuaciya\Base
+     */
+    public function getPunctuaciya()
+    {
+        return $this->punctuaciya;
+    }
 }
