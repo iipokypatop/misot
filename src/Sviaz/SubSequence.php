@@ -66,12 +66,18 @@ class SubSequence
         $start_index = 0;
         $stop_index = null;
         $sequence_count = $sequence->count();
-        //начинаем проверку со второго слова
-        for ($i = 1; $i < $sequence_count; $i++) {
-            if (array_key_exists($i, $members)) {
-                $stop_index = $i;
-                $array_subsequences[] = static::create($sequence, $start_index, $stop_index);
-                $start_index = $i;
+        foreach ($sequence as $index => $sequence_member) {
+            foreach ($members as $member) {
+                if ($sequence_member === $member) {
+                    if ($index === 0) {
+                        continue 2;
+                    }
+                    $stop_index = $index;
+                    if ($start_index !== $stop_index) {
+                        $array_subsequences[] = static::create($sequence, $start_index, $stop_index);
+                    }
+                    $start_index = $index;
+                }
             }
         }
 
