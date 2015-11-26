@@ -3,12 +3,55 @@
 MODE = DEVELOP
 
 [DEVELOP]
+;<<<НАЧАЛО СЕМАНТИКА
 semantic.db.host = test-db.mivar.pro
 semantic.db.port = 5432
 semantic.db.user = postgres
 semantic.db.password = @Mivar123User@
 semantic.db.dbname = mivar_semantic_new
+;КОНЕЦ СЕМАНТИКА>>>
 
+;<<<НАЧАЛО КОНСУЛЬТАНТ (использующий text-libraries)
+psql_mongo_timing = 20
+xhprof_root = /var/php_only/xhprof-0.9.4
+xhprof_on = 0
+redis_host_6379 = 127.0.0.1
+redis_port_6379 = 6380
 
+;host=test-db.mivar.pro dbname=mivar_intelligence_test user=postgres password=@Mivar123User@
+text-libraries.intelligence.db.driver = pdo_pgsql
+text-libraries.intelligence.db.user = postgres
+text-libraries.intelligence.db.password = @Mivar123User@
+text-libraries.intelligence.db.host = test-db.mivar.pro
+text-libraries.intelligence.db.dbname = mivar_intelligence_test
+text-libraries.intelligence.db.port = 5432
+text-libraries.intelligence.db.charset = UTF-8
+
+;mongodb://mivar_intel:V1azfwd3@test-db.mivar.pro:27017/mivar_intelligence_test
+text-libraries.mongo.db.protocol = mongodb
+text-libraries.mongo.db.dbname = mivar_intelligence_test
+text-libraries.mongo.db.port = 27017
+text-libraries.mongo.db.host = test-db.mivar.pro
+text-libraries.mongo.db.user = mivar_intel
+text-libraries.mongo.db.password = V1azfwd3
+
+;host=test-db.mivar.pro dbname=mivar_text user=postgres password=@Mivar123User@
+text-libraries.connection.db.driver = pdo_pgsql
+text-libraries.connection.db.user = postgres
+text-libraries.connection.db.password = @Mivar123User@
+text-libraries.connection.db.host = test-db.mivar.pro
+text-libraries.connection.db.dbname = mivar_text
+text-libraries.connection.db.port = 5432
+text-libraries.connection.db.charset = UTF-8
+
+; host=test-db.mivar.pro dbname=mivar_history port=5432 user=postgres password=@Mivar123User@
+text-libraries.mivar_history.db.driver = pdo_pgsql
+text-libraries.mivar_history.db.user = postgres
+text-libraries.mivar_history.db.password = @Mivar123User@
+text-libraries.mivar_history.db.host = test-db.mivar.pro
+text-libraries.mivar_history.db.dbname = mivar_history
+text-libraries.mivar_history.db.port = 5432
+text-libraries.mivar_history.db.charset = UTF-8
+;КОНЕЦ КОНСУЛЬТАНТ (использующий text-libraries)>>>
 
 [PRODUCTION : DEVELOP]
