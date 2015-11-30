@@ -17,7 +17,7 @@ class MorphAttribute extends \Aot\MivarTextSemantic\MorphAttribute
 {
 }
 
-\Overloader\Base::load([
+\Overloader\Overloader::overload([
     'txt',
     'mivar-projects',
     'doctrine',
