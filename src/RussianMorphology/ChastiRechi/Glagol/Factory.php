@@ -71,7 +71,7 @@ use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Vtoroe as VtoroeLi
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Tretie as TretieLitso;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Null as NullLitso;
 
-class Factory extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Factory //\Aot\RussianMorphology\Factory
+class Factory extends \Aot\RussianMorphology\FactoryBase
 {
 
     /**

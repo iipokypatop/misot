@@ -6,7 +6,7 @@
 
 namespace Aot\RussianMorphology\ChastiRechi\Pristavka;
 
-class Factory extends \Aot\RussianMorphology\Factory
+class Factory extends \Aot\RussianMorphology\FactoryBase
 {
     /**
      * @param \DictionaryWord $dw

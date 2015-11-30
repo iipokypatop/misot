@@ -36,7 +36,7 @@ use Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\Srednij;
 use Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\Zhenskij;
 use Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\Null as NullRod;
 
-class Factory extends \Aot\RussianMorphology\Factory
+class Factory extends \Aot\RussianMorphology\FactoryBase
 {
 
     /**

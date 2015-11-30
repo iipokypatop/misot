@@ -39,7 +39,7 @@ use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Kolichestvenni
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Poryadkoviy;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Null as NullVid;
 
-class Factory extends \Aot\RussianMorphology\Factory
+class Factory extends \Aot\RussianMorphology\FactoryBase
 {
 
     /**

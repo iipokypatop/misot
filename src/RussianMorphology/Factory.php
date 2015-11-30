@@ -15,34 +15,16 @@ use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
  * Date: 18.06.2015
  * Time: 17:42
  */
-abstract class Factory
+class Factory
 {
     const REGULAR_FOR_WHITE_LIST = '/[A-Za-zА-Яа-яёЁ]+/u';
     const PART_REGULAR_FOR_COMPOSITE_WORDS = '[A-Za-zА-Яа-яёЁ]+';
-    const CHARACTERS_FOR_SPLIT_COMPOSITE_WORDS = '[\\-]';
+    const COMPOSITE_WORDS_DELIMITER = '[\\-]';
     const DELIMITER_FOR_SPLITTED_WORDS = ',';
 
-    protected static $uniqueInstances = null;
-
-    protected function __construct()
-    {
-    }
-
-    /**
-     * @return static
-     */
-    public static function get()
-    {
-        if (empty(static::$uniqueInstances[static::class])) {
-            static::$uniqueInstances[static::class] = new static;
-        }
-
-        return static::$uniqueInstances[static::class];
-    }
 
     public function create()
     {
-
     }
 
 
@@ -57,34 +39,33 @@ abstract class Factory
     public static function getSlova(array $words)
     {
 
-        $syntax_parser = new SyntaxParserManager();
-        $syntax_parser->reg_parser->parse_text(join(' ', $words));
-        $syntax_parser->create_dictionary_word();
-
-        /** @var MivarSpaceWdw[] $spaces */
-        $spaces = [];
-        foreach ($syntax_parser->reg_parser->get_sentences() as $sentence) {
-            $spaces[] = $syntax_parser->create_sentence_space($sentence);
-        }
-        if (empty($spaces[0])) {
+        if( empty($words)){
             return [];
         }
 
-        /** @var \PointWdw[][] $wdw */
-        $wdw = $spaces[0]->get_space_kw();
+        list($simple_words, $composite_words) = self::splitArrayWords($words);
+
         $factory_list = ChastiRechiRegistry::getFactories();
 
         $slova = [];
-        $composite_words = [];
+
+        $wdw = [];
+
+        // точки из пространства с текущим индексом являются простыми словами
+        if (!empty($simple_words)) {
+            $wdw = self::factorySimpleWords($simple_words);
+        }
+
+        // точки из пространства с текущим индексом являются сложными словами
+        if (!empty($composite_words)) {
+            foreach ($composite_words as $index => $composite_word) {
+                $wdw[$index] = self::factoryCompositeWords($composite_word);
+            }
+        }
+
         foreach ($wdw as $index => $points) {
             $slova[$index] = [];
             foreach ($points as $point) {
-                // ловим сложные слова
-                if (self::isCompositeWord($point->w->word)) {
-                    $composite_words[$index] = $point->w->word;
-                    break;
-                }
-
                 foreach ($factory_list as $factory) {
                     $slova[$index] = array_merge(
                         $slova[$index],
@@ -95,17 +76,39 @@ abstract class Factory
         }
 
 
-        if (!empty($composite_words)) {
-            $composite = self::getCompositeWords($composite_words);
-            // пополняем список слов композитными словами
-            foreach ($composite as $index => $item) {
-                $slova[$index] = $item;
-            }
-        }
-
         return $slova;
 
     }
+
+
+    /**
+     * Разбиение массива слов на простые и составные
+     * @param string[] $words
+     * @return string[][]
+     */
+    protected static function splitArrayWords(array $words)
+    {
+
+        if (empty($words)) {
+            return [];
+        }
+
+        $simple_words = []; // простые слова
+        $composite_words = []; // составные слова
+
+        foreach ($words as $index => $word) {
+
+            // ловим сложные слова
+            if (self::isCompositeWord($word)) {
+                $composite_words[$index] = $word;
+            } else {
+                $simple_words[$index] = $word;
+            }
+        }
+
+        return [$simple_words, $composite_words];
+    }
+
 
     /**
      * Проверка на композитное слово
@@ -116,67 +119,76 @@ abstract class Factory
     {
         assert(is_string($word));
 
-        if (preg_match(
-            '/^'
-            . self::PART_REGULAR_FOR_COMPOSITE_WORDS
-            . self::CHARACTERS_FOR_SPLIT_COMPOSITE_WORDS
-            . self::PART_REGULAR_FOR_COMPOSITE_WORDS
-            . '$/u',
-            $word)
-        ) {
-            return true;
-        }
+        return preg_match(self::getCompositeRegular(), $word);
+    }
 
-        return false;
+    /**
+     * Регулярка для поиска составных слов
+     * @return string
+     */
+    protected static function getCompositeRegular()
+    {
+        return '/^'
+        . self::PART_REGULAR_FOR_COMPOSITE_WORDS
+        . self::COMPOSITE_WORDS_DELIMITER
+        . self::PART_REGULAR_FOR_COMPOSITE_WORDS
+        . '$/u';
+    }
+
+    /**
+     * @param $simple_words
+     * @return \PointWdw[][]
+     */
+    protected static function factorySimpleWords(array $simple_words)
+    {
+        return WdwDriver::createWdwSpace($simple_words);
     }
 
     /**
      * Получение списка альтернатив по каждому отдельному элементу композитного слова (пример: "хозяин-мастер")
-     * @param string[] $composite_words
-     * @return array
+     * @param $composite_word
+     * @return \PointWdw[][]
      */
-    protected static function getCompositeWords(array $composite_words)
+    protected static function factoryCompositeWords($composite_word)
     {
-        if (empty($composite_words)) {
-            return [];
+
+        assert(is_string($composite_word));
+
+        $splitted = self::splitWord($composite_word);
+
+        if (!isset($splitted[0], $splitted[1])) {
+            throw new \LogicException("Wrong composite word: " . $composite_word);
         }
 
-        $variants = []; // все варианты сложного слова
+        $wdw_splitted = self::factorySimpleWords($splitted);
 
-        foreach ($composite_words as $id_compose => $compose_word) {
 
-            $splitted = preg_split("/" . self::CHARACTERS_FOR_SPLIT_COMPOSITE_WORDS . "/u", $compose_word);
+        // главное слово - первое слово
+        foreach ($wdw_splitted[0] as $id_main => $main_slovo) {
 
-            if (count($splitted) !== 2) {
-                continue;
-            }
+            $main_initial_form = $main_slovo->dw->initial_form;
 
-            $splitted_slova = self::getSlova($splitted);
+            // зависимое слово - второе слово
+            $cache_initial_form = [];
 
-            // главное слово - первое слово
-            foreach ($splitted_slova[0] as $id_main => $main_slovo) {
-
-                $main_initial_form = $main_slovo->getInitialForm();
-
-                // зависимое слово - второе слово
-                $cache_nf_dep = [];
-
-                foreach ($splitted_slova[1] as $dep_slovo) {
-                    $dep_initial_form = $dep_slovo->getInitialForm();
-                    // поскольку морфология зависимого слова не учитывается, то берём только вариации начальных форм
-                    if (in_array($dep_initial_form, $cache_nf_dep)) {
-                        continue;
-                    }
-                    $cache_nf_dep[] = $dep_initial_form;
-                    $main_slovo->setText($compose_word);
-                    $main_slovo->setInitialForm($main_initial_form . self::DELIMITER_FOR_SPLITTED_WORDS . $dep_initial_form);
-                    $variants[$id_compose][$id_main] = $main_slovo;
+            foreach ($wdw_splitted[1] as $depend_slovo) {
+                $depend_initial_form = $depend_slovo->dw->initial_form;
+                // поскольку морфология зависимого слова не учитывается, то берём только вариации начальных форм
+                if (in_array($depend_initial_form, $cache_initial_form, true)) {
+                    continue;
                 }
+                $cache_initial_form[] = $depend_initial_form;
+                $main_slovo->dw->word_form = $composite_word;
+                $main_slovo->dw->initial_form = $main_initial_form . self::DELIMITER_FOR_SPLITTED_WORDS . $depend_initial_form;
             }
-
         }
 
-        return $variants;
+        return $wdw_splitted[0];
+    }
+
+    protected static function splitWord($composite_word)
+    {
+        return preg_split("/" . self::COMPOSITE_WORDS_DELIMITER . "/u", $composite_word);
     }
 
     /**
@@ -202,7 +214,6 @@ abstract class Factory
     }
 
 
-    abstract public function build(\DictionaryWord $dw);
 }
 
 class FactoryException extends \RuntimeException

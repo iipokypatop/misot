@@ -25,7 +25,7 @@ use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Null 
 use Aot\MivarTextSemantic\Dw;
 use Aot\MivarTextSemantic\Word;
 
-class Factory extends \Aot\RussianMorphology\Factory
+class Factory extends \Aot\RussianMorphology\FactoryBase
 {
 
     /**

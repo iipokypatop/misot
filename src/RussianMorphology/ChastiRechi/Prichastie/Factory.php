@@ -51,7 +51,7 @@ use Aot\MivarTextSemantic\Dw;
 use Aot\MivarTextSemantic\Word;
 
 
-class Factory extends \Aot\RussianMorphology\Factory
+class Factory extends \Aot\RussianMorphology\FactoryBase
 {
     /**
      * @param \DictionaryWord $dw
