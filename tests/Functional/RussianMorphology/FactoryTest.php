@@ -32,5 +32,6 @@ TEXT
         );
 
         $slova = \Aot\RussianMorphology\Factory::getSlova($words);
+        print_r($slova);
     }
 }

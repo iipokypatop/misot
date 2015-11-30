@@ -40,51 +40,6 @@ abstract class Factory
         return static::$uniqueInstances[static::class];
     }
 
-    /**
-     * Получение списка альтернатив по каждому отдельному элементу композитного слова (хозяин-мастер)
-     * @param string[] $composite_words
-     * @return array
-     */
-    protected static function getCompositeWords(array $composite_words)
-    {
-        if (empty($composite_words)) {
-            return [];
-        }
-
-
-        $variants = []; // все варианты сложного слова
-
-        foreach ($composite_words as $id_compose => $compose_word) {
-
-            $splitted = preg_split("/".self::CHARACTERS_FOR_SPLIT_COMPOSITE_WORDS."/u", $compose_word);
-
-            $splitted_slova = self::getSlova($splitted);
-
-            // главное слово - первое слово
-            foreach ($splitted_slova[0] as $id_main => $main_slovo) {
-
-                $main_initial_form = $main_slovo->getInitialForm();
-                // зависимое слово - второе слово
-                $cache_nf_dep = [];
-
-                foreach ($splitted_slova[1] as $dep_slovo) {
-                    $dep_initial_form = $dep_slovo->getInitialForm();
-                    // поскольку морфология зависимого слова не учитывается, то берём только вариации начальных форм
-                    if (in_array($dep_initial_form, $cache_nf_dep)) {
-                        continue;
-                    }
-                    $cache_nf_dep[] = $dep_initial_form;
-                    $main_slovo->setText($compose_word);
-                    $main_slovo->setInitialForm($main_initial_form . self::DELIMITER_FOR_SPLITTED_WORDS . $dep_initial_form);
-                    $variants[$id_compose][$id_main] = $main_slovo;
-                }
-            }
-
-        }
-
-        return $variants;
-    }
-
     public function create()
     {
 
@@ -125,15 +80,7 @@ abstract class Factory
             $slova[$index] = [];
             foreach ($points as $point) {
                 // ловим сложные слова
-//                if (preg_match(self::REGULAR_FOR_COMPOSE_WORDS, $point->w->word)) {
-                if (preg_match(
-                    '/'
-                    . self::PART_REGULAR_FOR_COMPOSITE_WORDS
-                    . self::CHARACTERS_FOR_SPLIT_COMPOSITE_WORDS
-                    . self::PART_REGULAR_FOR_COMPOSITE_WORDS
-                    . '/u',
-                    $point->w->word)
-                ) {
+                if (self::isCompositeWord($point->w->word)) {
                     $composite_words[$index] = $point->w->word;
                     break;
                 }
@@ -160,6 +107,77 @@ abstract class Factory
 
     }
 
+    /**
+     * Проверка на композитное слово
+     * @param string $word
+     * @return bool
+     */
+    protected static function isCompositeWord($word)
+    {
+        assert(is_string($word));
+
+        if (preg_match(
+            '/'
+            . self::PART_REGULAR_FOR_COMPOSITE_WORDS
+            . self::CHARACTERS_FOR_SPLIT_COMPOSITE_WORDS
+            . self::PART_REGULAR_FOR_COMPOSITE_WORDS
+            . '/u',
+            $word)
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Получение списка альтернатив по каждому отдельному элементу композитного слова (пример: "хозяин-мастер")
+     * @param string[] $composite_words
+     * @return array
+     */
+    protected static function getCompositeWords(array $composite_words)
+    {
+        if (empty($composite_words)) {
+            return [];
+        }
+
+        $variants = []; // все варианты сложного слова
+
+        foreach ($composite_words as $id_compose => $compose_word) {
+
+            $splitted = preg_split("/" . self::CHARACTERS_FOR_SPLIT_COMPOSITE_WORDS . "/u", $compose_word);
+
+            if (count($splitted) !== 2) {
+                continue;
+            }
+
+            $splitted_slova = self::getSlova($splitted);
+
+            // главное слово - первое слово
+            foreach ($splitted_slova[0] as $id_main => $main_slovo) {
+
+                $main_initial_form = $main_slovo->getInitialForm();
+
+                // зависимое слово - второе слово
+                $cache_nf_dep = [];
+
+                foreach ($splitted_slova[1] as $dep_slovo) {
+                    $dep_initial_form = $dep_slovo->getInitialForm();
+                    // поскольку морфология зависимого слова не учитывается, то берём только вариации начальных форм
+                    if (in_array($dep_initial_form, $cache_nf_dep)) {
+                        continue;
+                    }
+                    $cache_nf_dep[] = $dep_initial_form;
+                    $main_slovo->setText($compose_word);
+                    $main_slovo->setInitialForm($main_initial_form . self::DELIMITER_FOR_SPLITTED_WORDS . $dep_initial_form);
+                    $variants[$id_compose][$id_main] = $main_slovo;
+                }
+            }
+
+        }
+
+        return $variants;
+    }
 
     /**
      * @brief Метод для генерирования слов и пунктуации с сохранением их последовательности
