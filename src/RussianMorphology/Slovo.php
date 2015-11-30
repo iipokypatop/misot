@@ -142,6 +142,15 @@ abstract class Slovo implements \Aot\Unit
     {
         return $this->text;
     }
+    /**
+     * @param string $text
+     * @return string
+     */
+    public function setText($text)
+    {
+        assert(is_string($text));
+        $this->text = $text;
+    }
 
     /**
      * @return \Aot\RussianMorphology\ChastiRechi\MorphologyBase[]

@@ -22,4 +22,15 @@ TEXT
 
         $slova = \Aot\RussianMorphology\Factory::getSlova($words);
     }
+
+
+    public function testLaunchWithSplittedWords()
+    {
+        $words = preg_split('/\s+/', <<<TEXT
+Убили хозяина-мастера
+TEXT
+        );
+
+        $slova = \Aot\RussianMorphology\Factory::getSlova($words);
+    }
 }
