@@ -117,11 +117,11 @@ abstract class Factory
         assert(is_string($word));
 
         if (preg_match(
-            '/'
+            '/^'
             . self::PART_REGULAR_FOR_COMPOSITE_WORDS
             . self::CHARACTERS_FOR_SPLIT_COMPOSITE_WORDS
             . self::PART_REGULAR_FOR_COMPOSITE_WORDS
-            . '/u',
+            . '$/u',
             $word)
         ) {
             return true;
