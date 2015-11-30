@@ -73,7 +73,10 @@
     }
   },
   "scripts": {
-    "post-autoload-dump": "\\Overloader\\Base::createDumpFiles"
+    "post-autoload-dump": [
+      "\\Overloader\\Base::createDumpFiles",
+      "\\MivarUtils\\Common\\Vendor::postAutoloadDump"
+    ]
   },
   "extra": {
     "overloader": {
@@ -81,6 +84,8 @@
         "txt",
         "mivar-projects"
       ]
-    }
+    },
+    "mivar-configuration": [
+    ]
   }
 }
