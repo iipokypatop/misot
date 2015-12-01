@@ -39,7 +39,7 @@ class Factory
     public static function getSlova(array $words)
     {
 
-        if( empty($words)){
+        if (empty($words)) {
             return [];
         }
 
@@ -53,7 +53,10 @@ class Factory
 
         // точки из пространства с текущим индексом являются простыми словами
         if (!empty($simple_words)) {
-            $wdw = self::factorySimpleWords($simple_words);
+            foreach ($simple_words as $index => $simple_word) {
+                $points = self::factorySimpleWords([$simple_word]);
+                $wdw[$index] = !empty($points[0]) ? $points[0] : [];
+            }
         }
 
         // точки из пространства с текущим индексом являются сложными словами
@@ -146,7 +149,7 @@ class Factory
 
     /**
      * Получение списка альтернатив по каждому отдельному элементу композитного слова (пример: "хозяин-мастер")
-     * @param $composite_word
+     * @param string $composite_word
      * @return \PointWdw[][]
      */
     protected static function factoryCompositeWords($composite_word)
