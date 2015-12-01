@@ -94,7 +94,7 @@ class Factory
     {
 
         if (empty($words)) {
-            return [];
+            return [[], []];
         }
 
         $simple_words = []; // простые слова
@@ -151,7 +151,8 @@ class Factory
     /**
      * @return \Aot\RussianMorphology\WdwDriver
      */
-    protected static function getDriver(){
+    protected static function getDriver()
+    {
         return WdwDriver::create();
     }
 

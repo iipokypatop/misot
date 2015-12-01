@@ -77,90 +77,85 @@ TEXT
         $this->assertEquals(0, count(array_diff($res[1], $composite_words)));
     }
 
-    /**
-     * Проверка предложений с композитными словами
-     * @dataProvider dataProviderSentencesWithCompositeWords
-     * @param string $sentence
-     * @param string[] $items
-     */
-    public function testSentencesWithCompositeWords($sentence, $items)
-    {
-        $words = preg_split('/\s+/', $sentence);
-        $words = array_filter(
-            $words,
-            function ($word) {
-                if ($word === ',') {
-                    return false;
-                }
-                return true;
-            }
-        );
-        $sorted_words = [];
-        foreach ($words as $word) {
-            $sorted_words[] = $word;
-        }
-        $slova = \Aot\RussianMorphology\Factory::getSlova($sorted_words);
-        $i = 0;
-        foreach ($items as $word_form => $initial_form) {
-            $check_initial_form = false;
-            /** @var \Aot\RussianMorphology\Slovo $slovo */
-            foreach ($slova[$i] as $slovo) {
-                $initial_form_slovo = mb_strtolower($slovo->getInitialForm(), 'utf-8');
-                $this->assertEquals($word_form, $slovo->getText());
-                if ($initial_form === $initial_form_slovo) {
-                    $check_initial_form = true;
-                }
-            }
-            // хотя бы для одного из вариантов Slovo будет совпадение по начальной форме
-            $this->assertEquals(true, $check_initial_form);
 
+    public function testFactorySimpleWords()
+    {
+        $items = [
+            'пошла' => 'пойти',
+            'чтобы' => 'чтобы',
+
+            'Алиса-каприза' => 'алиса,каприз',
+            'магазин-намазин' => 'магазин,намазина',
+        ];
+
+        $slova = \AotTest\Functional\RussianMorphology\FactoryTestStub::getSlova(
+            array_values($items)
+        );
+
+
+        $items = array_values($items);
+
+        $i = 0;
+        /** @var $slovo \Aot\RussianMorphology\Slovo[] */
+        foreach ($slova as $slovo) {
+            $this->assertInstanceOf(\Aot\RussianMorphology\Slovo::class, $slovo[0]);
+            $this->assertEquals($items[$i], $slovo[0]->getText());
+            $this->assertEquals($items[$i], $slovo[0]->getInitialForm());
             $i++;
         }
     }
+}
 
-
-    /**
-     * @return array
-     */
-    public function dataProviderSentencesWithCompositeWords()
+class WdwDriverTestStub extends \Aot\RussianMorphology\WdwDriver
+{
+    public function createWdwSpace(array $words)
     {
-        return [
-            [
-                '',
-                []
-            ],
-            [
-                'Убили хозяина-мастера',
-                [
-                    'убили' => 'убить',
-                    'хозяина-мастера' => 'хозяин,мастер',
-                ]
-            ],
-            [
-                'Лесоруб увидел кабана-убийцу',
-                [
-                    'лесоруб' => 'лесоруб',
-                    'увидел' => 'увидеть',
-                    'кабана-убийцу' => 'кабан,убийца',
-                ]
-            ],
-            [
-                'Алиса-каприза пошла в магазин-намазин , чтобы купить телефон-патефон , по которому пообщается с Бобом-дурдомом',
-                [
-                    'Алиса-каприза' => 'алиса,каприз',
-                    'пошла' => 'пойти',
-                    'в' => 'в',
-                    'магазин-намазин' => 'магазин,намазина',
-                    'чтобы' => 'чтобы',
-                    'купить' => 'купить',
-                    'телефон-патефон' => 'телефон,патефон',
-                    'по' => 'по',
-                    'которому' => 'который',
-                    'пообщается' => 'пообщаться',
-                    'с' => 'с',
-                    'Бобом-дурдомом' => 'боб,дурдом',
-                ]
-            ],
+
+        $simple_words1 = [
+            'пойти',
         ];
+        $simple_words2 = [
+            'чтобы',
+        ];
+
+        $composite_words1 = [
+            'алиса,каприз',
+        ];
+
+        $composite_words2 = [
+            'магазин,намазина',
+        ];
+
+
+        if (
+            $words === $simple_words1
+            || $words === $simple_words2
+            || $words === $composite_words1
+            || $words === $composite_words2
+        ) {
+            $result = [];
+            foreach ($words as $word) {
+                $result[][] = $point = new \PointWdw();
+                $point->dw = $dw = new \DictionaryWord;
+                $dw->id_word_class = \Aot\MivarTextSemantic\Constants::ADVERB_CLASS_ID;
+                $dw->word_form = $word;
+                $dw->initial_form = $word;
+            }
+            return $result;
+
+        }
+
+        throw new \LogicException("must not be here");
+    }
+}
+
+class FactoryTestStub extends \Aot\RussianMorphology\Factory
+{
+    /**
+     * @return \Aot\RussianMorphology\WdwDriver
+     */
+    protected static function getDriver()
+    {
+        return WdwDriverTestStub::create();
     }
 }
