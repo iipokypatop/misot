@@ -53,7 +53,9 @@ class Factory
 
         // точки из пространства с текущим индексом являются простыми словами
         if (!empty($simple_words)) {
-            $wdw = self::factorySimpleWords($simple_words);
+            foreach ($simple_words as $index => $simple_word) {
+                $wdw[$index] = self::factorySimpleWords([$simple_word])[0];
+            }
         }
 
         // точки из пространства с текущим индексом являются сложными словами
@@ -146,7 +148,7 @@ class Factory
 
     /**
      * Получение списка альтернатив по каждому отдельному элементу композитного слова (пример: "хозяин-мастер")
-     * @param $composite_word
+     * @param string $composite_word
      * @return \PointWdw[][]
      */
     protected static function factoryCompositeWords($composite_word)
