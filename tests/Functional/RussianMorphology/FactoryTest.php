@@ -42,14 +42,22 @@ TEXT
     public function testSentencesWithCompositeWords($sentence, $items)
     {
         $words = preg_split('/\s+/', $sentence);
-        $slova = \Aot\RussianMorphology\Factory::getSlova($words);
+        $words = array_filter(
+            $words,
+            function ($word) {
+                if ($word === ',') {
+                    return false;
+                }
+                return true;
+            }
+        );
+        $sorted_words = [];
+        foreach ($words as $word) {
+            $sorted_words[] = $word;
+        }
+        $slova = \Aot\RussianMorphology\Factory::getSlova($sorted_words);
         $i = 0;
         foreach ($items as $word_form => $initial_form) {
-            if (preg_match("/^[\\-]+$/", $word_form)) {
-                $i++;
-                continue;
-            }
-            $this->assertNotEmpty($slova[$i]);
             $check_initial_form = false;
             /** @var \Aot\RussianMorphology\Slovo $slovo */
             foreach ($slova[$i] as $slovo) {
@@ -67,6 +75,9 @@ TEXT
     }
 
 
+    /**
+     * @return array
+     */
     public function dataProviderSentencesWithCompositeWords()
     {
         return [
@@ -96,11 +107,9 @@ TEXT
                     'пошла' => 'пойти',
                     'в' => 'в',
                     'магазин-намазин' => 'магазин,намазина',
-                    '-' => '-',
                     'чтобы' => 'чтобы',
                     'купить' => 'купить',
                     'телефон-патефон' => 'телефон,патефон',
-                    '--' => '-',
                     'по' => 'по',
                     'которому' => 'который',
                     'пообщается' => 'пообщаться',

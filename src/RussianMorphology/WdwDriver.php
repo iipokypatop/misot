@@ -15,12 +15,16 @@ use Aot\MivarTextSemantic\SyntaxParser\SyntaxParserManager;
 class WdwDriver
 {
 
+    public static function create()
+    {
+        return new static();
+    }
     /**
      * Создания пространства точек
      * @param string[] $words
      * @return \PointWdw[][]
      */
-    public static function createWdwSpace(array $words)
+    public function createWdwSpace(array $words)
     {
         if (empty($words)) {
             return [];

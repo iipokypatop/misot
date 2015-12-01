@@ -66,6 +66,7 @@ class Factory
             }
         }
 
+        ksort($wdw);
         foreach ($wdw as $index => $points) {
             $slova[$index] = [];
             foreach ($points as $point) {
@@ -144,8 +145,16 @@ class Factory
      */
     protected static function factorySimpleWords(array $simple_words)
     {
-        return WdwDriver::createWdwSpace($simple_words);
+        return static::getDriver()->createWdwSpace($simple_words);
     }
+
+    /**
+     * @return \Aot\RussianMorphology\WdwDriver
+     */
+    protected static function getDriver(){
+        return WdwDriver::create();
+    }
+
 
     /**
      * Получение списка альтернатив по каждому отдельному элементу композитного слова (пример: "хозяин-мастер")
