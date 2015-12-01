@@ -23,7 +23,7 @@ use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Vozvratn
 use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Null as NullVozvratnost;
 
 
-class Factory extends \Aot\RussianMorphology\Factory
+class Factory extends \Aot\RussianMorphology\FactoryBase
 {
 
     /**

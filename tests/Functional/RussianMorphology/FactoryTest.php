@@ -8,7 +8,7 @@
 
 namespace AotTest\Functional\RussianMorphology;
 
-use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
+use MivarTest\PHPUnitHelper;
 
 
 class FactoryTest extends \AotTest\AotDataStorage
@@ -21,5 +21,141 @@ TEXT
         );
 
         $slova = \Aot\RussianMorphology\Factory::getSlova($words);
+    }
+
+
+    public function testLaunchWithSplittedWords()
+    {
+        $text = 'Алиса-каприза пошла в магазин-намазин , чтобы купить телефон-патефон , по которому пообщается с Бобом-дурдомом';
+        $words = preg_split('/\s+/', $text);
+
+        $slova = \Aot\RussianMorphology\Factory::getSlova($words);
+    }
+
+
+    /**
+     * Проверка метода разделения массива слов на группы
+     */
+    public function testSplitWordsInSimpleAndCompositeGroups()
+    {
+        # получаем подделку Aot\RussianMorphology\Factory
+        $factory = $this->getMock(\Aot\RussianMorphology\Factory::class, ['create'], [], '', false);
+        $res = PHPUnitHelper::callProtectedMethod($factory, 'splitArrayWords', [
+                [
+                    'Алиса-каприза',
+                    'в',
+                    'папа',
+                    'loli-poli',
+                    'человек-убийца',
+                    '-',
+                    'телефон-патефон',
+                    'топор',
+                    'green',
+                    'лес',
+                ]
+            ]
+        );
+        $simple_words = [
+            'в',
+            'папа',
+            '-',
+            'топор',
+            'green',
+            'лес',
+        ];
+
+        $composite_words = [
+            'Алиса-каприза',
+            'loli-poli',
+            'человек-убийца',
+            'телефон-патефон',
+        ];
+
+        $this->assertEquals(0, count(array_diff($simple_words, $res[0])));
+        $this->assertEquals(0, count(array_diff($res[0], $simple_words)));
+        $this->assertEquals(0, count(array_diff($composite_words, $res[1])));
+        $this->assertEquals(0, count(array_diff($res[1], $composite_words)));
+    }
+
+
+    public function testFactorySimpleWords()
+    {
+        $items = [
+            'пошла' => 'пойти',
+            'чтобы' => 'чтобы',
+
+            'Алиса-каприза' => 'алиса,каприз',
+            'магазин-намазин' => 'магазин,намазина',
+        ];
+
+        $slova = \AotTest\Functional\RussianMorphology\FactoryTestStub::getSlova(
+            array_values($items)
+        );
+
+
+        $items = array_values($items);
+
+        $i = 0;
+        /** @var $slovo \Aot\RussianMorphology\Slovo[] */
+        foreach ($slova as $slovo) {
+            $this->assertInstanceOf(\Aot\RussianMorphology\Slovo::class, $slovo[0]);
+            $this->assertEquals($items[$i], $slovo[0]->getText());
+            $this->assertEquals($items[$i], $slovo[0]->getInitialForm());
+            $i++;
+        }
+    }
+}
+
+class WdwDriverTestStub extends \Aot\RussianMorphology\WdwDriver
+{
+    public function createWdwSpace(array $words)
+    {
+
+        $simple_words1 = [
+            'пойти',
+        ];
+        $simple_words2 = [
+            'чтобы',
+        ];
+
+        $composite_words1 = [
+            'алиса,каприз',
+        ];
+
+        $composite_words2 = [
+            'магазин,намазина',
+        ];
+
+
+        if (
+            $words === $simple_words1
+            || $words === $simple_words2
+            || $words === $composite_words1
+            || $words === $composite_words2
+        ) {
+            $result = [];
+            foreach ($words as $word) {
+                $result[][] = $point = new \PointWdw();
+                $point->dw = $dw = new \DictionaryWord;
+                $dw->id_word_class = \Aot\MivarTextSemantic\Constants::ADVERB_CLASS_ID;
+                $dw->word_form = $word;
+                $dw->initial_form = $word;
+            }
+            return $result;
+
+        }
+
+        throw new \LogicException("must not be here");
+    }
+}
+
+class FactoryTestStub extends \Aot\RussianMorphology\Factory
+{
+    /**
+     * @return \Aot\RussianMorphology\WdwDriver
+     */
+    protected static function getDriver()
+    {
+        return WdwDriverTestStub::create();
     }
 }

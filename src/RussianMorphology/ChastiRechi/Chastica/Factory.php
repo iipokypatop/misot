@@ -8,7 +8,7 @@
 
 namespace Aot\RussianMorphology\ChastiRechi\Chastica;
 
-class Factory extends \Aot\RussianMorphology\Factory
+class Factory extends \Aot\RussianMorphology\FactoryBase
 {
     /**
      * @param \DictionaryWord $dw

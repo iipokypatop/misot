@@ -35,7 +35,7 @@ use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Vtor
  * Date: 18.06.2015
  * Time: 16:33
  */
-class Factory extends \Aot\RussianMorphology\Factory
+class Factory extends \Aot\RussianMorphology\FactoryBase
 {
     /**
      * @param \DictionaryWord $dw

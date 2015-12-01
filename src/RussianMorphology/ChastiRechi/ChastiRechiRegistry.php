@@ -79,7 +79,7 @@ class ChastiRechiRegistry
     }
 
     /**
-     * @return \Aot\RussianMorphology\Factory[]
+     * @return \Aot\RussianMorphology\FactoryBase[]
      */
     public static function getFactories()
     {

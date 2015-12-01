@@ -40,7 +40,7 @@ use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Sravnitelnaya;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Null as NullStepenSravneniia;
 
-class Factory extends \Aot\RussianMorphology\Factory
+class Factory extends \Aot\RussianMorphology\FactoryBase
 {
 
     public function build(\DictionaryWord $dw)
