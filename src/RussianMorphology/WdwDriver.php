@@ -19,6 +19,11 @@ class WdwDriver
     {
         return new static();
     }
+
+    protected function __construct()
+    {
+    }
+
     /**
      * Создания пространства точек
      * @param string[] $words
