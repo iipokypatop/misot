@@ -27,10 +27,6 @@
   "repositories": [
     {
       "type": "git",
-      "url": "git@git.mivar.pro:mivar-projects/loader.git"
-    },
-    {
-      "type": "git",
       "url": "git@git.mivar.pro:mivar-projects/test-utils.git"
     },
     {
