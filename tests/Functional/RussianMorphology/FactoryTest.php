@@ -8,7 +8,7 @@
 
 namespace AotTest\Functional\RussianMorphology;
 
-use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
+use MivarTest\PHPUnitHelper;
 
 
 class FactoryTest extends \AotTest\AotDataStorage
@@ -32,6 +32,50 @@ TEXT
         $slova = \Aot\RussianMorphology\Factory::getSlova($words);
     }
 
+
+    /**
+     * Проверка метода разделения массива слов на группы
+     */
+    public function testSplitWordsInSimpleAndCompositeGroups()
+    {
+        # получаем подделку Aot\RussianMorphology\Factory
+        $factory = $this->getMock(\Aot\RussianMorphology\Factory::class, ['create'], [], '', false);
+        $res = PHPUnitHelper::callProtectedMethod($factory, 'splitArrayWords', [
+                [
+                    'Алиса-каприза',
+                    'в',
+                    'папа',
+                    'loli-poli',
+                    'человек-убийца',
+                    '-',
+                    'телефон-патефон',
+                    'топор',
+                    'green',
+                    'лес',
+                ]
+            ]
+        );
+        $simple_words = [
+            'в',
+            'папа',
+            '-',
+            'топор',
+            'green',
+            'лес',
+        ];
+
+        $composite_words = [
+            'Алиса-каприза',
+            'loli-poli',
+            'человек-убийца',
+            'телефон-патефон',
+        ];
+
+        $this->assertEquals(0, count(array_diff($simple_words, $res[0])));
+        $this->assertEquals(0, count(array_diff($res[0], $simple_words)));
+        $this->assertEquals(0, count(array_diff($composite_words, $res[1])));
+        $this->assertEquals(0, count(array_diff($res[1], $composite_words)));
+    }
 
     /**
      * Проверка предложений с композитными словами
