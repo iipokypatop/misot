@@ -66,6 +66,7 @@ class Factory
             }
         }
 
+        ksort($wdw);
         foreach ($wdw as $index => $points) {
             $slova[$index] = [];
             foreach ($points as $point) {
