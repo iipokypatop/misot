@@ -93,7 +93,6 @@ class Base extends \Aot\Sviaz\Processors\Base
 
         $new_sequence = $this->builder->createSequence();
 
-
         foreach ($sentence_words_array as $key_word => $word_form) {
             // если нет точки для данного слова и она есть в старой последовательности, тогда берем её оттуда и есть в последовательности
 

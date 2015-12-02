@@ -45,9 +45,9 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     {
         $seq_converter = \Aot\Sviaz\CreateSequenceFromText::create();
         $seq_converter->convert($sentence);
+//        die();
         $sequence = $seq_converter->getSequence()[0];
 
-//        die();
 //        $predlog = \Aot\Sviaz\PreProcessors\Predlog::create();
 //        $sequence = $predlog->run($sequence);
 
@@ -102,14 +102,15 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     public function dataProviderSentences()
     {
         return [
-            ['Мальчик пошел в лес.'],
+            ['Ее черные волосы, как вороново крыло, закрывали часть щеки.'],
+//            ['Мальчик пошел в лес.'],
 //            ['Человек пойдет в лес, если дома не будет еды.'], // lagging
 //            ['Папа, мама и брат пойдут в лес, если дома не будет еды.'], // lagging
-            ['Дровосек пошел в лес рубить дрова.'],
-            ['Папа сжег в лес, в котором рубил дрова.'], // предложение с опечаткой
-            ['Папа, мама и бабушка пошли в магазин.'],
-            ['Василий Петрович купил сигареты.'],
-            ['Василий, Петрович купил сигареты.'],
+//            ['Дровосек пошел в лес рубить дрова.'],
+//            ['Папа сжег в лес, в котором рубил дрова.'], // предложение с опечаткой
+//            ['Папа, мама и бабушка пошли в магазин.'],
+//            ['Василий Петрович купил сигареты.'],
+//            ['Василий, Петрович купил сигареты.'],
         ];
     }
 
