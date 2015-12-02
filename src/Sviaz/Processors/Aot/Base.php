@@ -96,10 +96,11 @@ class Base extends \Aot\Sviaz\Processors\Base
         foreach ($sentence_words_array as $key_word => $word_form) {
             // если нет точки для данного слова и она есть в старой последовательности, тогда берем её оттуда и есть в последовательности
 
-            $condition = empty($offsetManager->nonexistent_misot[$key_word])
+
+            $condition = $offsetManager->isMisotElementExistBySentenceWordKey($key_word)
                 &&
                 (
-                    !empty($offsetManager->nonexistent_aot[$key_word])
+                !$offsetManager->isAotElementExistBySentenceWordKey($key_word)
                     ||
                     empty($sorted_points[$offsetManager->getAotKeyBySentenceWordKey($key_word)])
                 );

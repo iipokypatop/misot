@@ -15,10 +15,7 @@ class SequenceToWordsConverter
 {
     /** @var \Aot\Sviaz\Processors\Aot\OffsetManager */
     protected $offsetManager;
-
-    protected $sentence_words_array = [];
-    protected $nonexistent_aot = [];
-    protected $nonexistent_misot = [];
+    protected $sentence_words_array = []; // массив слов предложения
 
     public static function create(\Aot\Sviaz\Sequence $sequence)
     {
@@ -80,14 +77,6 @@ class SequenceToWordsConverter
                 $this->offsetManager->refreshAotOffset();
             }
         }
-//        print_r([
-//            'sentence' => $this->sentence_words_array,
-//            'offset_by_aot' => $this->offsetManager->offset_by_aot,
-//            'nonexist_aot' => $this->offsetManager->nonexistent_aot,
-//            'offset_by_misot' => $this->offsetManager->offset_by_misot,
-//            'nonexist_misot' => $this->offsetManager->nonexistent_misot,
-//        ]);
-//        die();
     }
 
 
