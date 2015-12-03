@@ -41,6 +41,7 @@ TEXT
         $words = preg_split('/\s+/', $text);
 
         $slova = \Aot\RussianMorphology\Factory::getSlova($words);
+        print_r($slova);
     }
 
 
@@ -82,10 +83,10 @@ TEXT
             'телефон-патефон',
         ];
 
-        $this->assertEquals(0, count(array_diff($simple_words, $res[0])));
-        $this->assertEquals(0, count(array_diff($res[0], $simple_words)));
-        $this->assertEquals(0, count(array_diff($composite_words, $res[1])));
-        $this->assertEquals(0, count(array_diff($res[1], $composite_words)));
+        $res_simple = array_values($res[0]);
+        $res_composite = array_values($res[1]);
+        $this->assertEquals($simple_words, $res_simple);
+        $this->assertEquals($composite_words, $res_composite);
     }
 
 
