@@ -92,14 +92,14 @@ class Base extends \Aot\Sviaz\Processors\Base
 
         $new_sequence = $this->builder->createSequence();
 
-
         foreach ($sentence_words_array as $key_word => $word_form) {
             // если нет точки для данного слова и она есть в старой последовательности, тогда берем её оттуда и есть в последовательности
 
-            $condition = empty($offsetManager->nonexistent_misot[$key_word])
+
+            $condition = $offsetManager->isMisotElementExistBySentenceWordKey($key_word)
                 &&
                 (
-                    !empty($offsetManager->nonexistent_aot[$key_word])
+                !$offsetManager->isAotElementExistBySentenceWordKey($key_word)
                     ||
                     empty($sorted_points[$offsetManager->getAotKeyBySentenceWordKey($key_word)])
                 );
@@ -118,7 +118,7 @@ class Base extends \Aot\Sviaz\Processors\Base
 
             $syntax_key = null;
 
-            if (empty($offsetManager->nonexistent_misot[$key_word])) {
+            if ($offsetManager->isMisotElementExistBySentenceWordKey($key_word)) {
                 $misot_key = $offsetManager->getMisotKeyBySentenceWordKey($key_word);
                 $initial_form_from_member = $old_sequence[$misot_key]->getSlovo()->getInitialForm();
                 foreach ($items as $id_word_class => $key) {
