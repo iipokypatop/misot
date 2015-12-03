@@ -24,6 +24,17 @@ TEXT
     }
 
 
+    public function testLaunch2()
+    {
+        $text = 'Мама заплатила 22 рубля';
+        $text = 'Мама заплатила двадцать два рубля';
+        $text = 'МИВАР 22';
+        $words = preg_split('/\s+/', $text);
+
+        $slova = \Aot\RussianMorphology\Factory::getSlova($words);
+    }
+
+
     public function testLaunchWithSplittedWords()
     {
         $text = 'Алиса-каприза пошла в магазин-намазин , чтобы купить телефон-патефон , по которому пообщается с Бобом-дурдомом';
