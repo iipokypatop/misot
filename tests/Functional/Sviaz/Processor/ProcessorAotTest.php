@@ -47,10 +47,6 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
         $seq_converter->convert($sentence);
         $sequence = $seq_converter->getSequence()[0];
 
-//        die();
-//        $predlog = \Aot\Sviaz\PreProcessors\Predlog::create();
-//        $sequence = $predlog->run($sequence);
-
         /**
          * TODO: переделать получение последовательности
          * 1 - slova
@@ -68,7 +64,6 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
         $sentence_array = [];
         foreach ($sequence as $member) {
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
-                // пропускаем, поскольку АОТ игнорирует знаки препинания
 //                $sentence_array[] = $member->getPunctuaciya()->getText();
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
@@ -103,6 +98,7 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     {
         return [
             ['Мальчик пошел в лес.'],
+//            ['Ее черные волосы, как вороново крыло, закрывали часть щеки.'],// lagging
 //            ['Человек пойдет в лес, если дома не будет еды.'], // lagging
 //            ['Папа, мама и брат пойдут в лес, если дома не будет еды.'], // lagging
             ['Дровосек пошел в лес рубить дрова.'],

@@ -39,7 +39,7 @@ class Builder
      * Получение фабрики по id класса слова
      *
      * @param int $id_word_class
-     * @return \Aot\RussianMorphology\Factory
+     * @return \Aot\RussianMorphology\FactoryBase
      */
     public function getFactory($id_word_class)
     {
