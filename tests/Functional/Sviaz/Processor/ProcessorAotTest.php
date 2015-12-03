@@ -32,7 +32,6 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
             $this->assertNotNull($pos);
             $this->assertNotNull($pos2);
         }
-//        \Doctrine\Common\Util\Debug::dump($new_sequence, 4);
     }
 
 

@@ -24,10 +24,15 @@ TEXT
     }
 
 
-    public function testLaunch2()
+    public function testAbbrAndNumbers()
     {
-        $text = 'Мама заплатила 22 рубля';
-        $text = 'Мама заплатила двадцать два рубля';
+        $this->markTestSkipped("В ожидании решения задач №2308 и №2310");
+        /**
+         * TODO:
+         *
+         * $text = 'Мама заплатила 22 рубля';
+         * $text = 'Мама заплатила двадцать два рубля';
+         */
         $text = 'МИВАР 22';
         $words = preg_split('/\s+/', $text);
 
@@ -41,7 +46,6 @@ TEXT
         $words = preg_split('/\s+/', $text);
 
         $slova = \Aot\RussianMorphology\Factory::getSlova($words);
-        print_r($slova);
     }
 
 
