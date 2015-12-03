@@ -65,6 +65,19 @@ class Sequence extends \Judy
     }
 
     /**
+     * @param Podchinitrelnaya\Base $remove_sviaz
+     * @return void
+     */
+    public function removeSviaz(\Aot\Sviaz\Podchinitrelnaya\Base $remove_sviaz)
+    {
+        foreach ($this->sviazi as $key => $sviaz) {
+            if ($sviaz === $remove_sviaz) {
+                unset($this->sviazi[$key]);
+            }
+        }
+    }
+
+    /**
      * @return string
      */
     public function getId()
