@@ -32,7 +32,6 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
             $this->assertNotNull($pos);
             $this->assertNotNull($pos2);
         }
-//        \Doctrine\Common\Util\Debug::dump($new_sequence, 4);
     }
 
 
@@ -87,7 +86,6 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
             $this->assertNotNull($pos);
             $this->assertNotNull($pos2);
         }
-//        \Doctrine\Common\Util\Debug::dump($new_sequence, 5);
     }
 
 
@@ -97,6 +95,8 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     public function dataProviderSentences()
     {
         return [
+//            ['Алиса-каприза пошла в магазин-намазин'],// epic fail!
+            ['Я посмотрел на нее'],
             ['Мальчик пошел в лес.'],
 //            ['Ее черные волосы, как вороново крыло, закрывали часть щеки.'],// lagging
 //            ['Человек пойдет в лес, если дома не будет еды.'], // lagging

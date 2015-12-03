@@ -67,11 +67,11 @@ class SequenceToWordsConverter
                 // отдельно элемента предлог в мисоте нет
                 $this->offsetManager->increaseMisotOffset();
                 $this->offsetManager->addToNonexistentMisot($id);
-                $id = $this->addToSentenceWordsArray($member->getSlovo()->getText());
+                $this->addToSentenceWordsArray($member->getSlovo()->getText());
                 $this->offsetManager->refreshAotOffset();
                 $this->offsetManager->refreshMisotOffset();
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
-                $id = $this->addToSentenceWordsArray($member->getSlovo()->getText());
+                $this->addToSentenceWordsArray($member->getSlovo()->getText());
                 /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
                 $this->offsetManager->refreshMisotOffset();
                 $this->offsetManager->refreshAotOffset();
