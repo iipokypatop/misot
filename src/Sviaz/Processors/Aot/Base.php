@@ -75,7 +75,6 @@ class Base extends \Aot\Sviaz\Processors\Base
      * @return \Aot\Sviaz\Sequence
      */
     protected function createNewSequence(\Aot\Sviaz\Sequence $old_sequence, Sequence\SequenceDriver $sequence_driver)
-
     {
         $syntax_model = $sequence_driver->getSyntaxModel();
         $sentence_words_array = $sequence_driver->getWordsArray();
@@ -117,12 +116,27 @@ class Base extends \Aot\Sviaz\Processors\Base
 
             $items = $sorted_points[$offsetManager->getAotKeyBySentenceWordKey($key_word)];
 
-            $first_element_key = array_shift($items);
+            $syntax_key = null;
 
-            $id_word_class = $syntax_model[$first_element_key]->dw->id_word_class;
+            if (empty($offsetManager->nonexistent_misot[$key_word])) {
+                $misot_key = $offsetManager->getMisotKeyBySentenceWordKey($key_word);
+                $initial_form_from_member = $old_sequence[$misot_key]->getSlovo()->getInitialForm();
+                foreach ($items as $id_word_class => $key) {
+                    if ($syntax_model[$key]->dw->initial_form === $initial_form_from_member) {
+                        $syntax_key = $key;
+                        break;
+                    }
+                }
+            }
+
+            if ($syntax_key === null) {
+                $syntax_key = array_shift($items);
+            }
+
+            $id_word_class = $syntax_model[$syntax_key]->dw->id_word_class;
             $factory = $this->builder->getFactory($id_word_class);
 
-            $point = $syntax_model[$first_element_key];
+            $point = $syntax_model[$syntax_key];
 
             // берём форму слова из исходной последовательности
             $point->dw->word_form = $word_form;
@@ -151,7 +165,7 @@ class Base extends \Aot\Sviaz\Processors\Base
         $offsetManager = $sequence_driver->getOffsetManager();
 
         if ($prepose_point->dw->id_word_class !== \DefinesAot::PREPOSITION_CLASS_ID
-            || $word_point->dw->id_word_class !== \DefinesAot::NOUN_CLASS_ID
+            || !in_array($word_point->dw->id_word_class, [\DefinesAot::NOUN_CLASS_ID, \DefinesAot::PRONOUN_CLASS_ID], true)
         ) {
             // данная ситуация - бага в аоте/конвертере из аота
             return;

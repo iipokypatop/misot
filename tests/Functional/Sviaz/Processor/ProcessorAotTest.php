@@ -102,6 +102,8 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     public function dataProviderSentences()
     {
         return [
+//            ['Алиса-каприза пошла в магазин-намазин'],// epic fail!
+            ['Я посмотрел на нее'],
             ['Мальчик пошел в лес.'],
 //            ['Человек пойдет в лес, если дома не будет еды.'], // lagging
 //            ['Папа, мама и брат пойдут в лес, если дома не будет еды.'], // lagging
