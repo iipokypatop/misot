@@ -99,7 +99,7 @@ class Base extends \Aot\Sviaz\Processors\Base
             $condition = $offsetManager->isMisotElementExistBySentenceWordKey($key_word)
                 &&
                 (
-                !$offsetManager->isAotElementExistBySentenceWordKey($key_word)
+                    !$offsetManager->isAotElementExistBySentenceWordKey($key_word)
                     ||
                     empty($sorted_points[$offsetManager->getAotKeyBySentenceWordKey($key_word)])
                 );
@@ -228,7 +228,11 @@ class Base extends \Aot\Sviaz\Processors\Base
             $depended = $sequence[$depended_id];
 
             // конкретизируем роли главного и зависимого
-            $roles = \Aot\Sviaz\Processors\Aot\RoleSpecificator::getRoles($pair_points[self::MAIN_POINT]->O);
+            $roles = \Aot\Sviaz\Processors\Aot\RoleSpecificator::getRoles(
+                $pair_points[self::MAIN_POINT]->O,
+                $pair_points[self::MAIN_POINT]->dw->id_word_class,
+                $pair_points[self::DEPENDED_POINT]->dw->id_word_class
+            );
 
             $main_point_part_of_speech = $this->builder->conformityPartsOfSpeech($pair_points[self::MAIN_POINT]->dw->id_word_class);
             $depended_point_part_of_speech = $this->builder->conformityPartsOfSpeech($pair_points[self::DEPENDED_POINT]->dw->id_word_class);
