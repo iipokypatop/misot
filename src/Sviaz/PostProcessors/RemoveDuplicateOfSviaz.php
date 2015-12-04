@@ -24,25 +24,6 @@ class RemoveDuplicateOfSviaz extends Base
      */
     public function run(\Aot\Sviaz\Sequence $sequence, array $sviazi)
     {
-//        $pairs = [];
-//        foreach ($sviazi as $sviaz) {
-//            $candidate = [
-//                $sviaz->getMainSequenceMember(),
-//                $sviaz->getDependedSequenceMember()
-//            ];
-//            if (empty($pairs)) {
-//                $pairs [] = $candidate;
-//                continue;
-//            }
-//            foreach ($pairs as $pair) {
-//                if ($candidate === $pair) {
-//                    $sequence->removeSviaz($sviaz);
-//                    continue 2;
-//                }
-//                $pairs[] = $candidate;
-//            }
-//        }
-
         $pairs = [];
         foreach ($sviazi as $sviaz) {
             $a = $sviaz->getMainSequenceMember();
