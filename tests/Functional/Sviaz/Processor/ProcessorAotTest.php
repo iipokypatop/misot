@@ -34,18 +34,6 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
         }
     }
 
-    public function testBuildSequence()
-    {
-        $text = 'Я пошел не в лес';
-        $seq_converter = \Aot\Sviaz\CreateSequenceFromText::create();
-        $seq_converter->convert($text);
-        $sequence = $seq_converter->getSequences()[0];
-//        foreach ($sequence as $item) {
-//            print_r($item);
-//        }
-        print_r($sequence);
-    }
-
     /**
      * Прогоняем предложения и смотрим, что все мемберы из связей совпадают с мемберами из последовательности
      * @dataProvider dataProviderSentences
