@@ -19,11 +19,15 @@ class RoleSpecificator
     /**
      * Конкретизация роли элемента
      * @param string $name_relation - зависима или главная точка, не имеет значения
-     * @return int[]
+     * @param int $id_word_class_main
+     * @param int $id_word_class_dep
+     * @return \int[]
      */
-    public static function getRoles($name_relation)
+    public static function getRoles($name_relation, $id_word_class_main, $id_word_class_dep)
     {
         assert(is_string($name_relation));
+        assert(is_int($id_word_class_main));
+        assert(is_int($id_word_class_dep));
 
         // подлежащее-сказуемое
         if ($name_relation === DefinesAot::BASIS_MIVAR) {
@@ -31,7 +35,6 @@ class RoleSpecificator
             $role_dep = RoleRegistry::OTNOSHENIE;
         } // составное сказуемое
         elseif ($name_relation === DefinesAot::COMPLEX_PREDICATE_MIVAR) {
-            # todo: создание двух связей?
             $role_main = RoleRegistry::OTNOSHENIE;
             $role_dep = RoleRegistry::SVOISTVO;
         } // косвенное дополнение
@@ -42,9 +45,13 @@ class RoleSpecificator
         elseif ($name_relation === DefinesAot::DIRECT_OBJECT_MIVAR) {
             $role_main = RoleRegistry::OTNOSHENIE;
             $role_dep = RoleRegistry::VESCH;
-        } // не + глагол
+        } // не + глагол/сущ/местоимение/прилагательное
         elseif ($name_relation === DefinesAot::NEGATIVE_NUMERAL_MIVAR) {
-            $role_main = RoleRegistry::OTNOSHENIE;
+            if (in_array($id_word_class_main, [DefinesAot::NOUN_CLASS_ID, DefinesAot::PRONOUN_CLASS_ID, DefinesAot::ADJECTIVE_CLASS_ID])) {
+                $role_main = RoleRegistry::VESCH;
+            } else {
+                $role_main = RoleRegistry::OTNOSHENIE;
+            }
             $role_dep = RoleRegistry::SVOISTVO;
         } // предлог + существительное
         elseif ($name_relation === DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {

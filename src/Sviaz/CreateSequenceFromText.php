@@ -48,9 +48,9 @@ class CreateSequenceFromText
     }
 
     /**
-     * @return \Aot\Sviaz\Sequence
+     * @return \Aot\Sviaz\Sequence[]
      */
-    public function getSequence()
+    public function getSequences()
     {
         return $this->sequences;
     }
@@ -202,9 +202,7 @@ class CreateSequenceFromText
             //$processor->attachPostProcessor(\Aot\Sviaz\PostProcessors\HomogeneityVerification::create());
             $matrix = $this->getMatrix($sentence);
             $normalized_matrix = $this->getNormalizedMatrix($matrix);
-            $start = microtime(true);
             $sequences = $processor->go($normalized_matrix, $this->getRuleOne());
-            print_r("Затраченное время на обработку последовательностей: " . (microtime(true) - $start) . "\n");
             $result_sequences[] = $sequences[0];
         }
         $this->sequences = $result_sequences;
