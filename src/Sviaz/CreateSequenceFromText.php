@@ -48,9 +48,9 @@ class CreateSequenceFromText
     }
 
     /**
-     * @return \Aot\Sviaz\Sequence
+     * @return \Aot\Sviaz\Sequence[]
      */
-    public function getSequence()
+    public function getSequences()
     {
         return $this->sequences;
     }

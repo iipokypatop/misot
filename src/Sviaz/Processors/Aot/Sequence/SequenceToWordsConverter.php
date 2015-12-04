@@ -27,7 +27,7 @@ class SequenceToWordsConverter
     {
         $this->offsetManager = Aot\OffsetManager::create();
 
-        $this->covert($sequence);
+        $this->convert($sequence);
     }
 
     /**
@@ -51,7 +51,7 @@ class SequenceToWordsConverter
      * @param \Aot\Sviaz\Sequence $sequence
      * @return string[]
      */
-    protected function covert(\Aot\Sviaz\Sequence $sequence)
+    protected function convert(\Aot\Sviaz\Sequence $sequence)
     {
         foreach ($sequence as $member) {
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {

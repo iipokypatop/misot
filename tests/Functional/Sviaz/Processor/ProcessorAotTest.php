@@ -34,6 +34,17 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
         }
     }
 
+    public function testBuildSequence()
+    {
+        $text = 'Я пошел не в лес';
+        $seq_converter = \Aot\Sviaz\CreateSequenceFromText::create();
+        $seq_converter->convert($text);
+        $sequence = $seq_converter->getSequences()[0];
+//        foreach ($sequence as $item) {
+//            print_r($item);
+//        }
+        print_r($sequence);
+    }
 
     /**
      * Прогоняем предложения и смотрим, что все мемберы из связей совпадают с мемберами из последовательности
@@ -44,7 +55,7 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     {
         $seq_converter = \Aot\Sviaz\CreateSequenceFromText::create();
         $seq_converter->convert($sentence);
-        $sequence = $seq_converter->getSequence()[0];
+        $sequence = $seq_converter->getSequences()[0];
 
         /**
          * TODO: переделать получение последовательности
@@ -76,7 +87,7 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
 
         // проверяем совпадение исходного предложения с восстановленным из новой последовательности
         $sentence = mb_strtolower($sentence, 'utf-8');
-        $sentence = preg_replace("/[\\,\\.]/u", "",$sentence);
+        $sentence = preg_replace("/[\\,\\.]/u", "", $sentence);
         $this->assertEquals($sentence, join(" ", $sentence_array));
 
         // проверяем наличие всех мемберов из связей в последовательности
@@ -95,6 +106,7 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     public function dataProviderSentences()
     {
         return [
+            ['Я пошел не в лес'],// epic fail!
 //            ['Алиса-каприза пошла в магазин-намазин'],// epic fail!
             ['Я посмотрел на нее'],
             ['Мальчик пошел в лес.'],
