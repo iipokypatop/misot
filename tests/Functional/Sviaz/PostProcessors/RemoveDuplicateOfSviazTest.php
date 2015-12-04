@@ -83,11 +83,11 @@ class RemoveDuplicateOfSviaz extends \AotTest\AotDataStorage
 
         //Запускаем алгоритм постобработки
         $obj = \Aot\Sviaz\PostProcessors\RemoveDuplicateOfSviaz::create();
-        $obj->run($sequence, $sequence->getSviazi());
+        /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi */
+        $sviazi = $obj->run($sequence, $sequence->getSviazi());
+
 
         //Проверяем, правильно ли отработал алгоритм
-        /** @var \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi */
-        $sviazi = array_values($sequence->getSviazi());
         $this->assertTrue([$member_1, $member_2] === [
                 $sviazi[0]->getMainSequenceMember(),
                 $sviazi[0]->getDependedSequenceMember()
