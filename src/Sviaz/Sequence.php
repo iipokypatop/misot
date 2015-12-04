@@ -70,6 +70,7 @@ class Sequence extends \Judy
      */
     public function removeSviaz(\Aot\Sviaz\Podchinitrelnaya\Base $remove_sviaz)
     {
+        throw new \LogicException("disabled");
         foreach ($this->sviazi as $key => $sviaz) {
             if ($sviaz === $remove_sviaz) {
                 unset($this->sviazi[$key]);
