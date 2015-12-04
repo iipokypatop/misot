@@ -19,7 +19,6 @@ class RemoveDuplicateOfSviaz extends Base
     /**
      * @param \Aot\Sviaz\Sequence $sequence
      * @param \Aot\Sviaz\Podchinitrelnaya\Base[] $sviazi
-     *
      * @return \Aot\Sviaz\Podchinitrelnaya\Base[]
      */
     public function run(\Aot\Sviaz\Sequence $sequence, array $sviazi)
