@@ -35,6 +35,55 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     }
 
     /**
+     * Проверяем на корректность связи между "не" и "лес"
+     */
+    public function testLinkSuschestvitelnoeWithChasticaNe()
+    {
+        $text = 'Я пошел не в лес';
+        $seq_converter = \Aot\Sviaz\CreateSequenceFromText::create();
+        $seq_converter->convert($text);
+        $sequence = $seq_converter->getSequences()[0];
+
+        $misot_to_aot = \Aot\Sviaz\Processors\Aot\Base::create();
+        $new_sequence = $misot_to_aot->run($sequence, []);
+
+        $this->assertNotEmpty($new_sequence->getSviazi());
+        $was_link_suschestvitelnoe_and_ne = false;
+        // проверяем наличие всех мемберов из связей в последовательности
+        foreach ($new_sequence->getSviazi() as $sviaz) {
+            if ($sviaz->getMainSequenceMember()->getSlovo()->getText() === 'лес'
+                &&
+                $sviaz->getDependedSequenceMember()->getSlovo()->getText() === 'не'
+            ) {
+
+                $this->assertInstanceOf(
+                    \Aot\Sviaz\SequenceMember\Word\WordWithPreposition::class,
+                    $sviaz->getMainSequenceMember()
+                );
+
+                $this->assertInstanceOf(
+                    \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class,
+                    $sviaz->getMainSequenceMember()->getSlovo()
+                );
+
+                $this->assertInstanceOf(
+                    \Aot\RussianMorphology\ChastiRechi\Predlog\Base::class,
+                    $sviaz->getMainSequenceMember()->getPredlog()
+                );
+
+                $this->assertInstanceOf(
+                    \Aot\RussianMorphology\ChastiRechi\Chastica\Base::class,
+                    $sviaz->getDependedSequenceMember()->getSlovo()
+                );
+
+                $was_link_suschestvitelnoe_and_ne = true;
+            }
+        }
+        $this->assertEquals(true, $was_link_suschestvitelnoe_and_ne);
+    }
+
+
+    /**
      * Прогоняем предложения и смотрим, что все мемберы из связей совпадают с мемберами из последовательности
      * @dataProvider dataProviderSentences
      * @param $sentence
@@ -94,8 +143,7 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     public function dataProviderSentences()
     {
         return [
-            ['Я пошел не в лес'],// epic fail!
-//            ['Алиса-каприза пошла в магазин-намазин'],// epic fail!
+//            ['Алиса-каприза пошла в магазин-намазин'],// epic fail! (Aot -X-> Misot)
             ['Я посмотрел на нее'],
             ['Мальчик пошел в лес.'],
 //            ['Ее черные волосы, как вороново крыло, закрывали часть щеки.'],// lagging
