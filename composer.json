@@ -70,7 +70,7 @@
   },
   "scripts": {
     "post-autoload-dump": [
-      "\\Overloader\\Base::createDumpFiles",
+      "\\Overloader\\Overloader::createDumpFiles",
       "\\MivarUtils\\Common\\ConfigTemplateGenerator::generate"
     ]
   },
