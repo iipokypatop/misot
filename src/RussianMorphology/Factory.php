@@ -17,8 +17,8 @@ use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
  */
 class Factory
 {
-    const REGULAR_FOR_WHITE_LIST = '/[A-Za-zА-Яа-яёЁ]+/u';
-    const PART_REGULAR_FOR_COMPOSITE_WORDS = '[A-Za-zА-Яа-яёЁ]+';
+    const REGULAR_FOR_WHITE_LIST = '/[A-Za-zА-Яа-яёЁ\\d]+/u';
+    const PART_REGULAR_FOR_COMPOSITE_WORDS = '[A-Za-zА-Яа-яёЁ\\d]+';
     const COMPOSITE_WORDS_DELIMITER = '[\\-]';
     const DELIMITER_FOR_SPLITTED_WORDS = ',';
 

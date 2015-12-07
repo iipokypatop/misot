@@ -44,6 +44,10 @@ class WdwDriver
         foreach ($syntax_parser->reg_parser->get_sentences() as $sentence) {
             $spaces[] = $syntax_parser->create_sentence_space($sentence);
         }
+        /**
+         * TODO: issues 2308, 2310
+         * В spaces для аббревиатур и чисел приходят пустые dw => обработать
+        */
 
         if (empty($spaces[0])) {
             return [];

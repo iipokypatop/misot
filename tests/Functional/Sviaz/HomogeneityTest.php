@@ -43,7 +43,7 @@ class HomogeneityTest extends \AotTest\AotDataStorage
         //$creator->convert("По засыпанной красными и жёлтыми листьями дороге в новую деревенскую школу я встретил Сашу, Мишу и тебя.");
         //$creator->convert("Деревья и травы летом и в самом начале осени сочны и свежи.");
         $creator->convert("Пушкин собирал песни и сказки и в Одессе, и в Кишинёве, и в Псковской губернии.");
-        $sequences = $creator->getSequence();
+        $sequences = $creator->getSequences();
 
         $members = [];
         foreach ($sequences[0] as $member) {
