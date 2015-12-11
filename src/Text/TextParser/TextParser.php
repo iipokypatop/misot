@@ -28,6 +28,7 @@ class TextParser
     const END_SENTENCE_TEMPLATE = " %s\n";
     const START_TEMPLATE = '{{';
     const END_TEMPLATE = '}}';
+    const SEPARATOR = ' ';
 
     /**
      * @var \Aot\Text\TextParser\Logger
@@ -302,7 +303,7 @@ class TextParser
         foreach ($sentences as $sentence) {
             assert(is_string($sentence));
         }
-        return join(' ', $sentences);
+        return join(static::SEPARATOR, $sentences);
     }
 
 }
