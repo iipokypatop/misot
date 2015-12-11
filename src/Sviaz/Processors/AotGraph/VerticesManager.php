@@ -25,7 +25,7 @@ class VerticesManager
      * @param Builder $builder
      * @param \Aot\RussianMorphology\Slovo[] $prepose_to_slovo
      */
-    protected function __construct(\Aot\Graph\Slovo\Graph $graph, \Aot\Sviaz\Processors\AotGraph\Builder $builder, array $prepose_to_slovo = [])
+    protected function __construct(\Aot\Graph\Slovo\Graph $graph, \Aot\Sviaz\Processors\AotGraph\Builder $builder, array $prepose_to_slovo = null)
     {
         $this->graph = $graph;
         $this->builder = $builder;

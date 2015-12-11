@@ -45,7 +45,6 @@ class TextParserTest extends \AotTest\AotDataStorage
         $parser = TextParser::create();
         $parser->execute($text);
         $parser->render();
-        // todo: delete this comment
     }
 
 
