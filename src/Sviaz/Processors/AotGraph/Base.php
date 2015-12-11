@@ -132,60 +132,25 @@ class Base
             return [];
         }
 
-        $vertices = [];
-
         $graph_slova = $this->builder->buildGraph();
+
+        $vertices_manager = \Aot\Sviaz\Processors\AotGraph\VerticesManager::create(
+            $graph_slova,
+            $this->builder,
+            $this->prepose_to_slovo
+        );
 
         foreach ($links as $oz => $slova) {
 
-            print_r($slova);
             if (empty($slova[static::MAIN_POINT]) || empty($slova[static::DEPENDED_POINT])) {
                 throw new \LogicException("Main or depended point is empty!");
             }
 
-            $main_slovo = $slova[static::MAIN_POINT];
-            $depend_slovo = $slova[static::DEPENDED_POINT];
-
-            if (empty($vertices[spl_object_hash($main_slovo)])) {
-                if( !empty($this->prepose_to_slovo[spl_object_hash($main_slovo)])){
-                    $main_vertex = $this->builder->buildVertex(
-                        $graph_slova,
-                        $main_slovo,
-                        $this->prepose_to_slovo[spl_object_hash($main_slovo)]
-                    );
-                }
-                else{
-                    $main_vertex = $this->builder->buildVertex($graph_slova, $main_slovo);
-                }
-                $vertices[spl_object_hash($main_slovo)] = $main_vertex;
-            } else {
-                $main_vertex = $vertices[spl_object_hash($main_slovo)];
-            }
-
-            if (empty($vertices[spl_object_hash($depend_slovo)])) {
-                if( !empty($this->prepose_to_slovo[spl_object_hash($depend_slovo)])){
-                    $depended_vertex = $this->builder->buildVertex(
-                        $graph_slova,
-                        $depend_slovo,
-                        $this->prepose_to_slovo[spl_object_hash($depend_slovo)]
-                    );
-                }
-                else{
-                    $depended_vertex = $this->builder->buildVertex($graph_slova, $depend_slovo);
-                }
-                $vertices[spl_object_hash($depend_slovo)] = $depended_vertex;
-            } else {
-                $depended_vertex = $vertices[spl_object_hash($slova[static::DEPENDED_POINT])];
-
-            }
+            $main_vertex = $vertices_manager->getVertexBySlovo($slova[static::MAIN_POINT]);
+            $depended_vertex = $vertices_manager->getVertexBySlovo($slova[static::DEPENDED_POINT]);
 
             $this->builder->buildEdge($main_vertex, $depended_vertex);
         }
-
-        print_r([
-            $graph_slova->getVertices()->count(),
-            $graph_slova->getEdges()->count(),
-        ]);
 
         return $graph_slova;
     }
