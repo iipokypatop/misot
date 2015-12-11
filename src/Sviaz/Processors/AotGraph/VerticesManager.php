@@ -21,7 +21,6 @@ class VerticesManager
     }
 
     /**
-     * VerticesManager constructor.
      * @param \Aot\Graph\Slovo\Graph $graph
      * @param Builder $builder
      * @param \Aot\RussianMorphology\Slovo[] $prepose_to_slovo

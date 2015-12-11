@@ -11,9 +11,16 @@ namespace Aot\Sviaz\Processors\AotGraph;
 
 class SentenceDriver
 {
+    /** @var string */
     protected $sentence = '';
+
+    /** @var string[] */
     protected $sentence_words = [];
+
+    /** @var int[] */
     protected $map_aot_id_sentence_id = [];
+
+    /** @var string[]  */
     protected $punctuation = [',', '.', ';', ':']; // знаки пунктуации
 
     public static function create($sentence_words)
@@ -21,7 +28,10 @@ class SentenceDriver
         return new static($sentence_words);
     }
 
-    protected function __construct($sentence_words)
+    /**
+     * @param string[] $sentence_words
+     */
+    protected function __construct(array $sentence_words)
     {
         $this->sentence_words = $sentence_words;
         $this->sentence = join(' ', $sentence_words);

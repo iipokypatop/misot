@@ -16,10 +16,10 @@ class Base
     /** @var \Aot\Sviaz\Processors\AotGraph\Builder */
     protected $builder;
 
-    /** @var \Aot\RussianMorphology\Slovo[]  */
+    /** @var \Aot\RussianMorphology\Slovo[] */
     protected $hash_slovo_map = [];// карта слов
 
-    /** @var \Aot\RussianMorphology\Slovo[]  */
+    /** @var \Aot\RussianMorphology\Slovo[] */
     protected $prepose_to_slovo; // объект предлог(Slovo) к слову (Slovo)
 
     public static function create()
@@ -40,7 +40,11 @@ class Base
     {
         $sentence_driver = \Aot\Sviaz\Processors\AotGraph\SentenceDriver::create($sentence_words);
 
-        $syntax_model = $this->createSyntaxModel($sentence_driver);
+        $syntax_model = $this->createSyntaxModel($sentence_driver->getSentence());
+
+        if (empty($syntax_model)) {
+            return [];
+        }
 
         $links = $this->getLinkedPoints($syntax_model, $sentence_driver);
 
@@ -50,12 +54,14 @@ class Base
 
     /**
      * Создание синтаксической модели через АОТ
-     * @param \Aot\Sviaz\Processors\AotGraph\SentenceDriver $sentenceDriver
+     * @param string $sentence
      * @return \Sentence_space_SP_Rel[]
      */
-    protected function createSyntaxModel(\Aot\Sviaz\Processors\AotGraph\SentenceDriver $sentenceDriver)
+    protected function createSyntaxModel($sentence)
     {
-        $mivar = new \DMivarText(['txt' => $sentenceDriver->getSentence()]);
+        assert(is_string($sentence));
+
+        $mivar = new \DMivarText(['txt' => $sentence]);
 
         $mivar->syntax_model();
 
@@ -82,7 +88,7 @@ class Base
         $link_with_prepose = [];
 
         /**
-         * TODO:
+         * $slova_cache:
          * для каждого [point->kw][point->initial_form] - свой объект Slovo
          * Человек пошел летом гулять:
          *                         /----> (гулять)
@@ -91,8 +97,8 @@ class Base
          *          \----> (пошлый)
          *
          */
-
         $slova_cache = [];
+
         /** @var  \Sentence_space_SP_Rel $point */
         foreach ($syntax_model as $key => $point) {
             if (empty($slova_cache[$point->kw][$point->dw->initial_form])) {
