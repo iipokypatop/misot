@@ -34,7 +34,7 @@ class Base
 
     /**
      * @param string[] $sentence_words
-     * @return array
+     * @return \Aot\Graph\Slovo\Graph
      */
     public function run(array $sentence_words)
     {
@@ -44,9 +44,7 @@ class Base
 
         $links = $this->getLinkedPoints($syntax_model, $sentence_driver);
 
-        $this->createGraph($links);
-
-        return [];
+        return $this->createGraph($links);
     }
 
 
