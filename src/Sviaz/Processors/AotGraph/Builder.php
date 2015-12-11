@@ -24,12 +24,52 @@ class Builder
 
 
     /**
+     * Собираем правило
+     * @return \Aot\Sviaz\Rule\Base
+     */
+    public function buildRule(){
+        $asserted_main = \Aot\Sviaz\Rule\AssertedMember\Main::create();
+        $asserted_depend = \Aot\Sviaz\Rule\AssertedMember\Depended::create();
+        return \Aot\Sviaz\Rule\Base::create($asserted_main, $asserted_depend);
+    }
+
+    /**
+     * Собираем ребро
+     * @param \Aot\Graph\Slovo\Vertex $main_vertex
+     * @param \Aot\Graph\Slovo\Vertex $depended_vertex
+     * @return \Aot\Sviaz\Rule\Base
+     */
+    public function buildEdge(\Aot\Graph\Slovo\Vertex $main_vertex, \Aot\Graph\Slovo\Vertex $depended_vertex){
+        \Aot\Graph\Slovo\Edge::create($main_vertex, $depended_vertex, $this->buildRule(), $depended_vertex->getPredlog());
+    }
+
+
+    /**
+     * Собираем вершину
+     * @param \Aot\Graph\Slovo\Graph $graph
+     * @param \Aot\RussianMorphology\Slovo $slovo
+     * @param \Aot\RussianMorphology\ChastiRechi\Predlog\Base $predlog
+     * @return \Aot\Graph\Slovo\Vertex
+     */
+    public function buildVertex(\Aot\Graph\Slovo\Graph $graph, \Aot\RussianMorphology\Slovo $slovo, \Aot\RussianMorphology\ChastiRechi\Predlog\Base $predlog = null){
+
+        return \Aot\Graph\Slovo\Vertex::create($graph, $slovo, $predlog);
+    }
+
+    /**
+     * @return \Aot\Graph\Slovo\Graph
+     */
+    public function buildGraph(){
+        return \Aot\Graph\Slovo\Graph::create();
+    }
+
+    /**
      * Получение фабрики по id класса слова
      *
      * @param int $id_word_class
      * @return \Aot\RussianMorphology\FactoryBase
      */
-    public function getFactory($id_word_class)
+    public function getFactorySlovo($id_word_class)
     {
         assert(is_int($id_word_class));
 

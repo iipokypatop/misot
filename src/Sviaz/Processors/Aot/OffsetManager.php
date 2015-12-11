@@ -151,6 +151,12 @@ class OffsetManager
             return $id;
         }
 
+//        print_r([
+//            'aot_key' => $id,
+//            'offset_by_aot' => $this->offset_by_aot,
+//            'offset_by_aot' => $this->offset_by_aot,
+//        ]);
+//        die();
         throw new \LogicException("Unknown aot key: " . $id);
     }
 

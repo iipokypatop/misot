@@ -94,6 +94,7 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
         $seq_converter->convert($sentence);
         $sequence = $seq_converter->getSequences()[0];
 
+//        die();
         /**
          * TODO: переделать получение последовательности
          * 1 - slova
@@ -124,7 +125,8 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
 
         // проверяем совпадение исходного предложения с восстановленным из новой последовательности
         $sentence = mb_strtolower($sentence, 'utf-8');
-        $sentence = preg_replace("/[\\,\\.]/u", "", $sentence);
+        $sentence = preg_replace("/[\\,\\.\\-]/u", "", $sentence);
+        $sentence = preg_replace("/\\s{2,}/u", " ", $sentence);
         $this->assertEquals($sentence, join(" ", $sentence_array));
 
         // проверяем наличие всех мемберов из связей в последовательности
@@ -144,6 +146,7 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
     {
         return [
 //            ['Алиса-каприза пошла в магазин-намазин'],// epic fail! (Aot -X-> Misot)
+//            ['Я выбрал приятное кафе - уютное, чистое и теплое.'],// epic fail! (Aot -X-> Misot)
             ['Я посмотрел на нее'],
             ['Мальчик пошел в лес.'],
 //            ['Ее черные волосы, как вороново крыло, закрывали часть щеки.'],// lagging
