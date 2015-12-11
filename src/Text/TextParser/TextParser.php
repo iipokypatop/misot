@@ -28,6 +28,7 @@ class TextParser
     const END_SENTENCE_TEMPLATE = " %s\n";
     const START_TEMPLATE = '{{';
     const END_TEMPLATE = '}}';
+    const SEPARATOR = ' ';
 
     /**
      * @var \Aot\Text\TextParser\Logger
@@ -291,6 +292,18 @@ class TextParser
             }
         }
         return $text;
+    }
+
+    /**
+     * @param string[] $sentences
+     * @return string
+     */
+    public static function join(array $sentences)
+    {
+        foreach ($sentences as $sentence) {
+            assert(is_string($sentence));
+        }
+        return join(static::SEPARATOR, $sentences);
     }
 
 }

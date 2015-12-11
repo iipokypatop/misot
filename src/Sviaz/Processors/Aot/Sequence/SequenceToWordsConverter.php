@@ -54,19 +54,16 @@ class SequenceToWordsConverter
     protected function convert(\Aot\Sviaz\Sequence $sequence)
     {
         foreach ($sequence as $member) {
-
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
+                $id = $this->addToSentenceWordsArray($member->getPunctuaciya()->getText());
+                $this->offsetManager->refreshMisotOffset();
                 /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
                 if (is_a($member->getPunctuaciya(), \Aot\RussianSyntacsis\Punctuaciya\Tire::class, true)) {
-                    $this->addToSentenceWordsArray($member->getPunctuaciya()->getText());
                     /** @var \Aot\Sviaz\SequenceMember\Word\Base $member */
-                    $this->offsetManager->refreshMisotOffset();
                     $this->offsetManager->refreshAotOffset();
                 } else {
-                    $id = $this->addToSentenceWordsArray($member->getPunctuaciya()->getText());
                     $this->offsetManager->increaseAotOffset();
                     $this->offsetManager->addToNonexistentAot($id);
-                    $this->offsetManager->refreshMisotOffset();
                 }
             } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
                 /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
@@ -85,7 +82,6 @@ class SequenceToWordsConverter
                 $this->offsetManager->refreshAotOffset();
             }
         }
-//        die();
     }
 
 
