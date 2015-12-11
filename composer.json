@@ -23,7 +23,8 @@
     "mivar-projects/phpmorphy-fork": "dev-master",
     "mivar-projects/utils": "dev-develop",
     "mivar-projects/text-libraries": "dev-develop",
-    "iipokypatop/graph": "dev-graph-clone-override-support"
+    "iipokypatop/graph": "dev-graph-clone-override-support",
+    "graphp/graphviz": "*"
   },
   "repositories": [
     {

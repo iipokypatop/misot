@@ -35,7 +35,21 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 //            'лес',
 //        ];
         $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
-        $aot_graph->run($sentence);
+        $graph = $aot_graph->run($sentence);
+
+        /** @var \Aot\Graph\Slovo\Vertex $vertex */
+        foreach ($graph->getVertices() as $vertex) {
+            $vertex->setAttribute('graphviz.label', $vertex->getSlovo()->getText());
+        }
+        /** @var \Aot\Graph\Slovo\Edge $edge */
+        foreach ($graph->getEdges() as $edge) {
+            if ( null !== $edge->getPredlog()) {
+                $edge->setAttribute('graphviz.label', $edge->getPredlog()->getText());
+            }
+        }
+
+        $graphviz = new \Graphp\GraphViz\GraphViz();
+        print_r($graphviz->createImageHtml($graph));
     }
 
 

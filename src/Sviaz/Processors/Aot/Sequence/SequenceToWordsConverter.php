@@ -55,8 +55,6 @@ class SequenceToWordsConverter
     {
         foreach ($sequence as $member) {
 
-//            print_r($member);
-//            continue;
             if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
                 /** @var \Aot\Sviaz\SequenceMember\Punctuation $member */
                 if (is_a($member->getPunctuaciya(), \Aot\RussianSyntacsis\Punctuaciya\Tire::class, true)) {

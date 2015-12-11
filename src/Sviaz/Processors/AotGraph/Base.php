@@ -138,6 +138,7 @@ class Base
 
         foreach ($links as $oz => $slova) {
 
+            print_r($slova);
             if (empty($slova[static::MAIN_POINT]) || empty($slova[static::DEPENDED_POINT])) {
                 throw new \LogicException("Main or depended point is empty!");
             }
@@ -174,7 +175,7 @@ class Base
                 }
                 $vertices[spl_object_hash($depend_slovo)] = $depended_vertex;
             } else {
-                $depended_vertex = $vertices[spl_object_hash($slova[static::MAIN_POINT])];
+                $depended_vertex = $vertices[spl_object_hash($slova[static::DEPENDED_POINT])];
 
             }
 
