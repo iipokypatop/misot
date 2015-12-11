@@ -293,4 +293,16 @@ class TextParser
         return $text;
     }
 
+    /**
+     * @param string[] $sentences
+     * @return string
+     */
+    public static function join(array $sentences)
+    {
+        foreach ($sentences as $sentence) {
+            assert(is_string($sentence));
+        }
+        return join(' ', $sentences);
+    }
+
 }
