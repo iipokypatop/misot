@@ -12,14 +12,28 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
             ',',
             'чтобы',
             'искать',
-            'грибы',
+            'гриб',
             ',',
             'а',
             'потом',
+            'его',
             'съесть',
-            'их',
             '.',
         ];
+        // Мама пошла летом гулять
+//        $sentence = [
+//            'мама',
+//            'пошла',
+//            'летом',
+//            'гулять',
+//        ];
+        // Папа пошел в лес
+//        $sentence = [
+//            'папа',
+//            'пошел',
+//            'в',
+//            'лес',
+//        ];
         $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
         $aot_graph->run($sentence);
     }

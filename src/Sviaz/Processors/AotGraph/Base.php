@@ -16,6 +16,12 @@ class Base
     /** @var \Aot\Sviaz\Processors\AotGraph\Builder */
     protected $builder;
 
+    /** @var \Aot\RussianMorphology\Slovo[]  */
+    protected $hash_slovo_map = [];// карта слов
+
+    /** @var \Aot\RussianMorphology\Slovo[]  */
+    protected $prepose_to_slovo; // объект предлог(Slovo) к слову (Slovo)
+
     public static function create()
     {
         return new static();
@@ -43,55 +49,6 @@ class Base
         return [];
     }
 
-    /**
-     * Строим граф
-     *
-     * @param \Aot\RussianMorphology\Slovo[][] $links
-     * @return \Aot\Graph\Slovo\Graph
-     */
-    protected function createGraph($links)
-    {
-        if (empty($links)) {
-            return [];
-        }
-
-        $vertices = [];
-
-        $graph_slova = $this->builder->buildGraph();
-
-        foreach ($links as $oz => $slova) {
-
-            if (empty($slova[static::MAIN_POINT]) || empty($slova[static::DEPENDED_POINT])) {
-                throw new \LogicException("Main or depended point is empty!");
-            }
-
-            $main_slovo = $slova[static::MAIN_POINT];
-            $depend_slovo = $slova[static::DEPENDED_POINT];
-
-            if (empty($vertices[spl_object_hash($main_slovo)])) {
-                $main_vertex = $this->builder->buildVertex($graph_slova, $main_slovo);
-                $vertices[spl_object_hash($main_slovo)] = $main_vertex;
-            } else {
-                $main_vertex = $vertices[spl_object_hash($main_slovo)];
-            }
-
-            if (empty($vertices[spl_object_hash($depend_slovo)])) {
-                $depended_vertex = $this->builder->buildVertex($graph_slova, $depend_slovo);
-                $vertices[spl_object_hash($depend_slovo)] = $depended_vertex;
-            } else {
-                $depended_vertex = $vertices[spl_object_hash($slova[static::MAIN_POINT])];
-
-            }
-
-            $this->builder->buildEdge($main_vertex, $depended_vertex);
-        }
-
-        print_r([
-            $graph_slova->getVertices()->count(),
-            $graph_slova->getEdges()->count(),
-        ]);
-        return $graph_slova;
-    }
 
     /**
      * Создание синтаксической модели через АОТ
@@ -125,21 +82,113 @@ class Base
         $links = [];
 
         $link_with_prepose = [];
+
+        /**
+         * TODO:
+         * для каждого [point->kw][point->initial_form] - свой объект Slovo
+         * Человек пошел летом гулять:
+         *                         /----> (гулять)
+         * (человек)-----> (пойти)------> (летом)
+         *          \             \-----> (лето)
+         *          \----> (пошлый)
+         *
+         */
+
+        $slova_cache = [];
         /** @var  \Sentence_space_SP_Rel $point */
         foreach ($syntax_model as $key => $point) {
-            $factory_slovo = $this->builder->getFactorySlovo($point->dw->id_word_class);
-            $point->dw->word_form = $sentence_driver->getSentenceWordByAotId($point->kw);
-            $slova = $factory_slovo->build($point->dw);
-
-            if( is_a($slova[0], \Aot\RussianMorphology\ChastiRechi\Predlog\Base::class, true)){
-                $link_with_prepose[$point->Oz][$point->direction] = $slova[0];
+            if (empty($slova_cache[$point->kw][$point->dw->initial_form])) {
+                $factory_slovo = $this->builder->getFactorySlovo($point->dw->id_word_class);
+                $point->dw->word_form = $sentence_driver->getSentenceWordByAotId($point->kw);
+                $slovo = $factory_slovo->build($point->dw)[0];
+                $slova_cache[$point->kw][$point->dw->initial_form] = $slovo;
+                $this->hash_slovo_map[spl_object_hash($slovo)] = $slovo;
+            } else {
+                $slovo = $slova_cache[$point->kw][$point->dw->initial_form];
             }
-            $links[$point->Oz][$point->direction] = $slova[0];
+
+            if ($point->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
+                $link_with_prepose[$point->Oz][$point->direction] = $slovo;
+            } else {
+                $links[$point->Oz][$point->direction] = $slovo;
+            }
         }
 
+        foreach ($link_with_prepose as $oz => $pair) {
+            $this->prepose_to_slovo[spl_object_hash($pair[static::DEPENDED_POINT])] = $pair[static::MAIN_POINT];
+        }
 
         return $links;
     }
 
+
+    /**
+     * Строим граф
+     *
+     * @param \Aot\RussianMorphology\Slovo[][] $links
+     * @return \Aot\Graph\Slovo\Graph
+     */
+    protected function createGraph($links)
+    {
+        if (empty($links)) {
+            return [];
+        }
+
+        $vertices = [];
+
+        $graph_slova = $this->builder->buildGraph();
+
+        foreach ($links as $oz => $slova) {
+
+            if (empty($slova[static::MAIN_POINT]) || empty($slova[static::DEPENDED_POINT])) {
+                throw new \LogicException("Main or depended point is empty!");
+            }
+
+            $main_slovo = $slova[static::MAIN_POINT];
+            $depend_slovo = $slova[static::DEPENDED_POINT];
+
+            if (empty($vertices[spl_object_hash($main_slovo)])) {
+                if( !empty($this->prepose_to_slovo[spl_object_hash($main_slovo)])){
+                    $main_vertex = $this->builder->buildVertex(
+                        $graph_slova,
+                        $main_slovo,
+                        $this->prepose_to_slovo[spl_object_hash($main_slovo)]
+                    );
+                }
+                else{
+                    $main_vertex = $this->builder->buildVertex($graph_slova, $main_slovo);
+                }
+                $vertices[spl_object_hash($main_slovo)] = $main_vertex;
+            } else {
+                $main_vertex = $vertices[spl_object_hash($main_slovo)];
+            }
+
+            if (empty($vertices[spl_object_hash($depend_slovo)])) {
+                if( !empty($this->prepose_to_slovo[spl_object_hash($depend_slovo)])){
+                    $depended_vertex = $this->builder->buildVertex(
+                        $graph_slova,
+                        $depend_slovo,
+                        $this->prepose_to_slovo[spl_object_hash($depend_slovo)]
+                    );
+                }
+                else{
+                    $depended_vertex = $this->builder->buildVertex($graph_slova, $depend_slovo);
+                }
+                $vertices[spl_object_hash($depend_slovo)] = $depended_vertex;
+            } else {
+                $depended_vertex = $vertices[spl_object_hash($slova[static::MAIN_POINT])];
+
+            }
+
+            $this->builder->buildEdge($main_vertex, $depended_vertex);
+        }
+
+        print_r([
+            $graph_slova->getVertices()->count(),
+            $graph_slova->getEdges()->count(),
+        ]);
+
+        return $graph_slova;
+    }
 
 }
