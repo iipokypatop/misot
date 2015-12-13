@@ -24,23 +24,97 @@ class Builder
 
 
     /**
-     * Собираем правило
+     * Создаем правило
+     *
+     * @param \Aot\Graph\Slovo\Vertex $main_vertex
+     * @param \Aot\Graph\Slovo\Vertex $depended_vertex
+     * @param string $relation
      * @return \Aot\Sviaz\Rule\Base
      */
-    public function buildRule(){
-        $asserted_main = \Aot\Sviaz\Rule\AssertedMember\Main::create();
-        $asserted_depend = \Aot\Sviaz\Rule\AssertedMember\Depended::create();
-        return \Aot\Sviaz\Rule\Base::create($asserted_main, $asserted_depend);
+    public function buildRule(\Aot\Graph\Slovo\Vertex $main_vertex, \Aot\Graph\Slovo\Vertex $depended_vertex, $relation)
+    {
+        assert(is_string($relation));
+
+        $id_word_class_main =
+            \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::getIdByClass(get_class($main_vertex->getSlovo()));
+
+        $id_word_class_depended =
+            \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::getIdByClass(get_class($depended_vertex->getSlovo()));
+
+        list($role_main, $role_dep) =
+        \Aot\Sviaz\Processors\AotGraph\RoleSpecificator::getRoles($relation, $id_word_class_main, $id_word_class_depended);
+
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        $id_word_class_main,
+                        $role_main
+                    )
+                )
+                ->depended(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        $id_word_class_depended,
+                        $role_dep
+                    )
+                )
+                ->link(
+                    \Aot\Sviaz\Rule\Builder\Base::create()
+                );
+        return $builder->get();
+    }
+
+
+    /**
+     * Создаем правило
+     *
+     * @param int $main_point_part_of_speech - главная точка
+     * @param int $depended_point_part_of_speech - зависимая точка
+     * @param int $main_role
+     * @param int $depended_role
+     * @return \Aot\Sviaz\Rule\Base
+     */
+    public function buildRule2($main_point_part_of_speech, $depended_point_part_of_speech, $main_role, $depended_role)
+    {
+        assert(is_int($main_point_part_of_speech));
+        assert(is_int($depended_point_part_of_speech));
+        assert(is_int($main_role));
+        assert(is_int($depended_role));
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        $main_point_part_of_speech,
+                        $main_role
+                    )
+                )
+                ->depended(
+                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        $depended_point_part_of_speech,
+                        $depended_role
+                    )
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+                );
+        return $builder->get();
     }
 
     /**
      * Собираем ребро
      * @param \Aot\Graph\Slovo\Vertex $main_vertex
      * @param \Aot\Graph\Slovo\Vertex $depended_vertex
+     * @param string $relation
      * @return \Aot\Sviaz\Rule\Base
      */
-    public function buildEdge(\Aot\Graph\Slovo\Vertex $main_vertex, \Aot\Graph\Slovo\Vertex $depended_vertex){
-        \Aot\Graph\Slovo\Edge::create($main_vertex, $depended_vertex, $this->buildRule(), $depended_vertex->getPredlog());
+    public function buildEdge(\Aot\Graph\Slovo\Vertex $main_vertex, \Aot\Graph\Slovo\Vertex $depended_vertex, $relation)
+    {
+        \Aot\Graph\Slovo\Edge::create(
+            $main_vertex,
+            $depended_vertex,
+            $this->buildRule($main_vertex, $depended_vertex, $relation),
+            $depended_vertex->getPredlog()
+        );
     }
 
 
@@ -51,15 +125,16 @@ class Builder
      * @param \Aot\RussianMorphology\ChastiRechi\Predlog\Base $predlog
      * @return \Aot\Graph\Slovo\Vertex
      */
-    public function buildVertex(\Aot\Graph\Slovo\Graph $graph, \Aot\RussianMorphology\Slovo $slovo, \Aot\RussianMorphology\ChastiRechi\Predlog\Base $predlog = null){
-
+    public function buildVertex(\Aot\Graph\Slovo\Graph $graph, \Aot\RussianMorphology\Slovo $slovo, \Aot\RussianMorphology\ChastiRechi\Predlog\Base $predlog = null)
+    {
         return \Aot\Graph\Slovo\Vertex::create($graph, $slovo, $predlog);
     }
 
     /**
      * @return \Aot\Graph\Slovo\Graph
      */
-    public function buildGraph(){
+    public function buildGraph()
+    {
         return \Aot\Graph\Slovo\Graph::create();
     }
 
@@ -79,7 +154,6 @@ class Builder
 
         return $this->factories[$this->conformityPartsOfSpeech($id_word_class)];
     }
-
 
 
     /**

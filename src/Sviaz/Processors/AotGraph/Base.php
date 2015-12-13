@@ -12,6 +12,7 @@ class Base
 {
     const MAIN_POINT = 'x'; // главная точка в АОТе
     const DEPENDED_POINT = 'y'; // зависимая точка в АОТе
+    const RELATION = 'relation'; // отношение
 
     /** @var \Aot\Sviaz\Processors\AotGraph\Builder */
     protected $builder;
@@ -115,6 +116,7 @@ class Base
                 $link_with_prepose[$point->Oz][$point->direction] = $slovo;
             } else {
                 $links[$point->Oz][$point->direction] = $slovo;
+                $links[$point->Oz][static::RELATION] = $point->O;
             }
         }
 
@@ -135,7 +137,7 @@ class Base
     protected function createGraph($links)
     {
         if (empty($links)) {
-            return [];
+            return $this->builder->buildGraph();
         }
 
         $graph_slova = $this->builder->buildGraph();
@@ -152,10 +154,11 @@ class Base
                 throw new \LogicException("Main or depended point is empty!");
             }
 
-            $main_vertex = $vertices_manager->getVertexBySlovo($slova[static::MAIN_POINT]);
-            $depended_vertex = $vertices_manager->getVertexBySlovo($slova[static::DEPENDED_POINT]);
-
-            $this->builder->buildEdge($main_vertex, $depended_vertex);
+            $this->builder->buildEdge(
+                $vertices_manager->getVertexBySlovo($slova[static::MAIN_POINT]),
+                $vertices_manager->getVertexBySlovo($slova[static::DEPENDED_POINT]),
+                $slova[static::RELATION]
+            );
         }
 
         return $graph_slova;

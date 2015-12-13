@@ -15,7 +15,13 @@ class VerticesManager
     /** @var  \Aot\RussianMorphology\Slovo[] */
     protected $vertices;
 
-    public static function create(\Aot\Graph\Slovo\Graph $graph, \Aot\Sviaz\Processors\AotGraph\Builder $builder, $prepose_to_slovo)
+    /**
+     * @param \Aot\Graph\Slovo\Graph $graph
+     * @param Builder $builder
+     * @param \Aot\RussianMorphology\Slovo[] $prepose_to_slovo
+     * @return \Aot\Sviaz\Processors\AotGraph\VerticesManager
+     */
+    public static function create(\Aot\Graph\Slovo\Graph $graph, \Aot\Sviaz\Processors\AotGraph\Builder $builder, array $prepose_to_slovo = null)
     {
         return new static($graph, $builder, $prepose_to_slovo);
     }
@@ -39,7 +45,6 @@ class VerticesManager
      */
     public function getVertexBySlovo(\Aot\RussianMorphology\Slovo $slovo)
     {
-
         if (!$this->isProcessedSlovo($slovo)) {
             if ($this->isSlovoHasPrepose($slovo)) {
                 $vertex = $this->builder->buildVertex(

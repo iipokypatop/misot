@@ -94,7 +94,6 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
         $seq_converter->convert($sentence);
         $sequence = $seq_converter->getSequences()[0];
 
-//        die();
         /**
          * TODO: переделать получение последовательности
          * 1 - slova
