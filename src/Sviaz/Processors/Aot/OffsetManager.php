@@ -150,7 +150,6 @@ class OffsetManager
             $id += $this->offset_by_aot[$id];
             return $id;
         }
-
         throw new \LogicException("Unknown aot key: " . $id);
     }
 

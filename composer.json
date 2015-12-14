@@ -22,7 +22,8 @@
     "iipokypatop/composer-vendor-overloader": ">=1.0.1",
     "mivar-projects/phpmorphy-fork": "dev-master",
     "mivar-projects/utils": "dev-develop",
-    "mivar-projects/text-libraries": "dev-develop"
+    "mivar-projects/text-libraries": "dev-develop",
+    "mivar-projects/graph": "dev-develop"
   },
   "repositories": [
     {
@@ -60,6 +61,14 @@
     {
       "type": "git",
       "url": "git@git.mivar.pro:mivar-projects/text-libraries.git"
+    },
+    {
+      "url": "https://github.com/iipokypatop/graph.git",
+      "type": "git"
+    },
+    {
+      "type": "git",
+      "url": "git@gitlab.mivar.ru:mivar-projects/graph.git"
     }
   ],
   "autoload": {
