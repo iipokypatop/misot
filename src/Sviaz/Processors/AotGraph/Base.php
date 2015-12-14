@@ -34,10 +34,33 @@ class Base
     }
 
     /**
+     * @param \Aot\Sviaz\Sequence $sequence
+     * @return \Aot\Graph\Slovo\Graph
+     */
+    public function run(\Aot\Sviaz\Sequence $sequence)
+    {
+        $sentence_words = [];
+        foreach ($sequence as $member) {
+            if ($member instanceof \Aot\Sviaz\SequenceMember\Punctuation) {
+                $sentence_words[] = $member->getPunctuaciya()->getText();
+            } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\WordWithPreposition) {
+                /** @var \Aot\Sviaz\SequenceMember\Word\WordWithPreposition $member */
+                $sentence_words[] = $member->getPredlog()->getText();
+                $sentence_words[] = $member->getSlovo()->getText();
+            } elseif ($member instanceof \Aot\Sviaz\SequenceMember\Word\Base) {
+                $sentence_words[] = $member->getSlovo()->getText();
+            }
+        }
+
+        return $this->runByWords($sentence_words);
+    }
+
+
+    /**
      * @param string[] $sentence_words
      * @return \Aot\Graph\Slovo\Graph
      */
-    public function run(array $sentence_words)
+    public function runByWords(array $sentence_words)
     {
         foreach ($sentence_words as $sentence_word) {
             assert(is_string($sentence_word));

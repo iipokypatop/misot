@@ -23,7 +23,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
             '.',
         ];
         $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
-        $graph = $aot_graph->run($sentence);
+        $graph = $aot_graph->runByWords($sentence);
 
         /** @var \Aot\Graph\Slovo\Vertex $vertex */
         foreach ($graph->getVertices() as $vertex) {
@@ -47,7 +47,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
     public function testCorrectGraph($sentence, $cnt_vertices_and_edges)
     {
         $aot_graph = \AotTest\Functional\Sviaz\Processor\AotGraph\AotGraphSyntaxModelMock::create();
-        $graph = $aot_graph->run($sentence);
+        $graph = $aot_graph->runByWords($sentence);
 
         $this->assertEquals($graph->getVertices()->count(), $cnt_vertices_and_edges[0]);
         $this->assertEquals($graph->getEdges()->count(), $cnt_vertices_and_edges[1]);

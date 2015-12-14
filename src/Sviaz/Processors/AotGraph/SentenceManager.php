@@ -23,6 +23,11 @@ class SentenceManager
     /** @var string[]  */
     protected $punctuation = [',', '.', ';', ':']; // знаки пунктуации
 
+
+    /**
+     * @param string[] $sentence_words
+     * @return \Aot\Sviaz\Processors\AotGraph\SentenceManager
+     */
     public static function create(array $sentence_words)
     {
         return new static($sentence_words);
