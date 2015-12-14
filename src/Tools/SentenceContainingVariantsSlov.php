@@ -147,4 +147,12 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
     {
         return $this->slova;
     }
+
+    /**
+     * @return \string[]
+     */
+    public function getTexts()
+    {
+        return $this->texts;
+    }
 }

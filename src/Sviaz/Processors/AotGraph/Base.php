@@ -98,7 +98,7 @@ class Base
 
     /**
      * @param \Sentence_space_SP_Rel[] $syntax_model
-     * @return \Aot\RussianMorphology\Slovo[][]
+     * @return array []
      */
     protected function getLinkedSlova(array $syntax_model)
     {
@@ -156,7 +156,9 @@ class Base
 
         $prepose_to_slovo = [];
         foreach ($link_with_prepose as $oz => $pair) {
-            $prepose_to_slovo[spl_object_hash($pair[static::DEPENDED_POINT])] = $pair[static::MAIN_POINT];
+            if (is_a($pair[static::MAIN_POINT], \Aot\RussianMorphology\ChastiRechi\Predlog\Base::class, true)) {
+                $prepose_to_slovo[spl_object_hash($pair[static::DEPENDED_POINT])] = $pair[static::MAIN_POINT];
+            }
         }
 
         return [$links, $prepose_to_slovo];
