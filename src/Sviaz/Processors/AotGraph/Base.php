@@ -87,39 +87,47 @@ class Base
             return [];
         }
 
+
+        /**
+         * $slova_collection:
+         * для каждого [point->kw][point->initial_form] - свой объект Slovo
+         * Человек пошел летом гулять:
+         *                         /----> (гулять)
+         * (человек) ----> (пойти) -----> (летом)
+         *           \              \----> (лето)
+         *           \---> (пошлый)
+         */
+        $slova_collection = [];
+
         $links = [];
 
         $link_with_prepose = [];
 
-        /**
-         * $slova_cache:
-         * для каждого [point->kw][point->initial_form] - свой объект Slovo
-         * Человек пошел летом гулять:
-         *                         /----> (гулять)
-         * (человек)-----> (пойти)------> (летом)
-         *          \             \-----> (лето)
-         *          \----> (пошлый)
-         *
-         */
-        $slova_collection = [];
-
-        /** @var  \Sentence_space_SP_Rel $point */
+        /** @var  \Sentence_space_SP_Rel[] $syntax_model */
         foreach ($syntax_model as $key => $point) {
-            if (empty($slova_collection[$point->kw][$point->dw->initial_form])) {
+            if (empty($slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)])) {
                 $factory_slovo = $this->builder->getFactorySlovo($point->dw->id_word_class);
                 $point->dw->word_form = $this->sentence_manager->getSentenceWordByAotId($point->kw);
                 $slovo = $factory_slovo->build($point->dw)[0];
-                $slova_collection[$point->kw][$point->dw->initial_form] = $slovo;
+                $slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)] = $slovo;
                 $this->hash_slovo_map[spl_object_hash($slovo)] = $slovo;
             } else {
-                $slovo = $slova_collection[$point->kw][$point->dw->initial_form];
+                $slovo = $slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)];
             }
 
             if ($point->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
                 $link_with_prepose[$point->Oz][$point->direction] = $slovo;
             } else {
-                $links[$point->Oz][$point->direction] = $slovo;
-                $links[$point->Oz][static::RELATION] = $point->O;
+
+                if ($point->direction === static::MAIN_POINT) {
+                    $links[$point->Oz][0] = $slovo;
+                } elseif ($point->direction === static::DEPENDED_POINT) {
+                    $links[$point->Oz][1] = $slovo;
+                } else {
+                    throw new \LogicException('Unknown point direction: ' . var_export($point->direction));
+                }
+
+                $links[$point->Oz][2] = $point->O;;
             }
         }
 
@@ -128,9 +136,19 @@ class Base
             $prepose_to_slovo[spl_object_hash($pair[static::DEPENDED_POINT])] = $pair[static::MAIN_POINT];
         }
 
+        print_r($slova_collection);
         return [$links, $prepose_to_slovo];
     }
 
+    /**
+     * @param  $parameters
+     * @return string
+     */
+    protected function getHashParameters(array $parameters = [])
+    {
+        ksort($parameters);
+        return md5(serialize($parameters));
+    }
 
     /**
      * Строим граф
@@ -153,16 +171,16 @@ class Base
             $prepose_to_slovo
         );
 
-        foreach ($links as $oz => $slova) {
+        foreach ($links as $link) {
 
-            if (empty($slova[static::MAIN_POINT]) || empty($slova[static::DEPENDED_POINT])) {
-                throw new \LogicException("Main or depended point is empty!");
+            if (empty($link[0]) || empty($link[1]) || empty($link[2])) {
+                throw new \LogicException("Main point or depended point or relation is empty!");
             }
 
             $this->builder->buildEdge(
-                $vertices_manager->getVertexBySlovo($slova[static::MAIN_POINT]),
-                $vertices_manager->getVertexBySlovo($slova[static::DEPENDED_POINT]),
-                $slova[static::RELATION]
+                $vertices_manager->getVertexBySlovo($link[0]),
+                $vertices_manager->getVertexBySlovo($link[1]),
+                $link[2]
             );
         }
 
