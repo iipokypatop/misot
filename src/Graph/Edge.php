@@ -9,24 +9,24 @@
 namespace Aot\Graph;
 
 
-abstract class Edge extends \Fhaculty\Graph\Edge\Directed
+abstract class Edge extends \Fhaculty\Graph\Edge\Directed implements IEdge
 {
     /**
-     * @var \Aot\Graph\Edge
+     * @var \Aot\Graph\IEdge
      */
     protected $previous;
 
     /**
-     * @param \Aot\Graph\Edge $previous
+     * @param \Aot\Graph\IEdge $previous
      */
-    public function wrap(\Aot\Graph\Edge $previous)
+    public function wrap(\Aot\Graph\IEdge $previous)
     {
         $this->previous = $previous;
     }
 
     /**
      * @param int $steps_back
-     * @return Edge
+     * @return \Aot\Graph\Edge
      */
     public function getPrevious($steps_back = 1)
     {

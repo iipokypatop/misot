@@ -9,11 +9,11 @@
 namespace Aot\Graph;
 
 
-abstract class Vertex extends \Fhaculty\Graph\Vertex
+abstract class Vertex extends \Fhaculty\Graph\Vertex implements IVertex
 {
     protected static $id = 0;
     /**
-     * @var \Aot\Graph\Vertex
+     * @var \Aot\Graph\IVertex
      */
     protected $previous;
 
@@ -22,14 +22,14 @@ abstract class Vertex extends \Fhaculty\Graph\Vertex
         return ++static::$id;
     }
 
-    public function wrap(\Aot\Graph\Vertex $previous)
+    public function wrap(\Aot\Graph\IVertex $previous)
     {
         $this->previous = $previous;
     }
 
     /**
      * @param int $steps_back
-     * @return Vertex
+     * @return \Aot\Graph\Vertex
      */
     public function getPrevious($steps_back = 1)
     {

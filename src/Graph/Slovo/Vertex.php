@@ -8,7 +8,6 @@
 
 namespace Aot\Graph\Slovo;
 
-
 class Vertex extends \Aot\Graph\Vertex
 {
     /** @var  \Aot\RussianMorphology\Slovo */

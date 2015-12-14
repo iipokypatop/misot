@@ -8,7 +8,7 @@
 
 namespace Aot\Graph;
 
-abstract class Graph extends \Fhaculty\Graph\Graph
+abstract class Graph extends \Fhaculty\Graph\Graph implements \Aot\Graph\IGraph
 {
     /**
      * @var \Aot\Graph\Graph
@@ -16,10 +16,10 @@ abstract class Graph extends \Fhaculty\Graph\Graph
     protected $previous;
 
     /**
-     * @param \Aot\Graph\Graph $previous
+     * @param \Aot\Graph\IGraph $previous
      * @return $this
      */
-    public function wrap(\Aot\Graph\Graph $previous)
+    public function wrap(\Aot\Graph\IGraph $previous)
     {
         $this->previous = $previous;
     }
