@@ -9,7 +9,7 @@
 namespace Aot\Graph\Slovo;
 
 
-class Edge extends \Aot\Graph\Edge
+class Edge extends \BaseGraph\Edge
 {
     /** @var \Aot\Sviaz\Rule\Base */
     protected $rule;

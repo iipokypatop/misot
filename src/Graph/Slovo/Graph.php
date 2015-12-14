@@ -9,7 +9,7 @@
 namespace Aot\Graph\Slovo;
 
 
-class Graph extends \Aot\Graph\Graph
+class Graph extends \BaseGraph\Graph
 {
     /**
      * @return \Aot\Graph\Slovo\Graph
