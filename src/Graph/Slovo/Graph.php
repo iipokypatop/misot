@@ -19,5 +19,4 @@ class Graph extends \Aot\Graph\Graph
         $obj = new static();
         return $obj;
     }
-
 }
