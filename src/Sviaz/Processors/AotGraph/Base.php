@@ -140,7 +140,7 @@ class Base
     }
 
     /**
-     * @param  array $parameters
+     * @param  $parameters
      * @return string
      */
     protected function getHashParameters(array $parameters = [])
