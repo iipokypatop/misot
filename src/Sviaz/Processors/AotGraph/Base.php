@@ -20,8 +20,8 @@ class Base
     /** @var \Aot\RussianMorphology\Slovo[] */
     protected $hash_slovo_map = [];// карта слов
 
-    /** @var \Aot\RussianMorphology\Slovo[] */
-    protected $prepose_to_slovo; // объект предлог(Slovo) к слову (Slovo)
+    /** @var \Aot\Sviaz\Processors\AotGraph\SentenceManager */
+    protected $sentence_manager;
 
     public static function create()
     {
@@ -39,17 +39,21 @@ class Base
      */
     public function run(array $sentence_words)
     {
-        $sentence_driver = \Aot\Sviaz\Processors\AotGraph\SentenceDriver::create($sentence_words);
-
-        $syntax_model = $this->createSyntaxModel($sentence_driver->getSentence());
-
-        if (empty($syntax_model)) {
-            return [];
+        foreach ($sentence_words as $sentence_word) {
+            assert(is_string($sentence_word));
         }
 
-        $links = $this->getLinkedPoints($syntax_model, $sentence_driver);
+        $this->sentence_manager = \Aot\Sviaz\Processors\AotGraph\SentenceManager::create($sentence_words);
 
-        return $this->createGraph($links);
+        $syntax_model = $this->createSyntaxModel($this->sentence_manager->getSentence());
+
+        if (empty($syntax_model)) {
+            return $this->builder->buildGraph();
+        }
+
+        list($links, $prepose_to_slovo) = $this->getLinkedSlova($syntax_model, $this->sentence_manager);
+
+        return $this->createGraph($links, $prepose_to_slovo);
     }
 
 
@@ -71,10 +75,9 @@ class Base
 
     /**
      * @param \Sentence_space_SP_Rel[] $syntax_model
-     * @param \Aot\Sviaz\Processors\AotGraph\SentenceDriver $sentence_driver
      * @return \Aot\RussianMorphology\Slovo[][]
      */
-    protected function getLinkedPoints(array $syntax_model, \Aot\Sviaz\Processors\AotGraph\SentenceDriver $sentence_driver)
+    protected function getLinkedSlova(array $syntax_model)
     {
         foreach ($syntax_model as $point) {
             assert(is_a($point, \Sentence_space_SP_Rel::class, true));
@@ -98,18 +101,18 @@ class Base
          *          \----> (пошлый)
          *
          */
-        $slova_cache = [];
+        $slova_collection = [];
 
         /** @var  \Sentence_space_SP_Rel $point */
         foreach ($syntax_model as $key => $point) {
-            if (empty($slova_cache[$point->kw][$point->dw->initial_form])) {
+            if (empty($slova_collection[$point->kw][$point->dw->initial_form])) {
                 $factory_slovo = $this->builder->getFactorySlovo($point->dw->id_word_class);
-                $point->dw->word_form = $sentence_driver->getSentenceWordByAotId($point->kw);
+                $point->dw->word_form = $this->sentence_manager->getSentenceWordByAotId($point->kw);
                 $slovo = $factory_slovo->build($point->dw)[0];
-                $slova_cache[$point->kw][$point->dw->initial_form] = $slovo;
+                $slova_collection[$point->kw][$point->dw->initial_form] = $slovo;
                 $this->hash_slovo_map[spl_object_hash($slovo)] = $slovo;
             } else {
-                $slovo = $slova_cache[$point->kw][$point->dw->initial_form];
+                $slovo = $slova_collection[$point->kw][$point->dw->initial_form];
             }
 
             if ($point->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
@@ -120,11 +123,12 @@ class Base
             }
         }
 
+        $prepose_to_slovo = [];
         foreach ($link_with_prepose as $oz => $pair) {
-            $this->prepose_to_slovo[spl_object_hash($pair[static::DEPENDED_POINT])] = $pair[static::MAIN_POINT];
+            $prepose_to_slovo[spl_object_hash($pair[static::DEPENDED_POINT])] = $pair[static::MAIN_POINT];
         }
 
-        return $links;
+        return [$links, $prepose_to_slovo];
     }
 
 
@@ -132,20 +136,21 @@ class Base
      * Строим граф
      *
      * @param \Aot\RussianMorphology\Slovo[][] $links
+     * @param \Aot\RussianMorphology\Slovo[] $prepose_to_slovo
      * @return \Aot\Graph\Slovo\Graph
      */
-    protected function createGraph($links)
+    protected function createGraph(array $links, array $prepose_to_slovo = [])
     {
-        if (empty($links)) {
-            return $this->builder->buildGraph();
-        }
-
         $graph_slova = $this->builder->buildGraph();
+
+        if (empty($links)) {
+            return $graph_slova;
+        }
 
         $vertices_manager = \Aot\Sviaz\Processors\AotGraph\VerticesManager::create(
             $graph_slova,
             $this->builder,
-            $this->prepose_to_slovo
+            $prepose_to_slovo
         );
 
         foreach ($links as $oz => $slova) {

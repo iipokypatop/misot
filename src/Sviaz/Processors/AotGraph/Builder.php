@@ -11,6 +11,8 @@ namespace Aot\Sviaz\Processors\AotGraph;
 
 class Builder
 {
+    /** @var \Aot\RussianMorphology\FactoryBase[]  */
+    protected $factories;
 
     public static function create()
     {
@@ -60,42 +62,6 @@ class Builder
                 )
                 ->link(
                     \Aot\Sviaz\Rule\Builder\Base::create()
-                );
-        return $builder->get();
-    }
-
-
-    /**
-     * Создаем правило
-     *
-     * @param int $main_point_part_of_speech - главная точка
-     * @param int $depended_point_part_of_speech - зависимая точка
-     * @param int $main_role
-     * @param int $depended_role
-     * @return \Aot\Sviaz\Rule\Base
-     */
-    public function buildRule2($main_point_part_of_speech, $depended_point_part_of_speech, $main_role, $depended_role)
-    {
-        assert(is_int($main_point_part_of_speech));
-        assert(is_int($depended_point_part_of_speech));
-        assert(is_int($main_role));
-        assert(is_int($depended_role));
-        $builder =
-            \Aot\Sviaz\Rule\Builder2::create()
-                ->main(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
-                        $main_point_part_of_speech,
-                        $main_role
-                    )
-                )
-                ->depended(
-                    \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
-                        $depended_point_part_of_speech,
-                        $depended_role
-                    )
-                )
-                ->link(
-                    AssertedLinkBuilder::create()
                 );
         return $builder->get();
     }
@@ -159,8 +125,8 @@ class Builder
     /**
      * Возвращаем соответствующий id части речи МИСОТа по id части речи АОТа
      *
-     * @param integer $id_part_of_speech_aot
-     * @return integer
+     * @param int $id_part_of_speech_aot
+     * @return int
      */
     public function conformityPartsOfSpeech($id_part_of_speech_aot)
     {

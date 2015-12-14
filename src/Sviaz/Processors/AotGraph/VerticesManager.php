@@ -31,8 +31,11 @@ class VerticesManager
      * @param Builder $builder
      * @param \Aot\RussianMorphology\Slovo[] $prepose_to_slovo
      */
-    protected function __construct(\Aot\Graph\Slovo\Graph $graph, \Aot\Sviaz\Processors\AotGraph\Builder $builder, array $prepose_to_slovo = null)
+    protected function __construct(\Aot\Graph\Slovo\Graph $graph, \Aot\Sviaz\Processors\AotGraph\Builder $builder, array $prepose_to_slovo = [])
     {
+        foreach ($prepose_to_slovo as $item) {
+            assert(is_a($item, \Aot\RussianMorphology\Slovo::class, true));
+        }
         $this->graph = $graph;
         $this->builder = $builder;
         $this->prepose_to_slovo = $prepose_to_slovo;
@@ -68,7 +71,7 @@ class VerticesManager
      * @param \Aot\RussianMorphology\Slovo $slovo
      * @return bool
      */
-    protected function isProcessedSlovo($slovo)
+    protected function isProcessedSlovo(\Aot\RussianMorphology\Slovo $slovo)
     {
         return !empty($this->vertices[spl_object_hash($slovo)]);
     }

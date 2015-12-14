@@ -22,7 +22,7 @@ class RoleSpecificator
      * @param string $name_relation - зависима или главная точка, не имеет значения
      * @param int $id_word_class_main
      * @param int $id_word_class_dep
-     * @return \int[]
+     * @return int[]
      */
     public static function getRoles($name_relation, $id_word_class_main, $id_word_class_dep)
     {
