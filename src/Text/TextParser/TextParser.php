@@ -283,8 +283,13 @@ class TextParser
     {
         assert(is_string($text));
 
-        if (preg_match_all("/[а-яё]+([\\.\\!\\?])([а-яёА-ЯЁ])/u", $text, $matches,
-            PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
+        if (preg_match_all(
+            "/[а-яё]+([\\.\\!\\?])([а-яёА-ЯЁ])/u",
+            $text,
+            $matches,
+            PREG_OFFSET_CAPTURE | PREG_SET_ORDER
+            )
+        ) {
 
             $shift_pos = 0; // смещение позиции
             foreach ($matches as $match) {
