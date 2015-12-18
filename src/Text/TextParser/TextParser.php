@@ -59,6 +59,8 @@ class TextParser
     /** @var Numbers */
     protected $replaceNumbers;
 
+    protected $sentences_without_patterns;
+
 
     public static function create()
     {
@@ -211,6 +213,7 @@ class TextParser
             }
             unset($word);
         }
+        unset($word);
 
         $sentences = $this->sentences;
         $new_sentences = [];
@@ -221,7 +224,7 @@ class TextParser
             $new_sentences[$index] = $sentence;
         }
 
-        $this->sentences = $new_sentences;
+        $this->sentences_without_patterns = $new_sentences;
         $this->sentence_words = $sentence_words;
     }
 
@@ -315,6 +318,14 @@ class TextParser
             assert(is_string($sentence));
         }
         return join(static::SEPARATOR, $sentences);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getSentencesWithoutPatterns()
+    {
+        return $this->sentences_without_patterns;
     }
 
 }
