@@ -59,6 +59,8 @@ class TextParser
     /** @var Numbers */
     protected $replaceNumbers;
 
+    protected $sentences_without_patterns;
+
 
     public static function create()
     {
@@ -150,7 +152,7 @@ class TextParser
         $sentences = explode("\n", $text);
         // чистим
         foreach ($sentences as $key => $sentence) {
-            if (strpos($sentence, static::END_TEMPLATE . ".") !== FALSE) {
+            if (strpos($sentence, static::END_TEMPLATE . ".") !== false) {
                 $sentences[$key] = str_replace(static::END_TEMPLATE . ".", static::END_TEMPLATE, $sentence);
             }
             $sentences[$key] = trim($sentences[$key]);
@@ -212,6 +214,17 @@ class TextParser
             unset($word);
         }
         unset($words);
+
+        $sentences = $this->sentences;
+        $new_sentences = [];
+        foreach ($sentences as $index => $sentence) {
+            foreach ($registry as $key => $item) {
+                $sentence = str_replace("{{" . ($key) . "}}", $item, $sentence);
+            }
+            $new_sentences[$index] = $sentence;
+        }
+
+        $this->sentences_without_patterns = $new_sentences;
         $this->sentence_words = $sentence_words;
     }
 
@@ -270,7 +283,13 @@ class TextParser
     {
         assert(is_string($text));
 
-        if (preg_match_all("/[а-яё]+([\\.\\!\\?])([а-яёА-ЯЁ])/u", $text, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
+        if (preg_match_all(
+            "/[а-яё]+([\\.\\!\\?])([а-яёА-ЯЁ])/u",
+            $text,
+            $matches,
+            PREG_OFFSET_CAPTURE | PREG_SET_ORDER
+            )
+        ) {
 
             $shift_pos = 0; // смещение позиции
             foreach ($matches as $match) {
@@ -304,6 +323,14 @@ class TextParser
             assert(is_string($sentence));
         }
         return join(static::SEPARATOR, $sentences);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getSentencesWithoutPatterns()
+    {
+        return $this->sentences_without_patterns;
     }
 
 }
