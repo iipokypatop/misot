@@ -213,7 +213,7 @@ class TextParser
             }
             unset($word);
         }
-        unset($word);
+        unset($words);
 
         $sentences = $this->sentences;
         $new_sentences = [];
