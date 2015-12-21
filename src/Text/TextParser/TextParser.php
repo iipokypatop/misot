@@ -41,34 +41,40 @@ class TextParser
         "/\\}\\}/u",
     ];
 
+    /** @var Spaces */
+    protected $filterSpaces;
+
+    /** @var NoValid */
+    protected $filterNoValid;
+
+    /** @var FIO */
+    protected $replaceFIO;
+
+    /** @var Hooks */
+    protected $replaceHooks;
+
+    /** @var Short */
+    protected $replaceShort;
+
+    /** @var Numbers */
+    protected $replaceNumbers;
+
     protected $sentences_without_patterns;
 
-    /**
-     * @var \Aot\Text\TextParser\Filters\Base[] $filters
-     */
-    protected $filters = [];
-
-    /**
-     * @var \Aot\Text\TextParser\Replacement\Base[] $replacers
-     */
-    protected $replacers = [];
 
     /** @var  string */
     protected $raw_input_text;
 
+    protected $symbol_map = [];
 
-    public function addFilter(\Aot\Text\TextParser\Filters\Base $filter)
+    /**
+     * @var \Aot\Text\TextParser\PostHooks\Base[]
+     */
+    protected $hooks = [];
+
+    public function addPostHook(\Aot\Text\TextParser\PostHooks\Base $hook)
     {
-        $this->filters[] = $filter;
-
-        return $this;
-    }
-
-    public function addReplacer(\Aot\Text\TextParser\Replacement\Base $replacer)
-    {
-        $this->replacers[] = $replacer;
-
-        return $this;
+        $this->hooks[] = $hook;
     }
 
     public static function create()
@@ -82,34 +88,14 @@ class TextParser
     public function __construct()
     {
         $this->logger = Logger::create();
+        $this->filterSpaces = Spaces::create($this->logger);
+        $this->filterNoValid = NoValid::create($this->logger);
+
         $this->registry = Registry::create(); // реестр для хранения замен
-
-        $this->init();
-    }
-
-    protected function init()
-    {
-        $this
-            ->addFilter(
-                Spaces::create($this->logger)
-            )
-            ->addFilter(
-                NoValid::create($this->logger)
-            );
-
-        $this
-            ->addReplacer(
-                FIO::create($this->registry, $this->logger)
-            )
-            ->addReplacer(
-                Hooks::create($this->registry, $this->logger)
-            )
-            ->addReplacer(
-                Short::create($this->registry, $this->logger)
-            )
-            ->addReplacer(
-                Numbers::create($this->registry, $this->logger)
-            );
+        $this->replaceFIO = FIO::create($this->registry, $this->logger);
+        $this->replaceHooks = Hooks::create($this->registry, $this->logger);
+        $this->replaceShort = Short::create($this->registry, $this->logger);
+        $this->replaceNumbers = Numbers::create($this->registry, $this->logger);
     }
 
     /**
@@ -120,13 +106,23 @@ class TextParser
     {
         $this->raw_input_text = $text;
 
-        foreach ($this->filters as $filter) {
-            $text = $filter->filter($text);
-        }
+        // чистим от лишних пробельных символов
+        $text = $this->filterSpaces->filter($text);
 
-        foreach ($this->replacers as $replacer) {
-            $text = $replacer->replace($text);
-        }
+        // убираем невалидные символы
+        $text = $this->filterNoValid->filter($text);
+
+        // скобки
+        $text = $this->replaceHooks->replace($text);
+
+        // ФИО
+        $text = $this->replaceFIO->replace($text);
+
+        // сокращения
+        $text = $this->replaceShort->replace($text);
+
+        // числительные
+        $text = $this->replaceNumbers->replace($text);
 
         // преобразования в тексте
         $text = $this->textСonversion($text);
@@ -148,6 +144,9 @@ class TextParser
         // подменяем обратно замененные шаблоны на слова из реестра
         $this->replacePatterns();
 
+        foreach ($this->hooks as $hook) {
+            $hook->run($this);
+        }
     }
 
     /**
@@ -221,6 +220,7 @@ class TextParser
         $sentence_words = $this->getSentenceWords();
         $registry = $this->getRegistry()->getRegistry();
         if (empty($sentence_words) || empty($registry)) {
+            $this->sentences_without_patterns = $this->sentences;
             return;
         }
         foreach ($sentence_words as &$words) {
@@ -355,39 +355,13 @@ class TextParser
     }
 
     /**
-     * @return string[][]
+     * @return string
      */
-    public function getMap()
+    public function getRawInputText()
     {
-        $result = [];
-
-        $regexp_parts = [];
-
-        foreach ($this->getSentenceWords() as $words) {
-            foreach ($words as $word) {
-
-                $regexp_parts[] = "(" . preg_quote($word) . ")*?";
-            }
-        }
-
-        $regexp_string = join('.*?', $regexp_parts);
-
-        $regexp_string = '/^' . '.*?' . $regexp_string . '.*?' . '$/mu';
-
-        echo $regexp_string;
-
-
-        $matches = [];
-        $res = preg_match(
-            $regexp_string,
-            $this->raw_input_text,
-            $matches,
-            PREG_OFFSET_CAPTURE
-        );
-
-        die;
-        return $result;
+        return $this->raw_input_text;
     }
+
 
 
 }
