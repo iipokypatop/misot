@@ -24,7 +24,6 @@ class PositionMap extends Base
     }
 
 
-
     public static function create()
     {
         $ob = new static();
@@ -53,7 +52,7 @@ class PositionMap extends Base
 
         $regexp_string = join('.*', $regexp_parts);
 
-        $regexp_string = '/^' . '.*' . $regexp_string . '.*' . '$/u';
+        $regexp_string = '#^' . '.*' . $regexp_string . '.*' . '$#u';
 
         return $regexp_string;
     }
@@ -74,11 +73,11 @@ class PositionMap extends Base
         );
 
         if (false === $status) {
-            throw new \LogicException("map build fail");
+            throw new \LogicException("map build fail (preg serror)");
         }
 
         if (count($matches) === 1) {
-            throw new \LogicException("map build fail");
+            return;
         }
 
         $result_matches = $this->unpackMatches($matches);
