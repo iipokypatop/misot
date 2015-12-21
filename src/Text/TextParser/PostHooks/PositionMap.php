@@ -13,7 +13,7 @@ class PositionMap extends Base
 {
     protected $prefix = 'sentence_';
     protected $suffix = '_word_';
-    protected $map = [[]];
+    protected $map = [];
 
     /**
      * @return array
@@ -53,11 +53,22 @@ class PositionMap extends Base
         return $regexp_string;
     }
 
+    protected function setDefaultMap(\Aot\Text\TextParser\TextParser $parser)
+    {
+        $this->map = [];
+
+        foreach ($parser->getSentenceWords() as $sentence_id => $sentence) {
+            $this->map[$sentence_id] = [];
+        }
+    }
+
     /**
      * @return string[][]
      */
     public function run(\Aot\Text\TextParser\TextParser $parser)
     {
+        $this->setDefaultMap($parser);
+
         $regexp_string = $this->createRegexp($parser);
 
         $text = $parser->getRawInputText();
