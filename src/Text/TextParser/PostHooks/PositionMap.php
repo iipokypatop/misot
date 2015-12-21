@@ -13,7 +13,7 @@ class PositionMap extends Base
 {
     protected $prefix = 'sentence_';
     protected $suffix = '_word_';
-    protected $map = [];
+    protected $map = [[]];
 
     /**
      * @return array
@@ -42,17 +42,13 @@ class PositionMap extends Base
 
                 $part = "(" . "?<$name>" . preg_quote($word) . ")";
 
-                if (count($sentence) === ($position + 1)) {
-                    $part .= "*";
-                }
-
-                $regexp_parts[$position] = $part;
+                $regexp_parts[] = $part;
             }
         }
 
         $regexp_string = join('.*', $regexp_parts);
 
-        $regexp_string = '#^' . '.*' . $regexp_string . '.*' . '$#u';
+        $regexp_string = '#^' . '.*' . $regexp_string . '.*?' . '$#imsu';
 
         return $regexp_string;
     }
@@ -64,13 +60,19 @@ class PositionMap extends Base
     {
         $regexp_string = $this->createRegexp($parser);
 
+        $text = $parser->getRawInputText();
+
         $matches = [];
         $status = preg_match(
             $regexp_string,
-            $parser->getRawInputText(),
+            $text,
             $matches,
             PREG_OFFSET_CAPTURE
         );
+
+        if ($status === 0) {
+            return;
+        }
 
         if (false === $status) {
             throw new \LogicException("map build fail (preg serror)");
