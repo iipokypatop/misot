@@ -200,6 +200,7 @@ class TextParser
         $sentence_words = $this->getSentenceWords();
         $registry = $this->getRegistry()->getRegistry();
         if (empty($sentence_words) || empty($registry)) {
+            $this->sentences_without_patterns = $this->sentences;
             return;
         }
         foreach ($sentence_words as &$words) {
