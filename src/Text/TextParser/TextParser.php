@@ -41,26 +41,35 @@ class TextParser
         "/\\}\\}/u",
     ];
 
-    /** @var Spaces */
-    protected $filterSpaces;
-
-    /** @var NoValid */
-    protected $filterNoValid;
-
-    /** @var FIO */
-    protected $replaceFIO;
-
-    /** @var Hooks */
-    protected $replaceHooks;
-
-    /** @var Short */
-    protected $replaceShort;
-
-    /** @var Numbers */
-    protected $replaceNumbers;
-
     protected $sentences_without_patterns;
 
+    /**
+     * @var \Aot\Text\TextParser\Filters\Base[] $filters
+     */
+    protected $filters = [];
+
+    /**
+     * @var \Aot\Text\TextParser\Replacement\Base[] $replacers
+     */
+    protected $replacers = [];
+
+    /** @var  string */
+    protected $raw_input_text;
+
+
+    public function addFilter(\Aot\Text\TextParser\Filters\Base $filter)
+    {
+        $this->filters[] = $filter;
+
+        return $this;
+    }
+
+    public function addReplacer(\Aot\Text\TextParser\Replacement\Base $replacer)
+    {
+        $this->replacers[] = $replacer;
+
+        return $this;
+    }
 
     public static function create()
     {
@@ -73,14 +82,34 @@ class TextParser
     public function __construct()
     {
         $this->logger = Logger::create();
-        $this->filterSpaces = Spaces::create($this->logger);
-        $this->filterNoValid = NoValid::create($this->logger);
-
         $this->registry = Registry::create(); // реестр для хранения замен
-        $this->replaceFIO = FIO::create($this->registry, $this->logger);
-        $this->replaceHooks = Hooks::create($this->registry, $this->logger);
-        $this->replaceShort = Short::create($this->registry, $this->logger);
-        $this->replaceNumbers = Numbers::create($this->registry, $this->logger);
+
+        $this->init();
+    }
+
+    protected function init()
+    {
+        $this
+            ->addFilter(
+                Spaces::create($this->logger)
+            )
+            ->addFilter(
+                NoValid::create($this->logger)
+            );
+
+        $this
+            ->addReplacer(
+                FIO::create($this->registry, $this->logger)
+            )
+            ->addReplacer(
+                Hooks::create($this->registry, $this->logger)
+            )
+            ->addReplacer(
+                Short::create($this->registry, $this->logger)
+            )
+            ->addReplacer(
+                Numbers::create($this->registry, $this->logger)
+            );
     }
 
     /**
@@ -89,23 +118,15 @@ class TextParser
      */
     public function execute($text)
     {
-        // чистим от лишних пробельных символов
-        $text = $this->filterSpaces->filter($text);
+        $this->raw_input_text = $text;
 
-        // убираем невалидные символы
-        $text = $this->filterNoValid->filter($text);
+        foreach ($this->filters as $filter) {
+            $text = $filter->filter($text);
+        }
 
-        // скобки
-        $text = $this->replaceHooks->replace($text);
-
-        // ФИО
-        $text = $this->replaceFIO->replace($text);
-
-        // сокращения
-        $text = $this->replaceShort->replace($text);
-
-        // числительные
-        $text = $this->replaceNumbers->replace($text);
+        foreach ($this->replacers as $replacer) {
+            $text = $replacer->replace($text);
+        }
 
         // преобразования в тексте
         $text = $this->textСonversion($text);
@@ -288,7 +309,7 @@ class TextParser
             $text,
             $matches,
             PREG_OFFSET_CAPTURE | PREG_SET_ORDER
-            )
+        )
         ) {
 
             $shift_pos = 0; // смещение позиции
@@ -332,5 +353,41 @@ class TextParser
     {
         return $this->sentences_without_patterns;
     }
+
+    /**
+     * @return string[][]
+     */
+    public function getMap()
+    {
+        $result = [];
+
+        $regexp_parts = [];
+
+        foreach ($this->getSentenceWords() as $words) {
+            foreach ($words as $word) {
+
+                $regexp_parts[] = "(" . preg_quote($word) . ")*?";
+            }
+        }
+
+        $regexp_string = join('.*?', $regexp_parts);
+
+        $regexp_string = '/^' . '.*?' . $regexp_string . '.*?' . '$/mu';
+
+        echo $regexp_string;
+
+
+        $matches = [];
+        $res = preg_match(
+            $regexp_string,
+            $this->raw_input_text,
+            $matches,
+            PREG_OFFSET_CAPTURE
+        );
+
+        die;
+        return $result;
+    }
+
 
 }

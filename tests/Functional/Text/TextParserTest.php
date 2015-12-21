@@ -146,4 +146,22 @@ class TextParserTest extends \AotTest\AotDataStorage
         $this->assertEquals(0, count($diff)); // не должно быть расхождений
 
     }
+
+
+    public function testMap()
+    {
+        $text = <<<TXT
+Вчера  ,     5   дней до н.э., я   [видел] Путина-Сибиряка В.В.
+TXT;
+
+
+        $parser = TextParser::create();
+        $parser->execute($text);
+        $parser->render();
+
+        $map = $parser->getMap();
+
+        var_export($map);
+
+    }
 }

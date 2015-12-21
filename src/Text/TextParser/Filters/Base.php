@@ -17,7 +17,7 @@ abstract class Base
 
     /**
      * @param $logger
-     * @return object Aot\Text\TextParser\Filters\Base
+     * @return  \Aot\Text\TextParser\Filters\Base
      */
     public static function create($logger)
     {
