@@ -40,7 +40,20 @@ class PositionMap extends Base
 
                 $name = $this->getName($sentence_id, $position);
 
-                $part = "(" . "?<$name>" . preg_quote($word) . ")";
+                if ($position === (count($sentence) - 1)) {
+
+                    if ($word === '.') {
+
+                        $part = "\\.*";
+
+                    } else {
+
+                        $part = "(" . "?<$name>" . preg_quote($word) . ")";
+                    }
+
+                } else {
+                    $part = "(" . "?<$name>" . preg_quote($word) . ")";
+                }
 
                 $regexp_parts[] = $part;
             }

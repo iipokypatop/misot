@@ -361,7 +361,4 @@ class TextParser
     {
         return $this->raw_input_text;
     }
-
-
-
 }
