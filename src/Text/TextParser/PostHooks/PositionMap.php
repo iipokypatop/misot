@@ -44,7 +44,7 @@ class PositionMap extends Base
 
                     if ($word === '.') {
 
-                        $part = "\\.*";
+                        $part = "\\.*?";
 
                     } else {
 
@@ -59,9 +59,9 @@ class PositionMap extends Base
             }
         }
 
-        $regexp_string = join('.*', $regexp_parts);
+        $regexp_string = join('.*?', $regexp_parts);
 
-        $regexp_string = '#^' . '.*' . $regexp_string . '.*?' . '$#imsu';
+        $regexp_string = '#^' . '.*?' . $regexp_string . '.*?' . '$#imsu';
 
         return $regexp_string;
     }
@@ -99,7 +99,7 @@ class PositionMap extends Base
         }
 
         if (false === $status) {
-            throw new \LogicException("map build fail (preg serror)");
+            throw new \LogicException("map build fail (preg error)");
         }
 
         if (count($matches) === 1) {
