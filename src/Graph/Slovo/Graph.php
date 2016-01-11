@@ -19,4 +19,14 @@ class Graph extends \BaseGraph\Graph
         $obj = new static();
         return $obj;
     }
+
+    /**
+     * Removes a single attribute with the given $name
+     *
+     * @param string $name
+     */
+    public function removeAttribute($name)
+    {
+        // TODO: Implement removeAttribute() method.
+    }
 }
