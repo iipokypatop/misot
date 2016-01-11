@@ -28,6 +28,7 @@ class Misot extends Base
         $this->applyRules($sequence, $rules1);
         $this->detectSubSequences($sequence);
         $this->applyRules($sequence, $rules2);
+        return $sequence;
     }
 
 
