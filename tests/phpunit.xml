@@ -14,8 +14,8 @@
         printerClass="PHPUnit_TextUI_ResultPrinter"
 
         processIsolation="false"
-        stopOnError="true"
-        stopOnFailure="true"
+        stopOnError="false"
+        stopOnFailure="false"
         stopOnIncomplete="false"
         stopOnSkipped="false"
         testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
