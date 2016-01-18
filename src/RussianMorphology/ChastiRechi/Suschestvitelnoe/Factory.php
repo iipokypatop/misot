@@ -28,7 +28,6 @@ use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Tret
 use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Vtoroe;
 
 
-
 /**
  * Created by PhpStorm.
  * User: p.semenyuk
@@ -65,23 +64,28 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
             # нарицательность
             $naritcatelnost = $this->getNaritcatelnost($dw->parameters);
 
+            # отглагольность
+            $otglagolnost = $this->getOtglagolnost($dw->parameters);
+
             foreach ($chislo as $val_chislo) {
                 foreach ($naritcatelnost as $val_naritcatelnost) {
                     foreach ($odushevlyonnost as $val_odushevlyonnost) {
                         foreach ($padeszh as $val_padeszh) {
                             foreach ($rod as $val_rod) {
                                 foreach ($sklonenie as $val_sklonenie) {
-                                    $words[] = $word = Base::create(
-                                        $text,
-                                        $val_chislo,
-                                        $val_naritcatelnost,
-                                        $val_odushevlyonnost,
-                                        $val_padeszh,
-                                        $val_rod,
-                                        $val_sklonenie
-                                    );
-
-                                    $word->setInitialForm($dw->initial_form);
+                                    foreach ($otglagolnost as $val_otglagolnost) {
+                                        $words[] = $word = Base::create(
+                                            $text,
+                                            $val_chislo,
+                                            $val_naritcatelnost,
+                                            $val_odushevlyonnost,
+                                            $val_padeszh,
+                                            $val_rod,
+                                            $val_sklonenie,
+                                            $val_otglagolnost
+                                        );
+                                        $word->setInitialForm($dw->initial_form);
+                                    }
                                 }
                             }
                         }
@@ -262,6 +266,34 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
         }
 
         return $naritcatelnost;
+    }
+
+    /**
+     * @param \Aot\MivarTextSemantic\MorphAttribute[] $parameters
+     * @return \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Otglagolnost\Base[]
+     */
+    protected function getOtglagolnost(array $parameters)
+    {
+        if (empty($parameters[\Aot\MivarTextSemantic\Constants::OTGLAGOLNOST_ID])) {
+            return [Morphology\Otglagolnost\Null::create()];
+        }
+
+        foreach ($parameters as $parameter) {
+            assert($parameter instanceof \Aot\MivarTextSemantic\MorphAttribute);
+        }
+
+        $param = $parameters[\Aot\MivarTextSemantic\Constants::OTGLAGOLNOST_ID];
+        $otglagolnost = [];
+        foreach ($param->id_value_attr as $val) {
+            if (intval($val) === \Aot\MivarTextSemantic\Constants::OTGLAGOLNOE) {
+                $otglagolnost[] = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Otglagolnost\Otglagolnoe::create();
+            } elseif (intval($val) === \Aot\MivarTextSemantic\Constants::NEOTGLAGOLNOE) {
+                $otglagolnost[] = \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Otglagolnost\Neotglagolnoe::create();
+            } else {
+                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
+            }
+        }
+        return $otglagolnost;
     }
 }
 
