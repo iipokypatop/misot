@@ -33,6 +33,7 @@ class Base extends Slovo
             'padeszh' => Morphology\Padeszh\Base::class,
             'rod' => Morphology\Rod\Base::class,
             'sklonenie' => Morphology\Sklonenie\Base::class,
+            'otglagolnost' => Morphology\Otglagolnost\Base::class,
         ];
     }
 
@@ -54,7 +55,8 @@ class Base extends Slovo
         Morphology\Odushevlyonnost\Base $odushevlyonnost,
         Morphology\Padeszh\Base $padeszh,
         Morphology\Rod\Base $rod,
-        Morphology\Sklonenie\Base $sklonenie
+        Morphology\Sklonenie\Base $sklonenie,
+        Morphology\Otglagolnost\Base $otglagolnost
     )
     {
         $ob = new static($text);
@@ -65,6 +67,7 @@ class Base extends Slovo
         $ob->padeszh = $padeszh;
         $ob->rod = $rod;
         $ob->sklonenie = $sklonenie;
+        $ob->otglagolnost = $otglagolnost;
 
         return $ob;
     }

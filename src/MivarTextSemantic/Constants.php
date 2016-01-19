@@ -171,6 +171,8 @@ class Constants
     const DEGREE_COMPOSITION_WORD = 'степень сравнения';
     const DISCHARGE_COMMUNION_WORD = 'разряд причастия';
     const FORM_IMMUTABLE_WORD = 'неизменяемость';
+    const OTGLAGOLNOST_WORD= 'отглагольность';
+
 #####################################
     const TYPE_OF_PRONOUN_WORD = 'тип местоимения';
     const FORM_ADJECTIVE_WORD = 'форма';
@@ -178,7 +180,7 @@ class Constants
     const TYPE_OF_NUMERAL_WORD = 'тип числительного';
 
 #####################################
-
+    const OTGLAGOLNOST_ID = 28;
     const CASE_ID = 13;
     const VIEW_ID = 1;
     const TRANSIVITY_ID = 3;
@@ -308,6 +310,11 @@ class Constants
     const UUD_BASIS_MIVAR = '60f720e4-f279-11e4-a0c7-005056010210';
     const UUID_COMPLEX_PREDICATE_MIVAR = '60f720e4-f279-11e4-a0c7-005056010210';
     const UUID_ADJUNCT_VERB_MIVAR = 'db7b7394-f993-11e4-b661-005056010210';
+
+    ########################
+
+    const NEOTGLAGOLNOE = 80;
+    const OTGLAGOLNOE = 81;
 }
 
 
