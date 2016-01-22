@@ -31,7 +31,7 @@ abstract class Slovo implements \Aot\Unit
     public function setInitialForm($initial_form)
     {
         assert(is_string($initial_form));
-        assert('' !== ($initial_form));
+//        assert('' !== ($initial_form));
         $this->initial_form = $initial_form;
     }
 
