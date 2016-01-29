@@ -238,4 +238,3 @@ abstract class Slovo implements \Aot\Unit
         return $tds;
     }
 }
-

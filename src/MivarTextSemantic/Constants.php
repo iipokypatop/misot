@@ -5,7 +5,7 @@ namespace Aot\MivarTextSemantic;
 class Constants
 {
     const MODE = "DEVELOP";
-    const DB_CONNECTION = "host=test-db.mivar.pro dbname=mivar_text_upd user=postgres password=@Mivar123User@";
+    const DB_CONNECTION = "host=test-db.mivar.pro dbname=mivar_text user=postgres password=@Mivar123User@";
     const DB_MIVAR_LOGIC = "host=test-db.mivar.pro dbname=mivar_logic user=postgres password=@Mivar123User@";
     const DB_MIVAR_INTELLIGENCE = "host=test-db.mivar.pro dbname=mivar_intelligence_stas user=postgres password=@Mivar123User@";
     const DB_MIVAR_INTELLIGENCE_DIMA = "host=test-db.mivar.pro dbname=mivar_intelligence_dima user=postgres password=@Mivar123User@";
