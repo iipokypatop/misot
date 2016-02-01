@@ -40,8 +40,17 @@ class SyntaxParser extends Module
         }
 
         // проверка БД
+        $config = \MivarUtils\Common\Config::getConfig();
+        $db = $config['misot']['intelligence']['db'];
+        $connection_string =
+            \MivarUtils\Common\Config::build_connection_string(
+                $db['host'],
+                $db['dbname'],
+                $db['user'],
+                $db['password']
+            );
 
-        if (!self::$dbconn = @pg_connect(\Aot\MivarTextSemantic\Constants::DB_MIVAR_INTELLIGENCE)) {
+        if (!self::$dbconn = @pg_connect($connection_string)) {
             \Aot\MivarTextSemantic\Error::error(__CLASS__ . ': Невозможно соединиться с базой данных');
             $canrun = false;
         }

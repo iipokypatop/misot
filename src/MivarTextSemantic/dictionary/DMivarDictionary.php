@@ -23,8 +23,22 @@ class DMivarDictionary
 
     //Конструктор, выполняет создание объекта класса DOMDocument из массива уникальных слов
     //Вход: массив уникальных слов
-    function __construct($words_array, $need_forms = false, $connection_string = \Aot\MivarTextSemantic\Constants::DB_CONNECTION)
+    function __construct($words_array, $need_forms = false, $connection_string = null)
     {
+        if ($connection_string === null) {
+            $config = \MivarUtils\Common\Config::getConfig();
+
+            $db = $config['misot']['morphic']['db'];
+
+            $connection_string =
+                \MivarUtils\Common\Config::build_connection_string(
+                    $db['host'],
+                    $db['dbname'],
+                    $db['user'],
+                    $db['password']
+                );
+        }
+
         self::$dbconn = pg_connect($connection_string);
         $this->array_words = $words_array;
         $this->array_current_dictionary = $this->get_words($words_array, $need_forms);
@@ -55,10 +69,10 @@ class DMivarDictionary
                     $str_part_where = " WHERE		word_form.word_form IN ($str_array_words)";
                 }
                 $strQuery = "	SELECT
-							word_form.word_form, 
-							word_form.id_word_class, 
-							word_form.priority, 
-							word_form.id_word_form, 
+							word_form.word_form,
+							word_form.id_word_class,
+							word_form.priority,
+							word_form.id_word_form,
 							word_form.initial_form,
 							word_class.name AS name_word_class,
 							value_attribute.short_value AS short_value,
@@ -68,11 +82,11 @@ class DMivarDictionary
 							word_form_parameter.id_form_param AS uuid_form_param,
 							morph_attribute.id_morph_attr AS id_morph_attr,
 							morph_attribute.name AS name_attribute
-						FROM 
+						FROM
 								public.word_form
 						INNER JOIN 	public.word_class
 						ON		(word_form.id_word_class = word_class.id_word_class)
-						LEFT JOIN 	public.word_form_parameter 
+						LEFT JOIN 	public.word_form_parameter
 						ON 		(word_form.id_word_form = word_form_parameter.id_word_form)
 						LEFT JOIN 	public.value_attribute
 						ON		(word_form_parameter.id_value_attr = value_attribute.id_value_attr)
