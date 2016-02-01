@@ -4,18 +4,18 @@ namespace Aot\MivarTextSemantic;
 
 class Constants
 {
-    const MODE = "DEVELOP";
-    const DB_CONNECTION = "host=test-db.mivar.pro dbname=mivar_text user=postgres password=@Mivar123User@";
-    const DB_MIVAR_LOGIC = "host=test-db.mivar.pro dbname=mivar_logic user=postgres password=@Mivar123User@";
-    const DB_MIVAR_INTELLIGENCE = "host=test-db.mivar.pro dbname=mivar_intelligence_stas user=postgres password=@Mivar123User@";
-    const DB_MIVAR_INTELLIGENCE_DIMA = "host=test-db.mivar.pro dbname=mivar_intelligence_dima user=postgres password=@Mivar123User@";
-    const DB_MIVAR_INTELLIGENCE_MONGO = "mongodb://mivar_intel:V1azfwd3@test-db.mivar.pro:27017/mivar_intelligence_test";
-    const XHPROF_ROOT = "/var/php_only/xhprof-0.9.4/";
-    const XHPROF_ON = "1";
-    const DB_TESTCASES = "mongodb://text_test:nusf7TQq@test-db.mivar.pro:27017/text_testcases";
-    const DB_TESTCASES_DBNAME = "text_testcases";
-    const REDIS_HOST_6379 = "127.0.0.1";
-    const REDIS_PORT_6379 = "6379";
+//    const MODE = "DEVELOP";
+//    const DB_CONNECTION = "host=test-db.mivar.pro dbname=mivar_text user=postgres password=@Mivar123User@";
+//    const DB_MIVAR_LOGIC = "host=test-db.mivar.pro dbname=mivar_logic user=postgres password=@Mivar123User@";
+//    const DB_MIVAR_INTELLIGENCE = "host=test-db.mivar.pro dbname=mivar_intelligence_test user=postgres password=@Mivar123User@";
+//    const DB_MIVAR_INTELLIGENCE_DIMA = "host=test-db.mivar.pro dbname=mivar_intelligence_dima user=postgres password=@Mivar123User@";
+//    const DB_MIVAR_INTELLIGENCE_MONGO = "mongodb://mivar_intel:V1azfwd3@test-db.mivar.pro:27017/mivar_intelligence_test";
+//    const XHPROF_ROOT = "/var/php_only/xhprof-0.9.4/";
+//    const XHPROF_ON = "1";
+//    const DB_TESTCASES = "mongodb://text_test:nusf7TQq@test-db.mivar.pro:27017/text_testcases";
+//    const DB_TESTCASES_DBNAME = "text_testcases";
+//    const REDIS_HOST_6379 = "127.0.0.1";
+//    const REDIS_PORT_6379 = "6379";
 
     const CASE_SUBJECTIVE_SHORT = 'им';
     const CASE_GENITIVE_SHORT = 'рд';
