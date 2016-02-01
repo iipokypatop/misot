@@ -8,21 +8,21 @@ use Aot\MivarTextSemantic\MorphAttribute;
 class DMivarDictionary
 {
     //Текущий словарь (массив слов)
-    protected static $dbconn;
-
-    // Массив ненайденных слов.
     public $array_current_dictionary;
 
-    // Массив слов.
+    // Массив ненайденных слов.
     public $array_missing_words;
 
-    // Массив начальных форм.
+    // Массив слов.
     public $array_words;
+
+    // Массив начальных форм.
     public $array_initial_forms;
+
+    protected static $dbconn;
 
     //Конструктор, выполняет создание объекта класса DOMDocument из массива уникальных слов
     //Вход: массив уникальных слов
-
     function __construct($words_array, $need_forms = false, $connection_string = null)
     {
         if ($connection_string === null) {
@@ -45,6 +45,13 @@ class DMivarDictionary
     }
 
     // Выполнеение запроса
+
+    protected function query($sql)
+    {
+        return pg_query(self::$dbconn, $sql);
+    }
+
+    // Функция поиска слов в БД
 
     public function get_words($words_array, $need_forms = false, $use_predict = true, $use_object = true)
     {
@@ -134,9 +141,8 @@ class DMivarDictionary
                 if ($miss_words_predict) {
                     foreach ($miss_words_predict as $word => $dict_words) {
                         $result[$word] = $dict_words;
-                        foreach ($dict_words as $dict_word) {
+                        foreach ($dict_words as $dict_word)
                             $result[$word]['id_word_classes'][$dict_word['id_word_class']] = $dict_word['id_word_class'];
-                        }
                         $result[$word]['initial_forms'][$dict_word['initial_form']] = $dict_word['initial_form'];
                     }
                 }
@@ -164,27 +170,18 @@ class DMivarDictionary
                                 $dw['id_word_class'],
                                 $dw['name_word_class'],
                                 $dw['parametrs']);
-                        } else {
-                            if (isset($dw['id_word_form'])) {
-                                $dw = new \DictionaryWord($dw['id_word_form'],
-                                    $dw['word_form'],
-                                    $dw['initial_form'],
-                                    $dw['id_word_class'],
-                                    $dw['name_word_class']);
-                            }
+                        } else if (isset($dw['id_word_form'])) {
+                            $dw = new \DictionaryWord($dw['id_word_form'],
+                                $dw['word_form'],
+                                $dw['initial_form'],
+                                $dw['id_word_class'],
+                                $dw['name_word_class']);
                         }
                     }
                 }
             }
         }
         return $result;
-    }
-
-    // Функция поиска слов в БД
-
-    protected function query($sql)
-    {
-        return pg_query(self::$dbconn, $sql);
     }
 
     // проверка соответствия слова начальной форме
@@ -206,9 +203,8 @@ class DMivarDictionary
         foreach ($parameters as $param) {
             if (isset($dict_word1['parametrs'][$param], $dict_word2['parametrs'][$param])) {
                 foreach ($dict_word1['parametrs'][$param]['id_value_attr'] as $id_value) {
-                    if (!in_array($id_value, $dict_word2['parametrs'][$param]['id_value_attr'])) {
+                    if (!in_array($id_value, $dict_word2['parametrs'][$param]['id_value_attr']))
                         return false;
-                    }
                 }
             }
         }
