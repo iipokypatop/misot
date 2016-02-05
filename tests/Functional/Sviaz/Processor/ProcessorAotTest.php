@@ -1,5 +1,7 @@
 <?php
 
+namespace AotTest\Functional\Sviaz\Processor;
+
 use Aot\Sviaz\Role\Registry as RoleRegistry;
 use Aot\Sviaz\Rule\Builder\Base as AssertedLinkBuilder;
 
