@@ -75,7 +75,8 @@
     "psr-4": {
       "AotTest\\": "tests/",
       "Aot\\": "src/"
-    }
+    },
+    "classmap": ["./LegacyClassesStub.php"]
   },
   "scripts": {
     "post-autoload-dump": [
