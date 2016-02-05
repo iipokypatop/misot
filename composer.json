@@ -76,7 +76,7 @@
       "AotTest\\": "tests/",
       "Aot\\": "src/"
     },
-    "classmap": ["./LegacyClassesStub.php"]
+    "classmap": ["LegacyClassesStub.php"]
   },
   "scripts": {
     "post-autoload-dump": [
