@@ -42,7 +42,7 @@ class TokenRegexRegistry
 //      const PATTERN_ =  '/\p{No}/'; // Другое число
     const PATTERN_PUNCTUATION = '\p{P}'; // Пунктуация
 //      const PATTERN_ =  '/\p{Pc}/'; // Соединяющая пунктуация
-//      const PATTERN_ =  '/\p{Pd}/'; // Знаки тире
+    const PATTERN_DASH = '\p{Pd}'; // Знаки тире
 //      const PATTERN_ =  '/\p{Pe}/'; // Закрывающая пунктуация
 //      const PATTERN_ =  '/\p{Pf}/'; // Заключительная пунктуация
 //      const PATTERN_ =  '/\p{Pi}/'; // Начальная пунктуация
@@ -100,6 +100,10 @@ class TokenRegexRegistry
 
             \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION => [
                 static::PATTERN_PUNCTUATION
+            ],
+
+            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_DASH => [
+                static::PATTERN_DASH
             ],
 
         ];

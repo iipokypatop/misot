@@ -38,8 +38,9 @@ class TextTokensTest extends \AotTest\AotDataStorage
         }
     }
 
-    public function testTokenizer()
+    public function testLaunchTokenizer()
     {
+
         $tokenizer = \Aot\Text\TextParserByTokenizer\ParseTokenizer::createEmptyConfiguration();
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER);
@@ -48,10 +49,6 @@ class TextTokensTest extends \AotTest\AotDataStorage
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_DASH);
 
         $tokens = $tokenizer->tokenize('человек кого-то увидел, или нет...');
-
-        var_dump($tokenizer->getTokens());
-
-
     }
 
 
