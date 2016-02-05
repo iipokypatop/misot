@@ -12,7 +12,7 @@ class BaseTest extends \MivarTest\Base
 {
     public function testLaunch()
     {
-        \Aot\Tokenizer\Base::create();
+        \Aot\Tokenizer\Base::createEmptyConfiguration();
     }
 
     public function testRun()
@@ -25,18 +25,29 @@ isInlineBlockSupported:function(){var e,t=$('<span style="display:none"><div sty
          $string */
         $string = <<<'TEXT'
  \Aot\Tokenizer\Base::c
-
+123.232
 
 ФК «Зенит» и полузащитник сборной России и
 
 TEXT;
-        $tokenizer = \Aot\Tokenizer\Base::create();
+        $tokenizer = \Aot\Tokenizer\Base::createEmptyConfiguration();
 
-        $result = $tokenizer->tokenize($string);
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER);
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION);
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
 
-        $this->assertEquals(true, $result);
 
-        var_export($tokenizer->getTokens());
+        $count = $tokenizer->tokenize($string);
 
+        $this->assertEquals(36, $count);
+
+        $recovered_string = '';
+        foreach ($tokenizer->getTokens() as $token) {
+            $recovered_string .= $token->getText();
+        }
+
+        $this->assertEquals($string, $recovered_string);
     }
 }
+

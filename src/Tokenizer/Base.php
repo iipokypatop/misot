@@ -8,35 +8,35 @@
 
 namespace Aot\Tokenizer;
 
-
 class Base
 {
-    /** @var \Aot\Tokenizer\CharacterFactory */
-    protected $character_factory;
+    /**
+     * @var int[]
+     */
+    protected $token_types = [];
 
     /**
      * @var \Aot\Tokenizer\Token\Token[]
      */
     protected $tokens = [];
 
-    /**
-     * @var bool
-     */
-    protected $complicated_started = false;
-    /**
-     * @var string[]
-     */
-    protected $current_token_characters = [];
-
-    protected $regex;
-
     protected function __construct()
     {
-        $this->regex = \Aot\Tokenizer\Token\Regex::create();
 
     }
 
-    public static function create()
+    public static function createDefault()
+    {
+        $ob = new static();
+
+        $ob->token_types[] = \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD;
+        $ob->token_types[] = \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION;
+        $ob->token_types[] = \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_OTHER;
+
+        return $ob;
+    }
+
+    public static function createEmptyConfiguration()
     {
         $ob = new static();
 
@@ -45,141 +45,142 @@ class Base
 
     /**
      * @param string $string
-     * @return bool
+     * @return \Aot\Tokenizer\Token\Token[]
      */
     public function tokenize($string)
     {
         assert(is_string($string));
 
-        if (!$this->getCharacters($string)) {
-            return false;
+        $this->assertUTF8($string);
+
+        if (empty($string)) {
+            return [];
         }
 
-        $characters = $this->character_factory->getIterator();
+        $processing_string = $string;
 
-        $this->process($characters);
+        while (1) {
 
-        return true;
-    }
+            $before_length = mb_strlen($processing_string);
 
-    protected function getCharacters($string)
-    {
-        $this->character_factory = \Aot\Tokenizer\CharacterFactory::create($string);
+            $processing_string = $this->read($processing_string);
 
-        return $this->character_factory->factory();
+            if ($before_length === mb_strlen($processing_string)) {
+                throw new \LogicException("length must be reduced");
+            }
+
+            if (mb_strlen($processing_string, 'utf-8') === 0) {
+                break;
+            }
+        }
+
+        return count($this->tokens);
     }
 
     /**
-     * @param string[] $characters
-     * @return  \Aot\Tokenizer\Token\Token[]
+     * @param $string
      */
-    protected function process(array $characters)
+    protected function assertUTF8($string)
     {
-        foreach ($characters as $character) {
-            assert(is_string($character));
+
+    }
+
+    /**
+     * @param  string $string
+     * @return string
+     */
+    protected function read($string)
+    {
+        assert(is_string($string));
+
+        if (empty($string)) {
+            return '';
         }
 
+        foreach ($this->token_types as $token_type_id) {
 
-        foreach ($characters as $character) {
+            /**
+             * @var \Aot\Tokenizer\Token\Regex[]
+             */
+            $regex_list = \Aot\Tokenizer\Token\TokenRegexRegistry::getTokenTypesByPattern($token_type_id);
 
-            if (!$this->complicated_started) {
-                if ($this->canBeInComplicatedToken($character)) {
-                    $this->start();
-                }
-            }
-
-            if ($this->complicated_started) {
-
-                if (!$this->processAsPartOfComplicatedToken($character)) {
-
-                    $this->endBuildToken();
-
-                    $this->tokens[] = $this->regex->factoryTokenWithLastPatternType();
-
-                    $this->tokens[] = $this->regex->factoryTokenFromCharacter(
-                        $character
-                    );
-
-                    continue;
-                }
-            } else {
-
-                $this->tokens[] = $this->regex->factoryTokenFromCharacter($character);
-
+            if (count($regex_list) === 0) {
                 continue;
             }
+
+            foreach ($regex_list as $regex) {
+
+                $regex->addStartingCaret();
+
+                $status = $regex->match($string);
+
+                if (!$status) {
+                    continue;
+                }
+
+                $matching_string = $regex->getLastMatching();
+
+                $remainer_part_of_string = $this->cutFromString($string, $matching_string);
+
+                $this->tokens[] = $this->buildToken($matching_string, $token_type_id);
+
+                return $remainer_part_of_string;
+            }
         }
 
-        if ($this->complicated_started) {
+        $regex = \Aot\Tokenizer\Token\Regex::create(
+            \Aot\Tokenizer\Token\Regex::PATTERN_DOT
+        );
 
-            $this->endBuildToken();
+        $status = $regex->match($string);
 
-            $this->tokens[] = $this->regex->factoryTokenWithLastPatternType();
+        if (!$status) {
+            throw new \LogicException("must match to PATTERN_DOT");
         }
 
+        $matching_string = $regex->getLastMatching();
+
+        $this->tokens[] = $this->buildDefaultToken($matching_string);
+
+        $remainer_part_of_string = $this->cutFromString($string, $matching_string);
+
+        return $remainer_part_of_string;
     }
 
-    /**
-     * @param string $character
-     * @return bool
-     */
-    protected function canBeInComplicatedToken($character)
+    protected function cutFromString($source_string, $string_to_cut)
     {
-        return $this->regex->charCanBeComplicated($character);
+        assert(is_string($source_string));
+        assert(is_string($string_to_cut));
+        assert((mb_strlen($string_to_cut) <= mb_strlen($source_string)));
+
+        if ('' === $string_to_cut) {
+            return $source_string;
+        }
+
+        if ('' === $source_string) {
+            return '';
+        }
+
+        return mb_substr(
+            $source_string,
+            mb_strlen($string_to_cut)
+        );
     }
 
-    protected function start()
+    protected function buildToken($text, $type)
     {
-        if ($this->complicated_started) {
-            throw new \LoggerException("already started");
-        }
-
-        $this->regex->reset();
-
-        $this->complicated_started = true;
-
-        $this->current_token_characters = [];
+        return \Aot\Tokenizer\Token\Token::create(
+            $text,
+            $type
+        );
     }
 
-    /**
-     * @param string $character
-     * @return bool|void
-     * @throws \LoggerException
-     */
-    protected function processAsPartOfComplicatedToken($character)
+    protected function buildDefaultToken($text)
     {
-        if (empty($this->current_token_characters)) {
-            $this->current_token_characters[] = $character;
-            return true;
-        }
-
-        $prev = $this->regex->stringCanBeComplicated($this->current_token_characters);
-
-        $this->current_token_characters[] = $character;
-
-        $current = $this->regex->stringCanBeComplicated($this->current_token_characters);
-
-        if (!$prev) {
-            throw new \LogicException("строка должна быть частью составного токена");
-        }
-
-        if ($prev && $current) {
-            return true;
-        }
-
-        if ($prev && !$current) {
-
-            return false;
-        }
-    }
-
-    protected function endBuildToken()
-    {
-        if (!$this->complicated_started) {
-            throw new \LoggerException("must be started");
-        }
-
-        $this->complicated_started = false;
+        return \Aot\Tokenizer\Token\Token::create(
+            $text,
+            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_OTHER
+        );
     }
 
     /**
@@ -191,27 +192,32 @@ class Base
     }
 
     /**
-     * @param string $character
+     * @param int $type
      */
-    protected function processAsSimpleToken($character)
+    public function addTokenType($type)
     {
-        assert(is_string($character));
+        assert(is_int($type));
 
-
-    }
-
-    /**
-     * @param string $character
-     * @throws \LoggerException
-     */
-    protected function push($character)
-    {
-        if (!$this->complicated_started) {
-            throw new \LoggerException("must be started");
+        if (!in_array($type, \Aot\Tokenizer\Token\TokenFactory::getIds(), true)) {
+            throw new \LogicException("unsupported token type " . var_export($type, 1));
         }
 
-        assert(is_string($character));
+        if (in_array($type, $this->token_types, true)) {
+            return;
+        }
 
-        $this->current_token_characters[] = $character;
+        $this->token_types[] = $type;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+

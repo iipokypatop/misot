@@ -11,114 +11,111 @@ namespace Aot\Tokenizer\Token;
 
 class Regex
 {
-    const REGEX_MODIFIERS = 'misu';
-    const REGEX_DELIMITER = '/';
+    const REGEX_MODIFIERS = 'su';
+    const REGEX_DELIMITER = '#';
     const REGEX_PLUS = '+';
     const REGEX_STAR = '*';
+    const REGEX_CARET = '^';
 
-    const PATTERN_LETTER = '\p{L}'; // Буква	Включает следующие свойства: Ll, Lm, Lo, Lt и Lu.
-    const PATTERN_NUMBER = '\p{N}'; // Число
+    const MASK_HEART_NAME = "heart";
 
-    /*
-      const PATTERN_ =  '/\p{C}/misu'; // Другое
-      const PATTERN_ =  '/\p{Cc}/misu'; // Control
-      const PATTERN_ =  '/\p{Cf}/misu'; // Формат
-      const PATTERN_ =  '/\p{Cn}/misu'; // Не присвоено
-      const PATTERN_ =  '/\p{Co}/misu'; // Частное использование
-      const PATTERN_ =  '/\p{Cs}/misu'; // Суррогат
 
-      const PATTERN_ =  '/\p{Ll}/misu'; // Строчная буква
-      const PATTERN_ =  '/\p{Lm}/misu'; // Модификатор буквы
-      const PATTERN_ =  '/\p{Lo}/misu'; // Другая буква
-      const PATTERN_ =  '/\p{Lt}/misu'; // Заглавная буква
-      const PATTERN_ =  '/\p{Lu}/misu'; // Прописная буква
-      const PATTERN_ =  '/\p{M}/misu'; // Знак
-      const PATTERN_ =  '/\p{Mc}/misu'; // Пробельный знак
-      const PATTERN_ =  '/\p{Me}/misu'; // Окружающий знак
-      const PATTERN_ =  '/\p{Mn}/misu'; // Не пробельный знак
-
-      const PATTERN_ =  '/\p{Nd}/misu'; // Десятичное число
-      const PATTERN_ =  '/\p{Nl}/misu'; // Буквенное число
-      const PATTERN_ =  '/\p{No}/misu'; // Другое число
-      const PATTERN_ =  '/\p{P}/misu'; // Пунктуация
-      const PATTERN_ =  '/\p{Pc}/misu'; // Соединяющая пунктуация
-      const PATTERN_ =  '/\p{Pd}/misu'; // Знаки тире
-      const PATTERN_ =  '/\p{Pe}/misu'; // Закрывающая пунктуация
-      const PATTERN_ =  '/\p{Pf}/misu'; // Заключительная пунктуация
-      const PATTERN_ =  '/\p{Pi}/misu'; // Начальная пунктуация
-      const PATTERN_ =  '/\p{Po}/misu'; // Другая пунктуация
-      const PATTERN_ =  '/\p{Ps}/misu'; // Открывающая пунктуация
-      const PATTERN_ =  '/\p{S}/misu'; // Символ
-      const PATTERN_ =  '/\p{Sc}/misu'; // Денежный знак
-      const PATTERN_ =  '/\p{Sk}/misu'; // Модификатор символа
-      const PATTERN_ =  '/\p{Sm}/misu'; // Математический символ
-      const PATTERN_ =  '/\p{So}/misu'; // Другой символ
-      const PATTERN_ =  '/\p{Z}/misu'; // Разделитель
-      const PATTERN_ =  '/\p{Zl}/misu'; // Разделитель строки
-      const PATTERN_ =  '/\p{Zp}/misu'; // Разделитель абзаца
-      const PATTERN_ =  '/\p{Zs}/misu'; // Пробельный разделитель
-    */
+    const PATTERN_DOT = '.';
     /**
-     * @var string[]
+     * @var string
      */
-    protected $last_patterns = [];
+    protected $heart;
+    protected $caret = '';
 
-    /**
-     * @var string[]
-     */
-    protected $last_pattern_keys = [];
+//    /**
+//     * @param $heart
+//     * @return Regex
+//     */
+//    public static function createWithPlus($heart)
+//    {
+//        $ob = new static($heart . static::REGEX_PLUS);
+//
+//        return $ob;
+//    }
+//
+//
+//    /**
+//     * @param $heart
+//     * @return Regex
+//     */
+//    public static function createWithStar($heart)
+//    {
+//        $ob = new static($heart . static::REGEX_STAR);
+//
+//        return $ob;
+//    }
+//
+//
+//    /**
+//     * @param $heart
+//     * @return Regex
+//     */
+//    public static function createWithCaret($heart)
+//    {
+//        $ob = new static(static::REGEX_CARET . $heart);
+//
+//        return $ob;
+//    }
+    protected $matches;
 
     /**
-     * @var string[]
+     * @param string $heart
      */
-    protected $last_token_characters = [];
-
-    public static function create()
+    protected function __construct($heart)
     {
-        $ob = new static;
+        assert(is_string($heart));
 
-        return $ob;
+        $this->heart = $heart;
     }
 
-    public function run()
+    /**
+     * @param $heart
+     * @return Regex
+     */
+    public static function create($heart)
     {
+        $ob = new static($heart);
 
+        return $ob;
     }
 
     /**
      * @param string $string
      * @return bool
      */
-    public function charCanBeComplicated($string)
+    public function match($string)
     {
-        assert(is_string($string));
+        $res = preg_match(
+            $this->buildPattern(),
+            $string,
+            $this->matches
+        );
 
-        foreach ($this->getComplicatedPatterns() as $comlicatedPattertn) {
-
-            $res = preg_match($this->buildPattern($comlicatedPattertn), $string);
-
-            if ($res === 1) {
-                return true;
-            }
+        if ($res === false) {
+            return false;
         }
 
-        return false;
-    }
-
-    protected function getComplicatedPatterns()
-    {
-        return [
-            static::PATTERN_LETTER,
-            static::PATTERN_NUMBER,
-        ];
+        return $res > 0;
     }
 
     /**
-     * @param string $heart
      * @return string
      */
-    protected function buildPattern($heart)
+    protected function buildPattern()
     {
+        $heart = join('', [
+            $this->caret,
+            '(?<' . static::MASK_HEART_NAME . ">",
+            $this->heart,
+
+            ")",
+        ]);
+
         return join('', [
             static::REGEX_DELIMITER,
             $heart,
@@ -127,120 +124,15 @@ class Regex
         ]);
     }
 
-    /**
-     * @param array $characters
-     * @return bool
-     */
-    public function stringCanBeComplicated(array $characters)
+    public function addStartingCaret()
     {
-        $this->last_token_characters = $characters;
-
-        $string = join('', $characters);
-        $this->last_token_characters = $characters;
-        if (count($this->last_patterns) > 0) {
-
-            $last_patterns = [];
-            $last_pattern_keys = [];
-
-            foreach ($this->last_patterns as $index => $pattern) {
-                $key = $this->last_pattern_keys[$index];
-
-                $res = $this->exec(
-                    $this->buildPattern($pattern . static::REGEX_PLUS),
-                    $string
-                );
-
-                if ($res === 1) {
-                    $last_patterns[] = $pattern;
-                    $last_pattern_keys[] = $key;
-                }
-            }
-
-            $this->last_patterns = $last_patterns;
-            $this->last_pattern_keys = $last_pattern_keys;
-
-            return count($this->last_patterns) > 0;
-        }
-
-        foreach ($this->getComplicatedPatterns() as $key => $comlicatedPattertn) {
-
-            $res = $this->exec(
-                $this->buildPattern($comlicatedPattertn . static::REGEX_PLUS),
-                $string
-            );
-
-            if ($res === 1) {
-                $this->last_patterns[] = $comlicatedPattertn;
-                $this->last_pattern_keys[] = $key;
-            }
-        }
-
-
-        return count($this->last_patterns) > 0;
+        $this->caret = static::REGEX_CARET;
     }
 
-    /**
-     * @param string $pattern
-     * @param string $string
-     * @return int
-     */
-    protected function exec($pattern, $string)
+    public function getLastMatching()
     {
-        $res = preg_match($pattern, $string);
-
-        if ($res === false) {
-            return -1;
-        }
-
-        if (is_int($res)) {
-            return $res;
-        }
+        return $this->matches[static::MASK_HEART_NAME];
     }
 
-    public function reset()
-    {
-        $this->last_patterns = [];
-        $this->last_pattern_keys = [];
-    }
 
-    /**
-     * @return static
-     */
-    public function factoryTokenWithLastPatternType()
-    {
-        if (empty($this->last_pattern_keys)) {
-            throw new \LogicException('последний тип обрабатываемого символа не задан');
-        }
-
-        $characters = array_slice($this->last_token_characters, 0, count($this->last_token_characters) - 1);
-
-        $text = join('', $characters);
-
-        return \Aot\Tokenizer\Token\Token::create($text, \Aot\Tokenizer\Token\Token::TOKEN_TYPE_WORD);
-    }
-
-    /**
-     * @param string $c
-     * @return Token
-     */
-    public function factoryTokenFromCharacter($c)
-    {
-        assert(is_string($c));
-
-        $type = $this->autoDetectTypeOfToken($c);
-
-        return Token::create($c, $type);
-    }
-
-    /**
-     * @param string $c
-     * @return int
-     */
-    protected function autoDetectTypeOfToken($c)
-    {
-        assert(is_string($c));
-
-        //return \Aot\Tokenizer\Token\Token::create($c, \Aot\Tokenizer\Token\Token::TOKEN_TYPE_WORD);
-        return \Aot\Tokenizer\Token\Token::TOKEN_TYPE_WORD;
-    }
 }
