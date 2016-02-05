@@ -98,7 +98,9 @@ class Parser
             $tokens_queue->push($token);
         }
 
-        while ($tokens_queue->count() > 0) {
+        $max_iterations = $tokens_queue->count();
+        $iteration = 0;
+        while ($tokens_queue->count() > 0 && $iteration++ < $max_iterations) {
             $units[] = \Aot\Text\TextParserByTokenizer\Unit::create($tokens_queue);
         }
 
