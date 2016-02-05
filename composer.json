@@ -28,14 +28,14 @@
   "repositories": [
     {
       "type": "git",
-      "url": "git@git.mivar.pro:mivar-projects/test-utils.git"
+      "url": "git@gitlab.mivar.ru:mivar-projects/test-utils.git"
     },
     {
       "url": "https://github.com/yeeegem/doctrine2-nestedset.git",
       "type": "git"
     },
     {
-      "url": "git@git.mivar.pro:mivar-projects/semantic-db-api.git",
+      "url": "git@gitlab.mivar.ru:mivar-projects/semantic-db-api.git",
       "type": "git"
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "type": "git",
-      "url": "git@git.mivar.pro:mivar-projects/text-libraries.git"
+      "url": "git@gitlab.mivar.ru:mivar-projects/text-libraries.git"
     },
     {
       "url": "https://github.com/iipokypatop/graph.git",
@@ -75,7 +75,8 @@
     "psr-4": {
       "AotTest\\": "tests/",
       "Aot\\": "src/"
-    }
+    },
+    "classmap": ["LegacyClassesStub.php"]
   },
   "scripts": {
     "post-autoload-dump": [
@@ -89,6 +90,18 @@
         "txt",
         "mivar-projects"
       ]
-    }
+    },
+    "mivar-configuration": [
+      "misot.morphic.db.host",
+      "misot.morphic.db.port",
+      "misot.morphic.db.user",
+      "misot.morphic.db.password",
+      "misot.morphic.db.dbname",
+      "misot.intelligence.db.host",
+      "misot.intelligence.db.port",
+      "misot.intelligence.db.user",
+      "misot.intelligence.db.password",
+      "misot.intelligence.db.dbname"
+    ]
   }
 }

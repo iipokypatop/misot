@@ -238,8 +238,8 @@ class SyntaxTest extends \AotTest\AotDataStorage
         $pretty = $this->pretty(
             $result
         );
-        echo join("\n", $pretty);
-        echo "\n";
+        //echo join("\n", $pretty);
+        //echo "\n";
 
     }
 

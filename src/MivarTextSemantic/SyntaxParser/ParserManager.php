@@ -62,8 +62,23 @@ class ParserManager
         $context = 1,
         $vl = 1,
         $origin = "",
-        $connection_string = \Aot\MivarTextSemantic\Constants::DB_MIVAR_INTELLIGENCE
+        $connection_string = null
     ) {
+
+        if ($connection_string === null) {
+            $config = \MivarUtils\Common\Config::getConfig();
+
+            $db = $config['misot']['intelligence']['db'];
+
+            $connection_string =
+                \MivarUtils\Common\Config::build_connection_string(
+                    $db['host'],
+                    $db['dbname'],
+                    $db['user'],
+                    $db['password']
+                );
+        }
+
         //$this->reg_parser = new RegParser;
         $this->reg_parser = new Text;
         $this->current_dictionary = new DMivarDictionary(array());
