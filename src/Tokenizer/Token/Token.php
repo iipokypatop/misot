@@ -29,15 +29,15 @@ class Token
     /**
      * @var string
      */
-    protected $text;
+    public $text;
 
     /**
      * @var int
      */
-    protected $type;
+    public $type;
 
 
-    protected $__debug_name;
+    public $__debug_name;
 
     /**
      * Token constructor.
