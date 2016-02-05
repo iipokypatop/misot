@@ -16,7 +16,7 @@ class Parser
     /** @var  \Aot\Text\TextParser\Filters\Base[] */
     protected $filters;
 
-    /** @var  \Aot\Tokenizer\Token\Token[] */
+    /** @var \Aot\Tokenizer\Token\Token[] */
     protected $tokens;
 
     // фильтрация невалидных символов
@@ -88,6 +88,16 @@ class Parser
      */
     protected function createUnits()
     {
-        var_dump($this->tokens);
+        $units = [];
+        $tokens = new \SplDoublyLinkedList();
+        foreach ($this->tokens as $token) {
+            $tokens->push($token);
+        }
+
+        print_r([$tokens->count()]);
+        while ($tokens->count() > 0) {
+            $units[] = \Aot\Text\TextParserByTokenizer\Unit::create($tokens);
+        }
+        print_r([$tokens->count()]);
     }
 }

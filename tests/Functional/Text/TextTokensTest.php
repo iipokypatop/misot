@@ -84,6 +84,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
         $tokens[] = Token::create(' ', Token::TOKEN_TYPE_SPACE);
         $tokens[] = Token::create('нет', Token::TOKEN_TYPE_WORD);
         $tokens[] = Token::create('...', Token::TOKEN_TYPE_PUNCTUATION);
+
         return $tokens;
     }
 }
