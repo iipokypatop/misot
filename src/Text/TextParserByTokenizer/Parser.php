@@ -19,8 +19,12 @@ class Parser
     /** @var \Aot\Tokenizer\Token\Token[] */
     protected $tokens;
 
+    /** @var  \Aot\Text\TextParserByTokenizer\Unit[] */
+    protected $units;
+
     // фильтрация невалидных символов
     const FILTER_NO_VALID_SYMBOLS = 1;
+
 
     /**
      * @param string $text
@@ -89,15 +93,32 @@ class Parser
     protected function createUnits()
     {
         $units = [];
-        $tokens = new \SplDoublyLinkedList();
+        $tokens_queue = new \SplQueue();
         foreach ($this->tokens as $token) {
-            $tokens->push($token);
+            $tokens_queue->push($token);
         }
 
-        print_r([$tokens->count()]);
-        while ($tokens->count() > 0) {
-            $units[] = \Aot\Text\TextParserByTokenizer\Unit::create($tokens);
+        while ($tokens_queue->count() > 0) {
+            $units[] = \Aot\Text\TextParserByTokenizer\Unit::create($tokens_queue);
         }
-        print_r([$tokens->count()]);
+
+        $this->units = $units;
+    }
+
+
+    /**
+     * @return \Aot\Tokenizer\Token\Token[]
+     */
+    public function getTokens()
+    {
+        return $this->tokens;
+    }
+
+    /**
+     * @return \Aot\Text\TextParserByTokenizer\Unit[]
+     */
+    public function getUnits()
+    {
+        return $this->units;
     }
 }

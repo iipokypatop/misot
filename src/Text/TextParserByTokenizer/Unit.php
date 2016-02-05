@@ -25,18 +25,18 @@ class Unit
     protected $type;
 
     /**
-     * @param \SplDoublyLinkedList $tokens
+     * @param \SplDoublyLinkedList $tokens_queue
      * @return \Aot\Text\TextParserByTokenizer\Unit
      */
-    public static function create(\SplDoublyLinkedList $tokens)
+    public static function create(\SplDoublyLinkedList $tokens_queue)
     {
-        foreach ($tokens as $token) {
+        foreach ($tokens_queue as $token) {
             assert(is_a($token, \Aot\Tokenizer\Token\Token::class, true));
         }
 
         $ob = new static();
 
-        /*$tokens = */$ob->search($tokens);
+        $ob->search($tokens_queue);
 
         return $ob;
     }
@@ -48,20 +48,17 @@ class Unit
 
 
     /**
-     * @param \SplDoublyLinkedList $tokens
+     * @param \SplDoublyLinkedList $tokens_queue
      * @return \Aot\Tokenizer\Token\Token[]
      */
-    protected function search(\SplDoublyLinkedList $tokens)
+    protected function search(\SplDoublyLinkedList $tokens_queue)
     {
-        foreach ($tokens as $token) {
-            assert(is_a($token, \Aot\Tokenizer\Token\Token::class, true));
-        }
-
-        foreach ($tokens as $id => $token) {
+        foreach ($tokens_queue as $id => $token) {
             $this->tokens[] = $token;
             $this->type = $token->getType();
-            unset($tokens[$id]);
-//            return $tokens;
+            unset($tokens_queue[$id]);
+            // TODO: why it's necessary?
+            return $tokens_queue;
         }
     }
 

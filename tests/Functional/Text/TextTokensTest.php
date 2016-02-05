@@ -31,24 +31,13 @@ class TextTokensTest extends \AotTest\AotDataStorage
 
         // запускаем
         $parser->run();
-
-        die('test');
     }
 
-    public function testLaunch2()
+    public function testTokensAndFilter()
     {
         $tokens = $this->getTokens();
 
-//        var_dump($tokens);
         $this->filterTokens($tokens);
-//        var_dump($doubly_list);
-
-//        $doubly_list = new \SplDoublyLinkedList();
-//        foreach ($tokens as $token) {
-//            $doubly_list->push($token);
-//        }
-
-        die('test');
     }
 
     /**
