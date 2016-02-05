@@ -16,7 +16,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
 {
     use DataProvidersParseText;
 
-    public function testLaunch()
+    public function testSearchUnits()
     {
         $text = 'человек кого-то увидел, или нет...';
         $parser = \Aot\Text\TextParserByTokenizer\Parser::create(
@@ -31,7 +31,30 @@ class TextTokensTest extends \AotTest\AotDataStorage
 
         // запускаем
         $parser->run();
+
+        // токены соответсвуют юнитам
+        foreach ($parser->getUnits() as $id => $unit) {
+            $this->assertEquals($parser->getTokens()[$id], $unit->getTokens()[0]);
+        }
     }
+
+    public function testTokenizer()
+    {
+        $tokenizer = \Aot\Text\TextParserByTokenizer\ParseTokenizer::createEmptyConfiguration();
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER);
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION);
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_DASH);
+
+        $tokens = $tokenizer->tokenize('человек кого-то увидел, или нет...');
+
+        var_dump($tokenizer->getTokens());
+
+
+    }
+
+
 
     public function testTokensAndFilter()
     {
@@ -60,19 +83,19 @@ class TextTokensTest extends \AotTest\AotDataStorage
     {
         // 'человек кого-то увидел, или нет...';
         $tokens = [];
-        $tokens[] = Token::create('чело£век', Token::TOKEN_TYPE_WORD);
-        $tokens[] = Token::create(' ', Token::TOKEN_TYPE_SPACE);
-        $tokens[] = Token::create('кого', Token::TOKEN_TYPE_WORD);
-        $tokens[] = Token::create('-', Token::TOKEN_TYPE_DASH);
-        $tokens[] = Token::create('то', Token::TOKEN_TYPE_WORD);
-        $tokens[] = Token::create(' ', Token::TOKEN_TYPE_SPACE);
-        $tokens[] = Token::create('¶увидел', Token::TOKEN_TYPE_WORD);
-        $tokens[] = Token::create(',', Token::TOKEN_TYPE_PUNCTUATION);
-        $tokens[] = Token::create(' ', Token::TOKEN_TYPE_SPACE);
-        $tokens[] = Token::create('или', Token::TOKEN_TYPE_WORD);
-        $tokens[] = Token::create(' ', Token::TOKEN_TYPE_SPACE);
-        $tokens[] = Token::create('нет', Token::TOKEN_TYPE_WORD);
-        $tokens[] = Token::create('...', Token::TOKEN_TYPE_PUNCTUATION);
+        $tokens[] = Token::create('чело£век', \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
+        $tokens[] = Token::create(' ', \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
+        $tokens[] = Token::create('кого', \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
+        $tokens[] = Token::create('-', \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_DASH);
+        $tokens[] = Token::create('то', \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
+        $tokens[] = Token::create(' ', \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
+        $tokens[] = Token::create('¶увидел', \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
+        $tokens[] = Token::create(',', \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION);
+        $tokens[] = Token::create(' ', \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
+        $tokens[] = Token::create('или', \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
+        $tokens[] = Token::create(' ', \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
+        $tokens[] = Token::create('нет', \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
+        $tokens[] = Token::create('...', \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION);
 
         return $tokens;
     }

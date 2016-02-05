@@ -45,7 +45,7 @@ class Base
 
     /**
      * @param string $string
-     * @return \Aot\Tokenizer\Token\Token[]
+     * @return int
      */
     public function tokenize($string)
     {

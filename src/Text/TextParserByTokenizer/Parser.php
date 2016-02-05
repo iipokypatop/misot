@@ -105,6 +105,7 @@ class Parser
         }
 
         $this->units = $units;
+        print_r($units);
     }
 
 

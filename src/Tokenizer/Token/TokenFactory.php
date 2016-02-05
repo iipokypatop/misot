@@ -20,6 +20,9 @@ class TokenFactory
     const TOKEN_TYPE_SPACE = 13;
     const TOKEN_TYPE_PUNCTUATION = 14;
 
+    const TOKEN_TYPE_DASH = 15;
+
+
     /**
      * @var int
      */
@@ -38,6 +41,7 @@ class TokenFactory
             static::TOKEN_TYPE_NUMBER,
             static::TOKEN_TYPE_SPACE,
             static::TOKEN_TYPE_PUNCTUATION,
+            static::TOKEN_TYPE_DASH,
         ];
     }
 
@@ -51,6 +55,7 @@ class TokenFactory
             static::TOKEN_TYPE_NUMBER => 'число',
             static::TOKEN_TYPE_SPACE => 'пробел',
             static::TOKEN_TYPE_PUNCTUATION => 'пунктуация',
+            static::TOKEN_TYPE_DASH => 'тире',
         ];
     }
 }
