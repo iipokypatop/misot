@@ -34,7 +34,7 @@ class Parser
      * @param int[] $filter_flags
      * @return \Aot\Text\TextParserByTokenizer\Parser
      */
-    public static function create($text, array $filter_flags)
+    public static function create($text, array $filter_flags = [])
     {
         return new static($text, $filter_flags);
     }
@@ -44,7 +44,7 @@ class Parser
         assert(is_string($text));
         $this->text = $text;
 
-        if (empty($filter_flags)) {
+        if ([] === $filter_flags) {
             return;
         }
 
@@ -53,6 +53,7 @@ class Parser
             if (self::FILTER_NO_VALID_SYMBOLS === $filter_flag) {
                 $this->filters[] = \Aot\Text\TextParser\Filters\NoValid::create($logger);
             }
+            // TODO: другие фильтры
         }
     }
 
@@ -82,9 +83,6 @@ class Parser
      */
     protected function splitTextIntoTokens()
     {
-        if (isset($this->tokens)) {
-            return;
-        }
         $tokenizer = \Aot\Text\TextParserByTokenizer\Tokenizer::createEmptyConfiguration();
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER);
@@ -103,6 +101,7 @@ class Parser
         if (empty($this->filters)) {
             return $this->tokens;
         }
+        
         /** @var \Aot\Tokenizer\Token\Token[] $filtered_tokens */
         $filtered_tokens = [];
 
