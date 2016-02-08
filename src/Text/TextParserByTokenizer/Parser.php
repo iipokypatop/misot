@@ -70,17 +70,8 @@ class Parser
         // поиск шаблонов в псевдокоде
         $found_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::findEntryPatterns($pseudo_code);
 
-
-//        print_r($found_patterns);
         // объединение токенов в группы по найденным шаблонам
-        $groups_tokens = [];
-        foreach ($found_patterns as $found_pattern) {
-            $start = $found_pattern['start_id'];
-            $end = $found_pattern['end_id'];
-            for ($i = $start; $i <= $end; $i++) {
-                $groups_tokens[$start][] = $tokens[$i];
-            }
-        }
+        $groups_tokens = $this->groupingOfTokens($tokens, $found_patterns);
 
         // создание юнитов
         $this->units = $this->createUnits($tokens, $groups_tokens);
@@ -91,7 +82,9 @@ class Parser
      */
     protected function splitTextIntoTokens()
     {
-        return;
+        if( isset($this->tokens)){
+            return;
+        }
         $tokenizer = \Aot\Text\TextParserByTokenizer\Tokenizer::createEmptyConfiguration();
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER);
@@ -101,7 +94,6 @@ class Parser
         $tokenizer->tokenize($this->text);
         $this->tokens = $tokenizer->getTokens();
     }
-
 
     /**
      * @return \Aot\Tokenizer\Token\Token[]
@@ -122,30 +114,6 @@ class Parser
         }
 
         return $filtered_tokens;
-    }
-
-    /**
-     * @return \Aot\Tokenizer\Token\Token[]
-     */
-    public function getTokens()
-    {
-        return $this->tokens;
-    }
-
-    /**
-     * @return \Aot\Text\TextParserByTokenizer\Unit[]
-     */
-    public function getUnits()
-    {
-        return $this->units;
-    }
-
-    /**
-     * @return \Aot\Tokenizer\Token\Token[]
-     */
-    public function getFilteredTokens()
-    {
-        return $this->filtered_tokens;
     }
 
     /**
@@ -182,6 +150,48 @@ class Parser
             }
         }
         return $units;
+    }
+
+    /**
+     * @param array $tokens
+     * @param array $found_patterns
+     * @return array
+     */
+    protected function groupingOfTokens(array $tokens, array $found_patterns)
+    {
+        $groups_tokens = [];
+        foreach ($found_patterns as $found_pattern) {
+            $start = $found_pattern['start_id'];
+            $end = $found_pattern['end_id'];
+            for ($i = $start; $i <= $end; $i++) {
+                $groups_tokens[$start][] = $tokens[$i];
+            }
+        }
+        return $groups_tokens;
+    }
+
+    /**
+     * @return \Aot\Tokenizer\Token\Token[]
+     */
+    public function getTokens()
+    {
+        return $this->tokens;
+    }
+
+    /**
+     * @return \Aot\Text\TextParserByTokenizer\Unit[]
+     */
+    public function getUnits()
+    {
+        return $this->units;
+    }
+
+    /**
+     * @return \Aot\Tokenizer\Token\Token[]
+     */
+    public function getFilteredTokens()
+    {
+        return $this->filtered_tokens;
     }
 
 }

@@ -16,7 +16,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
 {
     public function testSearchUnits()
     {
-        $text = 'человек кого-то увидел, или нет...';
+        $text = 'чело£век кого-то ¶увидел, или нет...';
         $parser = \Aot\Text\TextParserByTokenizer\Parser::create(
             $text,
             [
@@ -29,11 +29,29 @@ class TextTokensTest extends \AotTest\AotDataStorage
 
         // запускаем
         $parser->run();
+        $this->assertEquals('человек кого-то увидел, или нет...', join('', $parser->getUnits()));
+        $this->assertEquals(11, count($parser->getUnits()));
+    }
+
+    public function testSearchUnitsWithTokenizer()
+    {
+        $text = 'чело£век кого-то ¶увидел, или нет...';
+        $parser = \Aot\Text\TextParserByTokenizer\Parser::create(
+            $text,
+            [
+                \Aot\Text\TextParserByTokenizer\Parser::FILTER_NO_VALID_SYMBOLS
+            ]
+        );
+        // запускаем
+        $parser->run();
+        $this->assertEquals('человек кого-то увидел, или нет...', join('', $parser->getUnits()));
+//        print_r($parser->getUnits());
+//        die();
+//        $this->assertEquals(11, count($parser->getUnits()));
     }
 
     public function testLaunchTokenizer()
     {
-
         $tokenizer = \Aot\Text\TextParserByTokenizer\Tokenizer::createEmptyConfiguration();
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER);
@@ -43,30 +61,6 @@ class TextTokensTest extends \AotTest\AotDataStorage
 
         $tokens = $tokenizer->tokenize('человек кого-то увидел, или нет...');
     }
-
-
-    public function testTokensAndFilter()
-    {
-        $tokens = $this->getTokens();
-
-        $this->filterTokens($tokens);
-    }
-
-    /**
-     * @param \Aot\Tokenizer\Token\Token[] $tokens
-     */
-    protected function filterTokens(array $tokens)
-    {
-
-        $logger = \Aot\Text\TextParser\Logger::create();
-        $filterNoValid = \Aot\Text\TextParser\Filters\NoValid::create($logger);
-
-        foreach ($tokens as $token) {
-            $filtered_text = $filterNoValid->filter($token->getText());
-            $token->setText($filtered_text);
-        }
-    }
-
 
     protected function getTokens()
     {
