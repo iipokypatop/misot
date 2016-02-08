@@ -58,25 +58,33 @@ class Parser
 
     public function run()
     {
+        // разбиение текста на токены
         $this->splitTextIntoTokens();
-        $tokens = $this->tokens;
-        if (isset($this->filters)) {
-            $tokens = $this->filterTokens($this->tokens);
-            $this->filtered_tokens = $tokens;
-        }
 
+        // фильтрация токенов
+        $tokens = $this->filterTokens();
 
+        // создание псевдокода по токенам
         $pseudo_code = $this->createPseudoCode($tokens);
 
-        $this->findEntryPatterns($pseudo_code);
+        // поиск шаблонов в псевдокоде
+        $found_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::findEntryPatterns($pseudo_code);
 
-        die();
-        print_r($this->tokens);
-        print_r($this->filtered_tokens);
-        $this->createUnits($tokens);
 
-        $this->combineUnites();
+//        print_r($found_patterns);
+        // объединение токенов в группы по найденным шаблонам
+        $groups_tokens = [];
+        foreach ($found_patterns as $found_pattern) {
+            $start = $found_pattern['start_id'];
+            $end = $found_pattern['end_id'];
+            for ($i = $start; $i <= $end; $i++) {
+                $groups_tokens[$start][] = $tokens[$i];
+//                unset($tokens[$i]);
+            }
+        }
 
+        // создание юнитов
+        $this->createUnits($tokens, $groups_tokens);
     }
 
     /**
@@ -97,15 +105,17 @@ class Parser
 
 
     /**
-     * @param \Aot\Tokenizer\Token\Token[] $tokens
      * @return \Aot\Tokenizer\Token\Token[]
      */
-    protected function filterTokens(array $tokens)
+    protected function filterTokens()
     {
+        if (empty($this->filters)) {
+            return $this->tokens;
+        }
         /** @var \Aot\Tokenizer\Token\Token[] $filtered_tokens */
         $filtered_tokens = [];
 
-        foreach ($tokens as $token) {
+        foreach ($this->tokens as $token) {
             foreach ($this->filters as $filter) {
                 $filtered_text = $filter->filter($token->getText());
                 $filtered_tokens[] = \Aot\Tokenizer\Token\Token::create($filtered_text, $token->getType());
@@ -114,28 +124,6 @@ class Parser
 
         return $filtered_tokens;
     }
-
-    /**
-     * Создание Unit'ов
-     * @param \Aot\Tokenizer\Token\Token[] $tokens
-     */
-    protected function createUnits(array $tokens)
-    {
-        $units = [];
-        $tokens_queue = new \SplQueue();
-        foreach ($tokens as $token) {
-            $tokens_queue->push($token);
-        }
-
-        $max_iterations = $tokens_queue->count();
-        $iteration = 0;
-
-        while ($tokens_queue->count() > 0 && $iteration++ < $max_iterations) {
-            $units[] = \Aot\Text\TextParserByTokenizer\Unit::create($tokens_queue);
-        }
-        $this->units = $units;
-    }
-
 
     /**
      * @return \Aot\Tokenizer\Token\Token[]
@@ -161,11 +149,6 @@ class Parser
         return $this->filtered_tokens;
     }
 
-    protected function combineUnites()
-    {
-        $code = $this->createPseudoCode();
-    }
-
     /**
      * @param \Aot\Tokenizer\Token\Token[] $tokens
      * @return string
@@ -182,24 +165,24 @@ class Parser
     }
 
     /**
-     * @param string $pseudo_code
+     * Создание Unit'ов
+     * @param \Aot\Tokenizer\Token\Token[] $tokens
+     * @param \Aot\Tokenizer\Token\Token[][] $groups_tokens
      */
-    protected function findEntryPatterns($pseudo_code){
-        foreach (\Aot\Text\TextParserByTokenizer\UnitingPatterns::getUnitingPatterns() as $rule) {
-            if (preg_match_all('/' . $rule . '/', $pseudo_code, $matches_all, PREG_OFFSET_CAPTURE)) {
-                foreach ($matches_all[0] as $matches) {
-
-                    $count_units = strlen($matches[0]);
-                    $start_id = $matches[1];
-
-                    $united_tokens[] = [
-                        'start_id' => $start_id,
-                        'end_id' => $start_id + $count_units - 1,
-                    ];
-                }
+    protected function createUnits(array $tokens, array $groups_tokens)
+    {
+        $amount = count($tokens);
+        $units = [];
+        for ($i = 0; $i < $amount; $i++) {
+            if (!empty($groups_tokens[$i])) {
+                $units[] = \Aot\Text\TextParserByTokenizer\Unit::createWithTokens($groups_tokens[$i]);
+                $i += count($groups_tokens[$i]);
+            } else {
+                $units[] = \Aot\Text\TextParserByTokenizer\Unit::createWithTokens([$tokens[$i]]);
             }
         }
-        print_r($united_tokens);
+        print_r($units);
+        die();
     }
 
 }
