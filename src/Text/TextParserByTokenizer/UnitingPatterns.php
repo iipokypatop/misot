@@ -14,8 +14,10 @@ namespace Aot\Text\TextParserByTokenizer;
  */
 class UnitingPatterns
 {
-    const WORD_WITH_DASH = 'W(DW)+'; // слово-слово
+    const WORD_WITH_DASH = 'W(DW)+'; // слова через дефис
     const ELLIPSIS = 'PPP'; // троеточие
+    const STUCK_TOGETHER_WORDS = 'W{2,}'; // слепленные слова
+    const MANY_SPACES = 'S{2,}'; // слепленные пробелы
 
     /**
      * @return string[]
@@ -25,6 +27,8 @@ class UnitingPatterns
         return [
             self::WORD_WITH_DASH,
             self::ELLIPSIS,
+            self::STUCK_TOGETHER_WORDS,
+            self::MANY_SPACES,
         ];
     }
 

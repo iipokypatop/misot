@@ -51,9 +51,15 @@ class Unit
             assert(is_a($token, \Aot\Tokenizer\Token\Token::class, true));
         }
 
+        if ([] === $tokens) {
+            throw new \LogicException('Failed to create the Unit, input array is empty!');
+        }
         $ob = new static();
 
         $ob->tokens = $tokens;
+
+        // тип наследуется от первого токена
+        $ob->type = $tokens[0]->getType();
 
         return $ob;
     }

@@ -29,6 +29,7 @@ TEXT;
 
         $count = $tokenizer->tokenize($string);
 
+        var_export($tokenizer->getTokens());
         $this->assertEquals(61, $count);
 
         $recovered_string = '';

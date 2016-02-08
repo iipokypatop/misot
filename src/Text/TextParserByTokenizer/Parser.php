@@ -82,15 +82,15 @@ class Parser
      */
     protected function splitTextIntoTokens()
     {
-        if( isset($this->tokens)){
+        if (isset($this->tokens)) {
             return;
         }
         $tokenizer = \Aot\Text\TextParserByTokenizer\Tokenizer::createEmptyConfiguration();
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER);
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
-        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION);
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_DASH);
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION);
         $tokenizer->tokenize($this->text);
         $this->tokens = $tokenizer->getTokens();
     }
@@ -109,6 +109,9 @@ class Parser
         foreach ($this->tokens as $token) {
             foreach ($this->filters as $filter) {
                 $filtered_text = $filter->filter($token->getText());
+                if ($filtered_text === '') {
+                    continue;
+                }
                 $filtered_tokens[] = \Aot\Tokenizer\Token\Token::create($filtered_text, $token->getType());
             }
         }

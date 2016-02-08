@@ -35,7 +35,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
 
     public function testSearchUnitsWithTokenizer()
     {
-        $text = 'чело£век кого-то ¶увидел, или нет...';
+        $text = 'чело£век    кого-то ¶увидел, или нет...';
         $parser = \Aot\Text\TextParserByTokenizer\Parser::create(
             $text,
             [
@@ -44,10 +44,18 @@ class TextTokensTest extends \AotTest\AotDataStorage
         );
         // запускаем
         $parser->run();
-        $this->assertEquals('человек кого-то увидел, или нет...', join('', $parser->getUnits()));
-//        print_r($parser->getUnits());
-//        die();
-//        $this->assertEquals(11, count($parser->getUnits()));
+        $this->assertEquals('человек    кого-то увидел, или нет...', join('', $parser->getUnits()));
+        $this->assertEquals(11, count($parser->getUnits()));
+        var_export($parser->getUnits());
+    }
+
+    public function testSearchPatterns()
+    {
+        $pseudo_code = 'WDWDWSSWPSPPP';
+        $found = \Aot\Text\TextParserByTokenizer\UnitingPatterns::findEntryPatterns($pseudo_code);
+        print_r($found);
+        print_r($pseudo_code[5]);
+        print_r($pseudo_code[6]);
     }
 
     public function testLaunchTokenizer()
@@ -56,10 +64,11 @@ class TextTokensTest extends \AotTest\AotDataStorage
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER);
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
-        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION);
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_DASH);
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION);
 
         $tokens = $tokenizer->tokenize('человек кого-то увидел, или нет...');
+
     }
 
     protected function getTokens()
