@@ -41,6 +41,23 @@ class Unit
         return $ob;
     }
 
+    /**
+     * @param \Aot\Tokenizer\Token\Token[] $tokens
+     * @return \Aot\Text\TextParserByTokenizer\Unit
+     */
+    public static function createWithTokens(array $tokens)
+    {
+        foreach ($tokens as $token) {
+            assert(is_a($token, \Aot\Tokenizer\Token\Token::class, true));
+        }
+
+        $ob = new static();
+
+        $ob->tokens = $tokens;
+
+        return $ob;
+    }
+
 
     protected function __construct()
     {
@@ -57,8 +74,7 @@ class Unit
             $this->tokens[] = $token;
             $this->type = $token->getType();
             unset($tokens_queue[$id]);
-            // TODO: why it's necessary?
-            return $tokens_queue;
+            break;
         }
     }
 

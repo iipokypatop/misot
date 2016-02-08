@@ -80,13 +80,5 @@ class Token
         return $this->type;
     }
 
-    /**
-     * @param string $text
-     */
-    public function setText($text)
-    {
-        $this->text = $text;
-    }
-
 
 }

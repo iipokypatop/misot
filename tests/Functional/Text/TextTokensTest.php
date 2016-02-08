@@ -14,8 +14,6 @@ use MivarTest\PHPUnitHelper;
 
 class TextTokensTest extends \AotTest\AotDataStorage
 {
-    use DataProvidersParseText;
-
     public function testSearchUnits()
     {
         $text = 'человек кого-то увидел, или нет...';
@@ -34,8 +32,56 @@ class TextTokensTest extends \AotTest\AotDataStorage
 
         // токены соответсвуют юнитам
         foreach ($parser->getUnits() as $id => $unit) {
-            $this->assertEquals($parser->getTokens()[$id], $unit->getTokens()[0]);
+            $this->assertEquals($parser->getFilteredTokens()[$id], $unit->getTokens()[0]);
         }
+
+
+        $temp = [];
+        $registry = [
+            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER => 'N',
+            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION => 'P',
+            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE => 'S',
+            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD => 'W',
+            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_DASH => 'D',
+            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_OTHER => 'O',
+        ];
+
+        // токены соответсвуют юнитам
+        foreach ($parser->getUnits() as $id => $unit) {
+            $token = $unit->getTokens()[0];
+            $temp[$id] = $registry[$token->getType()];
+        }
+        $spec_text = join('', $temp);
+        print_r($temp);
+        print_r([$spec_text]);
+
+        $united_tokens = [];
+        // rule 1
+        $rules = [
+            'W(DW)+',
+        ];
+
+        foreach ($rules as $rule) {
+            if (preg_match_all('/' . $rule . '/', $spec_text, $matches_all, PREG_OFFSET_CAPTURE)) {
+                foreach ($matches_all[0] as $matches) {
+
+                    $count_units = strlen($matches[0]);
+                    $start_id = $matches[1];
+
+                    $temp = [];
+                    for ($i = $start_id; $i < $start_id + $count_units; $i++) {
+                        $temp[\spl_object_hash($parser->getUnits()[$i])] = $parser->getUnits()[$i];
+                    }
+                    $united_tokens[] = $temp;
+
+                    print_r($united_tokens);
+                    # TODO: пересобрать массив юнитов
+                    die();
+                }
+            }
+        }
+
+
     }
 
     public function testLaunchTokenizer()
@@ -50,7 +96,6 @@ class TextTokensTest extends \AotTest\AotDataStorage
 
         $tokens = $tokenizer->tokenize('человек кого-то увидел, или нет...');
     }
-
 
 
     public function testTokensAndFilter()

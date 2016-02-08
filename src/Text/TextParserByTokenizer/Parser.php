@@ -19,6 +19,9 @@ class Parser
     /** @var \Aot\Tokenizer\Token\Token[] */
     protected $tokens;
 
+    /** @var \Aot\Tokenizer\Token\Token[] */
+    protected $filtered_tokens;
+
     /** @var  \Aot\Text\TextParserByTokenizer\Unit[] */
     protected $units;
 
@@ -56,11 +59,13 @@ class Parser
     public function run()
     {
         $this->splitTextIntoTokens();
+        $tokens = $this->tokens;
         if (isset($this->filters)) {
-            $this->filterTokens($this->tokens);
+            $tokens = $this->filterTokens($this->tokens);
+            $this->filtered_tokens = $tokens;
         }
 
-        $this->createUnits();
+        $this->createUnits($tokens);
 
     }
 
@@ -76,36 +81,42 @@ class Parser
 
     /**
      * @param \Aot\Tokenizer\Token\Token[] $tokens
+     * @return \Aot\Tokenizer\Token\Token[]
      */
     protected function filterTokens(array $tokens)
     {
+        /** @var \Aot\Tokenizer\Token\Token[] $filtered_tokens */
+        $filtered_tokens = [];
+
         foreach ($tokens as $token) {
             foreach ($this->filters as $filter) {
                 $filtered_text = $filter->filter($token->getText());
-                $token->setText($filtered_text);
+                $filtered_tokens[] = \Aot\Tokenizer\Token\Token::create($filtered_text, $token->getType());
             }
         }
+
+        return $filtered_tokens;
     }
 
     /**
      * Создание Unit'ов
+     * @param \Aot\Tokenizer\Token\Token[] $tokens
      */
-    protected function createUnits()
+    protected function createUnits(array $tokens)
     {
         $units = [];
         $tokens_queue = new \SplQueue();
-        foreach ($this->tokens as $token) {
+        foreach ($tokens as $token) {
             $tokens_queue->push($token);
         }
 
         $max_iterations = $tokens_queue->count();
         $iteration = 0;
+
         while ($tokens_queue->count() > 0 && $iteration++ < $max_iterations) {
             $units[] = \Aot\Text\TextParserByTokenizer\Unit::create($tokens_queue);
         }
-
         $this->units = $units;
-        print_r($units);
     }
 
 
@@ -123,5 +134,13 @@ class Parser
     public function getUnits()
     {
         return $this->units;
+    }
+
+    /**
+     * @return \Aot\Tokenizer\Token\Token[]
+     */
+    public function getFilteredTokens()
+    {
+        return $this->filtered_tokens;
     }
 }
