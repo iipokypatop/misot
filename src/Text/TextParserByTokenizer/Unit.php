@@ -85,4 +85,10 @@ class Unit
     {
         return $this->tokens;
     }
+
+
+    public function __toString()
+    {
+        return join('', $this->tokens);
+    }
 }

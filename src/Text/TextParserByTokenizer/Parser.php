@@ -79,12 +79,11 @@ class Parser
             $end = $found_pattern['end_id'];
             for ($i = $start; $i <= $end; $i++) {
                 $groups_tokens[$start][] = $tokens[$i];
-//                unset($tokens[$i]);
             }
         }
 
         // создание юнитов
-        $this->createUnits($tokens, $groups_tokens);
+        $this->units = $this->createUnits($tokens, $groups_tokens);
     }
 
     /**
@@ -168,6 +167,7 @@ class Parser
      * Создание Unit'ов
      * @param \Aot\Tokenizer\Token\Token[] $tokens
      * @param \Aot\Tokenizer\Token\Token[][] $groups_tokens
+     * @return \Aot\Text\TextParserByTokenizer\Unit[]
      */
     protected function createUnits(array $tokens, array $groups_tokens)
     {
@@ -176,13 +176,12 @@ class Parser
         for ($i = 0; $i < $amount; $i++) {
             if (!empty($groups_tokens[$i])) {
                 $units[] = \Aot\Text\TextParserByTokenizer\Unit::createWithTokens($groups_tokens[$i]);
-                $i += count($groups_tokens[$i]);
+                $i += count($groups_tokens[$i]) - 1;
             } else {
                 $units[] = \Aot\Text\TextParserByTokenizer\Unit::createWithTokens([$tokens[$i]]);
             }
         }
-        print_r($units);
-        die();
+        return $units;
     }
 
 }
