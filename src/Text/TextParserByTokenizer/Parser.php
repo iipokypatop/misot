@@ -65,7 +65,17 @@ class Parser
             $this->filtered_tokens = $tokens;
         }
 
+
+        $pseudo_code = $this->createPseudoCode($tokens);
+
+        $this->findEntryPatterns($pseudo_code);
+
+        die();
+        print_r($this->tokens);
+        print_r($this->filtered_tokens);
         $this->createUnits($tokens);
+
+        $this->combineUnites();
 
     }
 
@@ -74,8 +84,15 @@ class Parser
      */
     protected function splitTextIntoTokens()
     {
-        #TODO
         return;
+        $tokenizer = \Aot\Text\TextParserByTokenizer\Tokenizer::createEmptyConfiguration();
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER);
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION);
+        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_DASH);
+        $tokenizer->tokenize($this->text);
+        $this->tokens = $tokenizer->getTokens();
     }
 
 
@@ -143,4 +160,46 @@ class Parser
     {
         return $this->filtered_tokens;
     }
+
+    protected function combineUnites()
+    {
+        $code = $this->createPseudoCode();
+    }
+
+    /**
+     * @param \Aot\Tokenizer\Token\Token[] $tokens
+     * @return string
+     */
+    protected function createPseudoCode(array $tokens)
+    {
+        $pseudo_code_array = [];
+
+        // токены соответсвуют юнитам
+        foreach ($tokens as $id => $token) {
+            $pseudo_code_array[$id] = \Aot\Text\TextParserByTokenizer\PseudoCodeRegistry::getTokenCode($token->getType());
+        }
+        return join('', $pseudo_code_array);
+    }
+
+    /**
+     * @param string $pseudo_code
+     */
+    protected function findEntryPatterns($pseudo_code){
+        foreach (\Aot\Text\TextParserByTokenizer\UnitingPatterns::getUnitingPatterns() as $rule) {
+            if (preg_match_all('/' . $rule . '/', $pseudo_code, $matches_all, PREG_OFFSET_CAPTURE)) {
+                foreach ($matches_all[0] as $matches) {
+
+                    $count_units = strlen($matches[0]);
+                    $start_id = $matches[1];
+
+                    $united_tokens[] = [
+                        'start_id' => $start_id,
+                        'end_id' => $start_id + $count_units - 1,
+                    ];
+                }
+            }
+        }
+        print_r($united_tokens);
+    }
+
 }

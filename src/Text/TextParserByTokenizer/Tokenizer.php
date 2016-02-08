@@ -9,7 +9,7 @@
 namespace Aot\Text\TextParserByTokenizer;
 
 
-class ParseTokenizer extends \Aot\Tokenizer\Base
+class Tokenizer extends \Aot\Tokenizer\Base
 {
 
 }
