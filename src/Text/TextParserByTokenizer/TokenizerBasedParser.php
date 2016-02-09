@@ -8,13 +8,13 @@ namespace Aot\Text\TextParserByTokenizer;
  * Date: 05/02/16
  * Time: 15:10
  */
-class Parser
+class TokenizerBasedParser
 {
     /** @var string */
     protected $text;
 
     /** @var  \Aot\Text\TextParser\Filters\Base[] */
-    protected $filters;
+    protected $filters = [];
 
     /** @var  \Aot\Text\TextParserByTokenizer\Unit[] */
     protected $units;
@@ -26,13 +26,18 @@ class Parser
     /**
      * @param string $text
      * @param int[] $filter_flags
-     * @return \Aot\Text\TextParserByTokenizer\Parser
+     * @return \Aot\Text\TextParserByTokenizer\TokenizerBasedParser
      */
     public static function create($text, array $filter_flags = [])
     {
         return new static($text, $filter_flags);
     }
 
+
+    /**
+     * @param string $text
+     * @param \Aot\Text\TextParser\Filters\Base[] $filter_flags
+     */
     protected function __construct($text, array $filter_flags)
     {
         assert(is_string($text));
@@ -47,7 +52,6 @@ class Parser
             if (self::FILTER_NO_VALID_SYMBOLS === $filter_flag) {
                 $this->filters[] = \Aot\Text\TextParser\Filters\NoValid::create($logger);
             }
-            // TODO: другие фильтры
         }
     }
 
@@ -63,7 +67,8 @@ class Parser
         $pseudo_code = $this->createPseudoCode($tokens);
 
         // поиск шаблонов в псевдокоде
-        $found_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::findEntryPatterns($pseudo_code);
+        $uniting_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::create();
+        $found_patterns = $uniting_patterns->findEntryPatterns($pseudo_code);
 
         // объединение токенов в группы по найденным шаблонам
         $groups_tokens = $this->groupingOfTokens($tokens, $found_patterns);
@@ -74,6 +79,7 @@ class Parser
 
     /**
      * Разбить текст на токены
+     * @return \Aot\Tokenizer\Token\Token[]
      */
     protected function splitTextIntoTokens()
     {
@@ -97,7 +103,7 @@ class Parser
             assert(is_a($token, \Aot\Tokenizer\Token\Token::class, true));
         }
 
-        if (!isset($this->filters)) {
+        if (count($this->filters) === 0) {
             return $tokens;
         }
 

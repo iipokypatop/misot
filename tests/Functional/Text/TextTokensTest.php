@@ -21,11 +21,12 @@ class TextTokensTest extends \AotTest\AotDataStorage
     public function testSearchUnitsWithoutFilterAndNormalText()
     {
         $text = 'человек кого-то увидел, или нет...';
-        $parser = \Aot\Text\TextParserByTokenizer\Parser::create($text);
+        $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::create($text);
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'splitTextIntoTokens', []);
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'filterTokens', [$tokens]);
         $pseudo_code = PHPUnitHelper::callProtectedMethod($parser, 'createPseudoCode', [$this->getTokens()]);
-        $found_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::findEntryPatterns($pseudo_code);
+        $uniting_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::create();
+        $found_patterns = $uniting_patterns->findEntryPatterns($pseudo_code);
 
         $groups_tokens = PHPUnitHelper::callProtectedMethod($parser, 'groupingOfTokens', [$tokens, $found_patterns]);
         $units = PHPUnitHelper::callProtectedMethod($parser, 'createUnits', [$tokens, $groups_tokens]);
@@ -42,11 +43,12 @@ class TextTokensTest extends \AotTest\AotDataStorage
     public function testSearchUnitsWithoutFilterAndBadText()
     {
         $text = 'чело£век кого-то ¶увидел, или нет...';
-        $parser = \Aot\Text\TextParserByTokenizer\Parser::create($text);
+        $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::create($text);
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'splitTextIntoTokens', []);
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'filterTokens', [$tokens]);
         $pseudo_code = PHPUnitHelper::callProtectedMethod($parser, 'createPseudoCode', [$this->getTokens()]);
-        $found_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::findEntryPatterns($pseudo_code);
+        $uniting_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::create();
+        $found_patterns = $uniting_patterns->findEntryPatterns($pseudo_code);
 
         $groups_tokens = PHPUnitHelper::callProtectedMethod($parser, 'groupingOfTokens', [$tokens, $found_patterns]);
         $units = PHPUnitHelper::callProtectedMethod($parser, 'createUnits', [$tokens, $groups_tokens]);
@@ -59,16 +61,17 @@ class TextTokensTest extends \AotTest\AotDataStorage
     public function testSearchUnitsWithFilter()
     {
         $text = 'чело£век кого-то ¶увидел, или нет...';
-        $parser = \Aot\Text\TextParserByTokenizer\Parser::create(
+        $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::create(
             $text,
             [
-                \Aot\Text\TextParserByTokenizer\Parser::FILTER_NO_VALID_SYMBOLS
+                \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::FILTER_NO_VALID_SYMBOLS
             ]
         );
 
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'filterTokens', [$this->getTokens()]);
         $pseudo_code = PHPUnitHelper::callProtectedMethod($parser, 'createPseudoCode', [$tokens]);
-        $found_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::findEntryPatterns($pseudo_code);
+        $uniting_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::create();
+        $found_patterns = $uniting_patterns->findEntryPatterns($pseudo_code);
 
         $groups_tokens = PHPUnitHelper::callProtectedMethod($parser, 'groupingOfTokens', [$tokens, $found_patterns]);
         $units = PHPUnitHelper::callProtectedMethod($parser, 'createUnits', [$tokens, $groups_tokens]);
@@ -79,10 +82,10 @@ class TextTokensTest extends \AotTest\AotDataStorage
     public function testSearchUnitsWithTokenizerWithFilter()
     {
         $text = 'чело£век    кого-то ¶увидел, или нет...';
-        $parser = \Aot\Text\TextParserByTokenizer\Parser::create(
+        $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::create(
             $text,
             [
-                \Aot\Text\TextParserByTokenizer\Parser::FILTER_NO_VALID_SYMBOLS
+                \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::FILTER_NO_VALID_SYMBOLS
             ]
         );
         // запускаем
@@ -103,7 +106,8 @@ class TextTokensTest extends \AotTest\AotDataStorage
          * 6) WDW
          */
         $pseudo_code = 'WDWDWSSWPSPPPSWWWPWWDW';
-        $found = \Aot\Text\TextParserByTokenizer\UnitingPatterns::findEntryPatterns($pseudo_code);
+        $uniting_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::create();
+        $found = $uniting_patterns->findEntryPatterns($pseudo_code);
 
         $this->assertEquals(
             [
