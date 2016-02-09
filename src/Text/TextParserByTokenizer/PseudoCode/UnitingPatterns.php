@@ -95,6 +95,7 @@ class UnitingPatterns
             }
         }
 
+
         return $found_patterns;
     }
 

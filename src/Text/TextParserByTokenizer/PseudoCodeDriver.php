@@ -12,11 +12,17 @@ namespace Aot\Text\TextParserByTokenizer;
 class PseudoCodeDriver
 {
 
+    /**
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCodeDriver
+     */
     public static function create()
     {
         return new static();
     }
 
+    protected function __construct()
+    {
+    }
 
     /**
      * @param $tokens
@@ -24,7 +30,6 @@ class PseudoCodeDriver
      */
     public function findBorderGroupsOfTokens($tokens)
     {
-
         // создание псевдокода по токенам
         $pseudo_code = $this->createPseudoCode($tokens);
 

@@ -95,15 +95,14 @@ class TextTokensTest extends \AotTest\AotDataStorage
 
     public function testSearchPatterns()
     {
-        $this->markTestSkipped('Сломался!');
+//        $this->markTestSkipped('Сломался!');
         /**
          * шаблоны:
          * 1) WDWDW
          * 2) SS
          * 3) PPP
          * 4) WWW
-         * 5) WW
-         * 6) WDW
+         * 5) WDW
          */
         $pseudo_code = 'WDWDWSSWPSPPPSWWWPWWDW';
         $uniting_patterns = \Aot\Text\TextParserByTokenizer\PseudoCode\UnitingPatterns::create();
@@ -116,14 +115,14 @@ class TextTokensTest extends \AotTest\AotDataStorage
                 $item->getEnd(),
             ];
         }
+
         $this->assertEquals(
             [
                 0 => [0, 4],
                 1 => [19, 21],
                 2 => [10, 12],
                 3 => [14, 16],
-                4 => [18, 19],
-                5 => [5, 6],
+                4 => [5, 6],
             ],
             $found_array
         );

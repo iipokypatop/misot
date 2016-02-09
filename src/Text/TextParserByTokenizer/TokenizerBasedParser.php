@@ -39,7 +39,6 @@ class TokenizerBasedParser
     public static function createDefaultConfig()
     {
         $ob = new static();
-        // TODO: почему не видит методы?
         $ob->tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
         $ob->tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER);
         $ob->tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
@@ -161,6 +160,14 @@ class TokenizerBasedParser
     public function getUnits()
     {
         return $this->units;
+    }
+
+    /**
+     * @return Tokenizer
+     */
+    public function getTokenizer()
+    {
+        return $this->tokenizer;
     }
 
 
