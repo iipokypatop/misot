@@ -22,6 +22,9 @@ class TokenizerBasedParser
     /** @var  \Aot\Text\TextParserByTokenizer\Tokenizer */
     protected $tokenizer;
 
+    /** @var \Aot\Text\TextParserByTokenizer\PseudoCodeDriver  */
+    protected $pseudo_code_driver;
+
     /**
      * @return \Aot\Text\TextParserByTokenizer\TokenizerBasedParser
      */
@@ -48,6 +51,7 @@ class TokenizerBasedParser
     protected function __construct()
     {
         $this->tokenizer = \Aot\Text\TextParserByTokenizer\Tokenizer::createEmptyConfiguration();
+        $this->pseudo_code_driver = \Aot\Text\TextParserByTokenizer\PseudoCodeDriver::create();
     }
 
     /**
@@ -72,15 +76,8 @@ class TokenizerBasedParser
         // фильтрация токенов
         $tokens = $this->filterTokens($tokens);
 
-        // создание псевдокода по токенам
-        $pseudo_code = $this->createPseudoCode($tokens);
-
-        // поиск шаблонов в псевдокоде
-        $uniting_patterns = PseudoCode\UnitingPatterns::create();
-        $found_patterns = $uniting_patterns->findEntryPatterns($pseudo_code);
-
         // создание юнитов
-        $this->units = $this->createUnits($tokens, $found_patterns);
+        $this->units = $this->createUnits($tokens);
     }
 
     /**
@@ -124,32 +121,19 @@ class TokenizerBasedParser
         return $filtered_tokens;
     }
 
-    /**
-     * @param \Aot\Tokenizer\Token\Token[] $tokens
-     * @return string
-     */
-    protected function createPseudoCode(array $tokens)
-    {
-        $pseudo_code_array = [];
-
-        // токены соответсвуют юнитам
-        foreach ($tokens as $id => $token) {
-            $pseudo_code_array[$id] = PseudoCode\PseudoCodeRegistry::getTokenCode($token->getType());
-        }
-        return join('', $pseudo_code_array);
-    }
 
     /**
      * Создание Unit'ов
      * @param \Aot\Tokenizer\Token\Token[] $tokens
-     * @param \Aot\Text\TextParserByTokenizer\PseudoCode\FoundPatterns[] $found_patterns
      * @return \Aot\Text\TextParserByTokenizer\Unit[]
      */
-    protected function createUnits(array $tokens, array $found_patterns)
+    protected function createUnits(array $tokens)
     {
         $units = [];
 
-        foreach ($found_patterns as $found_pattern) {
+        $border_groups_of_tokens = $this->pseudo_code_driver->findBorderGroupsOfTokens($tokens);
+
+        foreach ($border_groups_of_tokens as $found_pattern) {
             $start = $found_pattern->getStart();
             $end = $found_pattern->getEnd();
             $groups_tokens = [];
@@ -178,5 +162,6 @@ class TokenizerBasedParser
     {
         return $this->units;
     }
+
 
 }

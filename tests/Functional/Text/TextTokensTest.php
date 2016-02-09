@@ -40,10 +40,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
         $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::createDefaultConfig();
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'splitTextIntoTokens', [$text]);
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'filterTokens', [$tokens]);
-        $pseudo_code = PHPUnitHelper::callProtectedMethod($parser, 'createPseudoCode', [$this->getTokens()]);
-        $uniting_patterns = \Aot\Text\TextParserByTokenizer\PseudoCode\UnitingPatterns::create();
-        $found_patterns = $uniting_patterns->findEntryPatterns($pseudo_code);
-        $units = PHPUnitHelper::callProtectedMethod($parser, 'createUnits', [$tokens, $found_patterns]);
+        $units = PHPUnitHelper::callProtectedMethod($parser, 'createUnits', [$tokens]);
 
         // запускаем
         $this->assertEquals('человек кого-то увидел, или нет...', join('', $units));
@@ -60,11 +57,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
         $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::createDefaultConfig();
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'splitTextIntoTokens', [$text]);
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'filterTokens', [$tokens]);
-        $pseudo_code = PHPUnitHelper::callProtectedMethod($parser, 'createPseudoCode', [$this->getTokens()]);
-        $uniting_patterns = \Aot\Text\TextParserByTokenizer\PseudoCode\UnitingPatterns::create();
-        $found_patterns = $uniting_patterns->findEntryPatterns($pseudo_code);
-
-        $units = PHPUnitHelper::callProtectedMethod($parser, 'createUnits', [$tokens, $found_patterns]);
+        $units = PHPUnitHelper::callProtectedMethod($parser, 'createUnits', [$tokens]);
 
         // запускаем
         $this->assertEquals('чело£век кого-то ¶увидел, или нет...', join('', $units));
@@ -80,11 +73,8 @@ class TextTokensTest extends \AotTest\AotDataStorage
         $parser->addFilter(\Aot\Text\TextParser\Filters\NoValid::create($logger));
 
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'filterTokens', [$this->getTokens()]);
-        $pseudo_code = PHPUnitHelper::callProtectedMethod($parser, 'createPseudoCode', [$tokens]);
-        $uniting_patterns = \Aot\Text\TextParserByTokenizer\PseudoCode\UnitingPatterns::create();
-        $found_patterns = $uniting_patterns->findEntryPatterns($pseudo_code);
 
-        $units = PHPUnitHelper::callProtectedMethod($parser, 'createUnits', [$tokens, $found_patterns]);
+        $units = PHPUnitHelper::callProtectedMethod($parser, 'createUnits', [$tokens]);
         $this->assertEquals('человек кого-то увидел, или нет...', join('', $units));
         $this->assertEquals(11, count($units));
     }
