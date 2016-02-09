@@ -6,7 +6,7 @@
  * Time: 15:54
  */
 
-namespace Aot\Text\TextParserByTokenizer;
+namespace Aot\Text\TextParserByTokenizer\PseudoCode;
 
 
 class FoundPatterns
@@ -24,7 +24,7 @@ class FoundPatterns
      * @param int $start
      * @param int $end
      * @param int $type
-     * @return \Aot\Text\TextParserByTokenizer\FoundPatterns
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\FoundPatterns
      */
     public static function create($start, $end, $type)
     {
@@ -32,7 +32,6 @@ class FoundPatterns
     }
 
     /**
-     * FoundPatterns constructor.
      * @param int $start
      * @param int $end
      * @param int $type

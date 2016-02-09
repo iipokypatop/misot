@@ -6,7 +6,7 @@
  * Time: 14:07
  */
 
-namespace Aot\Text\TextParserByTokenizer;
+namespace Aot\Text\TextParserByTokenizer\PseudoCode;
 
 
 class PseudoCodeRegistry
@@ -27,11 +27,11 @@ class PseudoCodeRegistry
      */
     public static function getTokenCode($type)
     {
-        if (!isset(self::getTokenRegistry()[$type])) {
+        if (!isset(static::getTokenRegistry()[$type])) {
             throw new \LogicException('Unknown token type: ' . $type);
         }
 
-        return self::getTokenRegistry()[$type];
+        return static::getTokenRegistry()[$type];
     }
 
     /**
@@ -40,12 +40,12 @@ class PseudoCodeRegistry
     public static function getTokenRegistry()
     {
         return [
-            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER => self::NUMBER,
-            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION => self::PUNCTUATION,
-            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE => self::SPACE,
-            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD => self::WORD,
-            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_DASH => self::DASH,
-            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_OTHER => self::OTHER,
+            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER => static::NUMBER,
+            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION => static::PUNCTUATION,
+            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE => static::SPACE,
+            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD => static::WORD,
+            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_DASH => static::DASH,
+            \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_OTHER => static::OTHER,
         ];
     }
 }

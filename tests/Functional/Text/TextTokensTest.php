@@ -41,7 +41,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'splitTextIntoTokens', [$text]);
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'filterTokens', [$tokens]);
         $pseudo_code = PHPUnitHelper::callProtectedMethod($parser, 'createPseudoCode', [$this->getTokens()]);
-        $uniting_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::create();
+        $uniting_patterns = \Aot\Text\TextParserByTokenizer\PseudoCode\UnitingPatterns::create();
         $found_patterns = $uniting_patterns->findEntryPatterns($pseudo_code);
         $units = PHPUnitHelper::callProtectedMethod($parser, 'createUnits', [$tokens, $found_patterns]);
 
@@ -61,7 +61,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'splitTextIntoTokens', [$text]);
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'filterTokens', [$tokens]);
         $pseudo_code = PHPUnitHelper::callProtectedMethod($parser, 'createPseudoCode', [$this->getTokens()]);
-        $uniting_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::create();
+        $uniting_patterns = \Aot\Text\TextParserByTokenizer\PseudoCode\UnitingPatterns::create();
         $found_patterns = $uniting_patterns->findEntryPatterns($pseudo_code);
 
         $units = PHPUnitHelper::callProtectedMethod($parser, 'createUnits', [$tokens, $found_patterns]);
@@ -81,7 +81,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
 
         $tokens = PHPUnitHelper::callProtectedMethod($parser, 'filterTokens', [$this->getTokens()]);
         $pseudo_code = PHPUnitHelper::callProtectedMethod($parser, 'createPseudoCode', [$tokens]);
-        $uniting_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::create();
+        $uniting_patterns = \Aot\Text\TextParserByTokenizer\PseudoCode\UnitingPatterns::create();
         $found_patterns = $uniting_patterns->findEntryPatterns($pseudo_code);
 
         $units = PHPUnitHelper::callProtectedMethod($parser, 'createUnits', [$tokens, $found_patterns]);
@@ -116,7 +116,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
          * 6) WDW
          */
         $pseudo_code = 'WDWDWSSWPSPPPSWWWPWWDW';
-        $uniting_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::create();
+        $uniting_patterns = \Aot\Text\TextParserByTokenizer\PseudoCode\UnitingPatterns::create();
         $found = $uniting_patterns->findEntryPatterns($pseudo_code);
 
         $found_array = [];

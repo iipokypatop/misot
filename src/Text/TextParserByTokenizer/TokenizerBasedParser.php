@@ -76,7 +76,7 @@ class TokenizerBasedParser
         $pseudo_code = $this->createPseudoCode($tokens);
 
         // поиск шаблонов в псевдокоде
-        $uniting_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::create();
+        $uniting_patterns = PseudoCode\UnitingPatterns::create();
         $found_patterns = $uniting_patterns->findEntryPatterns($pseudo_code);
 
         // создание юнитов
@@ -134,7 +134,7 @@ class TokenizerBasedParser
 
         // токены соответсвуют юнитам
         foreach ($tokens as $id => $token) {
-            $pseudo_code_array[$id] = \Aot\Text\TextParserByTokenizer\PseudoCodeRegistry::getTokenCode($token->getType());
+            $pseudo_code_array[$id] = PseudoCode\PseudoCodeRegistry::getTokenCode($token->getType());
         }
         return join('', $pseudo_code_array);
     }
@@ -142,7 +142,7 @@ class TokenizerBasedParser
     /**
      * Создание Unit'ов
      * @param \Aot\Tokenizer\Token\Token[] $tokens
-     * @param \Aot\Text\TextParserByTokenizer\FoundPatterns[] $found_patterns
+     * @param \Aot\Text\TextParserByTokenizer\PseudoCode\FoundPatterns[] $found_patterns
      * @return \Aot\Text\TextParserByTokenizer\Unit[]
      */
     protected function createUnits(array $tokens, array $found_patterns)

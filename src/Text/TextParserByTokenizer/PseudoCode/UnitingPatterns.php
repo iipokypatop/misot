@@ -6,7 +6,7 @@
  * Time: 13:00
  */
 
-namespace Aot\Text\TextParserByTokenizer;
+namespace Aot\Text\TextParserByTokenizer\PseudoCode;
 
 /**
  * Шаблоны объединения Unit'ов представленных в виде псевдокода
@@ -26,6 +26,9 @@ class UnitingPatterns
     const REPLACED_SYMBOL = '0';
 
 
+    /**
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\UnitingPatterns
+     */
     public static function create()
     {
         return new static();
@@ -60,7 +63,7 @@ class UnitingPatterns
 
     /**
      * @param string $pseudo_code
-     * @return  \Aot\Text\TextParserByTokenizer\FoundPatterns[]
+     * @return  \Aot\Text\TextParserByTokenizer\PseudoCode\FoundPatterns[]
      */
     public function findEntryPatterns($pseudo_code)
     {
@@ -83,7 +86,7 @@ class UnitingPatterns
                     $count_units
                 );
 
-                $found_patterns[] = \Aot\Text\TextParserByTokenizer\FoundPatterns::create(
+                $found_patterns[] = \Aot\Text\TextParserByTokenizer\PseudoCode\FoundPatterns::create(
                     $start_id,
                     $start_id + $count_units - 1,
                     $this->getUnitTypeByPattern($pattern)
