@@ -163,7 +163,7 @@ class TokenizerBasedParser
     }
 
     /**
-     * @return Tokenizer
+     * @return \Aot\Text\TextParserByTokenizer\Tokenizer
      */
     public function getTokenizer()
     {
