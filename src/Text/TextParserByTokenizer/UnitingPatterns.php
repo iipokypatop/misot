@@ -18,9 +18,12 @@ class UnitingPatterns
     const ELLIPSIS = 'PPP'; // троеточие
     const STUCK_TOGETHER_WORDS = 'W{2,}'; // слепленные слова
     const MANY_SPACES = 'S{2,}';
+
+
     const START_PATTERN = '/';
     const END_PATTERN = '/';
     const MODIFIERS = 'u'; // слепленные пробелы
+    const REPLACED_SYMBOL = '0';
 
 
     public static function create()
@@ -41,9 +44,23 @@ class UnitingPatterns
         ];
     }
 
+
+    /**
+     * @return int[]
+     */
+    public static function getСonformityBetweenUnitingPatternsAndUnitType()
+    {
+        return [
+            static::WORD_WITH_DASH => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD,
+            static::ELLIPSIS => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_PUNCTUATION,
+            static::STUCK_TOGETHER_WORDS => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD,
+            static::MANY_SPACES => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_SPACE,
+        ];
+    }
+
     /**
      * @param string $pseudo_code
-     * @return int[][]
+     * @return  \Aot\Text\TextParserByTokenizer\FoundPatterns[]
      */
     public function findEntryPatterns($pseudo_code)
     {
@@ -51,18 +68,28 @@ class UnitingPatterns
 
         $found_patterns = [];
         foreach (static::getUnitingPatterns() as $pattern) {
+
             $matches_all = $this->getMatchesByPattern($pattern, $pseudo_code);
+
             foreach ($matches_all as $matches) {
 
-                $count_units = strlen($matches[0]);
+                $count_units = mb_strlen($matches[0]);
                 $start_id = $matches[1];
 
-                $found_patterns[] = [
-                    'start_id' => $start_id,
-                    'end_id' => $start_id + $count_units - 1,
-                ];
-            }
+                $pseudo_code = substr_replace(
+                    $pseudo_code,
+                    str_repeat(static::REPLACED_SYMBOL, $count_units),
+                    $start_id,
+                    $count_units
+                );
 
+                $found_patterns[] = \Aot\Text\TextParserByTokenizer\FoundPatterns::create(
+                    $start_id,
+                    $start_id + $count_units - 1,
+                    $this->getUnitTypeByPattern($pattern)
+                );
+
+            }
         }
 
         return $found_patterns;
@@ -90,6 +117,19 @@ class UnitingPatterns
             return [];
         }
         return $matches_all[0];
+    }
+
+    /**
+     * @param string $pattern
+     * @return int
+     */
+    protected function getUnitTypeByPattern($pattern)
+    {
+        if (!array_key_exists($pattern, static::getСonformityBetweenUnitingPatternsAndUnitType())) {
+            throw new \LogicException("The conformity for the pattern " . $pattern . " is not declared");
+        }
+
+        return static::getСonformityBetweenUnitingPatternsAndUnitType()[$pattern];
     }
 
 

@@ -19,46 +19,55 @@ class TokenizerBasedParser
     /** @var  \Aot\Text\TextParserByTokenizer\Unit[] */
     protected $units;
 
-    // фильтрация невалидных символов
-    const FILTER_NO_VALID_SYMBOLS = 1;
-
+    /** @var  \Aot\Text\TextParserByTokenizer\Tokenizer */
+    protected $tokenizer;
 
     /**
-     * @param string $text
-     * @param int[] $filter_flags
      * @return \Aot\Text\TextParserByTokenizer\TokenizerBasedParser
      */
-    public static function create($text, array $filter_flags = [])
+    public static function create()
     {
-        return new static($text, $filter_flags);
+        return new static();
     }
 
+    /**
+     * @return \Aot\Text\TextParserByTokenizer\TokenizerBasedParser
+     */
+    public static function createDefaultConfig()
+    {
+        $ob = new static();
+        // TODO: почему не видит методы?
+        $ob->tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
+        $ob->tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER);
+        $ob->tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
+        $ob->tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_DASH);
+        $ob->tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION);
+        return $ob;
+    }
+
+    protected function __construct()
+    {
+        $this->tokenizer = \Aot\Text\TextParserByTokenizer\Tokenizer::createEmptyConfiguration();
+    }
+
+    /**
+     * @param \Aot\Text\TextParser\Filters\Base $filter
+     */
+    public function addFilter(\Aot\Text\TextParser\Filters\Base $filter)
+    {
+        $this->filters[] = $filter;
+    }
 
     /**
      * @param string $text
-     * @param \Aot\Text\TextParser\Filters\Base[] $filter_flags
      */
-    protected function __construct($text, array $filter_flags)
+    public function run($text)
     {
         assert(is_string($text));
         $this->text = $text;
 
-        if ([] === $filter_flags) {
-            return;
-        }
-
-        $logger = \Aot\Text\TextParser\Logger::create();
-        foreach ($filter_flags as $filter_flag) {
-            if (self::FILTER_NO_VALID_SYMBOLS === $filter_flag) {
-                $this->filters[] = \Aot\Text\TextParser\Filters\NoValid::create($logger);
-            }
-        }
-    }
-
-    public function run()
-    {
         // разбиение текста на токены
-        $tokens = $this->splitTextIntoTokens();
+        $tokens = $this->splitTextIntoTokens($text);
 
         // фильтрация токенов
         $tokens = $this->filterTokens($tokens);
@@ -70,27 +79,19 @@ class TokenizerBasedParser
         $uniting_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::create();
         $found_patterns = $uniting_patterns->findEntryPatterns($pseudo_code);
 
-        // объединение токенов в группы по найденным шаблонам
-        $groups_tokens = $this->groupingOfTokens($tokens, $found_patterns);
-
         // создание юнитов
-        $this->units = $this->createUnits($tokens, $groups_tokens);
+        $this->units = $this->createUnits($tokens, $found_patterns);
     }
 
     /**
      * Разбить текст на токены
+     * @param string $text
      * @return \Aot\Tokenizer\Token\Token[]
      */
-    protected function splitTextIntoTokens()
+    protected function splitTextIntoTokens($text)
     {
-        $tokenizer = \Aot\Text\TextParserByTokenizer\Tokenizer::createEmptyConfiguration();
-        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
-        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER);
-        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
-        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_DASH);
-        $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION);
-        $tokenizer->tokenize($this->text);
-        return $tokenizer->getTokens();
+        $this->tokenizer->tokenize($text);
+        return $this->tokenizer->getTokens();
     }
 
     /**
@@ -141,40 +142,33 @@ class TokenizerBasedParser
     /**
      * Создание Unit'ов
      * @param \Aot\Tokenizer\Token\Token[] $tokens
-     * @param \Aot\Tokenizer\Token\Token[][] $groups_tokens
+     * @param \Aot\Text\TextParserByTokenizer\FoundPatterns[] $found_patterns
      * @return \Aot\Text\TextParserByTokenizer\Unit[]
      */
-    protected function createUnits(array $tokens, array $groups_tokens)
+    protected function createUnits(array $tokens, array $found_patterns)
     {
-        $amount = count($tokens);
         $units = [];
-        for ($i = 0; $i < $amount; $i++) {
-            if (!empty($groups_tokens[$i])) {
-                $units[] = \Aot\Text\TextParserByTokenizer\Unit::createWithTokens($groups_tokens[$i]);
-                $i += count($groups_tokens[$i]) - 1;
-            } else {
-                $units[] = \Aot\Text\TextParserByTokenizer\Unit::createWithTokens([$tokens[$i]]);
-            }
-        }
-        return $units;
-    }
 
-    /**
-     * @param array $tokens
-     * @param array $found_patterns
-     * @return array
-     */
-    protected function groupingOfTokens(array $tokens, array $found_patterns)
-    {
-        $groups_tokens = [];
         foreach ($found_patterns as $found_pattern) {
-            $start = $found_pattern['start_id'];
-            $end = $found_pattern['end_id'];
+            $start = $found_pattern->getStart();
+            $end = $found_pattern->getEnd();
+            $groups_tokens = [];
             for ($i = $start; $i <= $end; $i++) {
-                $groups_tokens[$start][] = $tokens[$i];
+                $groups_tokens[] = $tokens[$i];
+                unset($tokens[$i]);
             }
+            $units[$start] = \Aot\Text\TextParserByTokenizer\Unit::createWithTokens($groups_tokens, $found_pattern->getType());
         }
-        return $groups_tokens;
+
+        // прогоняем оставшиеся токены
+        foreach ($tokens as $id => $token) {
+            $units[$id] = \Aot\Text\TextParserByTokenizer\Unit::createWithTokens([$token], $token->getType());
+        }
+
+        ksort($units);
+        return $units;
+
+
     }
 
     /**

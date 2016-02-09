@@ -43,23 +43,22 @@ class Unit
 
     /**
      * @param \Aot\Tokenizer\Token\Token[] $tokens
-     * @return \Aot\Text\TextParserByTokenizer\Unit
+     * @param int $type
+     * @return Unit
      */
-    public static function createWithTokens(array $tokens)
+    public static function createWithTokens(array $tokens, $type)
     {
         foreach ($tokens as $token) {
             assert(is_a($token, \Aot\Tokenizer\Token\Token::class, true));
         }
+        assert(is_int($type));
 
         if ([] === $tokens) {
             throw new \LogicException('Failed to create the Unit, input array is empty!');
         }
         $ob = new static();
-
         $ob->tokens = $tokens;
-
-        // тип наследуется от первого токена
-        $ob->type = $tokens[0]->getType();
+        $ob->type = $type;
 
         return $ob;
     }
