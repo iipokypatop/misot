@@ -16,12 +16,6 @@ class Parser
     /** @var  \Aot\Text\TextParser\Filters\Base[] */
     protected $filters;
 
-    /** @var \Aot\Tokenizer\Token\Token[] */
-    protected $tokens;
-
-    /** @var \Aot\Tokenizer\Token\Token[] */
-    protected $filtered_tokens;
-
     /** @var  \Aot\Text\TextParserByTokenizer\Unit[] */
     protected $units;
 
@@ -60,10 +54,10 @@ class Parser
     public function run()
     {
         // разбиение текста на токены
-        $this->splitTextIntoTokens();
+        $tokens = $this->splitTextIntoTokens();
 
         // фильтрация токенов
-        $tokens = $this->filterTokens();
+        $tokens = $this->filterTokens($tokens);
 
         // создание псевдокода по токенам
         $pseudo_code = $this->createPseudoCode($tokens);
@@ -90,22 +84,27 @@ class Parser
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_DASH);
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION);
         $tokenizer->tokenize($this->text);
-        $this->tokens = $tokenizer->getTokens();
+        return $tokenizer->getTokens();
     }
 
     /**
+     * @param \Aot\Tokenizer\Token\Token[] $tokens
      * @return \Aot\Tokenizer\Token\Token[]
      */
-    protected function filterTokens()
+    protected function filterTokens(array $tokens)
     {
-        if (empty($this->filters)) {
-            return $this->tokens;
+        foreach ($tokens as $token) {
+            assert(is_a($token, \Aot\Tokenizer\Token\Token::class, true));
         }
-        
+
+        if (!isset($this->filters)) {
+            return $tokens;
+        }
+
         /** @var \Aot\Tokenizer\Token\Token[] $filtered_tokens */
         $filtered_tokens = [];
 
-        foreach ($this->tokens as $token) {
+        foreach ($tokens as $token) {
             foreach ($this->filters as $filter) {
                 $filtered_text = $filter->filter($token->getText());
                 if ($filtered_text === '') {
@@ -173,27 +172,11 @@ class Parser
     }
 
     /**
-     * @return \Aot\Tokenizer\Token\Token[]
-     */
-    public function getTokens()
-    {
-        return $this->tokens;
-    }
-
-    /**
      * @return \Aot\Text\TextParserByTokenizer\Unit[]
      */
     public function getUnits()
     {
         return $this->units;
-    }
-
-    /**
-     * @return \Aot\Tokenizer\Token\Token[]
-     */
-    public function getFilteredTokens()
-    {
-        return $this->filtered_tokens;
     }
 
 }

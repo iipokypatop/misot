@@ -22,8 +22,8 @@ class TextTokensTest extends \AotTest\AotDataStorage
     {
         $text = 'человек кого-то увидел, или нет...';
         $parser = \Aot\Text\TextParserByTokenizer\Parser::create($text);
-        PHPUnitHelper::callProtectedMethod($parser, 'splitTextIntoTokens', []);
-        $tokens = PHPUnitHelper::callProtectedMethod($parser, 'filterTokens', []);
+        $tokens = PHPUnitHelper::callProtectedMethod($parser, 'splitTextIntoTokens', []);
+        $tokens = PHPUnitHelper::callProtectedMethod($parser, 'filterTokens', [$tokens]);
         $pseudo_code = PHPUnitHelper::callProtectedMethod($parser, 'createPseudoCode', [$this->getTokens()]);
         $found_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::findEntryPatterns($pseudo_code);
 
@@ -43,8 +43,8 @@ class TextTokensTest extends \AotTest\AotDataStorage
     {
         $text = 'чело£век кого-то ¶увидел, или нет...';
         $parser = \Aot\Text\TextParserByTokenizer\Parser::create($text);
-        PHPUnitHelper::callProtectedMethod($parser, 'splitTextIntoTokens', []);
-        $tokens = PHPUnitHelper::callProtectedMethod($parser, 'filterTokens', []);
+        $tokens = PHPUnitHelper::callProtectedMethod($parser, 'splitTextIntoTokens', []);
+        $tokens = PHPUnitHelper::callProtectedMethod($parser, 'filterTokens', [$tokens]);
         $pseudo_code = PHPUnitHelper::callProtectedMethod($parser, 'createPseudoCode', [$this->getTokens()]);
         $found_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::findEntryPatterns($pseudo_code);
 
@@ -66,13 +66,14 @@ class TextTokensTest extends \AotTest\AotDataStorage
             ]
         );
 
-        // устанавливаем собранные руками токены
-        PHPUnitHelper::setProtectedProperty($parser, 'tokens', $this->getTokens());
+        $tokens = PHPUnitHelper::callProtectedMethod($parser, 'filterTokens', [$this->getTokens()]);
+        $pseudo_code = PHPUnitHelper::callProtectedMethod($parser, 'createPseudoCode', [$tokens]);
+        $found_patterns = \Aot\Text\TextParserByTokenizer\UnitingPatterns::findEntryPatterns($pseudo_code);
 
-        // запускаем
-        $parser->run();
-        $this->assertEquals('человек кого-то увидел, или нет...', join('', $parser->getUnits()));
-        $this->assertEquals(11, count($parser->getUnits()));
+        $groups_tokens = PHPUnitHelper::callProtectedMethod($parser, 'groupingOfTokens', [$tokens, $found_patterns]);
+        $units = PHPUnitHelper::callProtectedMethod($parser, 'createUnits', [$tokens, $groups_tokens]);
+        $this->assertEquals('человек кого-то увидел, или нет...', join('', $units));
+        $this->assertEquals(11, count($units));
     }
 
     public function testSearchUnitsWithTokenizerWithFilter()
