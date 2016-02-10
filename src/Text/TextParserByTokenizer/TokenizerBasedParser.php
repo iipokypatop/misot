@@ -196,14 +196,6 @@ class TokenizerBasedParser
             }
         }
 
-//        print_r([count($sentences)]);
-////        print_r($sentences);
-//
-//        foreach ($sentences as $sentence) {
-//            print_r([(string)$sentence]);
-//        }
-//
-//        die('WORK');
         return $sentences;
     }
 
