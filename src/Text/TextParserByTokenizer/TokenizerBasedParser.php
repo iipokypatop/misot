@@ -25,6 +25,7 @@ class TokenizerBasedParser
     /** @var \Aot\Text\TextParserByTokenizer\PseudoCodeDriver */
     protected $pseudo_code_driver;
 
+    /** @var  \Aot\Text\TextParserByTokenizer\Sentence[] */
     protected $sentences;
 
     /**
@@ -156,7 +157,7 @@ class TokenizerBasedParser
         }
 
         ksort($units);
-        return $units;
+        return array_values($units);
     }
 
     /**
@@ -184,26 +185,25 @@ class TokenizerBasedParser
         $sentences = [];
         $start_id = -1;
         foreach ($this->units as $id => $unit) {
-            if ($this->isSymbolOfTheEndOfSentence($id)) {
-
+            if ($this->isSymbolOfTheEndOfSentence($id) || $this->isEndOfText($id)) {
                 $sentence_units = [];
                 for ($i = $start_id + 1; $i <= $id; $i++) {
                     $sentence_units[] = $this->units[$i];
                 }
+
                 $start_id = $id;
                 $sentences[] = \Aot\Text\TextParserByTokenizer\Sentence::create($sentence_units, count($sentences));
-
             }
         }
 
 //        print_r([count($sentences)]);
-//        print_r($sentences);
-
-        foreach ($sentences as $sentence) {
-            print_r([(string)$sentence]);
-        }
-
-        die('WORK');
+////        print_r($sentences);
+//
+//        foreach ($sentences as $sentence) {
+//            print_r([(string)$sentence]);
+//        }
+//
+//        die('WORK');
         return $sentences;
     }
 
@@ -217,22 +217,28 @@ class TokenizerBasedParser
             ((string)$this->units[$id] === '.'
                 || (string)$this->units[$id] === '...'
                 || (string)$this->units[$id] === '!'
-                || (string)$this->units[$id] === '?')
+                || (string)$this->units[$id] === '?'
+            )
             && $this->isEndOfSentence($id)
         );
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return bool
      */
     protected function isEndOfSentence($id)
     {
-        if (!isset($this->units[$id + 1])) {
-            return true;
-        }
-
         return ($this->isSpace($id + 1) && $this->isCapitalizedWord($id + 2));
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    protected function isEndOfText($id)
+    {
+        return (!isset($this->units[$id + 1]));
     }
 
 
@@ -243,7 +249,10 @@ class TokenizerBasedParser
      */
     protected function isSpace($id)
     {
-        return $this->units[$id]->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_SPACE;
+        return (
+            isset($this->units[$id])
+            && $this->units[$id]->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_SPACE
+        );
     }
 
     /**
@@ -253,11 +262,21 @@ class TokenizerBasedParser
      */
     protected function isCapitalizedWord($id)
     {
-        if ($this->units[$id]->getType() !== \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD) {
+        if (!isset($this->units[$id])
+            || $this->units[$id]->getType() !== \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD
+        ) {
             return false;
         }
         $text = $this->units[$id]->getTokens()[0]->getText();
         return preg_match("/^[А-ЯЁ]/u", $text) === 1 ? true : false;
+    }
+
+    /**
+     * @return \Aot\Text\TextParserByTokenizer\Sentence[]
+     */
+    public function getSentences()
+    {
+        return $this->sentences;
     }
 
 }

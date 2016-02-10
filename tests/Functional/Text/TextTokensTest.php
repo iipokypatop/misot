@@ -15,12 +15,49 @@ use MivarTest\PHPUnitHelper;
 class TextTokensTest extends \AotTest\AotDataStorage
 {
 
+    /**
+     * Без фильтра и сложных юнитов
+     */
+    public function testSplitSimpleTextInSentences1()
+    {
+        $text = 'человек кого-то   увидел, или нет... Показалось наверное.  Блаблабла.  ';
+        $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::createDefaultConfig();
+        $parser->run($text);
+
+        // запускаем
+        $this->assertEquals($text, join('', $parser->getUnits()));
+        $this->assertEquals(3, count($parser->getSentences()));
+        $rebuild_text = '';
+        foreach ($parser->getSentences() as $sentence) {
+            $rebuild_text .= (string)$sentence;
+        }
+        $this->assertEquals($text, $rebuild_text);
+        $this->assertEquals(20, count($parser->getUnits()));
+    }
 
 
     /**
      * Без фильтра и сложных юнитов
      */
-    public function testSplitSimpleTextInSentences()
+    public function testSplitSimpleTextInSentences2()
+    {
+        $text = 'человек кого-то   увидел, или нет... Показалось наверное.  Блаблабла   ';
+        $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::createDefaultConfig();
+        $parser->run($text);
+
+        // запускаем
+        $this->assertEquals($text, join('', $parser->getUnits()));
+        $this->assertEquals(3, count($parser->getSentences()));
+        $rebuild_text = '';
+        foreach ($parser->getSentences() as $sentence) {
+            $rebuild_text .= (string)$sentence;
+        }
+        $this->assertEquals($text, $rebuild_text);
+        $this->assertEquals(19, count($parser->getUnits()));
+    }
+
+
+    public function testSplitSimpleTextInSentences3()
     {
         $text = 'Человек пошел в лес. Он потерялся.';
         $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::createDefaultConfig();
@@ -28,9 +65,14 @@ class TextTokensTest extends \AotTest\AotDataStorage
 
         // запускаем
         $this->assertEquals('Человек пошел в лес. Он потерялся.', join('', $parser->getUnits()));
+        $this->assertEquals(2, count($parser->getSentences()));
+        $rebuild_text = '';
+        foreach ($parser->getSentences() as $sentence) {
+            $rebuild_text .= (string)$sentence;
+        }
+        $this->assertEquals($text, $rebuild_text);
         $this->assertEquals(13, count($parser->getUnits()));
     }
-
 
 
     /**
