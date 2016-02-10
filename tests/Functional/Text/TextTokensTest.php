@@ -16,28 +16,23 @@ class TextTokensTest extends \AotTest\AotDataStorage
 {
 
 
-
     public function testSymbolsMap()
     {
-        $text = 'Человек пошел в лес. Он потерялся.';
+        $text = 'Человек пошел   в лес. Он потерялся.';
         $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::createDefaultConfig();
         $parser->run($text);
-        foreach ($parser->getSentences() as $sentence) {
-            foreach ($sentence->getUnits() as $unit) {
-                $unit_text = (string)$unit->getTokens();
-                print_r($unit_text);
+
+
+        $map = $parser->getSymbolsMap();
+        $this->assertEquals(2, count($map));
+        $checking = [];
+        foreach ($map as $sentence) {
+            foreach ($sentence as $unit) {
+                $checking = array_merge($checking, $unit);
             }
         }
-
-        // запускаем
-        $this->assertEquals('Человек пошел в лес. Он потерялся.', join('', $parser->getUnits()));
-        $this->assertEquals(2, count($parser->getSentences()));
-        $rebuild_text = '';
-        foreach ($parser->getSentences() as $sentence) {
-            $rebuild_text .= (string)$sentence;
-        }
-        $this->assertEquals($text, $rebuild_text);
-        $this->assertEquals(13, count($parser->getUnits()));
+        $symbols_from_text = preg_split('//u', $text, 0, PREG_SPLIT_NO_EMPTY);
+        $this->assertEquals($symbols_from_text, $checking);
     }
 
     /**

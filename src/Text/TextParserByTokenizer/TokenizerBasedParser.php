@@ -17,7 +17,7 @@ class TokenizerBasedParser
     protected $filters = [];
 
     /** @var  \Aot\Text\TextParserByTokenizer\Unit[] */
-    protected $units;
+    protected $units = [];
 
     /** @var  \Aot\Text\TextParserByTokenizer\Tokenizer */
     protected $tokenizer;
@@ -26,7 +26,10 @@ class TokenizerBasedParser
     protected $pseudo_code_driver;
 
     /** @var  \Aot\Text\TextParserByTokenizer\Sentence[] */
-    protected $sentences;
+    protected $sentences = [];
+
+    /** @var  string[][][] */
+    protected $symbols_map = [];
 
     /**
      * @return \Aot\Text\TextParserByTokenizer\TokenizerBasedParser
@@ -82,6 +85,8 @@ class TokenizerBasedParser
         $this->units = $this->createUnits($tokens);
 
         $this->sentences = $this->findSentences();
+
+        $this->symbols_map = $this->createSymbolsMap();
     }
 
     /**
@@ -277,6 +282,38 @@ class TokenizerBasedParser
     public function getSentences()
     {
         return $this->sentences;
+    }
+
+    /**
+     * @return string[][][]
+     */
+    protected function createSymbolsMap()
+    {
+        if ($this->sentences === []) {
+            return [];
+        }
+        $symbols_map = [];
+        $all_symbols = [];
+        foreach ($this->sentences as $id_sentence => $sentence) {
+            foreach ($sentence->getUnits() as $id_unit => $unit) {
+                $symbols_from_unit = preg_split('//u', $unit, 0, PREG_SPLIT_NO_EMPTY);
+                $all_symbols = array_merge($all_symbols, $symbols_from_unit);
+                $count_of_symbols_from_unit = count($symbols_from_unit);
+                $count_of_all_symbols = count($all_symbols);
+                for ($i = $count_of_all_symbols - $count_of_symbols_from_unit; $i < $count_of_all_symbols; $i++) {
+                    $symbols_map[$id_sentence][$id_unit][$i] = $all_symbols[$i];
+                }
+            }
+        }
+        return $symbols_map;
+    }
+
+    /**
+     * @return string[][][]
+     */
+    public function getSymbolsMap()
+    {
+        return $this->symbols_map;
     }
 
 }
