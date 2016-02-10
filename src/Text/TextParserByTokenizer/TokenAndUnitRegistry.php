@@ -22,15 +22,4 @@ class TokenAndUnitRegistry
             \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_OTHER => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_OTHER,
         ];
     }
-
-    /**
-     * @param int $token_type
-     */
-    public static function getUnitTypeByTokenType($token_type)
-    {
-        if (!array_key_exists($token_type, static::getAssociatedUnitTypeAndTokenTypeMap())) {
-            throw new \LogicException("The conformity for the token type " . $token_type . " is not declared");
-        }
-        return static::getAssociatedUnitTypeAndTokenTypeMap()[$token_type];
-    }
 }

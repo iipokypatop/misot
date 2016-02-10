@@ -17,12 +17,11 @@ class TokenUnitingPatterns
     const WORD_WITH_DASH = 'W(DW)+'; // слова через дефис
     const ELLIPSIS = 'PPP'; // троеточие
     const STUCK_TOGETHER_WORDS = 'W{2,}'; // слепленные слова
-    const MANY_SPACES = 'S{2,}';
+    const MANY_SPACES = 'S{2,}'; // слепленные пробелы
 
 
-    const START_PATTERN = '/';
-    const END_PATTERN = '/';
-    const MODIFIERS = 'u'; // слепленные пробелы
+    const DELIMITER = '/';
+    const MODIFIERS = 'u';
     const REPLACED_SYMBOL = '0';
 
 
@@ -51,7 +50,7 @@ class TokenUnitingPatterns
     /**
      * @return int[]
      */
-    public static function getСonformityBetweenUnitingPatternsAndUnitType()
+    public static function getConformityBetweenUnitingPatternsAndUnitType()
     {
         return [
             static::WORD_WITH_DASH => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD,
@@ -106,7 +105,7 @@ class TokenUnitingPatterns
      */
     protected function getRegularExpression($pattern)
     {
-        return static::START_PATTERN . $pattern . static::END_PATTERN . static::MODIFIERS;
+        return static::DELIMITER . $pattern . static::DELIMITER . static::MODIFIERS;
     }
 
     /**
@@ -129,11 +128,11 @@ class TokenUnitingPatterns
      */
     protected function getUnitTypeByPattern($pattern)
     {
-        if (!array_key_exists($pattern, static::getСonformityBetweenUnitingPatternsAndUnitType())) {
+        if (!array_key_exists($pattern, static::getConformityBetweenUnitingPatternsAndUnitType())) {
             throw new \LogicException("The conformity for the pattern " . $pattern . " is not declared");
         }
 
-        return static::getСonformityBetweenUnitingPatternsAndUnitType()[$pattern];
+        return static::getConformityBetweenUnitingPatternsAndUnitType()[$pattern];
     }
 
 

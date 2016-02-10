@@ -9,6 +9,10 @@
 namespace Aot\Text\TextParserByTokenizer\PseudoCode;
 
 
+/**
+ * Class UnitPseudoCodeRegistry
+ * TODO: Заглушка, пока нигде не используется
+ */
 class UnitPseudoCodeRegistry
 {
     const WORD_WITH_FIRST_UPPERCASE_LETTER = 'Wfu';

@@ -41,7 +41,7 @@ class TokenizerBasedParser
      */
     public static function createDefaultConfig()
     {
-        $ob = new static();
+        $ob = static::create();
         $ob->tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_WORD);
         $ob->tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_NUMBER);
         $ob->tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
@@ -142,17 +142,22 @@ class TokenizerBasedParser
             $end = $found_pattern->getEnd();
             $groups_tokens = [];
             for ($i = $start; $i <= $end; $i++) {
+
+                if (empty($tokens[$i])) {
+                    throw new \LogicException('Token with id = ' . $i . ' does not exists');
+                }
+
                 $groups_tokens[] = $tokens[$i];
                 unset($tokens[$i]);
             }
-            $units[$start] = \Aot\Text\TextParserByTokenizer\Unit::createWithTokens($groups_tokens, $found_pattern->getType());
+            $units[$start] = \Aot\Text\TextParserByTokenizer\Unit::create($groups_tokens, $found_pattern->getType());
         }
 
         // прогоняем оставшиеся токены
         foreach ($tokens as $id => $token) {
-            $units[$id] = \Aot\Text\TextParserByTokenizer\Unit::createWithTokens(
+            $units[$id] = \Aot\Text\TextParserByTokenizer\Unit::create(
                 [$token],
-                \Aot\Text\TextParserByTokenizer\TokenAndUnitRegistry::getUnitTypeByTokenType($token->getType())
+                \Aot\Text\TextParserByTokenizer\TokenAndUnitRegistry::getAssociatedUnitTypeAndTokenTypeMap()[$token->getType()]
             );
         }
 
@@ -260,7 +265,10 @@ class TokenizerBasedParser
             return false;
         }
         $text = $this->units[$id]->getTokens()[0]->getText();
-        return preg_match("/^[А-ЯЁ]/u", $text) === 1 ? true : false;
+
+
+        $regex = \Aot\Tokenizer\Token\Regex::create(\Aot\Tokenizer\Token\TokenRegexRegistry::PATTERN_UPPERCASE);
+        return $regex->match($text);
     }
 
     /**

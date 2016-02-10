@@ -25,11 +25,15 @@ class PseudoCodeDriver
     }
 
     /**
-     * @param $tokens
+     * @param \Aot\Tokenizer\Token\Token[] $tokens
      * @return \Aot\Text\TextParserByTokenizer\PseudoCode\TokenFoundPatterns[]
      */
-    public function findBorderGroupsOfTokens($tokens)
+    public function findBorderGroupsOfTokens(array $tokens)
     {
+        foreach ($tokens as $token) {
+            assert(is_a($token, \Aot\Tokenizer\Token\Token::class, true));
+        }
+
         // создание псевдокода по токенам
         $pseudo_code = $this->createPseudoCode($tokens);
 
@@ -47,8 +51,8 @@ class PseudoCodeDriver
         $pseudo_code_array = [];
 
         // токены соответсвуют юнитам
-        foreach ($tokens as $id => $token) {
-            $pseudo_code_array[$id] = PseudoCode\TokenPseudoCodeRegistry::getTokenCode($token->getType());
+        foreach ($tokens as $token) {
+            $pseudo_code_array[] = PseudoCode\TokenPseudoCodeRegistry::getTokenCode($token->getType());
         }
         return join('', $pseudo_code_array);
     }

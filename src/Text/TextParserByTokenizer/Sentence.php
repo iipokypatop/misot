@@ -12,9 +12,9 @@ namespace Aot\Text\TextParserByTokenizer;
 class Sentence
 {
     /** @var  \Aot\Text\TextParserByTokenizer\Unit[] */
-    protected $units;
+    protected $units = [];
 
-    /** @var int  */
+    /** @var int */
     protected $id;
 
     /**
@@ -35,6 +35,7 @@ class Sentence
     protected function __construct(array $units, $id)
     {
         assert(is_int($id));
+        assert($units !== []);
 
         foreach ($units as $unit) {
             assert(is_a($unit, \Aot\Text\TextParserByTokenizer\Unit::class, true));
@@ -49,11 +50,6 @@ class Sentence
     {
         return join('', $this->units);
     }
-
-    public function getPrettyString(){
-        # TODO: форматирование строки: удаление лишних пробелов и тд
-    }
-
 
     /**
      * @return \Aot\Text\TextParserByTokenizer\Unit[]

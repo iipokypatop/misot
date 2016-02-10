@@ -15,6 +15,31 @@ use MivarTest\PHPUnitHelper;
 class TextTokensTest extends \AotTest\AotDataStorage
 {
 
+
+
+    public function testSymbolsMap()
+    {
+        $text = 'Человек пошел в лес. Он потерялся.';
+        $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::createDefaultConfig();
+        $parser->run($text);
+        foreach ($parser->getSentences() as $sentence) {
+            foreach ($sentence->getUnits() as $unit) {
+                $unit_text = (string)$unit->getTokens();
+                print_r($unit_text);
+            }
+        }
+
+        // запускаем
+        $this->assertEquals('Человек пошел в лес. Он потерялся.', join('', $parser->getUnits()));
+        $this->assertEquals(2, count($parser->getSentences()));
+        $rebuild_text = '';
+        foreach ($parser->getSentences() as $sentence) {
+            $rebuild_text .= (string)$sentence;
+        }
+        $this->assertEquals($text, $rebuild_text);
+        $this->assertEquals(13, count($parser->getUnits()));
+    }
+
     /**
      * Без фильтра и сложных юнитов
      */
