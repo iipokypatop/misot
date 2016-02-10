@@ -96,4 +96,12 @@ class Unit
     {
         return join('', $this->tokens);
     }
+
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
 }

@@ -9,7 +9,7 @@
 namespace Aot\Text\TextParserByTokenizer\PseudoCode;
 
 
-class FoundPatterns
+class TokenFoundPatterns
 {
     /** @var  int */
     protected $start;
@@ -24,7 +24,7 @@ class FoundPatterns
      * @param int $start
      * @param int $end
      * @param int $type
-     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\FoundPatterns
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\TokenFoundPatterns
      */
     public static function create($start, $end, $type)
     {

@@ -22,8 +22,10 @@ class TokenizerBasedParser
     /** @var  \Aot\Text\TextParserByTokenizer\Tokenizer */
     protected $tokenizer;
 
-    /** @var \Aot\Text\TextParserByTokenizer\PseudoCodeDriver  */
+    /** @var \Aot\Text\TextParserByTokenizer\PseudoCodeDriver */
     protected $pseudo_code_driver;
+
+    protected $sentences;
 
     /**
      * @return \Aot\Text\TextParserByTokenizer\TokenizerBasedParser
@@ -77,6 +79,8 @@ class TokenizerBasedParser
 
         // создание юнитов
         $this->units = $this->createUnits($tokens);
+
+        $this->sentences = $this->findSentences();
     }
 
     /**
@@ -145,13 +149,14 @@ class TokenizerBasedParser
 
         // прогоняем оставшиеся токены
         foreach ($tokens as $id => $token) {
-            $units[$id] = \Aot\Text\TextParserByTokenizer\Unit::createWithTokens([$token], $token->getType());
+            $units[$id] = \Aot\Text\TextParserByTokenizer\Unit::createWithTokens(
+                [$token],
+                \Aot\Text\TextParserByTokenizer\TokenAndUnitRegistry::getUnitTypeByTokenType($token->getType())
+            );
         }
 
         ksort($units);
         return $units;
-
-
     }
 
     /**
@@ -170,5 +175,89 @@ class TokenizerBasedParser
         return $this->tokenizer;
     }
 
+    /**
+     * Поиск предложений
+     * @return \Aot\Text\TextParserByTokenizer\Unit[][]
+     */
+    protected function findSentences()
+    {
+        $sentences = [];
+        $start_id = -1;
+        foreach ($this->units as $id => $unit) {
+            if ($this->isSymbolOfTheEndOfSentence($id)) {
+
+                $sentence_units = [];
+                for ($i = $start_id + 1; $i <= $id; $i++) {
+                    $sentence_units[] = $this->units[$i];
+                }
+                $start_id = $id;
+                $sentences[] = \Aot\Text\TextParserByTokenizer\Sentence::create($sentence_units, count($sentences));
+
+            }
+        }
+
+//        print_r([count($sentences)]);
+//        print_r($sentences);
+
+        foreach ($sentences as $sentence) {
+            print_r([(string)$sentence]);
+        }
+
+        die('WORK');
+        return $sentences;
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    protected function isSymbolOfTheEndOfSentence($id)
+    {
+        return (
+            ((string)$this->units[$id] === '.'
+                || (string)$this->units[$id] === '...'
+                || (string)$this->units[$id] === '!'
+                || (string)$this->units[$id] === '?')
+            && $this->isEndOfSentence($id)
+        );
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    protected function isEndOfSentence($id)
+    {
+        if (!isset($this->units[$id + 1])) {
+            return true;
+        }
+
+        return ($this->isSpace($id + 1) && $this->isCapitalizedWord($id + 2));
+    }
+
+
+    /**
+     * Проверка на пробел
+     * @param $id
+     * @return bool
+     */
+    protected function isSpace($id)
+    {
+        return $this->units[$id]->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_SPACE;
+    }
+
+    /**
+     * Проверка на слово, начинающееся с большой буквы
+     * @param $id
+     * @return bool
+     */
+    protected function isCapitalizedWord($id)
+    {
+        if ($this->units[$id]->getType() !== \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD) {
+            return false;
+        }
+        $text = $this->units[$id]->getTokens()[0]->getText();
+        return preg_match("/^[А-ЯЁ]/u", $text) === 1 ? true : false;
+    }
 
 }

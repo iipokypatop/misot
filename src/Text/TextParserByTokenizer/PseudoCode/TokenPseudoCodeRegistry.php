@@ -9,7 +9,7 @@
 namespace Aot\Text\TextParserByTokenizer\PseudoCode;
 
 
-class PseudoCodeRegistry
+class TokenPseudoCodeRegistry
 {
 
     const NUMBER = 'N';

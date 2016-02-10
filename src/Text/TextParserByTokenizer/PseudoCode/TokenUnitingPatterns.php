@@ -12,7 +12,7 @@ namespace Aot\Text\TextParserByTokenizer\PseudoCode;
  * Шаблоны объединения Unit'ов представленных в виде псевдокода
  * Class UnitingPatterns
  */
-class UnitingPatterns
+class TokenUnitingPatterns
 {
     const WORD_WITH_DASH = 'W(DW)+'; // слова через дефис
     const ELLIPSIS = 'PPP'; // троеточие
@@ -27,7 +27,7 @@ class UnitingPatterns
 
 
     /**
-     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\UnitingPatterns
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\TokenUnitingPatterns
      */
     public static function create()
     {
@@ -63,7 +63,7 @@ class UnitingPatterns
 
     /**
      * @param string $pseudo_code
-     * @return  \Aot\Text\TextParserByTokenizer\PseudoCode\FoundPatterns[]
+     * @return  \Aot\Text\TextParserByTokenizer\PseudoCode\TokenFoundPatterns[]
      */
     public function findEntryPatterns($pseudo_code)
     {
@@ -86,7 +86,7 @@ class UnitingPatterns
                     $count_units
                 );
 
-                $found_patterns[] = \Aot\Text\TextParserByTokenizer\PseudoCode\FoundPatterns::create(
+                $found_patterns[] = \Aot\Text\TextParserByTokenizer\PseudoCode\TokenFoundPatterns::create(
                     $start_id,
                     $start_id + $count_units - 1,
                     $this->getUnitTypeByPattern($pattern)

@@ -16,6 +16,23 @@ class TextTokensTest extends \AotTest\AotDataStorage
 {
 
 
+
+    /**
+     * Без фильтра и сложных юнитов
+     */
+    public function testSplitSimpleTextInSentences()
+    {
+        $text = 'Человек пошел в лес. Он потерялся.';
+        $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::createDefaultConfig();
+        $parser->run($text);
+
+        // запускаем
+        $this->assertEquals('Человек пошел в лес. Он потерялся.', join('', $parser->getUnits()));
+        $this->assertEquals(13, count($parser->getUnits()));
+    }
+
+
+
     /**
      * Без фильтра и сложных юнитов
      */
@@ -105,7 +122,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
          * 5) WDW
          */
         $pseudo_code = 'WDWDWSSWPSPPPSWWWPWWDW';
-        $uniting_patterns = \Aot\Text\TextParserByTokenizer\PseudoCode\UnitingPatterns::create();
+        $uniting_patterns = \Aot\Text\TextParserByTokenizer\PseudoCode\TokenUnitingPatterns::create();
         $found = $uniting_patterns->findEntryPatterns($pseudo_code);
 
         $found_array = [];
