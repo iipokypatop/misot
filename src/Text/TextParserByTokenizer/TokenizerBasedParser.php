@@ -10,6 +10,8 @@ namespace Aot\Text\TextParserByTokenizer;
  */
 class TokenizerBasedParser
 {
+    const SPLIT_REGEX = '//u';
+
     /** @var string */
     protected $text;
 
@@ -149,7 +151,7 @@ class TokenizerBasedParser
             for ($i = $start; $i <= $end; $i++) {
 
                 if (empty($tokens[$i])) {
-                    throw new \LogicException('Token with id = ' . $i . ' does not exists');
+                    throw new \LogicException('Token with id = ' . var_export( $i, true) . ' does not exists');
                 }
 
                 $groups_tokens[] = $tokens[$i];
@@ -273,6 +275,7 @@ class TokenizerBasedParser
 
 
         $regex = \Aot\Tokenizer\Token\Regex::create(\Aot\Tokenizer\Token\TokenRegexRegistry::PATTERN_UPPERCASE);
+        $regex->addStartingCaret();
         return $regex->match($text);
     }
 
@@ -296,7 +299,7 @@ class TokenizerBasedParser
         $all_symbols = [];
         foreach ($this->sentences as $id_sentence => $sentence) {
             foreach ($sentence->getUnits() as $id_unit => $unit) {
-                $symbols_from_unit = preg_split('//u', $unit, 0, PREG_SPLIT_NO_EMPTY);
+                $symbols_from_unit = preg_split(static::SPLIT_REGEX, $unit, 0, PREG_SPLIT_NO_EMPTY);
                 $all_symbols = array_merge($all_symbols, $symbols_from_unit);
                 $count_of_symbols_from_unit = count($symbols_from_unit);
                 $count_of_all_symbols = count($all_symbols);

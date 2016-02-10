@@ -31,7 +31,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
                 $checking = array_merge($checking, $unit);
             }
         }
-        $symbols_from_text = preg_split('//u', $text, 0, PREG_SPLIT_NO_EMPTY);
+        $symbols_from_text = preg_split(\Aot\Text\TextParserByTokenizer\TokenizerBasedParser::SPLIT_REGEX, $text, 0, PREG_SPLIT_NO_EMPTY);
         $this->assertEquals($symbols_from_text, $checking);
     }
 

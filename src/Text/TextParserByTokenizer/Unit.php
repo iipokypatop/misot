@@ -34,7 +34,11 @@ class Unit
         foreach ($tokens as $token) {
             assert(is_a($token, \Aot\Tokenizer\Token\Token::class, true));
         }
-        assert(is_int($type) && in_array($type, \Aot\Text\TextParserByTokenizer\TokenAndUnitRegistry::getAssociatedUnitTypeAndTokenTypeMap()));
+        assert(is_int($type));
+
+        if (!in_array($type, \Aot\Text\TextParserByTokenizer\TokenAndUnitRegistry::getAssociatedUnitTypeAndTokenTypeMap())) {
+            throw new \LogicException('The type of token ' . var_export($type, true) . ' does not associated to any unit token');
+        }
 
         if ([] === $tokens) {
             throw new \LogicException('Failed to create the Unit, input array is empty!');
