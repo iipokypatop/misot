@@ -28,8 +28,6 @@ TEXT;
         $tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
 
         $count = $tokenizer->tokenize($string);
-
-        var_export($tokenizer->getTokens());
         $this->assertEquals(61, $count);
 
         $recovered_string = '';

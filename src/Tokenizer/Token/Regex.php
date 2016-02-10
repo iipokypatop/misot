@@ -26,41 +26,6 @@ class Regex
      */
     protected $heart;
     protected $caret = '';
-
-//    /**
-//     * @param $heart
-//     * @return Regex
-//     */
-//    public static function createWithPlus($heart)
-//    {
-//        $ob = new static($heart . static::REGEX_PLUS);
-//
-//        return $ob;
-//    }
-//
-//
-//    /**
-//     * @param $heart
-//     * @return Regex
-//     */
-//    public static function createWithStar($heart)
-//    {
-//        $ob = new static($heart . static::REGEX_STAR);
-//
-//        return $ob;
-//    }
-//
-//
-//    /**
-//     * @param $heart
-//     * @return Regex
-//     */
-//    public static function createWithCaret($heart)
-//    {
-//        $ob = new static(static::REGEX_CARET . $heart);
-//
-//        return $ob;
-//    }
     protected $matches;
 
     /**

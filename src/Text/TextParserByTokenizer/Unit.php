@@ -19,47 +19,33 @@ class Unit
     const UNIT_TYPE_OTHER = 6;
 
     /** @var \Aot\Tokenizer\Token\Token[] */
-    protected $tokens;
+    protected $tokens = [];
 
     /** @var int */
     protected $type;
 
     /**
-     * @param \SplDoublyLinkedList $tokens_queue
-     * @return \Aot\Text\TextParserByTokenizer\Unit
-     */
-    public static function create(\SplDoublyLinkedList $tokens_queue)
-    {
-        foreach ($tokens_queue as $token) {
-            assert(is_a($token, \Aot\Tokenizer\Token\Token::class, true));
-        }
-
-        $ob = new static();
-
-        $ob->search($tokens_queue);
-
-        return $ob;
-    }
-
-    /**
      * @param \Aot\Tokenizer\Token\Token[] $tokens
-     * @return \Aot\Text\TextParserByTokenizer\Unit
+     * @param int $type
+     * @return Unit
      */
-    public static function createWithTokens(array $tokens)
+    public static function create(array $tokens, $type)
     {
         foreach ($tokens as $token) {
             assert(is_a($token, \Aot\Tokenizer\Token\Token::class, true));
+        }
+        assert(is_int($type));
+
+        if (!in_array($type, \Aot\Text\TextParserByTokenizer\TokenAndUnitRegistry::getAssociatedUnitTypeAndTokenTypeMap())) {
+            throw new \LogicException('The type of token ' . var_export($type, true) . ' does not associated to any unit token');
         }
 
         if ([] === $tokens) {
             throw new \LogicException('Failed to create the Unit, input array is empty!');
         }
         $ob = new static();
-
         $ob->tokens = $tokens;
-
-        // тип наследуется от первого токена
-        $ob->type = $tokens[0]->getType();
+        $ob->type = $type;
 
         return $ob;
     }
@@ -69,20 +55,6 @@ class Unit
     {
     }
 
-
-    /**
-     * @param \SplDoublyLinkedList $tokens_queue
-     * @return \Aot\Tokenizer\Token\Token[]
-     */
-    protected function search(\SplDoublyLinkedList $tokens_queue)
-    {
-        foreach ($tokens_queue as $id => $token) {
-            $this->tokens[] = $token;
-            $this->type = $token->getType();
-            unset($tokens_queue[$id]);
-            break;
-        }
-    }
 
     /**
      * @return \Aot\Tokenizer\Token\Token[]
@@ -96,5 +68,13 @@ class Unit
     public function __toString()
     {
         return join('', $this->tokens);
+    }
+
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }
