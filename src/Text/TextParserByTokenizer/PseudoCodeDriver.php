@@ -25,6 +25,25 @@ class PseudoCodeDriver
     }
 
     /**
+     * @param \Aot\Text\TextParserByTokenizer\Unit[] $units
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\TokenFoundPatterns[]
+     */
+    public function findBorderGroupsOfUnits(array $units)
+    {
+        foreach ($units as $unit) {
+            assert(is_a($unit, \Aot\Text\TextParserByTokenizer\Unit::class, true));
+        }
+
+        // создание псевдокода по токенам
+        $pseudo_code = $this->createUnitsPseudoCode($units);
+
+        // поиск шаблонов в псевдокоде
+        $uniting_patterns = PseudoCode\UnitUnitingPatterns::create();
+        return $uniting_patterns->findEntryPatterns($pseudo_code);
+    }
+
+
+    /**
      * @param \Aot\Tokenizer\Token\Token[] $tokens
      * @return \Aot\Text\TextParserByTokenizer\PseudoCode\TokenFoundPatterns[]
      */
@@ -35,7 +54,7 @@ class PseudoCodeDriver
         }
 
         // создание псевдокода по токенам
-        $pseudo_code = $this->createPseudoCode($tokens);
+        $pseudo_code = $this->createTokensPseudoCode($tokens);
 
         // поиск шаблонов в псевдокоде
         $uniting_patterns = PseudoCode\TokenUnitingPatterns::create();
@@ -46,13 +65,26 @@ class PseudoCodeDriver
      * @param \Aot\Tokenizer\Token\Token[] $tokens
      * @return string
      */
-    protected function createPseudoCode(array $tokens)
+    protected function createTokensPseudoCode(array $tokens)
     {
         $pseudo_code_array = [];
 
-        // токены соответсвуют юнитам
         foreach ($tokens as $token) {
             $pseudo_code_array[] = PseudoCode\TokenPseudoCodeRegistry::getTokenCode($token->getType());
+        }
+        return join('', $pseudo_code_array);
+    }
+
+    /**
+     * @param \Aot\Text\TextParserByTokenizer\Unit[] $units
+     * @return string
+     */
+    protected function createUnitsPseudoCode(array $units)
+    {
+
+        $pseudo_code_array = [];
+        foreach ($units as $unit) {
+            $pseudo_code_array[] = PseudoCode\UnitPseudoCodeRegistry::getUnitCode($unit);
         }
         return join('', $pseudo_code_array);
     }

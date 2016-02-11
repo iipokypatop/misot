@@ -7,6 +7,7 @@
  */
 
 namespace Aot\Text\TextParserByTokenizer\PseudoCode;
+use Aot\Text\Encodings;
 
 
 /**
@@ -22,11 +23,11 @@ class UnitPseudoCodeRegistry
     const TRIPLE_DOT = 'Dt'; // троеточие
     const SPACE = 'Sp'; // пробел
     const NUMBER = 'Nb'; // число
-    const DASH = 'Dh'; // число
+    const DASH = 'Dh'; // тире
     const PLUS = 'Pl'; // плюс
     const BRACE_LEFT = 'Bl'; // открывающая скобка === '('
     const BRACE_RIGHT = 'Br'; //  закрывающая скобка === ')'
-    const UNKNOWN = 'Un'; // пробел
+    const UNKNOWN = 'Un'; // неизвестно
 
 
     /**
@@ -39,51 +40,50 @@ class UnitPseudoCodeRegistry
     {
         $code = '';
         if ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD) {
-            if (mb_strlen($unit, 'utf-8') === 1) {
-                $code .= 'L';
-            } elseif (mb_strlen($unit, 'utf-8') > 1) {
-                $code .= 'W';
-            }
-
             $regex = \Aot\Tokenizer\Token\Regex::create(\Aot\Tokenizer\Token\TokenRegexRegistry::PATTERN_UPPERCASE);
             $regex->addStartingCaret();
-            if ($regex->match($unit)) {
-                $code .= 'u';
-            } else {
-                $code .= 'l';
+            $uppercase = $regex->match($unit);
+            if (mb_strlen($unit, Encodings::UTF_8) === 1) {
+                if ($uppercase) {
+                    $code = static::LETTER_UPPERCASE;
+                } else {
+                    $code = static::LETTER_LOWERCASE;
+                }
+            } elseif (mb_strlen($unit, Encodings::UTF_8) > 1) {
+                if ($uppercase) {
+                    $code = static::WORD_FIRST_LETTER_UPPERCASE;
+                } else {
+                    $code = static::WORD_FIRST_LETTER_LOWERCASE;
+                }
             }
         } elseif ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_PUNCTUATION) {
-            if (mb_strlen($unit, 'utf-8') === 1) {
+            if (mb_strlen($unit, Encodings::UTF_8) === 1) {
                 if ((string)$unit === '.') {
-                    $code = 'Ds';
+                    $code = static::SINGLE_DOT;
                 } elseif ((string)$unit === '(') {
-                    $code = 'Bl';
+                    $code = static::BRACE_LEFT;
                 } elseif ((string)$unit === ')') {
-                    $code = 'Br';
+                    $code = static::BRACE_RIGHT;
                 }
-            }
-            else{
-                $code = 'Un';
             }
         } elseif ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_SPACE) {
-            $code = 'Sp';
+            $code = static::SPACE;
         } elseif ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_NUMBER) {
-            $code = 'Nb';
+            $code = static::NUMBER;
         } elseif ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_DASH) {
-            $code = 'Dh';
+            $code = static::DASH;
         } elseif ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_OTHER) {
-            if (mb_strlen($unit, 'utf-8') === 1) {
+            if (mb_strlen($unit, Encodings::UTF_8) === 1) {
                 if ((string)$unit === '+') {
-                    $code = 'Pl';
+                    $code = static::PLUS;
                 }
             }
-            else{
-                $code = 'Un';
-            }
         }
-        else {
-            $code = 'Un';
+
+        if ($code === '') {
+            return static::UNKNOWN;
         }
+
         return $code;
     }
 

@@ -16,6 +16,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
 {
 
 
+
     /**
      * Без фильтра и сложных юнитов
      */
@@ -24,28 +25,8 @@ class TextTokensTest extends \AotTest\AotDataStorage
         $text = 'пошел   Петров     П.     П.  гулять и позвонил по телефону +7(905)123-45-67';
         $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::createDefaultConfig();
         $parser->run($text);
-        $unit_pseudo_code = [];
         $units = $parser->getUnits();
-        foreach ($units as $unit) {
-            $unit_pseudo_code[] = \Aot\Text\TextParserByTokenizer\PseudoCode\UnitPseudoCodeRegistry::getUnitCode($unit);
-        }
-        $unit_pseudo_code_string = join('', $unit_pseudo_code);
-
-        $uniting = \Aot\Text\TextParserByTokenizer\PseudoCode\UnitUnitingPatterns::create();
-        $found_patterns = $uniting->findEntryPatterns($unit_pseudo_code_string);
-
-        $groups_of_units = [];
-        foreach ($found_patterns as $found_pattern) {
-            $group = [];
-            for ($i = $found_pattern[0]; $i <= $found_pattern[1]; $i++) {
-                $group[] = $units[$i];
-            }
-            $groups_of_units[] = $group;
-        }
-        print_r($found_patterns);
-        print_r($groups_of_units);
-//        print_r($parser->getUnits());
-
+//        print_r($units);
     }
 
 

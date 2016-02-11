@@ -8,22 +8,22 @@
 
 namespace Aot\Text\TextParserByTokenizer\PseudoCode;
 
+use Aot\Text\Encodings;
+
 /**
  * Шаблоны объединения Unit'ов представленных в виде псевдокода
  * Class UnitingPatterns
  */
 class UnitUnitingPatterns
 {
-    const FIO1 = 'WuSpLuDs(Sp)?LuDs'; // фио в формате Петров П. П.
-    const FIO2 = 'WuSpWuSpWu'; // фио в формате Петров Петр Петрович
-    const PHONE_NUMBER1 = '(Pl)?NbSpNbSpNbDhNbDhNb'; // телефон в формате +7 905 123-45-67
-    const PHONE_NUMBER2 = '(Pl)?NbBlNbBrNbDhNbDhNb'; // телефон в формате +7(905)123-45-67
-
+    const START_BRACE = '(';
+    const END_BRACE = ')';
+    const EXTRA = '?';
+    const REG_OR = '|';
 
     const DELIMITER = '/';
     const MODIFIERS = 'u';
     const REPLACED_SYMBOL = '0';
-
 
     /**
      * @return \Aot\Text\TextParserByTokenizer\PseudoCode\UnitUnitingPatterns
@@ -39,10 +39,8 @@ class UnitUnitingPatterns
     public static function getUnitingPatterns()
     {
         return [
-            static::FIO1,
-            static::FIO2,
-            static::PHONE_NUMBER1,
-            static::PHONE_NUMBER2,
+            static::getFIO(),
+            static::getPhoneNumber(),
         ];
     }
 
@@ -61,7 +59,7 @@ class UnitUnitingPatterns
 
             foreach ($matches_all as $matches) {
 
-                $count_units = mb_strlen($matches[0], 'utf-8');
+                $count_units = mb_strlen($matches[0], Encodings::UTF_8);
                 $start_id = $matches[1];
 
                 $pseudo_code = substr_replace(
@@ -71,17 +69,42 @@ class UnitUnitingPatterns
                     $count_units
                 );
 
-                $found_patterns[] = [
+                $found_patterns[] = \Aot\Text\TextParserByTokenizer\PseudoCode\UnitFoundPatterns::create(
                     $start_id / 2,
                     ($start_id + $count_units) / 2 - 1,
-                ];
-
+                    $this->getUnitTypeByPattern($pattern)
+                );
             }
         }
 
         return $found_patterns;
     }
 
+
+    /**
+     * @param string $pattern
+     * @return int
+     */
+    protected function getUnitTypeByPattern($pattern)
+    {
+        if (!array_key_exists($pattern, static::getConformityBetweenUnitingPatternsAndUnitType())) {
+            throw new \LogicException("The conformity for the pattern " . $pattern . " is not declared");
+        }
+
+        return static::getConformityBetweenUnitingPatternsAndUnitType()[$pattern];
+    }
+
+
+    /**
+     * @return int[]
+     */
+    public static function getConformityBetweenUnitingPatternsAndUnitType()
+    {
+        return [
+            static::getFIO() => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD,
+            static::getPhoneNumber() => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_NUMBER,
+        ];
+    }
 
     /**
      * @param string $pattern
@@ -105,6 +128,88 @@ class UnitUnitingPatterns
         }
         return $matches_all[0];
     }
+
+
+    /**
+     * @return string
+     */
+    public static function getFIO()
+    {
+        return
+            // фио в формате "Петров П. П."
+            static::START_BRACE .
+            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
+            UnitPseudoCodeRegistry::SPACE .
+            UnitPseudoCodeRegistry::LETTER_UPPERCASE .
+            UnitPseudoCodeRegistry::SINGLE_DOT .
+            static::START_BRACE .
+            UnitPseudoCodeRegistry::SPACE .
+            static::END_BRACE .
+            static::EXTRA .
+            UnitPseudoCodeRegistry::LETTER_UPPERCASE .
+            UnitPseudoCodeRegistry::SINGLE_DOT .
+            static::END_BRACE .
+
+            // или
+            static::REG_OR .
+
+            // фио в формате "Петров Петр Петрович"
+            static::START_BRACE .
+            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
+            UnitPseudoCodeRegistry::SPACE .
+            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
+            UnitPseudoCodeRegistry::SPACE .
+            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
+            static::END_BRACE;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getPhoneNumber()
+    {
+        return
+
+            // телефон в формате 7 905 123-45-67
+            static::START_BRACE .
+            // необязательный "+"
+            static::START_BRACE .
+            UnitPseudoCodeRegistry::PLUS .
+            static::END_BRACE .
+            static::EXTRA .
+            UnitPseudoCodeRegistry::NUMBER .
+            UnitPseudoCodeRegistry::SPACE .
+            UnitPseudoCodeRegistry::NUMBER .
+            UnitPseudoCodeRegistry::SPACE .
+            UnitPseudoCodeRegistry::NUMBER .
+            UnitPseudoCodeRegistry::DASH .
+            UnitPseudoCodeRegistry::NUMBER .
+            UnitPseudoCodeRegistry::DASH .
+            UnitPseudoCodeRegistry::NUMBER .
+            static::END_BRACE .
+
+            // или
+            static::REG_OR .
+
+            // телефон в формате 7(905)123-45-67
+            static::START_BRACE .
+            // необязательный "+"
+            static::START_BRACE .
+            UnitPseudoCodeRegistry::PLUS .
+            static::END_BRACE .
+            static::EXTRA .
+            UnitPseudoCodeRegistry::NUMBER .
+            UnitPseudoCodeRegistry::BRACE_LEFT .
+            UnitPseudoCodeRegistry::NUMBER .
+            UnitPseudoCodeRegistry::BRACE_RIGHT .
+            UnitPseudoCodeRegistry::NUMBER .
+            UnitPseudoCodeRegistry::DASH .
+            UnitPseudoCodeRegistry::NUMBER .
+            UnitPseudoCodeRegistry::DASH .
+            UnitPseudoCodeRegistry::NUMBER .
+            static::END_BRACE;
+    }
+
 
 
 }

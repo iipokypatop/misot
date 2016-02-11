@@ -84,7 +84,10 @@ class TokenizerBasedParser
         $tokens = $this->filterTokens($tokens);
 
         // создание юнитов
-        $this->units = $this->createUnits($tokens);
+        $units = $this->createUnits($tokens);
+
+        // объединение юнитов
+        $this->units = $this->uniteUnits($units);
 
         $this->sentences = $this->findSentences();
 
@@ -151,7 +154,7 @@ class TokenizerBasedParser
             for ($i = $start; $i <= $end; $i++) {
 
                 if (empty($tokens[$i])) {
-                    throw new \LogicException('Token with id = ' . var_export( $i, true) . ' does not exists');
+                    throw new \LogicException('Token with id = ' . var_export($i, true) . ' does not exists');
                 }
 
                 $groups_tokens[] = $tokens[$i];
@@ -317,6 +320,35 @@ class TokenizerBasedParser
     public function getSymbolsMap()
     {
         return $this->symbols_map;
+    }
+
+    /**
+     * Объединение юнитов в один
+     * @param \Aot\Text\TextParserByTokenizer\Unit[] $units
+     * @return array
+     */
+    protected function uniteUnits(array $units)
+    {
+        $border_groups_of_units = $this->pseudo_code_driver->findBorderGroupsOfUnits($units);
+
+        foreach ($border_groups_of_units as $found_pattern) {
+            $start = $found_pattern->getStart();
+            $end = $found_pattern->getEnd();
+            $tokens = [];
+            for ($i = $start; $i <= $end; $i++) {
+
+                if (empty($units[$i])) {
+                    throw new \LogicException('Token with id = ' . var_export($i, true) . ' does not exists');
+                }
+
+                $tokens = array_merge($tokens, $units[$i]->getTokens());
+                unset($units[$i]);
+            }
+            $units[$start] = \Aot\Text\TextParserByTokenizer\Unit::create($tokens, $found_pattern->getType());
+        }
+
+        ksort($units);
+        return array_values($units);
     }
 
 }
