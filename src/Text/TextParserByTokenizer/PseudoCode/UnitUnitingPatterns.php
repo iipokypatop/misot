@@ -12,12 +12,12 @@ namespace Aot\Text\TextParserByTokenizer\PseudoCode;
  * Шаблоны объединения Unit'ов представленных в виде псевдокода
  * Class UnitingPatterns
  */
-class TokenUnitingPatterns
+class UnitUnitingPatterns
 {
-    const WORD_WITH_DASH = 'W(DW)+'; // слова через дефис
-    const ELLIPSIS = 'PPP'; // троеточие
-    const STUCK_TOGETHER_WORDS = 'W{2,}'; // слепленные слова
-    const MANY_SPACES = 'S{2,}'; // слепленные пробелы
+    const FIO1 = 'WuSpLuDs(Sp)?LuDs'; // фио в формате Петров П. П.
+    const FIO2 = 'WuSpWuSpWu'; // фио в формате Петров Петр Петрович
+    const PHONE_NUMBER1 = '(Pl)?NbSpNbSpNbDhNbDhNb'; // телефон в формате +7 905 123-45-67
+    const PHONE_NUMBER2 = '(Pl)?NbBlNbBrNbDhNbDhNb'; // телефон в формате +7(905)123-45-67
 
 
     const DELIMITER = '/';
@@ -26,7 +26,7 @@ class TokenUnitingPatterns
 
 
     /**
-     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\TokenUnitingPatterns
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\UnitUnitingPatterns
      */
     public static function create()
     {
@@ -39,26 +39,13 @@ class TokenUnitingPatterns
     public static function getUnitingPatterns()
     {
         return [
-            static::WORD_WITH_DASH,
-            static::ELLIPSIS,
-            static::STUCK_TOGETHER_WORDS,
-            static::MANY_SPACES,
+            static::FIO1,
+            static::FIO2,
+            static::PHONE_NUMBER1,
+            static::PHONE_NUMBER2,
         ];
     }
 
-
-    /**
-     * @return int[]
-     */
-    public static function getConformityBetweenUnitingPatternsAndUnitType()
-    {
-        return [
-            static::WORD_WITH_DASH => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD,
-            static::ELLIPSIS => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_PUNCTUATION,
-            static::STUCK_TOGETHER_WORDS => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD,
-            static::MANY_SPACES => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_SPACE,
-        ];
-    }
 
     /**
      * @param string $pseudo_code
@@ -67,7 +54,6 @@ class TokenUnitingPatterns
     public function findEntryPatterns($pseudo_code)
     {
         assert(is_string($pseudo_code));
-
         $found_patterns = [];
         foreach (static::getUnitingPatterns() as $pattern) {
 
@@ -75,7 +61,7 @@ class TokenUnitingPatterns
 
             foreach ($matches_all as $matches) {
 
-                $count_units = mb_strlen($matches[0],'utf-8');
+                $count_units = mb_strlen($matches[0], 'utf-8');
                 $start_id = $matches[1];
 
                 $pseudo_code = substr_replace(
@@ -85,15 +71,13 @@ class TokenUnitingPatterns
                     $count_units
                 );
 
-                $found_patterns[] = \Aot\Text\TextParserByTokenizer\PseudoCode\TokenFoundPatterns::create(
-                    $start_id,
-                    $start_id + $count_units - 1,
-                    $this->getUnitTypeByPattern($pattern)
-                );
+                $found_patterns[] = [
+                    $start_id / 2,
+                    ($start_id + $count_units) / 2 - 1,
+                ];
 
             }
         }
-
 
         return $found_patterns;
     }
@@ -120,19 +104,6 @@ class TokenUnitingPatterns
             return [];
         }
         return $matches_all[0];
-    }
-
-    /**
-     * @param string $pattern
-     * @return int
-     */
-    protected function getUnitTypeByPattern($pattern)
-    {
-        if (!array_key_exists($pattern, static::getConformityBetweenUnitingPatternsAndUnitType())) {
-            throw new \LogicException("The conformity for the pattern " . $pattern . " is not declared");
-        }
-
-        return static::getConformityBetweenUnitingPatternsAndUnitType()[$pattern];
     }
 
 
