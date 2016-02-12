@@ -1,11 +1,10 @@
 $(document).ready(function () {
-    console.log("ready!");
-
+    //$("#loading").hide();
 
     $("#parse").click(function () {
-
-        console.log("click!");
         var text = $("#text").val();
+        $("#parse").prop("disabled", true);
+        $("#loading").show();
 
         $.ajax({
             url: "../parsing/parse.php",
@@ -14,11 +13,7 @@ $(document).ready(function () {
             },
             type: "POST",
             success: function (data) {
-
                 $("#res").html(data);
-                console.log(data);
-                //$( "<h1>" ).text( json.title ).appendTo( "body" );
-                //$( "<div class=\"content\">").html( json.html ).appendTo( "body" );
             },
             error: function (xhr, status, errorThrown) {
                 alert("Sorry, there was a problem!");
@@ -28,6 +23,8 @@ $(document).ready(function () {
             },
             complete: function (xhr, status) {
                 console.log("The request is complete!");
+                $("#parse").prop("disabled", false);
+                $("#loading").hide();
             }
         });
     });

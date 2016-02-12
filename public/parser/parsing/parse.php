@@ -12,13 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $text = $_POST['text'];
+$t1 = microtime(true);
 $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::createDefaultConfig();
 $parser->run($text);
+$total = microtime(true) - $t1;
+$total = substr_replace($total, '', 4, strlen($total));
 $units = $parser->getUnits();
 
 echo "<div class='table-responsive'>";
 echo "<table class='table table-bordered table-condensed'>";
-echo "<tr class='success'><td>#</td><td>Элементы</td></tr>";
+echo "<tr class='success'><td>#</td><td>Элементы (время парсинга: $total сек.)</td></tr>";
 foreach ($parser->getSentences() as $sentence_id => $sentence) {
 
     $sentence_id++;
