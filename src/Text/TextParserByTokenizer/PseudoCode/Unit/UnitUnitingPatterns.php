@@ -150,13 +150,11 @@ class UnitUnitingPatterns
             static::EXTRA .
             UnitPseudoCodeRegistry::LETTER_UPPERCASE .
             UnitPseudoCodeRegistry::SINGLE_DOT .
-            static::END_BRACE .
 
             // или
             static::REG_OR .
 
             // фио в формате "Петров Петр Петрович"
-            static::START_BRACE .
             UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
             UnitPseudoCodeRegistry::SPACE .
             UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
@@ -172,13 +170,14 @@ class UnitUnitingPatterns
     {
         return
 
-            // телефон в формате 7 905 123-45-67
-            static::START_BRACE .
             // необязательный "+"
             static::START_BRACE .
             UnitPseudoCodeRegistry::PLUS .
             static::END_BRACE .
             static::EXTRA .
+
+            // телефон в формате 7 905 123-45-67
+            static::START_BRACE .
             UnitPseudoCodeRegistry::NUMBER .
             UnitPseudoCodeRegistry::SPACE .
             UnitPseudoCodeRegistry::NUMBER .
@@ -188,18 +187,11 @@ class UnitUnitingPatterns
             UnitPseudoCodeRegistry::NUMBER .
             UnitPseudoCodeRegistry::DASH .
             UnitPseudoCodeRegistry::NUMBER .
-            static::END_BRACE .
 
             // или
             static::REG_OR .
 
             // телефон в формате 7(905)123-45-67
-            static::START_BRACE .
-            // необязательный "+"
-            static::START_BRACE .
-            UnitPseudoCodeRegistry::PLUS .
-            static::END_BRACE .
-            static::EXTRA .
             UnitPseudoCodeRegistry::NUMBER .
             UnitPseudoCodeRegistry::BRACE_LEFT .
             UnitPseudoCodeRegistry::NUMBER .
