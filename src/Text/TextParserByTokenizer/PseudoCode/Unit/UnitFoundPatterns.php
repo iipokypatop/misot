@@ -6,10 +6,10 @@
  * Time: 15:54
  */
 
-namespace Aot\Text\TextParserByTokenizer\PseudoCode;
+namespace Aot\Text\TextParserByTokenizer\PseudoCode\Unit;
 
 
-class TokenFoundPatterns
+class UnitFoundPatterns
 {
     /** @var  int */
     protected $start;
@@ -24,7 +24,7 @@ class TokenFoundPatterns
      * @param int $start
      * @param int $end
      * @param int $type
-     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\TokenFoundPatterns
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\Unit\UnitFoundPatterns
      */
     public static function create($start, $end, $type)
     {
@@ -38,7 +38,9 @@ class TokenFoundPatterns
      */
     protected function __construct($start, $end, $type)
     {
-        assert(is_int($start) && is_int($end) && is_int($type));
+        assert(is_int($start));
+        assert(is_int($end));
+        assert(is_int($type));
         $this->start = $start;
         $this->end = $end;
         $this->type = $type;

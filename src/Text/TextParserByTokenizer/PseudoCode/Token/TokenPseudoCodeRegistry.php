@@ -6,7 +6,7 @@
  * Time: 14:07
  */
 
-namespace Aot\Text\TextParserByTokenizer\PseudoCode;
+namespace Aot\Text\TextParserByTokenizer\PseudoCode\Token;
 
 
 class TokenPseudoCodeRegistry

@@ -15,6 +15,22 @@ use MivarTest\PHPUnitHelper;
 class TextTokensTest extends \AotTest\AotDataStorage
 {
 
+    /**
+     * Без фильтра и сложных юнитов
+     */
+    public function testUniteUnits()
+    {
+        $text = 'пошел   Петров     П.     П.  гулять и позвонил по телефону +7(905)123-45-67';
+        $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::createDefaultConfig();
+        $parser->run($text);
+        $units = $parser->getUnits();
+        $output_string = join('', $units);
+        $this->assertEquals($output_string, $text);
+        $this->assertEquals(15, count($units));
+        $this->assertEquals('Петров     П.     П.', (string)$units[2]);
+        $this->assertEquals('+7(905)123-45-67', (string)$units[14]);
+    }
+
 
     public function testSymbolsMap()
     {
@@ -184,7 +200,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
          * 5) WDW
          */
         $pseudo_code = 'WDWDWSSWPSPPPSWWWPWWDW';
-        $uniting_patterns = \Aot\Text\TextParserByTokenizer\PseudoCode\TokenUnitingPatterns::create();
+        $uniting_patterns = \Aot\Text\TextParserByTokenizer\PseudoCode\Token\TokenUnitingPatterns::create();
         $found = $uniting_patterns->findEntryPatterns($pseudo_code);
 
         $found_array = [];

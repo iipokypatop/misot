@@ -6,7 +6,10 @@
  * Time: 13:00
  */
 
-namespace Aot\Text\TextParserByTokenizer\PseudoCode;
+namespace Aot\Text\TextParserByTokenizer\PseudoCode\Token;
+
+use Aot\Text\Encodings;
+use Aot\Text\TextParserByTokenizer\PseudoCode\Token;
 
 /**
  * Шаблоны объединения Unit'ов представленных в виде псевдокода
@@ -26,7 +29,7 @@ class TokenUnitingPatterns
 
 
     /**
-     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\TokenUnitingPatterns
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\Token\TokenUnitingPatterns
      */
     public static function create()
     {
@@ -62,7 +65,7 @@ class TokenUnitingPatterns
 
     /**
      * @param string $pseudo_code
-     * @return  \Aot\Text\TextParserByTokenizer\PseudoCode\TokenFoundPatterns[]
+     * @return  \Aot\Text\TextParserByTokenizer\PseudoCode\Token\TokenFoundPatterns[]
      */
     public function findEntryPatterns($pseudo_code)
     {
@@ -75,7 +78,7 @@ class TokenUnitingPatterns
 
             foreach ($matches_all as $matches) {
 
-                $count_units = mb_strlen($matches[0]);
+                $count_units = mb_strlen($matches[0], Encodings::UTF_8);
                 $start_id = $matches[1];
 
                 $pseudo_code = substr_replace(
@@ -85,7 +88,7 @@ class TokenUnitingPatterns
                     $count_units
                 );
 
-                $found_patterns[] = \Aot\Text\TextParserByTokenizer\PseudoCode\TokenFoundPatterns::create(
+                $found_patterns[] = Token\TokenFoundPatterns::create(
                     $start_id,
                     $start_id + $count_units - 1,
                     $this->getUnitTypeByPattern($pattern)
