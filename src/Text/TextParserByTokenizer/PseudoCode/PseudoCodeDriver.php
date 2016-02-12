@@ -6,8 +6,10 @@
  * Time: 17:44
  */
 
-namespace Aot\Text\TextParserByTokenizer;
+namespace Aot\Text\TextParserByTokenizer\PseudoCode;
 
+
+use Aot\Text\TextParserByTokenizer\PseudoCode;
 
 class PseudoCodeDriver
 {
@@ -26,7 +28,7 @@ class PseudoCodeDriver
 
     /**
      * @param \Aot\Text\TextParserByTokenizer\Unit[] $units
-     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\TokenFoundPatterns[]
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\Token\TokenFoundPatterns[]
      */
     public function findBorderGroupsOfUnits(array $units)
     {
@@ -38,14 +40,14 @@ class PseudoCodeDriver
         $pseudo_code = $this->createUnitsPseudoCode($units);
 
         // поиск шаблонов в псевдокоде
-        $uniting_patterns = PseudoCode\UnitUnitingPatterns::create();
+        $uniting_patterns = PseudoCode\Unit\UnitUnitingPatterns::create();
         return $uniting_patterns->findEntryPatterns($pseudo_code);
     }
 
 
     /**
      * @param \Aot\Tokenizer\Token\Token[] $tokens
-     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\TokenFoundPatterns[]
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\Token\TokenFoundPatterns[]
      */
     public function findBorderGroupsOfTokens(array $tokens)
     {
@@ -57,7 +59,7 @@ class PseudoCodeDriver
         $pseudo_code = $this->createTokensPseudoCode($tokens);
 
         // поиск шаблонов в псевдокоде
-        $uniting_patterns = PseudoCode\TokenUnitingPatterns::create();
+        $uniting_patterns = PseudoCode\Token\TokenUnitingPatterns::create();
         return $uniting_patterns->findEntryPatterns($pseudo_code);
     }
 
@@ -70,7 +72,7 @@ class PseudoCodeDriver
         $pseudo_code_array = [];
 
         foreach ($tokens as $token) {
-            $pseudo_code_array[] = PseudoCode\TokenPseudoCodeRegistry::getTokenCode($token->getType());
+            $pseudo_code_array[] = PseudoCode\Token\TokenPseudoCodeRegistry::getTokenCode($token->getType());
         }
         return join('', $pseudo_code_array);
     }
@@ -84,7 +86,7 @@ class PseudoCodeDriver
 
         $pseudo_code_array = [];
         foreach ($units as $unit) {
-            $pseudo_code_array[] = PseudoCode\UnitPseudoCodeRegistry::getUnitCode($unit);
+            $pseudo_code_array[] = PseudoCode\Unit\UnitPseudoCodeRegistry::getUnitCode($unit);
         }
         return join('', $pseudo_code_array);
     }

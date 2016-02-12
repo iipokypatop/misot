@@ -6,7 +6,7 @@
  * Time: 15:54
  */
 
-namespace Aot\Text\TextParserByTokenizer\PseudoCode;
+namespace Aot\Text\TextParserByTokenizer\PseudoCode\Unit;
 
 
 class UnitFoundPatterns

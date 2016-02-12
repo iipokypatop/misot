@@ -6,7 +6,7 @@
  * Time: 19:41
  */
 
-namespace Aot\Text\TextParserByTokenizer\PseudoCode;
+namespace Aot\Text\TextParserByTokenizer\PseudoCode\Unit;
 use Aot\Text\Encodings;
 
 

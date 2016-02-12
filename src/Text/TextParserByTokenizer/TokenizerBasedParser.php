@@ -24,7 +24,7 @@ class TokenizerBasedParser
     /** @var  \Aot\Text\TextParserByTokenizer\Tokenizer */
     protected $tokenizer;
 
-    /** @var \Aot\Text\TextParserByTokenizer\PseudoCodeDriver */
+    /** @var \Aot\Text\TextParserByTokenizer\PseudoCode\PseudoCodeDriver */
     protected $pseudo_code_driver;
 
     /** @var  \Aot\Text\TextParserByTokenizer\Sentence[] */
@@ -58,7 +58,7 @@ class TokenizerBasedParser
     protected function __construct()
     {
         $this->tokenizer = \Aot\Text\TextParserByTokenizer\Tokenizer::createEmptyConfiguration();
-        $this->pseudo_code_driver = \Aot\Text\TextParserByTokenizer\PseudoCodeDriver::create();
+        $this->pseudo_code_driver = PseudoCode\PseudoCodeDriver::create();
     }
 
     /**

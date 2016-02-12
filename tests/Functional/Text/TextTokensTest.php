@@ -15,8 +15,6 @@ use MivarTest\PHPUnitHelper;
 class TextTokensTest extends \AotTest\AotDataStorage
 {
 
-
-
     /**
      * Без фильтра и сложных юнитов
      */
@@ -198,7 +196,7 @@ class TextTokensTest extends \AotTest\AotDataStorage
          * 5) WDW
          */
         $pseudo_code = 'WDWDWSSWPSPPPSWWWPWWDW';
-        $uniting_patterns = \Aot\Text\TextParserByTokenizer\PseudoCode\TokenUnitingPatterns::create();
+        $uniting_patterns = \Aot\Text\TextParserByTokenizer\PseudoCode\Token\TokenUnitingPatterns::create();
         $found = $uniting_patterns->findEntryPatterns($pseudo_code);
 
         $found_array = [];
