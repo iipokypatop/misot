@@ -24,7 +24,7 @@ class UnitFoundPatterns
      * @param int $start
      * @param int $end
      * @param int $type
-     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\UnitFoundPatterns
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\Unit\UnitFoundPatterns
      */
     public static function create($start, $end, $type)
     {

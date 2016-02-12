@@ -24,7 +24,7 @@ class TokenFoundPatterns
      * @param int $start
      * @param int $end
      * @param int $type
-     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\TokenFoundPatterns
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\Token\TokenFoundPatterns
      */
     public static function create($start, $end, $type)
     {

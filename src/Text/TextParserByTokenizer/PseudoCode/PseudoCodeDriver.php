@@ -15,7 +15,7 @@ class PseudoCodeDriver
 {
 
     /**
-     * @return \Aot\Text\TextParserByTokenizer\PseudoCodeDriver
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\PseudoCodeDriver
      */
     public static function create()
     {

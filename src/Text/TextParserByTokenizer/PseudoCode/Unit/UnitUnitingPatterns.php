@@ -10,7 +10,6 @@ namespace Aot\Text\TextParserByTokenizer\PseudoCode\Unit;
 
 use Aot\Text\Encodings;
 use Aot\Text\TextParserByTokenizer\PseudoCode\Unit;
-use Aot\Text\TextParserByTokenizer\PseudoCode\Unit\UnitPseudoCodeRegistry;
 
 /**
  * Шаблоны объединения Unit'ов представленных в виде псевдокода
@@ -28,7 +27,7 @@ class UnitUnitingPatterns
     const REPLACED_SYMBOL = '0';
 
     /**
-     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\UnitUnitingPatterns
+     * @return \Aot\Text\TextParserByTokenizer\PseudoCode\Unit\UnitUnitingPatterns
      */
     public static function create()
     {
