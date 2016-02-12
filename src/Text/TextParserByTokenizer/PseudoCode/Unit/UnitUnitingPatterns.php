@@ -89,7 +89,7 @@ class UnitUnitingPatterns
     protected function getUnitTypeByPattern($pattern)
     {
         if (!array_key_exists($pattern, static::getConformityBetweenUnitingPatternsAndUnitType())) {
-            throw new \LogicException("The conformity for the pattern " . $pattern . " is not declared");
+            throw new \LogicException("The conformity for the pattern " . var_export($pattern, true) . " is not declared");
         }
 
         return static::getConformityBetweenUnitingPatternsAndUnitType()[$pattern];

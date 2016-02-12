@@ -339,7 +339,7 @@ class TokenizerBasedParser
             for ($i = $start; $i <= $end; $i++) {
 
                 if (empty($units[$i])) {
-                    throw new \LogicException('Token with id = ' . var_export($i, true) . ' does not exists');
+                    throw new \LogicException('Unit with id = ' . var_export($i, true) . ' does not exists');
                 }
 
                 $tokens = array_merge($tokens, $units[$i]->getTokens());

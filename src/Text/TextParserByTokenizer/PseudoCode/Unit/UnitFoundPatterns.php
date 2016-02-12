@@ -38,7 +38,9 @@ class UnitFoundPatterns
      */
     protected function __construct($start, $end, $type)
     {
-        assert(is_int($start) && is_int($end) && is_int($type));
+        assert(is_int($start));
+        assert(is_int($end));
+        assert(is_int($type));
         $this->start = $start;
         $this->end = $end;
         $this->type = $type;
