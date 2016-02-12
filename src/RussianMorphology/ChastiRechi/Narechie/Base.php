@@ -17,7 +17,7 @@ use Aot\RussianMorphology\Slovo;
  */
 class Base extends Slovo
 {
-    public function getMorphology()
+    public static function getMorphology()
     {
         return [
             'stepen_sravneniia' => Morphology\StepenSravneniya\Base::class,

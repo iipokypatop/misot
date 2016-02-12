@@ -92,7 +92,9 @@ class Unit
         return $this->tokens;
     }
 
-
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return join('', $this->tokens);

@@ -209,15 +209,3 @@ class Base
         $this->token_types[] = $type;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

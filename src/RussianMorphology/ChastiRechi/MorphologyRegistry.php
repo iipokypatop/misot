@@ -40,16 +40,16 @@ class MorphologyRegistry extends MorphologyRegistryParent
     const NARICATELNOST_SOBSTVENNOE = 7002;
 
 
-    const RAZRYAD_KACHESTVENNOE = 9001;
-    const RAZRYAD_OTNOSITELNOE = 9002;
-    const RAZRYAD_PRITYAZHATELNOE = 9003;
-    const RAZRYAD_VOZVRATNOE = 9004;
-    const RAZRYAD_LICHNOE = 9005;
-    const RAZRYAD_NEOPREDELENNOE = 9006;
-    const RAZRYAD_OPREDELITELNOE = 9007;
-    const RAZRYAD_OTRICATELNOE = 9008;
-    const RAZRYAD_UKAZATELNOE = 9009;
-    const RAZRYAD_VOPROSITELNOE = 9010;
+
+    const RAZRYAD_MESTOIMENIE_OTNOSITELNOE = 9002;
+    const RAZRYAD_MESTOIMENIE_PRITYAZHATELNOE = 9003;
+    const RAZRYAD_MESTOIMENIE_VOZVRATNOE = 9004;
+    const RAZRYAD_MESTOIMENIE_LICHNOE = 9005;
+    const RAZRYAD_MESTOIMENIE_NEOPREDELENNOE = 9006;
+    const RAZRYAD_MESTOIMENIE_OPREDELITELNOE = 9007;
+    const RAZRYAD_MESTOIMENIE_OTRICATELNOE = 9008;
+    const RAZRYAD_MESTOIMENIE_UKAZATELNOE = 9009;
+    const RAZRYAD_MESTOIMENIE_VOPROSITELNOE = 9010;
 
     const FORMA_POLNAYA = 10001;
     const FORMA_KRATKAYA = 10002;
@@ -75,27 +75,25 @@ class MorphologyRegistry extends MorphologyRegistryParent
     const NAKLONENIE_YSLOVNOE = 16003;
     const NAKLONENIE_NULL = 16004;
 
-    const VREMYA = 17000;
     const VREMYA_BUDUSCHEE = 17001;
     const VREMYA_NASTOYASCHEE = 17002;
     const VREMYA_PROSHEDSHEE = 17003;
     const VREMYA_NULL = 17004;
 
-    const LITSO = 18000;
     const LITSO_PERVOE = 18001;
     const LITSO_TRETIE = 18002;
     const LITSO_VTOROE = 18003;
     const LITSO_NULL = 18004;
 
-    const ODUSHEVLYONNOST = 19000;
     const ODUSHEVLYONNOST_ODUSHEVLYONNOE = 19001;
     const ODUSHEVLYONNOST_NEODUSHEVLYONNOE = 19002;
 
     const NARITCATELNOST_IMIA_NARITCATELNOE = 20001;
     const NARITCATELNOST_IMIA_SOBSTVENNOE = 20002;
 
-    const PODVID_PROSTOY = 21001;
-    const PODVID_SOSTAVNOY = 21002;
+    const PODVID_CHISLITELNOGO_PROSTOY = 21001;
+    const PODVID_CHISLITELNOGO_SOSTAVNOY = 21002;
+    //const PODVID_CHISLITELNOGO_SLOZHNOE = 21003;
 
     const TIP_CELIY = 22001;
     const TIP_DROBNIY = 22002;
@@ -103,6 +101,14 @@ class MorphologyRegistry extends MorphologyRegistryParent
 
     const VID_CHISLITELNOGO_KOLICHESTVENNIY = 23001;
     const VID_CHISLITELNOGO_PORYADKOVIY = 23002;
+
+    const RAZRYAD_PRILAGATELNOE_KACHESTVENNOE = 24001;
+    const RAZRYAD_PRILAGATELNOE_OTNOSITELNOE = 24002;
+    const RAZRYAD_PRILAGATELNOE_PRITYAZHATELNOE = 24003;
+
+
+    const OTGLAGOLNOST_SUSCHESTVITELNOE_NEOTGLAGOLNOE = 25001;
+    const OTGLAGOLNOST_SUSCHESTVITELNOE_OTGLAGOLNOE = 25002;
 
     public static function getNames()
     {
@@ -118,7 +124,7 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::ROD_SREDNIJ => 'средний род',
             static::CHISLO_EDINSTVENNOE => 'единственное число',
             static::CHISLO_MNOZHESTVENNOE => 'множественное число',
-            static::CHISLO_NULL => '',
+
             static::SKLONENIE => 'склонение',
             static::SKLONENIE_PERVOE => 'первое склонение',
             static::SKLONENIE_VTOROE => 'второе склонение',
@@ -127,17 +133,17 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::NEIZMENYAJMOST_NEIZMNYAJMIJ => 'изменяемый',
             static::PEREHODNOST_PEREHODNII => 'переходный',
             static::PEREHODNOST_NEPEREHODNII => 'непереходный',
-            static::RAZRYAD => 'разряд',
-            static::RAZRYAD_KACHESTVENNOE => 'качественное',
-            static::RAZRYAD_OTNOSITELNOE => 'относительное',
-            static::RAZRYAD_PRITYAZHATELNOE => 'притяжательное',
-            static::RAZRYAD_VOZVRATNOE => 'возвратное',
-            static::RAZRYAD_LICHNOE => 'личное',
-            static::RAZRYAD_NEOPREDELENNOE => 'неопределенное',
-            static::RAZRYAD_OPREDELITELNOE => 'определительное',
-            static::RAZRYAD_OTRICATELNOE => 'отрицательное',
-            static::RAZRYAD_UKAZATELNOE => 'указательное',
-            static::RAZRYAD_VOPROSITELNOE => 'вопросительное',
+            static::RAZRYAD_MESTOIMENIE => 'разряд местоимение',
+            static::RAZRYAD_PRILAGATELNOE_KACHESTVENNOE => 'качественное',
+            static::RAZRYAD_MESTOIMENIE_OTNOSITELNOE => 'относительное',
+            static::RAZRYAD_MESTOIMENIE_PRITYAZHATELNOE => 'притяжательное',
+            static::RAZRYAD_MESTOIMENIE_VOZVRATNOE => 'возвратное',
+            static::RAZRYAD_MESTOIMENIE_LICHNOE => 'личное',
+            static::RAZRYAD_MESTOIMENIE_NEOPREDELENNOE => 'неопределенное',
+            static::RAZRYAD_MESTOIMENIE_OPREDELITELNOE => 'определительное',
+            static::RAZRYAD_MESTOIMENIE_OTRICATELNOE => 'отрицательное',
+            static::RAZRYAD_MESTOIMENIE_UKAZATELNOE => 'указательное',
+            static::RAZRYAD_MESTOIMENIE_VOPROSITELNOE => 'вопросительное',
             static::FORMA => 'форма',
             static::FORMA_POLNAYA => 'полная',
             static::FORMA_KRATKAYA => 'краткая',
@@ -160,29 +166,33 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::NAKLONENIE_IZYAVITELNOE => 'изъявительное',
             static::NAKLONENIE_POVELITELNOE => 'повелительное',
             static::NAKLONENIE_YSLOVNOE => 'условное',
-            static::NAKLONENIE_NULL => '',
             static::VREMYA => 'время',
             static::VREMYA_BUDUSCHEE => 'будущее',
             static::VREMYA_NASTOYASCHEE => 'настоящее',
             static::VREMYA_PROSHEDSHEE => 'прошедшее',
-            static::VREMYA_NULL => '',
             static::LITSO => 'лицо',
             static::LITSO_PERVOE => 'первое',
             static::LITSO_VTOROE => 'второе',
             static::LITSO_TRETIE => 'третье',
-            static::LITSO_NULL => '',
             static::ODUSHEVLYONNOST_ODUSHEVLYONNOE => 'одушевленное',
             static::ODUSHEVLYONNOST_NEODUSHEVLYONNOE => 'неодушевленное',
             static::NARITCATELNOST_IMIA_NARITCATELNOE => 'нарицательное',
             static::NARITCATELNOST_IMIA_SOBSTVENNOE => 'собственное',
-            static::PODVID => 'подвид',
-            static::PODVID_PROSTOY => 'простое',
-            static::PODVID_SOSTAVNOY => 'составное',
+            static::PODVID_CHISLITELNOGO => 'подвид',
+            static::PODVID_CHISLITELNOGO_PROSTOY => 'простое',
+            static::PODVID_CHISLITELNOGO_SOSTAVNOY => 'составное',
             static::TIP_CELIY => 'целое',
             static::TIP_DROBNIY => 'дробное',
             static::TIP_SOBIRATELNIY => 'собирательное',
             static::VID_CHISLITELNOGO_KOLICHESTVENNIY => 'количественный',
             static::VID_CHISLITELNOGO_PORYADKOVIY => 'порядковый',
+
+            static::RAZRYAD_PRILAGATELNOE_KACHESTVENNOE => 'качественное',
+            static::RAZRYAD_PRILAGATELNOE_OTNOSITELNOE => 'относительное',
+            static::RAZRYAD_PRILAGATELNOE_PRITYAZHATELNOE => 'притяжательное',
+
+            static::OTGLAGOLNOST_SUSCHESTVITELNOE_NEOTGLAGOLNOE => 'неотглагольное',
+            static::OTGLAGOLNOST_SUSCHESTVITELNOE_OTGLAGOLNOE => 'отглагольное',
         ];
 
 
@@ -292,11 +302,13 @@ class MorphologyRegistry extends MorphologyRegistryParent
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Perehodnyj::class,
                     ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Perehodnyj::class,
                     ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Perehodnyj::class,
+                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Perehodnost\Perehodnij::class,
                 ],
                 static::PEREHODNOST_NEPEREHODNII => [
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Perehodnost\Neperehodnyj::class,
                     ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Neperehodnyj::class,
                     ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Neperehodnyj::class,
+                    ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Perehodnost\Neperehodnij::class,
                 ],
             ],
             static::SKLONENIE => [
@@ -338,39 +350,46 @@ class MorphologyRegistry extends MorphologyRegistryParent
                     ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Stradatelnyj::class,
                 ],
             ],
-            static::RAZRYAD => [
-                static::RAZRYAD_KACHESTVENNOE => [
-                    ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Kachestvennoe::class,
-                ],
-                static::RAZRYAD_OTNOSITELNOE => [
-                    ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Otnositelnoe::class,
+            static::RAZRYAD_MESTOIMENIE=> [
+                static::RAZRYAD_MESTOIMENIE_OTNOSITELNOE => [
                     ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Otnositelnoe::class,
                 ],
-                // ????? ya ?= ia
-                static::RAZRYAD_PRITYAZHATELNOE => [
+                static::RAZRYAD_MESTOIMENIE_PRITYAZHATELNOE => [
                     ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Prityazhatelnoe::class,
-                    ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Prityazhatelnoe::class,
                 ],
-                static::RAZRYAD_VOZVRATNOE => [
+                static::RAZRYAD_MESTOIMENIE_VOZVRATNOE => [
                     ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Vozvratnoe::class,
                 ],
-                static::RAZRYAD_LICHNOE => [
+                static::RAZRYAD_MESTOIMENIE_LICHNOE => [
                     ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Lichnoe::class,
                 ],
-                static::RAZRYAD_NEOPREDELENNOE => [
+                static::RAZRYAD_MESTOIMENIE_NEOPREDELENNOE => [
                     ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Neopredelennoe::class,
                 ],
-                static::RAZRYAD_OPREDELITELNOE => [
+                static::RAZRYAD_MESTOIMENIE_OPREDELITELNOE => [
                     ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Opredelitelnoe::class,
                 ],
-                static::RAZRYAD_OTRICATELNOE => [
+                static::RAZRYAD_MESTOIMENIE_OTRICATELNOE => [
                     ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Otricatelnoe::class,
                 ],
-                static::RAZRYAD_UKAZATELNOE => [
+                static::RAZRYAD_MESTOIMENIE_UKAZATELNOE => [
                     ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Ukazatelnoe::class,
                 ],
-                static::RAZRYAD_VOPROSITELNOE => [
+                static::RAZRYAD_MESTOIMENIE_VOPROSITELNOE => [
                     ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Voprositelnoe::class,
+                ],
+            ],
+
+            static::RAZRYAD_PRILAGATELNOE=> [
+                static::RAZRYAD_PRILAGATELNOE_KACHESTVENNOE => [
+                    ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Kachestvennoe::class,
+                ],
+                static::RAZRYAD_PRILAGATELNOE_OTNOSITELNOE => [
+                    ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Otnositelnoe::class,
+                ],
+                // ????? ya ?= ia
+                static::RAZRYAD_PRILAGATELNOE_PRITYAZHATELNOE => [
+                    ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Prityazhatelnoe::class,
                 ],
             ],
             static::NAKLONENIE => [
@@ -395,12 +414,15 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::LITSO => [
                 static::LITSO_PERVOE => [
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Pervoe::class,
+                    ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Litso\Pervoe::class,
                 ],
                 static::LITSO_VTOROE => [
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Vtoroe::class,
+                    ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Litso\Vtoroe::class,
                 ],
                 static::LITSO_TRETIE => [
                     ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Tretie::class,
+                    ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Litso\Tretie::class,
                 ],
             ],
             static::VID => [
@@ -475,15 +497,15 @@ class MorphologyRegistry extends MorphologyRegistryParent
                     ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaSobstvennoe::class,
                 ],
             ],
-            static::PODVID => [
-                static::PODVID_PROSTOY => [
+            static::PODVID_CHISLITELNOGO => [
+                static::PODVID_CHISLITELNOGO_PROSTOY => [
                     ChastiRechiRegistry::CHISLITELNOE => \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid\Prostoy::class
                 ],
-                static::PODVID_SOSTAVNOY => [
+                static::PODVID_CHISLITELNOGO_SOSTAVNOY => [
                     ChastiRechiRegistry::CHISLITELNOE => \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid\Sostavnoy::class
                 ],
             ],
-            static::TIP => [
+            static::TIP_CHISLITELNOGO => [
                 static::TIP_CELIY => [
                     ChastiRechiRegistry::CHISLITELNOE => \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Tip\Celiy::class
                 ],
@@ -502,6 +524,16 @@ class MorphologyRegistry extends MorphologyRegistryParent
                     ChastiRechiRegistry::CHISLITELNOE => \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Poryadkoviy::class
                 ]
             ],
+
+            static::OTGLAGOLNOST_SUSCHESTVITELNOE => [
+                static::OTGLAGOLNOST_SUSCHESTVITELNOE_NEOTGLAGOLNOE => [
+                    ChastiRechiRegistry::SUSCHESTVITELNOE =>  \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Otglagolnost\Neotglagolnoe::class
+                ],
+
+                static::OTGLAGOLNOST_SUSCHESTVITELNOE_OTGLAGOLNOE => [
+                    ChastiRechiRegistry::SUSCHESTVITELNOE =>  \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Otglagolnost\Otglagolnoe::class
+                ],
+            ]
         ];
     }
 
@@ -611,8 +643,7 @@ class MorphologyRegistry extends MorphologyRegistryParent
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Base::class,
                 ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Base::class,
             ],
-            static::RAZRYAD => [
-                ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Base::class,
+            static::RAZRYAD_MESTOIMENIE => [
                 ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Base::class,
             ],
             static::NAKLONENIE => [
@@ -650,15 +681,23 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::NARITCATELNOST => [
                 ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\Base::class,
             ],
-            static::PODVID => [
+            static::PODVID_CHISLITELNOGO => [
                 ChastiRechiRegistry::CHISLITELNOE => \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid\Base::class,
             ],
-            static::TIP => [
+            static::TIP_CHISLITELNOGO => [
                 ChastiRechiRegistry::CHISLITELNOE => \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Tip\Base::class,
             ],
             static::VID_CHISLITELNOGO => [
                 ChastiRechiRegistry::CHISLITELNOE => \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Base::class,
             ],
+
+            static::RAZRYAD_PRILAGATELNOE => [
+                ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Base::class,
+            ],
+
+            static::OTGLAGOLNOST_SUSCHESTVITELNOE => [
+                ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Otglagolnost\Base::class
+            ]
         ];
     }
 
@@ -716,6 +755,7 @@ class MorphologyRegistry extends MorphologyRegistryParent
                 }
             }
         }
+
         return null;
     }
 
@@ -790,8 +830,7 @@ class MorphologyRegistry extends MorphologyRegistryParent
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::class,
                 ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Null::class,
             ],
-            static::RAZRYAD => [
-                ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class,
+            static::RAZRYAD_MESTOIMENIE => [
                 ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Null::class,
             ],
             static::NAKLONENIE => [
@@ -829,14 +868,20 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::NARITCATELNOST => [
                 ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\Null::class,
             ],
-            static::PODVID => [
+            static::PODVID_CHISLITELNOGO => [
                 ChastiRechiRegistry::CHISLITELNOE => \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid\Null::class,
             ],
-            static::TIP => [
+            static::TIP_CHISLITELNOGO => [
                 ChastiRechiRegistry::CHISLITELNOE => \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Tip\Null::class,
             ],
             static::VID_CHISLITELNOGO => [
                 ChastiRechiRegistry::CHISLITELNOE => \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Null::class,
+            ],
+            static::RAZRYAD_PRILAGATELNOE => [
+                ChastiRechiRegistry::PRILAGATELNOE => \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class,
+            ],
+            static::OTGLAGOLNOST_SUSCHESTVITELNOE => [
+                ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Otglagolnost\Null::class
             ],
         ];
     }
@@ -868,36 +913,6 @@ class MorphologyRegistry extends MorphologyRegistryParent
         }
         return null;
     }
-
-//    public static function getChastiRechiWithPriznakiWithVarianti()
-//    {
-//        $element_template = [
-//            'id' => null,
-//            'text' => null,
-//            'children' => []
-//        ];
-//        //Выходной массив частей речи с признаками и вариантами
-//        $chasti_rechi_array = [];
-//        //Оббегаем все признаки
-//        foreach (static::getClasses() as $priznak_id => $variants) {
-//            foreach ($variants as $variant_id => $variant) {
-//                foreach ($variant as $chast_rechi_id => $chast_rechi) {
-//                    $chasti_rechi_array[$chast_rechi_id]['id']= $chast_rechi_id;
-//                    $chasti_rechi_array[$chast_rechi_id]['text']=\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::getNames()[$chast_rechi_id];
-//
-//                    $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['id'] = $priznak_id;
-//                    $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['text'] = static::getNames()[$priznak_id];
-//
-//                    $element_template2=$element_template;
-//                    $element_template2['id']=$variant_id;
-//                    $element_template2['text']=static::getNames()[$variant_id];
-//                    $chasti_rechi_array[$chast_rechi_id]['children'][$priznak_id]['children'][$variant_id] = $element_template2;
-//                }
-//            }
-//        }
-//        return $chasti_rechi_array;
-//    }
-
 
     public static function getChastiRechiWithPriznakiWithVarianti()
     {
@@ -953,6 +968,90 @@ class MorphologyRegistry extends MorphologyRegistryParent
         }
         return $chasti_rechi_array_no_associations;
     }
+
+
+    public static function new_old()
+    {
+        $names = [
+            static::PADESZH_IMENITELNIJ => \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID,
+            static::PADESZH_RODITELNIJ => \Aot\MivarTextSemantic\Constants::CASE_GENITIVE_ID,
+            static::PADESZH_DATELNIJ => \Aot\MivarTextSemantic\Constants::CASE_DATIVE_ID,
+            static::PADESZH_VINITELNIJ => \Aot\MivarTextSemantic\Constants::CASE_ACCUSATIVE_ID,
+            static::PADESZH_TVORITELNIJ => \Aot\MivarTextSemantic\Constants::CASE_INSTRUMENTAL_ID,
+            static::PADESZH_PREDLOZSHNIJ => \Aot\MivarTextSemantic\Constants::CASE_PREPOSITIONAL_ID,
+            static::ROD_MUZHSKOI => \Aot\MivarTextSemantic\Constants::GENUS_MASCULINE_ID,
+            static::ROD_ZHENSKII => \Aot\MivarTextSemantic\Constants::GENUS_FEMININE_ID,
+            static::ROD_SREDNIJ => \Aot\MivarTextSemantic\Constants::GENUS_NEUTER_ID,
+            static::CHISLO_EDINSTVENNOE => \Aot\MivarTextSemantic\Constants::NUMBER_SINGULAR_ID,
+            static::CHISLO_MNOZHESTVENNOE => \Aot\MivarTextSemantic\Constants::NUMBER_PLURAL_ID,
+            static::SKLONENIE_PERVOE => \Aot\MivarTextSemantic\OldAotConstants::DECLENSION_1,
+            static::SKLONENIE_VTOROE => \Aot\MivarTextSemantic\OldAotConstants::DECLENSION_2,
+            static::SKLONENIE_TRETIE => \Aot\MivarTextSemantic\OldAotConstants::DECLENSION_3,
+//            static::NEIZMENYAJMOST_IZMNYAJMIJ => 'неизменяемый',
+//            static::NEIZMENYAJMOST_NEIZMNYAJMIJ => 'изменяемый',
+            static::PEREHODNOST_PEREHODNII => \Aot\MivarTextSemantic\OldAotConstants::TRANSITIVE,
+            static::PEREHODNOST_NEPEREHODNII => \Aot\MivarTextSemantic\OldAotConstants::INTRANSITIVE,
+            static::RAZRYAD_PRILAGATELNOE_KACHESTVENNOE => \Aot\MivarTextSemantic\OldAotConstants::QUALIFYING_ADJECTIVE,
+            static::RAZRYAD_MESTOIMENIE_OTNOSITELNOE => \Aot\MivarTextSemantic\OldAotConstants::RELATIVE_PRONOUN,
+            static::RAZRYAD_MESTOIMENIE_PRITYAZHATELNOE => \Aot\MivarTextSemantic\OldAotConstants::POSSESSIVE_PRONOUN,
+            static::RAZRYAD_MESTOIMENIE_VOZVRATNOE => \Aot\MivarTextSemantic\OldAotConstants::REFLEXIVE_PRONOUN ,
+            static::RAZRYAD_MESTOIMENIE_LICHNOE => \Aot\MivarTextSemantic\OldAotConstants::PERSONAL_PRONOUN ,
+            static::RAZRYAD_MESTOIMENIE_NEOPREDELENNOE => \Aot\MivarTextSemantic\OldAotConstants::INDEFINITE_PRONOUN, // ?
+            static::RAZRYAD_MESTOIMENIE_OPREDELITELNOE => \Aot\MivarTextSemantic\OldAotConstants::ATTRIBUTIVE_PRONOUN,
+            static::RAZRYAD_MESTOIMENIE_OTRICATELNOE => \Aot\MivarTextSemantic\OldAotConstants::NEGATIVE_PRONOUN,
+            static::RAZRYAD_MESTOIMENIE_UKAZATELNOE => \Aot\MivarTextSemantic\OldAotConstants::DEMONSTRATIVE_PRONOUN,
+            static::RAZRYAD_MESTOIMENIE_VOPROSITELNOE => \Aot\MivarTextSemantic\OldAotConstants::INTERROGATIVE_PRONOUN,
+            static::FORMA_POLNAYA => \Aot\MivarTextSemantic\OldAotConstants::SHORT_WORD_FORM,
+            static::FORMA_KRATKAYA => \Aot\MivarTextSemantic\OldAotConstants::FULL_WORD_FORM,
+            static::STEPEN_SRAVNENIYA_POLOZHITELNAYA => \Aot\MivarTextSemantic\OldAotConstants::POSITIVE_DEGREE_COMPARISON,
+            static::STEPEN_SRAVNENIYA_SRAVNITELNAYA => \Aot\MivarTextSemantic\OldAotConstants::COMPARATIVE_DEGREE_COMPARISON,
+            static::STEPEN_SRAVNENIYA_PREVOSHODNAYA => \Aot\MivarTextSemantic\Constants::DEGREE_SUPERLATIVE_ID,
+            static::VID_SOVERSHENNYJ => \Aot\MivarTextSemantic\Constants::VIEW_PERFECTIVE_ID,
+            static::VID_NESOVERSHENNYJ => \Aot\MivarTextSemantic\Constants::VIEW_IMPERFECT_ID,
+            static::VOZVRATNOST_VOZVRATNYJ => \Aot\MivarTextSemantic\OldAotConstants::RETRIEVABLE,
+            static::VOZVRATNOST_NEVOZVRATNYJ => \Aot\MivarTextSemantic\OldAotConstants::IRRETRIEVABLE,
+            static::ZALOG_DEJSTVITELNYJ => \Aot\MivarTextSemantic\Constants::COMMUNION_VALID_ID,
+            static::ZALOG_STRADATELNYJ => \Aot\MivarTextSemantic\Constants::COMMUNION_PASSIVE_ID,
+            static::SPRYAZHENIE_PERVOE => \Aot\MivarTextSemantic\OldAotConstants::CONJUGATION_1,
+            static::SPRYAZHENIE_VTOROE => \Aot\MivarTextSemantic\OldAotConstants::CONJUGATION_2,
+            static::NAKLONENIE_IZYAVITELNOE => \Aot\MivarTextSemantic\OldAotConstants::MOOD_INDICATIVE,
+            static::NAKLONENIE_POVELITELNOE => \Aot\MivarTextSemantic\OldAotConstants::MOOD_IMPERATIVE,
+            static::NAKLONENIE_YSLOVNOE => \Aot\MivarTextSemantic\OldAotConstants::MOOD_SUBJUNCTIVE,
+            static::VREMYA_BUDUSCHEE => \Aot\MivarTextSemantic\Constants::TIME_FUTURE_ID,
+            static::VREMYA_NASTOYASCHEE => \Aot\MivarTextSemantic\Constants::TIME_SIMPLE_ID,
+            static::VREMYA_PROSHEDSHEE => \Aot\MivarTextSemantic\Constants::TIME_PAST_ID,
+            static::LITSO_PERVOE => \Aot\MivarTextSemantic\Constants::PERSON_RIFST_ID,
+            static::LITSO_VTOROE => \Aot\MivarTextSemantic\Constants::PERSON_SECOND_ID,
+            static::LITSO_TRETIE => \Aot\MivarTextSemantic\Constants::PERSON_THIRD_ID,
+            static::ODUSHEVLYONNOST_ODUSHEVLYONNOE => \Aot\MivarTextSemantic\Constants::ANIMALITY_ANIMATE_ID,
+            static::ODUSHEVLYONNOST_NEODUSHEVLYONNOE => \Aot\MivarTextSemantic\Constants::ANIMALITY_INANIMATE_ID,
+            static::NARITCATELNOST_IMIA_NARITCATELNOE => \Aot\MivarTextSemantic\OldAotConstants::NOMINAL,
+            static::NARITCATELNOST_IMIA_SOBSTVENNOE => \Aot\MivarTextSemantic\OldAotConstants::SELF,
+
+
+
+            static::VID_CHISLITELNOGO_KOLICHESTVENNIY => \Aot\MivarTextSemantic\Constants::QUANTITATIVE_ID,
+            static::VID_CHISLITELNOGO_PORYADKOVIY => \Aot\MivarTextSemantic\Constants::ORDINAL_ID,
+
+            static::RAZRYAD_PRILAGATELNOE_KACHESTVENNOE => 38,
+            static::RAZRYAD_PRILAGATELNOE_OTNOSITELNOE => 39,
+            static::RAZRYAD_PRILAGATELNOE_PRITYAZHATELNOE => 40,
+
+            static::OTGLAGOLNOST_SUSCHESTVITELNOE_NEOTGLAGOLNOE => \Aot\MivarTextSemantic\Constants::NEOTGLAGOLNOE,
+            static::OTGLAGOLNOST_SUSCHESTVITELNOE_OTGLAGOLNOE =>\Aot\MivarTextSemantic\Constants::OTGLAGOLNOE,
+
+
+
+            static::PODVID_CHISLITELNOGO_PROSTOY => 1071,
+            static::PODVID_CHISLITELNOGO_SOSTAVNOY => 1072,
+
+            static::TIP_CELIY => 1076,
+            static::TIP_DROBNIY => 1075,
+            static::TIP_SOBIRATELNIY => 1074,
+
+        ];
+
+
+        return $names;
+    }
 }
-
-

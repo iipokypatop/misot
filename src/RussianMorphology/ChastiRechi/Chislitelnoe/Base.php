@@ -23,7 +23,7 @@ use Aot\RussianMorphology\Slovo;
  */
 class Base extends Slovo
 {
-    public function getMorphology()
+    public static function getMorphology()
     {
         return [
             'vid' => Morphology\Vid\Base::class,

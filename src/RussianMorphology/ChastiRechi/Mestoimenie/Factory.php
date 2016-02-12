@@ -197,22 +197,31 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
         foreach ($param->id_value_attr as $val) {
             if (intval($val) === OldAotConstants::PERSONAL_PRONOUN()) {
                 $razryad[] = Lichnoe::create();
+
             } elseif (intval($val) === OldAotConstants::REFLEXIVE_PRONOUN()) {
                 $razryad[] = Vozvratnoe::create();
+
             } elseif (intval($val) === OldAotConstants::POSSESSIVE_PRONOUN()) {
                 $razryad[] = Prityazhatelnoe::create();
+
             } elseif (intval($val) === OldAotConstants::NEGATIVE_PRONOUN()) {
                 $razryad[] = Otricatelnoe::create();
+
             } elseif (intval($val) === OldAotConstants::INDEFINITE_PRONOUN()) {
                 $razryad[] = Neopredelennoe::create();
+
             } elseif (intval($val) === OldAotConstants::INTERROGATIVE_PRONOUN()) {
                 $razryad[] = Voprositelnoe::create();
+
             } elseif (intval($val) === OldAotConstants::RELATIVE_PRONOUN()) {
                 $razryad[] = Otnositelnoe::create();
+
             } elseif (intval($val) === OldAotConstants::DEMONSTRATIVE_PRONOUN()) {
                 $razryad[] = Ukazatelnoe::create();
+
             } elseif (intval($val) === OldAotConstants::ATTRIBUTIVE_PRONOUN()) {
                 $razryad[] = Opredelitelnoe::create();
+
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
             }

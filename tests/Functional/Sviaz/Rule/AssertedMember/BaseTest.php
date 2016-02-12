@@ -221,7 +221,7 @@ class BaseTest extends \AotTest\AotDataStorage
                         ChastiRechiRegistry::MESTOIMENIE,
                         RoleRegistry::VESCH
                     )
-                        ->morphologyEq(MorphologyRegistry::RAZRYAD_LICHNOE)
+                        ->morphologyEq(MorphologyRegistry::RAZRYAD_MESTOIMENIE_LICHNOE)
                         ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
                         ->textGroupId(GroupIdRegistry::NIKTO)
                 )

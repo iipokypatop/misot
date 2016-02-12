@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid;
 
 
-class Null extends Base
+class Null extends Base implements \Aot\RussianMorphology\MorphologyNull
 {
 
 }

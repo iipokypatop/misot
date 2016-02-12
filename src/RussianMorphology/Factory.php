@@ -22,14 +22,26 @@ class Factory
     const COMPOSITE_WORDS_DELIMITER = '[\\-]';
     const DELIMITER_FOR_SPLITTED_WORDS = ',';
 
-
-    public function create()
+    /**
+     * @brief Метод для генерирования слов и пунктуации с сохранением их последовательности
+     *
+     * @param string[] $words
+     * @return \Aot\RussianMorphology\Slovo[][]|\Aot\RussianSyntacsis\Punctuaciya\Zapiataya[][]
+     */
+    public static function getSlovaWithPunctuation(array $words)
     {
-    }
-
-
-    protected function __clone()
-    {
+        foreach ($words as $word) {
+            assert(is_string($word));
+        }
+        $result = [];
+        foreach ($words as $index => $word) {
+            if (preg_match(static::REGULAR_FOR_WHITE_LIST, $word)) {
+                $result[$index] = static::getSlova([$word])[0];
+            } else {
+                $result[$index] = [\Aot\RussianSyntacsis\Punctuaciya\Factory::getInstance()->build($word)];
+            }
+        }
+        return $result;
     }
 
     /**
@@ -38,7 +50,6 @@ class Factory
      */
     public static function getSlova(array $words)
     {
-
         if (empty($words)) {
             return [];
         }
@@ -79,11 +90,8 @@ class Factory
             }
         }
 
-
         return $slova;
-
     }
-
 
     /**
      * Разбиение массива слов на простые и составные
@@ -92,7 +100,6 @@ class Factory
      */
     protected static function splitArrayWords(array $words)
     {
-
         if (empty($words)) {
             return [[], []];
         }
@@ -112,7 +119,6 @@ class Factory
 
         return [$simple_words, $composite_words];
     }
-
 
     /**
      * Проверка на композитное слово
@@ -156,7 +162,6 @@ class Factory
         return WdwDriver::create();
     }
 
-
     /**
      * Получение списка альтернатив по каждому отдельному элементу композитного слова (пример: "хозяин-мастер")
      * @param string $composite_word
@@ -164,7 +169,6 @@ class Factory
      */
     protected static function factoryCompositeWords($composite_word)
     {
-
         assert(is_string($composite_word));
 
         $splitted = self::splitWord($composite_word);
@@ -205,28 +209,56 @@ class Factory
     }
 
     /**
-     * @brief Метод для генерирования слов и пунктуации с сохранением их последовательности
-     *
      * @param string[] $words
-     * @return \Aot\RussianMorphology\Slovo[][]|\Aot\RussianSyntacsis\Punctuaciya\Zapiataya[][]
+     * @return \Aot\RussianMorphology\Slovo[][]
      */
-    public static function getSlovaWithPunctuation(array $words)
+    public static function getSlova2(array $words)
     {
         foreach ($words as $word) {
             assert(is_string($word));
         }
-        $result = [];
-        foreach ($words as $index => $word) {
-            if (preg_match(static::REGULAR_FOR_WHITE_LIST, $word)) {
-                $result[$index] = static::getSlova([$word])[0];
-            } else {
-                $result[$index] = [\Aot\RussianSyntacsis\Punctuaciya\Factory::getInstance()->build($word)];
+
+        if (empty($words)) {
+            return [];
+        }
+
+        /** @var Slovo $slova */
+        $slova = [];
+
+        foreach ($words as $word) {
+            $slova[$word] = [];
+        }
+
+
+        /** @var \TextPersistence\API\APIcurrent $api */
+        $api = \TextPersistence\API\TextAPI::getAPI();
+
+        /** @var \TextPersistence\Entities\TextEntities\Mword[] $mwords */
+        $mwords = $api->findBy(
+            \TextPersistence\Entities\TextEntities\Mword::class,
+            [
+                'word' => $words
+            ]
+        );
+
+
+        foreach ($mwords as $mword) {
+            foreach ($mword->getForms() as $form) {
+                $slova[$mword->getWord()][] = \Aot\RussianMorphology\FactoryBase::buildFromEntity($form);
             }
         }
-        return $result;
+
+        return $slova;
+
     }
 
+    public function create()
+    {
+    }
 
+    protected function __clone()
+    {
+    }
 }
 
 class FactoryException extends \RuntimeException

@@ -16,6 +16,29 @@ abstract class Slovo implements \Aot\Unit
 
     protected $text;
     protected $initial_form;
+    /** @var  \SemanticPersistence\Entities\SemanticEntities\Word */
+    protected $dao;
+    protected $storage = [];
+    private $deadRows = [];
+
+    /**
+     * @param string $text
+     */
+    protected function __construct($text)
+    {
+        assert(!empty($text));
+
+        $this->text = $text;
+
+        $this->init();
+    }
+
+    protected function init()
+    {
+        foreach ($this->getMorphology() as $name => $class) {
+            $this->storage[$name] = null;
+        }
+    }
 
     /**
      * @return string
@@ -35,34 +58,12 @@ abstract class Slovo implements \Aot\Unit
         $this->initial_form = $initial_form;
     }
 
-    private $deadRows = [];
-
-    /** @var  \SemanticPersistence\Entities\SemanticEntities\Word */
-    protected $dao;
-
     /**
      * @return \SemanticPersistence\Entities\SemanticEntities\Word
      */
     public function getDao()
     {
         return $this->dao;
-    }
-
-    protected $storage = [];
-
-    protected function init()
-    {
-        foreach ($this->getMorphology() as $name => $class) {
-            $this->storage[$name] = null;
-        }
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getMorphology()
-    {
-        return [];
     }
 
     public function __get($name)
@@ -77,7 +78,7 @@ abstract class Slovo implements \Aot\Unit
     public function __set($name, $value)
     {
         if (!array_key_exists($name, static::getMorphology())) {
-            throw new \RuntimeException("unsupported field exception");
+            throw new \RuntimeException("unsupported field exception " . var_export($name, true));
         }
 
         if (!is_subclass_of($value, static::getMorphology()[$name])) {
@@ -87,17 +88,12 @@ abstract class Slovo implements \Aot\Unit
         $this->storage[$name] = $value;
     }
 
-
     /**
-     * @param string $text
+     * @return string[]
      */
-    protected function __construct($text)
+    public static function getMorphology()
     {
-        assert(!empty($text));
-
-        $this->text = $text;
-
-        $this->init();
+        return [];
     }
 
     /**
@@ -144,28 +140,11 @@ abstract class Slovo implements \Aot\Unit
     }
 
     /**
-     * @return \Aot\RussianMorphology\ChastiRechi\MorphologyBase[]
-     */
-    public function getMorphologyStorage()
-    {
-        return $this->storage;
-    }
-
-    /**
      * @return array
      */
     public function getMorphologyShort()
     {
         return $this->getMorphologyFull(self::RENDER_SHORT);
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getDeadRows()
-    {
-        return $this->deadRows;
     }
 
     /**
@@ -236,5 +215,21 @@ abstract class Slovo implements \Aot\Unit
 
 
         return $tds;
+    }
+
+    /**
+     * @return \Aot\RussianMorphology\ChastiRechi\MorphologyBase[]
+     */
+    public function getMorphologyStorage()
+    {
+        return $this->storage;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDeadRows()
+    {
+        return $this->deadRows;
     }
 }
