@@ -1,6 +1,4 @@
 $(document).ready(function () {
-    //$("#loading").hide();
-
     $("#parse").click(function () {
         var text = $("#text").val();
         $("#parse").prop("disabled", true);
@@ -11,21 +9,18 @@ $(document).ready(function () {
             data: {
                 text: text
             },
-            type: "POST",
-            success: function (data) {
-                $("#res").html(data);
-            },
-            error: function (xhr, status, errorThrown) {
-                alert("Sorry, there was a problem!");
-                console.log("Error: " + errorThrown);
-                console.log("Status: " + status);
-                console.dir(xhr);
-            },
-            complete: function (xhr, status) {
-                console.log("The request is complete!");
-                $("#parse").prop("disabled", false);
-                $("#loading").hide();
-            }
-        });
+            type: "POST"
+        }).success(function (data) {
+            $("#res").html(data);
+        }).error(function (xhr, status, errorThrown) {
+            alert("Sorry, there was a problem!");
+            console.log("Error: " + errorThrown);
+            console.log("Status: " + status);
+            console.dir(xhr);
+        }).complete(function (xhr, status) {
+            console.log("The request is complete!");
+            $("#parse").prop("disabled", false);
+            $("#loading").hide();
+        })
     });
 });
