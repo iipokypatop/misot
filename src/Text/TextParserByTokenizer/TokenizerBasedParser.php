@@ -89,6 +89,7 @@ class TokenizerBasedParser
         // объединение юнитов
         $this->units = $this->uniteUnits($units);
 
+        // группировка Unit'ов по предложениям
         $this->sentences = $this->findSentences();
 
         $this->symbols_map = $this->createSymbolsMap();

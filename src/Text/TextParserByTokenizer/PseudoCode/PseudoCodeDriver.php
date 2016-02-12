@@ -83,8 +83,8 @@ class PseudoCodeDriver
      */
     protected function createUnitsPseudoCode(array $units)
     {
-
         $pseudo_code_array = [];
+
         foreach ($units as $unit) {
             $pseudo_code_array[] = PseudoCode\Unit\UnitPseudoCodeRegistry::getUnitCode($unit);
         }
