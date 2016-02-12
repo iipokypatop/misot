@@ -15,7 +15,7 @@ class Factory2Test extends \AotTest\AotDataStorage
 {
     public function testLaunch()
     {
-        if (1) {
+        if (0) {
 
             echo "ChastiRechiRegistry", "\n";
             $a = \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::new_old();
