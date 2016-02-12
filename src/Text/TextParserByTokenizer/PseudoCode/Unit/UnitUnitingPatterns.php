@@ -42,6 +42,7 @@ class UnitUnitingPatterns
         return [
             static::getFIO(),
             static::getPhoneNumber(),
+            static::getOrdinalNumber(),
         ];
     }
 
@@ -104,6 +105,7 @@ class UnitUnitingPatterns
         return [
             static::getFIO() => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD,
             static::getPhoneNumber() => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_NUMBER,
+            static::getOrdinalNumber() => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_NUMBER,
         ];
     }
 
@@ -201,6 +203,36 @@ class UnitUnitingPatterns
             UnitPseudoCodeRegistry::NUMBER .
             UnitPseudoCodeRegistry::DASH .
             UnitPseudoCodeRegistry::NUMBER .
+            static::END_BRACE;
+    }
+
+
+    /**
+     * @return string
+     */
+    public static function getOrdinalNumber()
+    {
+        return
+
+            // число в формате "10-го"
+            static::START_BRACE .
+            UnitPseudoCodeRegistry::NUMBER .
+            UnitPseudoCodeRegistry::DASH .
+            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_LOWERCASE .
+
+            // или
+//            static::REG_OR .
+//
+//            // телефон в формате 7(905)123-45-67
+//            UnitPseudoCodeRegistry::NUMBER .
+//            UnitPseudoCodeRegistry::BRACE_LEFT .
+//            UnitPseudoCodeRegistry::NUMBER .
+//            UnitPseudoCodeRegistry::BRACE_RIGHT .
+//            UnitPseudoCodeRegistry::NUMBER .
+//            UnitPseudoCodeRegistry::DASH .
+//            UnitPseudoCodeRegistry::NUMBER .
+//            UnitPseudoCodeRegistry::DASH .
+//            UnitPseudoCodeRegistry::NUMBER .
             static::END_BRACE;
     }
 
