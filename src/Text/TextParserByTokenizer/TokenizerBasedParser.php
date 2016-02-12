@@ -325,7 +325,7 @@ class TokenizerBasedParser
     /**
      * Объединение юнитов в один
      * @param \Aot\Text\TextParserByTokenizer\Unit[] $units
-     * @return array
+     * @return \Aot\Text\TextParserByTokenizer\Unit[]
      */
     protected function uniteUnits(array $units)
     {
@@ -344,6 +344,7 @@ class TokenizerBasedParser
                 $tokens = array_merge($tokens, $units[$i]->getTokens());
                 unset($units[$i]);
             }
+            // пересоздание Unit'а
             $units[$start] = \Aot\Text\TextParserByTokenizer\Unit::create($tokens, $found_pattern->getType());
         }
 
