@@ -150,15 +150,16 @@ class UnitUnitingPatterns
             UnitPseudoCodeRegistry::LETTER_UPPERCASE .
             UnitPseudoCodeRegistry::SINGLE_DOT .
 
+            // BAD_PATTERN, тк "Вскоре после вечера Анны Павловны Анна Михайловна вернулась в Москву"
             // или
-            static::REG_OR .
-
-            // фио в формате "Петров Петр Петрович"
-            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
-            UnitPseudoCodeRegistry::SPACE .
-            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
-            UnitPseudoCodeRegistry::SPACE .
-            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
+//            static::REG_OR .
+//
+//            // фио в формате "Петров Петр Петрович"
+//            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
+//            UnitPseudoCodeRegistry::SPACE .
+//            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
+//            UnitPseudoCodeRegistry::SPACE .
+//            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
             static::END_BRACE;
     }
 

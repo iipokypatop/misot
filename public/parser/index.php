@@ -16,10 +16,10 @@
 <div class="container">
     <br>
     <p>
-        <textarea class="form-control" rows="5" id="text">пошел   Петров     П.     П.  гулять и позвонил по телефону +7(905)123-45-67. Он купил хлеб.</textarea>
+        <textarea class="form-control lead" rows="5" id="text">пошел   Петров     П.     П.  гулять и позвонил по телефону +7(905)123-45-67. Он купил хлеб.</textarea>
     </p>
     <button class="btn btn-info" id="parse">Распарсить</button>
-    <img id="loading" src="css/loading.gif" hidden>
+    <img id="loading" src="css/loading.gif" hidden />
     <hr/>
     <div id="res"></div>
 </div>

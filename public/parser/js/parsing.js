@@ -17,8 +17,7 @@ $(document).ready(function () {
             console.log("Error: " + errorThrown);
             console.log("Status: " + status);
             console.dir(xhr);
-        }).complete(function (xhr, status) {
-            console.log("The request is complete!");
+        }).complete(function () {
             $("#parse").prop("disabled", false);
             $("#loading").hide();
         })

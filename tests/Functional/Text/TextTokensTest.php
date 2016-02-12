@@ -15,27 +15,6 @@ use MivarTest\PHPUnitHelper;
 class TextTokensTest extends \AotTest\AotDataStorage
 {
 
-
-    /**
-     * Без фильтра и сложных юнитов
-     */
-    public function testInterface()
-    {
-        $text = 'пошел   Петров     П.     П.  гулять и позвонил по телефону +7(905)123-45-67';
-        $parser = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::createDefaultConfig();
-        $parser->run($text);
-        $units = $parser->getUnits();
-        foreach ($units as $unit) {
-            echo "\n $unit";
-        }
-        $output_string = join('', $units);
-        $this->assertEquals($output_string, $text);
-        $this->assertEquals(15, count($units));
-        $this->assertEquals('Петров     П.     П.', (string)$units[2]);
-        $this->assertEquals('+7(905)123-45-67', (string)$units[14]);
-    }
-
-
     /**
      * Без фильтра и сложных юнитов
      */
