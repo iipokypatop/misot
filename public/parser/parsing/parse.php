@@ -24,7 +24,7 @@ $count_elements = 0;
 
 $table = "<div class='table-responsive'>";
 $table .= "<table class='table table-bordered table-condensed table-hover'>";
-$table .= "<tr class='success'><td class='strong'>#</td><td>Элементы</td></tr>";
+$table .= "<tr class='success'><th width='40px' style='text-align: center;' class='strong'>#</th><th>Элементы</th></tr>";
 foreach ($parser->getSentences() as $sentence_id => $sentence) {
 
     $sentence_id++;
@@ -34,15 +34,15 @@ foreach ($parser->getSentences() as $sentence_id => $sentence) {
         if (trim($unit) === '') {
             continue;
         }
-        $table .= "<tr><td>$i</td><td>$unit</td></tr>";
+        $table .= "<tr><td style='text-align: center;'>$i</td><td>$unit</td></tr>";
         $i++;
     }
     $count_elements += $i - 1;
 }
 $info = '';
-$info .= "<p> Предложений: " . $count_sentences . "</p>";
-$info .= "<p> Элементов: " . $count_elements . "</p>";
-$info .= "<p> Время обработки: " . $parsing_time . " сек</p>";
+$info .= "<p><code>Предложений: " . $count_sentences . "</code></p>";
+$info .= "<p><code>Элементов: " . $count_elements . "</code></p>";
+$info .= "<p><code>Время обработки: " . $parsing_time . " сек</code></p>";
 
 $table .= "</table>";
 $table .= "</div>";
