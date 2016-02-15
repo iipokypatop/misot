@@ -151,17 +151,6 @@ class UnitUnitingPatterns
             static::EXTRA .
             UnitPseudoCodeRegistry::LETTER_UPPERCASE .
             UnitPseudoCodeRegistry::SINGLE_DOT .
-
-            // BAD_PATTERN, тк "Вскоре после вечера Анны Павловны Анна Михайловна вернулась в Москву"
-            // или
-//            static::REG_OR .
-//
-//            // фио в формате "Петров Петр Петрович"
-//            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
-//            UnitPseudoCodeRegistry::SPACE .
-//            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
-//            UnitPseudoCodeRegistry::SPACE .
-//            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
             static::END_BRACE;
     }
 
@@ -219,20 +208,6 @@ class UnitUnitingPatterns
             UnitPseudoCodeRegistry::NUMBER .
             UnitPseudoCodeRegistry::DASH .
             UnitPseudoCodeRegistry::WORD_FIRST_LETTER_LOWERCASE .
-
-            // или
-//            static::REG_OR .
-//
-//            // телефон в формате 7(905)123-45-67
-//            UnitPseudoCodeRegistry::NUMBER .
-//            UnitPseudoCodeRegistry::BRACE_LEFT .
-//            UnitPseudoCodeRegistry::NUMBER .
-//            UnitPseudoCodeRegistry::BRACE_RIGHT .
-//            UnitPseudoCodeRegistry::NUMBER .
-//            UnitPseudoCodeRegistry::DASH .
-//            UnitPseudoCodeRegistry::NUMBER .
-//            UnitPseudoCodeRegistry::DASH .
-//            UnitPseudoCodeRegistry::NUMBER .
             static::END_BRACE;
     }
 
