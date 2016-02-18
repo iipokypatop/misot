@@ -25,6 +25,9 @@ class Base
 
     }
 
+    /**
+     * @return \Aot\Tokenizer\Base
+     */
     public static function createDefault()
     {
         $ob = new static();
@@ -36,6 +39,9 @@ class Base
         return $ob;
     }
 
+    /**
+     * @return \Aot\Tokenizer\Base
+     */
     public static function createEmptyConfiguration()
     {
         $ob = new static();
@@ -209,3 +215,15 @@ class Base
         $this->token_types[] = $type;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
