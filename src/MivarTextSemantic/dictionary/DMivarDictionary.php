@@ -104,9 +104,9 @@ class DMivarDictionary
 				;";
 
                 // dpm($strQuery);
-              #  $res = $this->query($strQuery);
+                $res = $this->query($strQuery);
                 $currentUuid = "";
-                if(0)while ($line = pg_fetch_assoc($res)) {
+                while ($line = pg_fetch_assoc($res)) {
                     if ($currentUuid != $line['id_word_form']) {
                         $currentUuid = $line['id_word_form'];
                         $word_form = $line['word_form'];
