@@ -21,7 +21,7 @@ class Base extends Slovo
     /**
      * @return array
      */
-    public static  function getMorphology()
+    public static function getMorphology()
     {
         return [
             'chislo' => Morphology\Chislo\Base::class,

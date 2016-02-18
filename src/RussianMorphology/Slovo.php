@@ -10,16 +10,26 @@ namespace Aot\RussianMorphology;
  */
 abstract class Slovo implements \Aot\Unit
 {
-    const RENDER_NULL = 1;
-    const RENDER_HTML = 2;
-    const RENDER_SHORT = 3;
+    /**
+     * read only !
+     * @var \Aot\RussianMorphology\ChastiRechi\MorphologyBase[]
+     */
+    public $storage = [];
+    /**
+     * read only !
+     * @var string
+     */
+    public $text;
+    /**
+     * read only !
+     * @var string
+     */
+    public $initial_form;
+    /**
+     * @var string[]
+     */
+    protected $__cache_morphology = [];
 
-    protected $text;
-    protected $initial_form;
-    /** @var  \SemanticPersistence\Entities\SemanticEntities\Word */
-    protected $dao;
-    protected $storage = [];
-    private $deadRows = [];
 
     /**
      * @param string $text
@@ -29,15 +39,6 @@ abstract class Slovo implements \Aot\Unit
         assert(!empty($text));
 
         $this->text = $text;
-
-        $this->init();
-    }
-
-    protected function init()
-    {
-        foreach ($this->getMorphology() as $name => $class) {
-            $this->storage[$name] = null;
-        }
     }
 
     /**
@@ -58,14 +59,6 @@ abstract class Slovo implements \Aot\Unit
         $this->initial_form = $initial_form;
     }
 
-    /**
-     * @return \SemanticPersistence\Entities\SemanticEntities\Word
-     */
-    public function getDao()
-    {
-        return $this->dao;
-    }
-
     public function __get($name)
     {
         if (array_key_exists($name, static::getMorphology())) {
@@ -77,11 +70,15 @@ abstract class Slovo implements \Aot\Unit
 
     public function __set($name, $value)
     {
-        if (!array_key_exists($name, static::getMorphology())) {
+        if (empty($this->__cache_morphology[static::class])) {
+            $this->__cache_morphology[static::class] = static::getMorphology();
+        }
+
+        if (!array_key_exists($name, $this->__cache_morphology[static::class])) {
             throw new \RuntimeException("unsupported field exception " . var_export($name, true));
         }
 
-        if (!is_subclass_of($value, static::getMorphology()[$name])) {
+        if (!is_subclass_of($value, $this->__cache_morphology[static::class][$name])) {
             throw new \RuntimeException("incorrect field type");
         }
 
@@ -89,7 +86,7 @@ abstract class Slovo implements \Aot\Unit
     }
 
     /**
-     * @return string[]
+     * return string[]
      */
     public static function getMorphology()
     {
@@ -102,14 +99,12 @@ abstract class Slovo implements \Aot\Unit
      */
     public function getMorphologyByClass_TEMPORARY($classname)
     {
-
         $values = [];
         foreach ($this->storage as $name => $value) {
             if ($value instanceof $classname) {
                 $values[] = $value;
             }
         }
-
 
         /// TEMPORARY start
         foreach ($this as $name => $value) {
@@ -140,96 +135,10 @@ abstract class Slovo implements \Aot\Unit
     }
 
     /**
-     * @return array
-     */
-    public function getMorphologyShort()
-    {
-        return $this->getMorphologyFull(self::RENDER_SHORT);
-    }
-
-    /**
-     * @param int $render_as
-     * @return array
-     */
-    public function getMorphologyFull($render_as = self::RENDER_HTML)
-    {
-        $tds = [];
-        $morphology_tmp = [];
-        foreach ($this->getMorphologyStorage() as $morphology) {
-
-            $group_id = \Aot\RussianMorphology\ChastiRechi\MorphologyRegistry::getGroupIdByPriznakClass(get_class($morphology));
-            $variant_id = \Aot\RussianMorphology\ChastiRechi\MorphologyRegistry::getVariantIdByPriznakClass(get_class($morphology));
-
-            if (null !== $group_id && null !== $variant_id) {
-                $morphology_tmp[$group_id] = $variant_id;
-            }
-        }
-
-
-        foreach (\Aot\RussianMorphology\ChastiRechi\MorphologyRegistry::getClasses() as $group_id => $variants) {
-
-            if (empty($morphology_tmp[$group_id])) {
-                if ($render_as === self::RENDER_NULL) {
-                } elseif ($render_as === self::RENDER_HTML
-                ) {
-                    $tds[] = "<td>-</td>";
-                } else {
-                    if ($render_as === self::RENDER_SHORT) {
-                        // none
-                    }
-                }
-
-                if (!isset($this->deadRows[$group_id])) {
-                    $this->deadRows[$group_id] = true;
-                }
-                continue;
-            }
-
-
-            $name_long = \Aot\RussianMorphology\ChastiRechi\MorphologyRegistry::getNames()[$morphology_tmp[$group_id]];
-
-            $name_short = [];
-            foreach (preg_split("/\\s+/u", $name_long) as $word) {
-                $name_short [] = mb_substr($word, 0, 3) . ".";
-            }
-            if ($render_as === self::RENDER_NULL) {
-
-            } else {
-                if ($render_as === self::RENDER_HTML) {
-                    $color = "rgb(" . join(',', [
-                            255 - floor($morphology_tmp[$group_id] % 10 * 30),
-                            255 - floor($morphology_tmp[$group_id] % 10 * 30),
-                            255 - floor($morphology_tmp[$group_id] % 10 * 30),
-                        ]) . ")";
-                    $tds[] = "<td title='{$name_long}' style='background-color: {$color}'>" . join(";",
-                            $name_short) . ";" . "</td>";
-                } else {
-                    if ($render_as === self::RENDER_SHORT) {
-                        $tds[] = join(";", $name_short) . ";";
-                    }
-                }
-            }
-
-            $this->deadRows[$group_id] = false;
-        }
-
-
-        return $tds;
-    }
-
-    /**
      * @return \Aot\RussianMorphology\ChastiRechi\MorphologyBase[]
      */
     public function getMorphologyStorage()
     {
         return $this->storage;
-    }
-
-    /**
-     * @return array
-     */
-    public function getDeadRows()
-    {
-        return $this->deadRows;
     }
 }

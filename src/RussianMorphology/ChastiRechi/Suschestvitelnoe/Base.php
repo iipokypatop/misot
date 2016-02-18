@@ -24,7 +24,6 @@ use Aot\RussianMorphology\Slovo;
  */
 class Base extends Slovo
 {
-
     public static function getMorphology()
     {
         return [

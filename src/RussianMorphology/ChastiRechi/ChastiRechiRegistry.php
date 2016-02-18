@@ -32,6 +32,9 @@ class ChastiRechiRegistry
     const MEZHDOMETIE = 22;
     const PRISTAVKA = 23;
 
+    CONST SOKRASHHENIE = 24;
+    CONST ABBREVIATURA = 25;
+
 
     public static function getNames()
     {
@@ -177,7 +180,11 @@ class ChastiRechiRegistry
             static::CHASTICA => \Aot\MivarTextSemantic\Constants::PARTICLE_CLASS_ID,
 
             static::MEZHDOMETIE => \Aot\MivarTextSemantic\Constants::INTERJECTION_CLASS_ID,
-            static::PRISTAVKA => 999,
+            static::PRISTAVKA => 16,
+
+
+            static::SOKRASHHENIE => 15,
+            static::ABBREVIATURA => 7
         ];
     }
 

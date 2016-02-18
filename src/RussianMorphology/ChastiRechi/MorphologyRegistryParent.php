@@ -42,35 +42,91 @@ class MorphologyRegistryParent
     const RAZRYAD_PRILAGATELNOE = 24000;
     const OTGLAGOLNOST_SUSCHESTVITELNOE = 25000;
 
-    public static function getNames()
+    const PROIZVODNOST_PREDLOG = 26000;
+
+    const RAZRYAD_NARECHIE = 27000;
+
+    const RAZRJAD_PREDLOG = 28000;
+
+    const RAZRJAD_SOYUZ = 29000;
+
+    const RAZRJAD_NARECHIE = 29000;
+
+    CONST IZMENJAEMOST_PADEZHA = 30000;
+
+    CONST TIP_MESTOIMENIYA = 31000;
+    protected static $nullClassByBaseClass = [];
+
+    public static function new_old()
     {
         return [
-            static::PADESZH => 'падеж',
-            static::ROD => 'род',
-            static::CHISLO => 'число',
-            static::SKLONENIE => 'склонение',
-            static::NEIZMENYAJMOST => 'изменяемость',
-            static::PEREHODNOST => 'переходность',
-            static::RAZRYAD_MESTOIMENIE => 'разряд метоимение',
-            static::FORMA => 'форма',
-            static::STEPEN_SRAVNENIYA => 'степень сравнения',
-            static::VID => 'вид',
-            static::VOZVRATNOST => 'возвратность',
-            static::ZALOG => 'залог',
-            static::SPRYAZHENIE => 'спряжение',
-            static::NAKLONENIE => 'наклонение',
-            static::VREMYA => 'время',
-            static::LITSO => 'лицо',
-            static::ODUSHEVLYONNOST => 'одушевленность',
-            static::NARITCATELNOST => 'нарицательность',
-            static::PODVID_CHISLITELNOGO => 'подвид',
-            static::TIP_CHISLITELNOGO => 'тип',
-            static::VID_CHISLITELNOGO => 'вид',
-            static::RAZRYAD_PRILAGATELNOE => 'разряд прилагательного',
-            static::OTGLAGOLNOST_SUSCHESTVITELNOE => 'отглагольность существительного',
+            static::PADESZH => \Aot\MivarTextSemantic\Constants::CASE_ID,
+            static::ROD => \Aot\MivarTextSemantic\Constants::GENUS_ID,
+            static::CHISLO => \Aot\MivarTextSemantic\Constants::NUMBER_ID,
+            static::SKLONENIE => \Aot\MivarTextSemantic\OldAotConstants::DECLENSION,
+            //static::NEIZMENYAJMOST => 'изменяемость',
+            static::PEREHODNOST => \Aot\MivarTextSemantic\Constants::TRANSIVITY_ID,
+
+            static::RAZRYAD_MESTOIMENIE => 18,
+
+            static::FORMA => \Aot\MivarTextSemantic\OldAotConstants::WORD_FORM,
+            static::STEPEN_SRAVNENIYA => \Aot\MivarTextSemantic\Constants::DEGREE_COMPOSITION_ID,
+            static::VID => \Aot\MivarTextSemantic\Constants::VIEW_ID,
+            static::VOZVRATNOST => \Aot\MivarTextSemantic\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE,
+
+            static::ZALOG => \Aot\MivarTextSemantic\Constants::DISCHARGE_COMMUNION_ID,
+
+            static::SPRYAZHENIE => \Aot\MivarTextSemantic\OldAotConstants::CONJUGATION,
+            static::NAKLONENIE => \Aot\MivarTextSemantic\Constants::MOOD_ID,
+            static::VREMYA => \Aot\MivarTextSemantic\Constants::TIME_ID,
+            static::LITSO => \Aot\MivarTextSemantic\Constants::PERSON_ID,
+            static::ODUSHEVLYONNOST => \Aot\MivarTextSemantic\Constants::ANIMALITY_ID,
+            static::NARITCATELNOST => \Aot\MivarTextSemantic\OldAotConstants::SELF_NOMINAL,
+
+            static::PODVID_CHISLITELNOGO => 29,
+            static::TIP_CHISLITELNOGO => 30,
+
+            static::VID_CHISLITELNOGO => \Aot\MivarTextSemantic\Constants::TYPE_OF_NUMERAL_ID,
+
+            static::RAZRYAD_PRILAGATELNOE => 14,
+            static::OTGLAGOLNOST_SUSCHESTVITELNOE => 28,
+
+            static::PROIZVODNOST_PREDLOG => 19,
+
+            static::RAZRYAD_NARECHIE => 31,
+
+            static::RAZRJAD_PREDLOG => 20,
+
+            static::RAZRJAD_SOYUZ => 21,
+
+            static::IZMENJAEMOST_PADEZHA => 32,
+
+            static::TIP_MESTOIMENIYA => 25,
         ];
     }
 
+    /**
+     * @param $base_class_input
+     * @return string[]
+     */
+    public static function getNullClassByBaseClass($base_class_input)
+    {
+        assert(is_string($base_class_input));
+
+        if (isset($nullClassByBaseClass[$base_class_input])) {
+            return $nullClassByBaseClass[$base_class_input];
+        }
+
+        foreach (static::getBaseClasses() as $base_class_id => $chasti_rechi) {
+            foreach ($chasti_rechi as $chasti_rechi_id => $base_class) {
+                if ($base_class === $base_class_input) {
+                    return $nullClassByBaseClass[$base_class_input] = static::getNullClasses()[$base_class_id][$chasti_rechi_id];
+                }
+            }
+        }
+
+        throw new \LogicException("incorrect base_class " . var_export($base_class_input, true));
+    }
 
     public static function getBaseClasses()
     {
@@ -132,6 +188,7 @@ class MorphologyRegistryParent
             ],
             static::LITSO => [
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Base::class,
+                ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Litso\Base::class,
             ],
             static::VID => [
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Base::class,
@@ -170,10 +227,12 @@ class MorphologyRegistryParent
             ],
             static::OTGLAGOLNOST_SUSCHESTVITELNOE => [
                 ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Otglagolnost\Base::class
-            ]
+            ],
+            static::TIP_MESTOIMENIYA => [
+                ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Tip\Base::class
+            ],
         ];
     }
-
 
     public static function getNullClasses()
     {
@@ -236,6 +295,7 @@ class MorphologyRegistryParent
             ],
             static::LITSO => [
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\Null::class,
+                ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Litso\Null::class,
             ],
             static::VID => [
                 ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Null::class,
@@ -274,7 +334,10 @@ class MorphologyRegistryParent
             ],
             static::OTGLAGOLNOST_SUSCHESTVITELNOE => [
                 ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Otglagolnost\Null::class
-            ]
+            ],
+            static::TIP_MESTOIMENIYA => [
+                ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Tip\Null::class
+            ],
         ];
     }
 
@@ -294,6 +357,35 @@ class MorphologyRegistryParent
         return array_keys(static::getNames());
     }
 
+    public static function getNames()
+    {
+        return [
+            static::PADESZH => 'падеж',
+            static::ROD => 'род',
+            static::CHISLO => 'число',
+            static::SKLONENIE => 'склонение',
+            static::NEIZMENYAJMOST => 'изменяемость',
+            static::PEREHODNOST => 'переходность',
+            static::RAZRYAD_MESTOIMENIE => 'разряд метоимение',
+            static::FORMA => 'форма',
+            static::STEPEN_SRAVNENIYA => 'степень сравнения',
+            static::VID => 'вид',
+            static::VOZVRATNOST => 'возвратность',
+            static::ZALOG => 'залог',
+            static::SPRYAZHENIE => 'спряжение',
+            static::NAKLONENIE => 'наклонение',
+            static::VREMYA => 'время',
+            static::LITSO => 'лицо',
+            static::ODUSHEVLYONNOST => 'одушевленность',
+            static::NARITCATELNOST => 'нарицательность',
+            static::PODVID_CHISLITELNOGO => 'подвид числительного',
+            static::TIP_CHISLITELNOGO => 'тип',
+            static::VID_CHISLITELNOGO => 'вид числительного',
+            static::RAZRYAD_PRILAGATELNOE => 'разряд прилагательного',
+            static::OTGLAGOLNOST_SUSCHESTVITELNOE => 'отглагольность существительного',
+        ];
+    }
+
     /**
      * @return string[]
      */
@@ -302,58 +394,5 @@ class MorphologyRegistryParent
         return [
             'name' => [static::class, 'getNames'],
         ];
-    }
-
-    public static function new_old()
-    {
-        return [
-            static::PADESZH => \Aot\MivarTextSemantic\Constants::CASE_ID,
-            static::ROD => \Aot\MivarTextSemantic\Constants::GENUS_ID,
-            static::CHISLO => \Aot\MivarTextSemantic\Constants::NUMBER_ID,
-            static::SKLONENIE => \Aot\MivarTextSemantic\OldAotConstants::DECLENSION,
-            //static::NEIZMENYAJMOST => 'изменяемость',
-            static::PEREHODNOST => \Aot\MivarTextSemantic\Constants::TRANSIVITY_ID,
-
-            static::RAZRYAD_MESTOIMENIE => 18,
-
-            static::FORMA => \Aot\MivarTextSemantic\OldAotConstants::WORD_FORM,
-            static::STEPEN_SRAVNENIYA => \Aot\MivarTextSemantic\Constants::DEGREE_COMPOSITION_ID,
-            static::VID => \Aot\MivarTextSemantic\Constants::VIEW_ID,
-            static::VOZVRATNOST => \Aot\MivarTextSemantic\OldAotConstants::RETRIEVABLE_IRRETRIEVABLE,
-
-            static::ZALOG => \Aot\MivarTextSemantic\Constants::DISCHARGE_COMMUNION_ID,
-
-            static::SPRYAZHENIE => \Aot\MivarTextSemantic\OldAotConstants::CONJUGATION,
-            static::NAKLONENIE => \Aot\MivarTextSemantic\Constants::MOOD_ID,
-            static::VREMYA => \Aot\MivarTextSemantic\Constants::TIME_ID,
-            static::LITSO => \Aot\MivarTextSemantic\Constants::PERSON_ID,
-            static::ODUSHEVLYONNOST => \Aot\MivarTextSemantic\Constants::ANIMALITY_ID,
-            static::NARITCATELNOST => \Aot\MivarTextSemantic\OldAotConstants::SELF_NOMINAL,
-            static::PODVID_CHISLITELNOGO => 902,
-            static::TIP_CHISLITELNOGO => 903, //????
-            static::VID_CHISLITELNOGO => \Aot\MivarTextSemantic\Constants::TYPE_OF_NUMERAL_ID,
-
-            static::RAZRYAD_PRILAGATELNOE => 14,
-            static::OTGLAGOLNOST_SUSCHESTVITELNOE => 28,
-        ];
-    }
-
-    /**
-     * @param $base_class_input
-     * @return
-     */
-    public static function getNullClassByBaseClass($base_class_input)
-    {
-        assert(is_string($base_class_input));
-
-        foreach (static::getBaseClasses() as $base_class_id => $chasti_rechi) {
-            foreach ($chasti_rechi as $chasti_rechi_id => $base_class) {
-                if($base_class === $base_class_input){
-                    return static::getNullClasses()[$base_class_id][$chasti_rechi_id];
-                }
-            }
-        }
-
-        throw new \LogicException("incorrect base_class " . var_export($base_class_input, true));
     }
 }

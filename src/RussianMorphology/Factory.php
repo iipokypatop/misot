@@ -222,6 +222,17 @@ class Factory
             return [];
         }
 
+
+        $counted_values = array_count_values($words);
+        if (max($counted_values) > 1) {
+
+            $duplicates = array_filter($counted_values, function ($a) {
+                return $a > 1;
+            });
+
+            throw new DuplicateException("входной массив слов не должен содержать дубликаты " . var_export($duplicates, 1));
+        }
+
         /** @var Slovo $slova */
         $slova = [];
 
@@ -242,14 +253,15 @@ class Factory
         );
 
 
+        $factory = \Aot\RussianMorphology\FactoryFromEntity::get();
+
         foreach ($mwords as $mword) {
             foreach ($mword->getForms() as $form) {
-                $slova[$mword->getWord()][] = \Aot\RussianMorphology\FactoryBase::buildFromEntity($form);
+                $slova[$mword->getWord()][] = $factory->buildFromEntity($form);
             }
         }
 
         return $slova;
-
     }
 
     public function create()
@@ -261,7 +273,12 @@ class Factory
     }
 }
 
-class FactoryException extends \RuntimeException
+class FactoryException extends \LogicException
+{
+
+}
+
+class DuplicateException extends FactoryException
 {
 
 }
