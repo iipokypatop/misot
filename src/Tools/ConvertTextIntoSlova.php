@@ -18,23 +18,45 @@ class ConvertTextIntoSlova
     public static function convert($text)
     {
         assert(is_string($text));
+
         $parser = \Aot\Text\TextParser\TextParser::create();
+
         $parser->execute($text);
+
         $parser->render();
+
         $sentence_words = $parser->getSentenceWords();
+
         $sentence_strings = $parser->getSentences();
+
         /** @var \Aot\Tools\SentenceContainingVariantsSlov[] $sentences */
         $sentences = [];
+
+        $sentence_words_all = [];
+
         foreach ($sentence_words as $index => $sentence) {
-            $tmp_sentence = \Aot\Tools\SentenceContainingVariantsSlov::create($sentence_strings[$index]);
             foreach ($sentence as $word) {
-                $slova = (\Aot\RussianMorphology\Factory::getSlovaWithPunctuation([$word]));
-                if (count($slova) === 0) {
-                    $tmp_sentence->add($word, [[]]);
-                    continue;
-                }
-                $tmp_sentence->add($word, $slova);
+                $sentence_words_all[$word] = $word;
             }
+        }
+
+        /** @var \Aot\Unit[][] $slova */
+        $slova = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlovaWithPunctuation($sentence_words_all);
+
+        foreach ($sentence_words as $index => $sentence) {
+
+            $tmp_sentence = \Aot\Tools\SentenceContainingVariantsSlov::create($sentence_strings[$index]);
+
+            foreach ($sentence as $word) {
+
+                $cloned_slova = [];
+                foreach ($slova[$word] as $item) {
+                    $cloned_slova[$word] = $item->reClone();
+                }
+
+                $tmp_sentence->add($word, [$cloned_slova]);
+            }
+
             $sentences[] = $tmp_sentence;
         }
         return $sentences;

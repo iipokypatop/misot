@@ -141,4 +141,15 @@ abstract class Slovo implements \Aot\Unit
     {
         return $this->storage;
     }
+
+    public function reClone()
+    {
+        $ob = clone $this;
+
+        foreach ($this->storage as $k => $v) {
+            $ob->storage[$k] = clone $v;
+        }
+
+        return $ob;
+    }
 }
