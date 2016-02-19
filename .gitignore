@@ -6,3 +6,4 @@ composer.lock
 .DS_Store
 
 config/configuration.ini
+config/configuration.ini.template
