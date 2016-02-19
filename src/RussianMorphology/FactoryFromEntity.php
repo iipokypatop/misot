@@ -8,9 +8,17 @@
 
 namespace Aot\RussianMorphology;
 
+use Aot\Text\Encodings;
+
 class FactoryFromEntity
 {
     const REGULAR_FOR_WHITE_LIST = '/[A-Za-zА-Яа-яёЁ\\d]+/u';
+
+    const SEARCH_MODE_DEFAULT = 0;
+
+    const SEARCH_MODE_CASE_SENSITIVE = 1;
+    const SEARCH_MODE_BY_INITIAL_FORM = 2;
+
     protected static $uniqueInstances = null;
     /** @var array[][] */
     public $error_log = [];
@@ -33,6 +41,10 @@ class FactoryFromEntity
     protected $__cache_chast_rechi_4_clone = [];
     /** @var int[] */
     protected $__cache_base_class_id = [];
+    /**
+     * @var int
+     */
+    protected $search_mode;
 
     /**
      * FactoryBase constructor.
@@ -96,13 +108,16 @@ class FactoryFromEntity
      * @brief Метод для генерирования слов и пунктуации с сохранением их последовательности
      *
      * @param string[] $words
+     * @param int $search_mode
      * @return \Aot\Unit hashmap
      */
-    public function getSlovaWithPunctuation(array $words)
+    public function getSlovaWithPunctuation(array $words, $search_mode = self::SEARCH_MODE_DEFAULT)
     {
         foreach ($words as $word) {
             assert(is_string($word));
         }
+
+        assert(is_int($search_mode));
 
         $result = [];
         $words_to_find = [];
@@ -116,11 +131,13 @@ class FactoryFromEntity
         }
 
         $slova = $this->getSlova(
-            array_unique($words_to_find)
+            array_unique($words_to_find),
+            $search_mode
         );
 
         foreach ($words_to_find as $index => $word) {
-            $result[$index] = $slova[$word];
+            $result[$index] = $slova[$word] ?: [\Aot\RussianMorphology\NullWord::create($word)];
+
         }
 
         return $result;
@@ -128,13 +145,18 @@ class FactoryFromEntity
 
     /**
      * @param string[] $words
-     * @return \Aot\RussianMorphology\Slovo[][]
+     * @param int $search_mode
+     * @return Slovo[][]
      */
-    public function getSlova(array $words)
+    public function getSlova(array $words, $search_mode = self::SEARCH_MODE_DEFAULT)
     {
         foreach ($words as $word) {
             assert(is_string($word));
         }
+
+        assert(is_int($search_mode));
+
+        $this->setSearchMode($search_mode);
 
         if (empty($words)) {
             return [];
@@ -169,9 +191,27 @@ class FactoryFromEntity
 
     }
 
+    /**
+     * @param int $search_mode
+     */
+    protected function setSearchMode($search_mode)
+    {
+        assert(is_int($search_mode));
+
+        $this->search_mode = self::SEARCH_MODE_DEFAULT | $search_mode;
+    }
+
     protected function assertNotDuplicates($words)
     {
-        $counted_values = array_count_values($words);
+        if ($this->isSearchModeCaseSensitive()) {
+
+            $counted_values = array_count_values($words);
+
+        } else {
+            $counted_values = array_count_values(
+                $this->arrayToLower($words)
+            );
+        }
 
         if (count($counted_values) === 0) {
             return;
@@ -188,7 +228,29 @@ class FactoryFromEntity
     }
 
     /**
-     * @param array $words
+     * @return bool
+     */
+    protected function isSearchModeCaseSensitive()
+    {
+        return (boolean)($this->search_mode & static::SEARCH_MODE_CASE_SENSITIVE);
+    }
+
+    /**
+     * @param string[] $words
+     * @return string[]
+     */
+    protected function arrayToLower($words)
+    {
+        $lower_words = [];
+        foreach ($words as $word) {
+            $lower_words[] = mb_strtolower($word, Encodings::UTF_8);
+        }
+
+        return $lower_words;
+    }
+
+    /**
+     * @param string[] $words
      * @return Slovo
      * @throws \Exception
      */
@@ -200,6 +262,10 @@ class FactoryFromEntity
 
         $this->assertNotDuplicates($words);
 
+        $is_search_mode_sensitive = $this->isSearchModeCaseSensitive();
+
+        $is_search_mode_by_initial_form = $this->isSearchModeByInitialForm();
+
         /** @var Slovo $slova */
         $slova = [];
         foreach ($words as $word) {
@@ -209,15 +275,37 @@ class FactoryFromEntity
         /** @var \TextPersistence\API\APIcurrent $api */
         $api = \TextPersistence\API\TextAPI::getAPI();
 
-        $query = $api
+        $query_builder = $api
             ->getEntityManager()
             ->createQueryBuilder()
             ->select('f')
             ->from(\TextPersistence\Entities\TextEntities\Form::class, 'f')
-            ->leftJoin('f.mword', 'w')
-            ->where('w.word in (:words)')
-            ->setParameter(':words', array_values($words))
-            ->getQuery();
+            ->leftJoin('f.mword', 'w');
+
+
+        $param_name_words = ':words';
+
+        if ($is_search_mode_by_initial_form) {
+            $query_builder
+                ->leftJoin('f.initialForm', 'wi')
+                ->where("wi.word in ($param_name_words)");
+        } else {
+            $query_builder
+                ->where("w.word in ($param_name_words)");
+        }
+
+
+        if ($is_search_mode_sensitive) {
+            $query_builder
+                ->setParameter($param_name_words, array_values($words));
+        } else {
+
+            $query_builder
+                ->setParameter($param_name_words, $this->arrayToLower($words));
+        }
+
+        $query = $query_builder->getQuery();
+
 
         $query->setFetchMode(
             \TextPersistence\Entities\TextEntities\Form::class,
@@ -236,10 +324,31 @@ class FactoryFromEntity
         $factory = \Aot\RussianMorphology\FactoryFromEntity::get();
 
         foreach ($forms as $form) {
-            $slova[$form->getMword()->getWord()][] = $factory->buildFromEntity($form);
+
+            if ($is_search_mode_by_initial_form) {
+                $word_form = $form->getInitialForm()->getWord();
+            } else {
+                $word_form = $form->getMword()->getWord();
+            }
+
+            $slova[$word_form][] = $factory->buildFromEntity($form);
+
+            if (!$is_search_mode_sensitive) {
+                if ($word_form !== mb_strtolower($word_form,  Encodings::UTF_8)) {
+                    $slova[$word_form][] = $factory->buildFromEntity($form);
+                }
+            }
         }
 
         return $slova;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isSearchModeByInitialForm()
+    {
+        return (boolean)($this->search_mode & static::SEARCH_MODE_BY_INITIAL_FORM);
     }
 
     /**
@@ -318,7 +427,6 @@ class FactoryFromEntity
             }
         }
 
-
         $ob = clone $this->__cache_chast_rechi_4_clone[$chast_rechi_class];
         $ob->storage = $priznaki_objects;
         $ob->text = $text;
@@ -358,7 +466,6 @@ class FactoryFromEntity
             $all_words[] = $splitted[1];
         }
 
-
         $slova = $this->processSimpleWords(
             array_unique($all_words)
         );
@@ -379,7 +486,6 @@ class FactoryFromEntity
                 $unique_forms_slovo_part2[$slovo_part2->getInitialForm()] = $slovo_part2->getInitialForm();
             }
 
-
             foreach ($slovo_parts1 as $slovo_part1) {
                 foreach ($unique_forms_slovo_part2 as $text_part2) {
 
@@ -390,7 +496,6 @@ class FactoryFromEntity
                     $ids = array_filter($ids, function ($v) {
                         return isset($v);
                     });
-
 
                     $result[$word_text][] = $factory->build(
                         $word_text,
@@ -405,10 +510,14 @@ class FactoryFromEntity
 
         return $result;
     }
-
 }
 
 class DuplicateException extends \Aot\RussianMorphology\FactoryException
+{
+
+}
+
+class IncorrectMode extends \Aot\RussianMorphology\FactoryException
 {
 
 }

@@ -361,4 +361,140 @@ class Factory2Test extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianSyntacsis\Punctuaciya\Zapiataya::class, $units_groups[8][0]);
         $this->assertInstanceOf(\Aot\RussianSyntacsis\Punctuaciya\Tochka::class, $units_groups[9][0]);
     }
+
+
+    public function testCaseSensitive()
+    {
+        $word = 'пошли';
+        $Word = 'Пошли';
+//        $part2 = 'леса';
+
+        /** @var \TextPersistence\API\APIcurrent $api */
+        $api = \TextPersistence\API\TextAPI::getAPI();
+
+        /** @var \TextPersistence\Entities\TextEntities\Mword[] $mwords */
+        $word1 = $api->findBy(
+            \TextPersistence\Entities\TextEntities\Mword::class,
+            [
+                'word' => $word
+            ]
+        );
+
+        if (empty($word1)) {
+            $this->markTestSkipped("в базе данных нет слова " . var_export($word, 1));
+        }
+
+        $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+            [$word, $Word],
+            \Aot\RussianMorphology\FactoryFromEntity::SEARCH_MODE_CASE_SENSITIVE
+        );
+
+        $this->assertNotEmpty($slova_group);
+
+        $this->assertNotEmpty($slova_group[$word]);
+        $this->assertEmpty($slova_group[$Word]);
+    }
+
+
+    public function testCaseSensitive2()
+    {
+        $word = 'ваня';
+        $Word = 'Ваня';
+
+        /** @var \TextPersistence\API\APIcurrent $api */
+        $api = \TextPersistence\API\TextAPI::getAPI();
+
+        /** @var \TextPersistence\Entities\TextEntities\Mword[] $mwords */
+        $word1 = $api->findBy(
+            \TextPersistence\Entities\TextEntities\Mword::class,
+            [
+                'word' => $Word
+            ]
+        );
+
+        if (empty($word1)) {
+            $this->markTestSkipped("в базе данных нет слова " . var_export($Word, 1));
+        }
+
+        $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+            [$word, $Word],
+            \Aot\RussianMorphology\FactoryFromEntity::SEARCH_MODE_CASE_SENSITIVE
+        );
+
+        $this->assertNotEmpty($slova_group);
+
+        $this->assertNotEmpty($slova_group[$Word]);
+        $this->assertEmpty($slova_group[$word]);
+    }
+
+
+    public function testCaseSensitive3()
+    {
+        $word = 'ваня';
+        $Word = 'Ваня';
+
+        try {
+            \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+                [$word, $Word]
+            );
+            $this->fail();
+        } catch (\Aot\RussianMorphology\DuplicateException $e) {
+
+        }
+
+
+        try {
+            \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+                [$Word, $Word],
+                \Aot\RussianMorphology\FactoryFromEntity::SEARCH_MODE_CASE_SENSITIVE
+            );
+            $this->fail();
+        } catch (\Aot\RussianMorphology\DuplicateException $e) {
+
+        }
+    }
+
+
+
+
+    public function testByInitialForm()
+    {
+        $word1 = 'дом';
+        $word2 = 'лететь';
+
+        /** @var \TextPersistence\API\APIcurrent $api */
+        $api = \TextPersistence\API\TextAPI::getAPI();
+
+        $e1 = $api->findBy(
+            \TextPersistence\Entities\TextEntities\Mword::class,
+            [
+                'word' => $word1
+            ]
+        );
+
+        if (empty($e1)) {
+            $this->markTestSkipped("в базе данных нет слова " . var_export($word1, 1));
+        }
+
+        $e2 = $api->findBy(
+            \TextPersistence\Entities\TextEntities\Mword::class,
+            [
+                'word' => $word2
+            ]
+        );
+
+        if (empty($e2)) {
+            $this->markTestSkipped("в базе данных нет слова " . var_export($word2, 1));
+        }
+
+        $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+            [$word1, $word2],
+            \Aot\RussianMorphology\FactoryFromEntity::SEARCH_MODE_BY_INITIAL_FORM
+        );
+
+        $this->assertNotEmpty($slova_group);
+
+        $this->assertNotEmpty($slova_group[$word1]);
+        $this->assertNotEmpty($slova_group[$word2]);
+    }
 }
