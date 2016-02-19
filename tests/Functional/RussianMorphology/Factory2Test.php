@@ -430,18 +430,7 @@ class Factory2Test extends \AotTest\AotDataStorage
 
     public function testCaseSensitive3()
     {
-        $word = 'ваня';
         $Word = 'Ваня';
-
-        try {
-            \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
-                [$word, $Word]
-            );
-            $this->fail();
-        } catch (\Aot\RussianMorphology\DuplicateException $e) {
-
-        }
-
 
         try {
             \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
