@@ -1194,4 +1194,21 @@ class MorphologyRegistry extends MorphologyRegistryParent
         return $res;
 
     }*/
+
+    /**
+     * @param \Aot\RussianMorphology\ChastiRechi\MorphologyBase[] $priznaki
+     * @return int[]
+     */
+    public static function getPriznakIdsByClasses(array $priznaki)
+    {
+        foreach ($priznaki as $priznak) {
+            assert(is_a($priznak, \Aot\RussianMorphology\ChastiRechi\MorphologyBase::class, true));
+        }
+
+        $res = [];
+        foreach ($priznaki as $priznak) {
+            $res[] = \Aot\RussianMorphology\ChastiRechi\MorphologyRegistry::getVariantIdByPriznakClass(get_class($priznak));
+        }
+        return $res;
+    }
 }

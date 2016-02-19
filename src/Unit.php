@@ -17,4 +17,8 @@ namespace Aot;
  */
 interface Unit
 {
+    /**
+     * @return \Aot\Unit
+     */
+    public function reClone();
 }
