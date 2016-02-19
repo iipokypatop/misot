@@ -41,7 +41,7 @@ class ConvertTextIntoSlova
         }
 
         /** @var \Aot\Unit[][] $slova */
-        $slova = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlovaWithPunctuation($sentence_words_all);
+        $slova = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlovaWithPunctuation(array_unique($sentence_words_all));
 
         foreach ($sentence_words as $index => $sentence) {
 

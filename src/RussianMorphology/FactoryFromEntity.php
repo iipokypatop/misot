@@ -203,15 +203,7 @@ class FactoryFromEntity
 
     protected function assertNotDuplicates($words)
     {
-        if ($this->isSearchModeCaseSensitive()) {
-
-            $counted_values = array_count_values($words);
-
-        } else {
-            $counted_values = array_count_values(
-                $this->arrayToLower($words)
-            );
-        }
+        $counted_values = array_count_values($words);
 
         if (count($counted_values) === 0) {
             return;
