@@ -9,7 +9,8 @@
 namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo;
 
 
-class Null extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Base
+ class Null extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Base implements \Aot\RussianMorphology\MorphologyNull
 {
 
 }
+

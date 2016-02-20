@@ -14,14 +14,14 @@ use Aot\RussianMorphology\Slovo;
  * @property Morphology\Vid\Base $vid
  * @property Morphology\Vozvratnost\Base $vozvratnost
  * @property Morphology\Vremya\Base $vremya
- * @property Morphology\Zalog\Base $razryad
+ * @property Morphology\Zalog\Base $zalog
  */
 class Base extends Slovo
 {
     /**
      * @return array
      */
-    public function getMorphology()
+    public static function getMorphology()
     {
         return [
             'chislo' => Morphology\Chislo\Base::class,
@@ -32,7 +32,7 @@ class Base extends Slovo
             'vid' => Morphology\Vid\Base::class,
             'vozvratnost' => Morphology\Vozvratnost\Base::class,
             'vremya' => Morphology\Vremya\Base::class,
-            'razryad' => Morphology\Zalog\Base::class,
+            'zalog' => Morphology\Zalog\Base::class,
         ];
     }
 
@@ -47,7 +47,7 @@ class Base extends Slovo
      * @param Morphology\Vid\Base $vid
      * @param Morphology\Vozvratnost\Base $vozvratnost
      * @param Morphology\Vremya\Base $vremya
-     * @param Morphology\Zalog\Base $razryad
+     * @param Morphology\Zalog\Base $zalog
      * @return static
      */
     public static function create(
@@ -60,7 +60,7 @@ class Base extends Slovo
         Morphology\Vid\Base $vid,
         Morphology\Vozvratnost\Base $vozvratnost,
         Morphology\Vremya\Base $vremya,
-        Morphology\Zalog\Base $razryad
+        Morphology\Zalog\Base $zalog
     )
     {
         $ob = new static($text);
@@ -73,7 +73,7 @@ class Base extends Slovo
         $ob->vid = $vid;
         $ob->vozvratnost = $vozvratnost;
         $ob->vremya = $vremya;
-        $ob->razryad = $razryad;
+        $ob->zalog = $zalog;
 
         return $ob;
     }

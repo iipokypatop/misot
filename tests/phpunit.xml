@@ -14,7 +14,7 @@
         printerClass="PHPUnit_TextUI_ResultPrinter"
 
         processIsolation="false"
-        stopOnError="false"
+        stopOnError="true"
         stopOnFailure="false"
         stopOnIncomplete="false"
         stopOnSkipped="false"

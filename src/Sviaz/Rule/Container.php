@@ -229,7 +229,7 @@ TEXT;
             \Aot\Sviaz\Rule\Builder2::create()
                 ->main(
                     \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(ChastiRechiRegistry::MESTOIMENIE, RoleRegistry::VESCH)
-                        ->morphologyEq(MorphologyRegistry::RAZRYAD_LICHNOE)
+                        ->morphologyEq(MorphologyRegistry::RAZRYAD_MESTOIMENIE_LICHNOE)
                         ->morphologyEq(MorphologyRegistry::PADESZH_IMENITELNIJ)
                 )
                 ->depended(

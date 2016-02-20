@@ -59,4 +59,13 @@ class Sentence
         return $this->units;
     }
 
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
 }

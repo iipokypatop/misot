@@ -20,11 +20,11 @@ use Aot\RussianMorphology\Slovo;
  * @property Morphology\Padeszh\Base $padeszh
  * @property Morphology\Rod\Base $rod
  * @property Morphology\Sklonenie\Base $sklonenie
+ * @property Morphology\Otglagolnost\Base $otglagolnost
  */
 class Base extends Slovo
 {
-
-    public function getMorphology()
+    public static function getMorphology()
     {
         return [
             'chislo' => Morphology\Chislo\Base::class,
@@ -46,6 +46,7 @@ class Base extends Slovo
      * @param Morphology\Padeszh\Base $padeszh
      * @param Morphology\Rod\Base $rod
      * @param Morphology\Sklonenie\Base Glagol
+     * @param Morphology\Otglagolnost\Base $otglagolnost
      * @return static
      */
     public static function create(

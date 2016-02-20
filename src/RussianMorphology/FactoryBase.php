@@ -8,14 +8,16 @@
 
 namespace Aot\RussianMorphology;
 
-
 abstract class FactoryBase
 {
-
     protected static $uniqueInstances = null;
 
+    /**
+     * FactoryBase constructor.
+     */
     protected function __construct()
     {
+
     }
 
     /**

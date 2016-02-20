@@ -32,6 +32,9 @@ class ChastiRechiRegistry
     const MEZHDOMETIE = 22;
     const PRISTAVKA = 23;
 
+    CONST SOKRASHHENIE = 24;
+    CONST ABBREVIATURA = 25;
+
 
     public static function getNames()
     {
@@ -156,4 +159,33 @@ class ChastiRechiRegistry
             'name' => [static::class, 'getNames'],
         ];
     }
+
+
+    public static function new_old()
+    {
+        return [
+            static::SUSCHESTVITELNOE => \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID,
+            static::PRILAGATELNOE => \Aot\MivarTextSemantic\Constants::ADJECTIVE_CLASS_ID,
+            static::GLAGOL => \Aot\MivarTextSemantic\Constants::VERB_CLASS_ID,
+            static::PRICHASTIE => \Aot\MivarTextSemantic\Constants::COMMUNION_CLASS_ID,
+            static::NARECHIE => \Aot\MivarTextSemantic\Constants::ADVERB_CLASS_ID,
+
+            static::DEEPRICHASTIE => \Aot\MivarTextSemantic\Constants::PARTICIPLE_CLASS_ID,
+            static::CHISLITELNOE => \Aot\MivarTextSemantic\Constants::NUMERAL_CLASS_ID,
+            static::MESTOIMENIE => \Aot\MivarTextSemantic\Constants::PRONOUN_CLASS_ID,
+            static::INFINITIVE => \Aot\MivarTextSemantic\Constants::INFINITIVE_CLASS_ID,
+
+            static::PREDLOG => \Aot\MivarTextSemantic\Constants::PREPOSITION_CLASS_ID,
+            static::SOYUZ => \Aot\MivarTextSemantic\Constants::UNION_CLASS_ID,
+            static::CHASTICA => \Aot\MivarTextSemantic\Constants::PARTICLE_CLASS_ID,
+
+            static::MEZHDOMETIE => \Aot\MivarTextSemantic\Constants::INTERJECTION_CLASS_ID,
+            static::PRISTAVKA => 16,
+
+
+            static::SOKRASHHENIE => 15,
+            static::ABBREVIATURA => 7
+        ];
+    }
+
 }

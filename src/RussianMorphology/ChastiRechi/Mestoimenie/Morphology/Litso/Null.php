@@ -8,7 +8,7 @@
 
 namespace Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Litso;
 
-class Null extends Base
+class Null extends Base implements \Aot\RussianMorphology\MorphologyNull
 {
 
 }

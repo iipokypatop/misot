@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod;
 
 
-class Null extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Base
+class Null extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Base implements \Aot\RussianMorphology\MorphologyNull
 {
 
 }

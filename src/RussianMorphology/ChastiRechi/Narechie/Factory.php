@@ -28,7 +28,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
     {
         $text = $dw->word_form;
         $words = [];
-        if (intval($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::ADVERB_CLASS_ID) {
+        if ((int)($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::ADVERB_CLASS_ID) {
 
             # степень сравнения
             $stepen_sravneniia = $this->getStepenSravneniia($dw->parameters);
@@ -59,11 +59,11 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
         $param = $parameters[\Aot\MivarTextSemantic\Constants::DEGREE_COMPOSITION_ID];
         $stepen_sravneniia = [];
         foreach ($param->id_value_attr as $val) {
-            if (intval($val) === OldAotConstants::POSITIVE_DEGREE_COMPARISON()) {
+            if ((int)($val) === OldAotConstants::POSITIVE_DEGREE_COMPARISON()) {
                 $stepen_sravneniia[] = Polozhitelnaya::create();
-            } elseif (intval($val) === \Aot\MivarTextSemantic\Constants::DEGREE_SUPERLATIVE_ID) {
+            } elseif ((int)($val) === \Aot\MivarTextSemantic\Constants::DEGREE_SUPERLATIVE_ID) {
                 $stepen_sravneniia[] = Prevoshodnaya::create();
-            } elseif (intval($val) === OldAotConstants::COMPARATIVE_DEGREE_COMPARISON()) {
+            } elseif ((int)($val) === OldAotConstants::COMPARATIVE_DEGREE_COMPARISON()) {
                 $stepen_sravneniia[] = Sravnitelnaya::create();
             } else {
                 throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));

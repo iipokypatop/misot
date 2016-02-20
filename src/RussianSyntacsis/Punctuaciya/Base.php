@@ -33,4 +33,11 @@ class Base implements \Aot\Unit
         return $this->text;
     }
 
+    public function reClone()
+    {
+        $ob = clone $this;
+
+        return $ob;
+    }
+
 }

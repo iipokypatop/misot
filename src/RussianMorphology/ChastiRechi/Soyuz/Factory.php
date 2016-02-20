@@ -17,7 +17,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
         $text = $dw->word_form;
         $words = [];
 
-        if (intval($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::UNION_CLASS_ID) {
+        if ((int)($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::UNION_CLASS_ID) {
             $words[] = $word = Base::create($text);
             $word->setInitialForm($dw->initial_form);
         }

@@ -42,6 +42,7 @@ class UnitUnitingPatterns
         return [
             static::getFIO(),
             static::getPhoneNumber(),
+            static::getMenuItem1(),
             static::getOrdinalNumber(),
         ];
     }
@@ -105,6 +106,7 @@ class UnitUnitingPatterns
         return [
             static::getFIO() => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD,
             static::getPhoneNumber() => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_NUMBER,
+            static::getMenuItem1() => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_NUMBER,
             static::getOrdinalNumber() => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_NUMBER,
         ];
     }
@@ -211,6 +213,27 @@ class UnitUnitingPatterns
             static::END_BRACE;
     }
 
+    /**
+     * @return string
+     */
+    protected static function getMenuItem1()
+    {
+        return
+
+            // пункт меню в формате NUMBER.NUMBER(.NUMBER)?
+            static::START_BRACE .
+            UnitPseudoCodeRegistry::NUMBER .
+            UnitPseudoCodeRegistry::SINGLE_DOT .
+            UnitPseudoCodeRegistry::NUMBER .
+
+            // необязательный ".NUMBER"
+            static::START_BRACE .
+            UnitPseudoCodeRegistry::SINGLE_DOT .
+            UnitPseudoCodeRegistry::NUMBER .
+            static::END_BRACE .
+            static::EXTRA .
+            static::END_BRACE;
+    }
 
 
 }

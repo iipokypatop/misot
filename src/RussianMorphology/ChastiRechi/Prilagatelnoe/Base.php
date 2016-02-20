@@ -16,7 +16,7 @@ use Aot\RussianMorphology\Slovo;
  */
 class Base extends Slovo
 {
-    public function getMorphology()
+    public static function getMorphology()
     {
         return [
             'chislo' => Morphology\Chislo\Base::class,

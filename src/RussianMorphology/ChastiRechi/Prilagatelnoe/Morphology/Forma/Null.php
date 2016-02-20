@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma;
 
 
-class Null extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Base
+class Null extends \Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Base implements \Aot\RussianMorphology\MorphologyNull
 {
 
 }

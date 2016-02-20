@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid;
 
 
-class Null extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Base
+class Null extends \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Base implements \Aot\RussianMorphology\MorphologyNull
 {
 
 }

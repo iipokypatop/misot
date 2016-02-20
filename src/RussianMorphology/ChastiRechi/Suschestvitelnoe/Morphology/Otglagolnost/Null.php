@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Otglagolnost;
 
 
-class Null extends Base
+class Null extends Base implements \Aot\RussianMorphology\MorphologyNull
 {
 
 }

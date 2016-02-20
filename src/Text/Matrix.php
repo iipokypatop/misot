@@ -30,12 +30,14 @@ class Matrix
                 continue;
             }
 
-            if ($value[0] instanceof \Aot\RussianMorphology\Slovo) {
+            $value_0 = current($value);
+
+            if ($value_0 instanceof \Aot\RussianMorphology\Slovo) {
                 $this->appendWordsForm($value);
                 continue;
             }
 
-            if ($value[0] instanceof \Aot\RussianSyntacsis\Punctuaciya\Base) {
+            if ($value_0 instanceof \Aot\RussianSyntacsis\Punctuaciya\Base) {
                 $this->appendPunctuation($value);
                 continue;
             }

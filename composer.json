@@ -23,7 +23,8 @@
     "mivar-projects/phpmorphy-fork": "dev-master",
     "mivar-projects/utils": "dev-develop",
     "mivar-projects/text-libraries": "dev-develop",
-    "mivar-projects/graph": "dev-develop"
+    "mivar-projects/graph": "dev-develop",
+    "mivar-projects/db-api-text" : "dev-develop"
   },
   "repositories": [
     {
@@ -69,6 +70,10 @@
     {
       "type": "git",
       "url": "git@gitlab.mivar.ru:mivar-projects/graph.git"
+    },
+    {
+      "type": "git",
+      "url": "git@gitlab.mivar.ru:mivar-projects/db-api-text.git"
     }
   ],
   "autoload": {

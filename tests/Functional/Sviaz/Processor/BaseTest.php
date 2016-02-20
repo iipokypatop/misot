@@ -283,7 +283,7 @@ TEXT;
         $poiavilis[0]->vid = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj::create();
         $poiavilis[0]->vozvratnost = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Nevozvratnyj::create();
         $poiavilis[0]->vremya = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Proshedshee::create();
-        $poiavilis[0]->razryad = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::create();
+        $poiavilis[0]->zalog = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Null::create();
 
         $oblaka[0] = $this->getMock(Suschestvitelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($oblaka[0], 'text', 'облака');

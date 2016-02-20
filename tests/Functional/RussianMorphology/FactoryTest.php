@@ -54,23 +54,21 @@ TEXT
      */
     public function testSplitWordsInSimpleAndCompositeGroups()
     {
-        # получаем подделку Aot\RussianMorphology\Factory
-        $factory = $this->getMock(\Aot\RussianMorphology\Factory::class, ['create'], [], '', false);
-        $res = PHPUnitHelper::callProtectedMethod($factory, 'splitArrayWords', [
-                [
-                    'Алиса-каприза',
-                    'в',
-                    'папа',
-                    'loli-poli',
-                    'человек-убийца',
-                    '-',
-                    'телефон-патефон',
-                    'топор',
-                    'green',
-                    'лес',
-                ]
+        $res = \Aot\RussianMorphology\CompositeWordProcessor::splitArrayWords(
+            [
+                'Алиса-каприза',
+                'в',
+                'папа',
+                'loli-poli',
+                'человек-убийца',
+                '-',
+                'телефон-патефон',
+                'топор',
+                'green',
+                'лес',
             ]
         );
+
         $simple_words = [
             'в',
             'папа',
