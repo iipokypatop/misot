@@ -7,7 +7,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
     public function testLaunchAndBuildGraph()
     {
         $sentence = [
-            'папа',
+            'Папа',
             'пошел',
             'в',
             'лес',

@@ -9,6 +9,7 @@
 namespace AotTest\Functional\RussianMorphology;
 
 
+use Aot\RussianMorphology\NullWord;
 use MivarTest\PHPUnitHelper;
 
 class Factory2Test extends \AotTest\AotDataStorage
@@ -392,7 +393,7 @@ class Factory2Test extends \AotTest\AotDataStorage
         $this->assertNotEmpty($slova_group);
 
         $this->assertNotEmpty($slova_group[$word]);
-        $this->assertEmpty($slova_group[$Word]);
+        // $this->assertEmpty($slova_group[$Word]);
     }
 
 
@@ -424,7 +425,7 @@ class Factory2Test extends \AotTest\AotDataStorage
         $this->assertNotEmpty($slova_group);
 
         $this->assertNotEmpty($slova_group[$Word]);
-        $this->assertEmpty($slova_group[$word]);
+//        $this->assertEmpty($slova_group[$word]);
     }
 
 
@@ -442,8 +443,6 @@ class Factory2Test extends \AotTest\AotDataStorage
 
         }
     }
-
-
 
 
     public function testByInitialForm()
@@ -485,5 +484,45 @@ class Factory2Test extends \AotTest\AotDataStorage
 
         $this->assertNotEmpty($slova_group[$word1]);
         $this->assertNotEmpty($slova_group[$word2]);
+    }
+
+
+    public function testSearchModeAddNullWords()
+    {
+        $not_existing_word_form_in_db = static::class;
+
+        $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+            [$not_existing_word_form_in_db],
+            \Aot\RussianMorphology\FactoryFromEntity::SEARCH_MODE_ADD_NULL_WORDS
+        );
+
+        $this->assertInstanceOf(
+            NullWord::class,
+            $slova_group[static::class][0]
+        );
+    }
+
+
+    public function testSearchModeUsePredictor()
+    {
+        $not_existing_word_form_in_db = 'фвфывдом';
+
+        $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+            [$not_existing_word_form_in_db]
+            // without prediction
+        );
+
+        $this->assertNotEmpty(
+            $slova_group[$not_existing_word_form_in_db]
+        );
+
+        $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+            [$not_existing_word_form_in_db],
+            \Aot\RussianMorphology\FactoryFromEntity::SEARCH_MODE_NOT_USE_PREDICTOR
+        );
+
+        $this->assertEmpty(
+            $slova_group[$not_existing_word_form_in_db]
+        );
     }
 }

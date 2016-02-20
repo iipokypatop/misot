@@ -125,7 +125,7 @@ class ProcessorAotTest extends \AotTest\AotDataStorage
         }
 
         // проверяем совпадение исходного предложения с восстановленным из новой последовательности
-
+        $sentence = mb_strtolower($sentence, 'utf-8');
         $sentence = preg_replace("/[\\,\\.\\-]/u", "", $sentence);
         $sentence = preg_replace("/\\s{2,}/u", " ", $sentence);
         $this->assertEquals($sentence, join(" ", $sentence_array));

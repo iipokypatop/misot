@@ -18,6 +18,8 @@ class FactoryFromEntity
 
     const SEARCH_MODE_CASE_SENSITIVE = 1;
     const SEARCH_MODE_BY_INITIAL_FORM = 2;
+    const SEARCH_MODE_NOT_USE_PREDICTOR = 4;
+    const SEARCH_MODE_ADD_NULL_WORDS = 8;
 
     protected static $uniqueInstances = null;
     /** @var array[][] */
@@ -136,10 +138,8 @@ class FactoryFromEntity
         );
 
         foreach ($words_to_find as $index => $word) {
-            $result[$index] = $slova[$word] ?: [\Aot\RussianMorphology\NullWord::create($word)];
-
+            $result[$index] = $slova[$word];
         }
-
         return $result;
     }
 
@@ -187,8 +187,24 @@ class FactoryFromEntity
             }
         }
 
-        return $result;
+        if (!$this->isSearchModeNotUsePredictor()) {
 
+            foreach ($result as $word_name => $words_array) {
+                $slova = \Aot\RussianMorphology\Factory::getSlova([$word_name]);
+                if (!empty($slova[0])) {
+                    $result[$word_name] = $slova[0];
+                    continue;
+                }
+            }
+        }
+
+        if ($this->isSearchModeAddNullWords()) {
+            foreach ($result as $word_name => $words_array) {
+                $result[$word_name] = $result[$word_name] ?: [\Aot\RussianMorphology\NullWord::create($word_name)];
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -217,28 +233,6 @@ class FactoryFromEntity
 
             throw new DuplicateException("входной массив слов не должен содержать дубликаты " . var_export($duplicates, 1));
         }
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isSearchModeCaseSensitive()
-    {
-        return (boolean)($this->search_mode & static::SEARCH_MODE_CASE_SENSITIVE);
-    }
-
-    /**
-     * @param string[] $words
-     * @return string[]
-     */
-    protected function arrayToLower($words)
-    {
-        $lower_words = [];
-        foreach ($words as $word) {
-            $lower_words[] = mb_strtolower($word, Encodings::UTF_8);
-        }
-
-        return $lower_words;
     }
 
     /**
@@ -326,7 +320,7 @@ class FactoryFromEntity
             $slova[$word_form][] = $factory->buildFromEntity($form);
 
             if (!$is_search_mode_sensitive) {
-                if ($word_form !== mb_strtolower($word_form,  Encodings::UTF_8)) {
+                if ($word_form !== mb_strtolower($word_form, Encodings::UTF_8)) {
                     $slova[$word_form][] = $factory->buildFromEntity($form);
                 }
             }
@@ -338,9 +332,31 @@ class FactoryFromEntity
     /**
      * @return bool
      */
+    protected function isSearchModeCaseSensitive()
+    {
+        return (boolean)($this->search_mode & static::SEARCH_MODE_CASE_SENSITIVE);
+    }
+
+    /**
+     * @return bool
+     */
     protected function isSearchModeByInitialForm()
     {
         return (boolean)($this->search_mode & static::SEARCH_MODE_BY_INITIAL_FORM);
+    }
+
+    /**
+     * @param string[] $words
+     * @return string[]
+     */
+    protected function arrayToLower($words)
+    {
+        $lower_words = [];
+        foreach ($words as $word) {
+            $lower_words[] = mb_strtolower($word, Encodings::UTF_8);
+        }
+
+        return $lower_words;
     }
 
     /**
@@ -502,6 +518,24 @@ class FactoryFromEntity
 
         return $result;
     }
+
+    /**
+     * @return bool
+     */
+    protected function isSearchModeNotUsePredictor()
+    {
+        return (boolean)($this->search_mode & static::SEARCH_MODE_NOT_USE_PREDICTOR);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isSearchModeAddNullWords()
+    {
+        return (boolean)($this->search_mode & static::SEARCH_MODE_ADD_NULL_WORDS);
+    }
+
+
 }
 
 class DuplicateException extends \Aot\RussianMorphology\FactoryException
