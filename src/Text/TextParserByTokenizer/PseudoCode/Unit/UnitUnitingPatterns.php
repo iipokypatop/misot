@@ -43,6 +43,7 @@ class UnitUnitingPatterns
             static::getFIO(),
             static::getPhoneNumber(),
             static::getMenuItem1(),
+            static::getOrdinalNumber(),
         ];
     }
 
@@ -106,6 +107,7 @@ class UnitUnitingPatterns
             static::getFIO() => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD,
             static::getPhoneNumber() => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_NUMBER,
             static::getMenuItem1() => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_NUMBER,
+            static::getOrdinalNumber() => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_NUMBER,
         ];
     }
 
@@ -151,16 +153,6 @@ class UnitUnitingPatterns
             static::EXTRA .
             UnitPseudoCodeRegistry::LETTER_UPPERCASE .
             UnitPseudoCodeRegistry::SINGLE_DOT .
-
-            // или
-            static::REG_OR .
-
-            // фио в формате "Петров Петр Петрович"
-            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
-            UnitPseudoCodeRegistry::SPACE .
-            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
-            UnitPseudoCodeRegistry::SPACE .
-            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_UPPERCASE .
             static::END_BRACE;
     }
 
@@ -202,6 +194,22 @@ class UnitUnitingPatterns
             UnitPseudoCodeRegistry::NUMBER .
             UnitPseudoCodeRegistry::DASH .
             UnitPseudoCodeRegistry::NUMBER .
+            static::END_BRACE;
+    }
+
+
+    /**
+     * @return string
+     */
+    public static function getOrdinalNumber()
+    {
+        return
+
+            // число в формате "10-го"
+            static::START_BRACE .
+            UnitPseudoCodeRegistry::NUMBER .
+            UnitPseudoCodeRegistry::DASH .
+            UnitPseudoCodeRegistry::WORD_FIRST_LETTER_LOWERCASE .
             static::END_BRACE;
     }
 
