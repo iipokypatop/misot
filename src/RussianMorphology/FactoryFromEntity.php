@@ -187,7 +187,7 @@ class FactoryFromEntity
             }
         }
 
-        if (!$this->isSearchModeNotUsePredictor()) {
+        if (0 AND !$this->isSearchModeNotUsePredictor()) {
 
             foreach ($result as $word_name => $words_array) {
                 $slova = \Aot\RussianMorphology\Factory::getSlova([$word_name]);
