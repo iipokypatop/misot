@@ -541,7 +541,6 @@ class FactoryFromEntity
     protected function predict($word_name)
     {
         return \Aot\RussianMorphology\Factory::getSlova([$word_name]);
-
     }
 
     /**
