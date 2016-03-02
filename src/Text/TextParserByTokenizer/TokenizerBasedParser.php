@@ -33,12 +33,10 @@ class TokenizerBasedParser
     /** @var  string[][][] */
     protected $symbols_map = [];
 
-    /**
-     * @return \Aot\Text\TextParserByTokenizer\TokenizerBasedParser
-     */
-    public static function create()
+    protected function __construct()
     {
-        return new static();
+        $this->tokenizer = \Aot\Text\TextParserByTokenizer\Tokenizer::createEmptyConfiguration();
+        $this->pseudo_code_driver = PseudoCode\PseudoCodeDriver::create();
     }
 
     /**
@@ -55,10 +53,12 @@ class TokenizerBasedParser
         return $ob;
     }
 
-    protected function __construct()
+    /**
+     * @return \Aot\Text\TextParserByTokenizer\TokenizerBasedParser
+     */
+    public static function create()
     {
-        $this->tokenizer = \Aot\Text\TextParserByTokenizer\Tokenizer::createEmptyConfiguration();
-        $this->pseudo_code_driver = PseudoCode\PseudoCodeDriver::create();
+        return new static();
     }
 
     /**
@@ -177,19 +177,33 @@ class TokenizerBasedParser
     }
 
     /**
+     * Объединение юнитов в один
+     * @param \Aot\Text\TextParserByTokenizer\Unit[] $units
      * @return \Aot\Text\TextParserByTokenizer\Unit[]
      */
-    public function getUnits()
+    protected function uniteUnits(array $units)
     {
-        return $this->units;
-    }
+        $border_groups_of_units = $this->pseudo_code_driver->findBorderGroupsOfUnits($units);
 
-    /**
-     * @return \Aot\Text\TextParserByTokenizer\Tokenizer
-     */
-    public function getTokenizer()
-    {
-        return $this->tokenizer;
+        foreach ($border_groups_of_units as $found_pattern) {
+            $start = $found_pattern->getStart();
+            $end = $found_pattern->getEnd();
+            $tokens = [];
+            for ($i = $start; $i <= $end; $i++) {
+
+                if (empty($units[$i])) {
+                    throw new \LogicException('Unit with id = ' . var_export($i, true) . ' does not exists');
+                }
+
+                $tokens = array_merge($tokens, $units[$i]->getTokens());
+                unset($units[$i]);
+            }
+            // пересоздание Unit'а
+            $units[$start] = \Aot\Text\TextParserByTokenizer\Unit::create($tokens, $found_pattern->getType());
+        }
+
+        ksort($units);
+        return array_values($units);
     }
 
     /**
@@ -241,16 +255,6 @@ class TokenizerBasedParser
     }
 
     /**
-     * @param int $id
-     * @return bool
-     */
-    protected function isEndOfText($id)
-    {
-        return (!isset($this->units[$id + 1]));
-    }
-
-
-    /**
      * Проверка на пробел
      * @param $id
      * @return bool
@@ -284,11 +288,12 @@ class TokenizerBasedParser
     }
 
     /**
-     * @return \Aot\Text\TextParserByTokenizer\Sentence[]
+     * @param int $id
+     * @return bool
      */
-    public function getSentences()
+    protected function isEndOfText($id)
     {
-        return $this->sentences;
+        return (!isset($this->units[$id + 1]));
     }
 
     /**
@@ -316,6 +321,30 @@ class TokenizerBasedParser
     }
 
     /**
+     * @return \Aot\Text\TextParserByTokenizer\Unit[]
+     */
+    public function getUnits()
+    {
+        return $this->units;
+    }
+
+    /**
+     * @return \Aot\Text\TextParserByTokenizer\Tokenizer
+     */
+    public function getTokenizer()
+    {
+        return $this->tokenizer;
+    }
+
+    /**
+     * @return \Aot\Text\TextParserByTokenizer\Sentence[]
+     */
+    public function getSentences()
+    {
+        return $this->sentences;
+    }
+
+    /**
      * @return string[][][]
      */
     public function getSymbolsMap()
@@ -324,33 +353,112 @@ class TokenizerBasedParser
     }
 
     /**
-     * Объединение юнитов в один
-     * @param \Aot\Text\TextParserByTokenizer\Unit[] $units
-     * @return \Aot\Text\TextParserByTokenizer\Unit[]
+     * @return string[][]
      */
-    protected function uniteUnits(array $units)
+    public function getSentenceWords()
     {
-        $border_groups_of_units = $this->pseudo_code_driver->findBorderGroupsOfUnits($units);
-
-        foreach ($border_groups_of_units as $found_pattern) {
-            $start = $found_pattern->getStart();
-            $end = $found_pattern->getEnd();
-            $tokens = [];
-            for ($i = $start; $i <= $end; $i++) {
-
-                if (empty($units[$i])) {
-                    throw new \LogicException('Unit with id = ' . var_export($i, true) . ' does not exists');
+        $result = [];
+        foreach ($this->sentences as $sentence) {
+            $tmp = [];
+            foreach ($sentence->getUnits() as $unit) {
+                if ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_SPACE) {
+                    continue;
                 }
-
-                $tokens = array_merge($tokens, $units[$i]->getTokens());
-                unset($units[$i]);
+                $tmp[] = $unit->getStringRepresentation();
             }
-            // пересоздание Unit'а
-            $units[$start] = \Aot\Text\TextParserByTokenizer\Unit::create($tokens, $found_pattern->getType());
+            $result[] = $tmp;
         }
 
-        ksort($units);
-        return array_values($units);
+        return $result;
     }
 
+
+    /**
+     * @return string[]
+     */
+    public function getSentenceWordsAll()
+    {
+        $result = [];
+        foreach ($this->sentences as $sentence) {
+            foreach ($sentence->getUnits() as $unit) {
+                if ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_SPACE) {
+                    continue;
+                }
+                $result[] = $unit->getStringRepresentation();
+            }
+        }
+
+        return $result;
+    }
+
+
+
+    /**
+     * @return string[]
+     */
+    public function getSentencesStrings()
+    {
+        $result = [];
+
+        foreach ($this->sentences as $sentence) {
+
+            $trimmed_units = $this->trimUnits($sentence->getUnits());
+
+            $result[] = join('', $trimmed_units);
+        }
+        return $result;
+    }
+
+    /**
+     * @param  \Aot\Text\TextParserByTokenizer\Unit[] $units
+     * @return  \Aot\Text\TextParserByTokenizer\Unit[]
+     */
+    public static function trimUnits(array $units)
+    {
+        foreach ($units as $unit) {
+            assert(is_a($unit, \Aot\Text\TextParserByTokenizer\Unit::class, true));
+        }
+
+        assert($units === array_values($units));
+
+        $to_trim = [];
+        for ($i = 0; $i < count($units); $i++) {
+            if (in_array(
+                $units[$i]->getType(),
+                \Aot\Text\TextParserByTokenizer\TokenAndUnitRegistry::defaultTrimUnitType(),
+                true
+            )) {
+                $to_trim[$i] = $i;
+            }
+            break;
+        }
+
+        if (count($to_trim) === count($units)) {
+            return [];
+        }
+
+        for ($i = count($units) - 1; $i >= 0; $i--) {
+            if (in_array(
+                $units[$i]->getType(),
+                \Aot\Text\TextParserByTokenizer\TokenAndUnitRegistry::defaultTrimUnitType(),
+                true
+            )) {
+                $to_trim[$i] = $i;
+            }
+            break;
+        }
+
+        if (count($to_trim) === count($units)) {
+            return [];
+        }
+
+        rsort($to_trim);
+
+        $result = $units;
+        foreach ($to_trim as $index) {
+            unset($result[$index]);
+        }
+
+        return $result;
+    }
 }

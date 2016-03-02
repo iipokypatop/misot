@@ -69,6 +69,11 @@ class Unit
      */
     public function __toString()
     {
+        return $this->getStringRepresentation();
+    }
+
+    public function getStringRepresentation()
+    {
         return join('', $this->tokens);
     }
 

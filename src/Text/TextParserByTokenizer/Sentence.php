@@ -46,6 +46,9 @@ class Sentence
     }
 
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return join('', $this->units);
@@ -66,6 +69,4 @@ class Sentence
     {
         return $this->id;
     }
-
-
 }

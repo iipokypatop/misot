@@ -22,4 +22,12 @@ class TokenAndUnitRegistry
             \Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_OTHER => \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_OTHER,
         ];
     }
+
+    public static function defaultTrimUnitType()
+    {
+        return [
+            \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_SPACE,
+            \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_OTHER,
+        ];
+    }
 }

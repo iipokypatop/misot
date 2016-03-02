@@ -19,15 +19,13 @@ class ConvertTextIntoSlova
     {
         assert(is_string($text));
 
-        $parser = \Aot\Text\TextParser\TextParser::create();
 
-        $parser->execute($text);
+        $parser2 = \Aot\Text\TextParserByTokenizer\TokenizerBasedParser::createDefaultConfig();
+        $parser2->run($text);
 
-        $parser->render();
+        $sentence_words = $parser2->getSentenceWords();
 
-        $sentence_words = $parser->getSentenceWords();
-
-        $sentence_strings = $parser->getSentences();
+        $sentence_strings = $parser2->getSentencesStrings();
 
         /** @var \Aot\Tools\SentenceContainingVariantsSlov[] $sentences */
         $sentences = [];
