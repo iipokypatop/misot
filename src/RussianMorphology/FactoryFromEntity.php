@@ -187,10 +187,17 @@ class FactoryFromEntity
             }
         }
 
-        if (0 AND !$this->isSearchModeNotUsePredictor()) {
+
+        if (!$this->isSearchModeNotUsePredictor()) {
 
             foreach ($result as $word_name => $words_array) {
-                $slova = \Aot\RussianMorphology\Factory::getSlova([$word_name]);
+
+                if ($result[$word_name] !== []) {
+                    continue;
+                }
+
+                $slova = $this->predict($word_name);
+
                 if (!empty($slova[0])) {
                     $result[$word_name] = $slova[0];
                     continue;
@@ -525,6 +532,16 @@ class FactoryFromEntity
     protected function isSearchModeNotUsePredictor()
     {
         return (boolean)($this->search_mode & static::SEARCH_MODE_NOT_USE_PREDICTOR);
+    }
+
+    /**
+     * @param string $word_name
+     * @return Slovo[][]
+     */
+    protected function predict($word_name)
+    {
+        return \Aot\RussianMorphology\Factory::getSlova([$word_name]);
+
     }
 
     /**
