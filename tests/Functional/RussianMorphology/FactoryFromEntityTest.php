@@ -12,7 +12,7 @@ namespace AotTest\Functional\RussianMorphology;
 use Aot\RussianMorphology\NullWord;
 use MivarTest\PHPUnitHelper;
 
-class Factory2Test extends \AotTest\AotDataStorage
+class FactoryFromEntityTest extends \AotTest\AotDataStorage
 {
     public function dpBuildFromEntity()
     {
@@ -182,7 +182,6 @@ class Factory2Test extends \AotTest\AotDataStorage
         }
     }
 
-
     public function testGetNullClassByBaseClass()
     {
         $result = \Aot\RussianMorphology\ChastiRechi\MorphologyRegistryParent::getNullClassByBaseClass(
@@ -195,7 +194,6 @@ class Factory2Test extends \AotTest\AotDataStorage
         );
     }
 
-
     public function words_dp()
     {
         return [
@@ -206,23 +204,13 @@ class Factory2Test extends \AotTest\AotDataStorage
         ];
     }
 
-
     /**
      * @dataProvider words_dp
      * @throws \Exception
      */
     public function testGetSlova2($word_text)
     {
-        /** @var \TextPersistence\API\APIcurrent $api */
-        $api = \TextPersistence\API\TextAPI::getAPI();
-
-        /** @var \TextPersistence\Entities\TextEntities\Mword[] $mwords */
-        $mwords = $api->findBy(
-            \TextPersistence\Entities\TextEntities\Mword::class,
-            [
-                'word' => $word_text
-            ]
-        );
+        $mwords = $this->getWordsFromDb($word_text);
 
         if (!empty($mwords)) {
 
@@ -238,33 +226,46 @@ class Factory2Test extends \AotTest\AotDataStorage
         }
     }
 
+    /**
+     * @param $words
+     * @return bool
+     * @throws \Exception
+     */
+    protected function getWordsFromDb($words)
+    {
+        assert(is_string($words) || is_array($words));
+
+        if (is_array($words)) {
+            foreach ($words as $word) {
+                assert(is_string($words));
+            }
+        }
+
+        /** @var \TextPersistence\API\APIcurrent $api */
+        $api = \TextPersistence\API\TextAPI::getAPI();
+
+        $word_enitities = $api->findBy(
+            \TextPersistence\Entities\TextEntities\Mword::class,
+            [
+                'word' => $words
+            ]
+        );
+
+        return $word_enitities;
+    }
+
     public function testCompositeWords()
     {
         $part1 = 'пошли';
         $part2 = 'леса';
 
-        /** @var \TextPersistence\API\APIcurrent $api */
-        $api = \TextPersistence\API\TextAPI::getAPI();
 
-        /** @var \TextPersistence\Entities\TextEntities\Mword[] $mwords */
-        $word1 = $api->findBy(
-            \TextPersistence\Entities\TextEntities\Mword::class,
-            [
-                'word' => $part1
-            ]
-        );
-
+        $word1 = $this->getWordsFromDb($part1);
         if (empty($word1)) {
             $this->markTestSkipped("в базе данных нет слова " . var_export($part1, 1));
         }
 
-        $word2 = $api->findBy(
-            \TextPersistence\Entities\TextEntities\Mword::class,
-            [
-                'word' => $part2
-            ]
-        );
-
+        $word2 = $this->getWordsFromDb($part2);
         if (empty($word2)) {
             $this->markTestSkipped("в базе данных нет слова " . var_export($word2, 1));
         }
@@ -363,23 +364,12 @@ class Factory2Test extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianSyntacsis\Punctuaciya\Tochka::class, $units_groups[9][0]);
     }
 
-
     public function testCaseSensitive()
     {
         $word = 'пошли';
         $Word = 'Пошли';
-//        $part2 = 'леса';
 
-        /** @var \TextPersistence\API\APIcurrent $api */
-        $api = \TextPersistence\API\TextAPI::getAPI();
-
-        /** @var \TextPersistence\Entities\TextEntities\Mword[] $mwords */
-        $word1 = $api->findBy(
-            \TextPersistence\Entities\TextEntities\Mword::class,
-            [
-                'word' => $word
-            ]
-        );
+        $word1 = $this->getWordsFromDb($word);
 
         if (empty($word1)) {
             $this->markTestSkipped("в базе данных нет слова " . var_export($word, 1));
@@ -393,25 +383,14 @@ class Factory2Test extends \AotTest\AotDataStorage
         $this->assertNotEmpty($slova_group);
 
         $this->assertNotEmpty($slova_group[$word]);
-        // $this->assertEmpty($slova_group[$Word]);
     }
-
 
     public function testCaseSensitive2()
     {
         $word = 'ваня';
         $Word = 'Ваня';
 
-        /** @var \TextPersistence\API\APIcurrent $api */
-        $api = \TextPersistence\API\TextAPI::getAPI();
-
-        /** @var \TextPersistence\Entities\TextEntities\Mword[] $mwords */
-        $word1 = $api->findBy(
-            \TextPersistence\Entities\TextEntities\Mword::class,
-            [
-                'word' => $Word
-            ]
-        );
+        $word1 = $this->getWordsFromDb($Word);
 
         if (empty($word1)) {
             $this->markTestSkipped("в базе данных нет слова " . var_export($Word, 1));
@@ -425,9 +404,7 @@ class Factory2Test extends \AotTest\AotDataStorage
         $this->assertNotEmpty($slova_group);
 
         $this->assertNotEmpty($slova_group[$Word]);
-//        $this->assertEmpty($slova_group[$word]);
     }
-
 
     public function testCaseSensitive3()
     {
@@ -444,33 +421,18 @@ class Factory2Test extends \AotTest\AotDataStorage
         }
     }
 
-
     public function testByInitialForm()
     {
         $word1 = 'дом';
         $word2 = 'лететь';
 
-        /** @var \TextPersistence\API\APIcurrent $api */
-        $api = \TextPersistence\API\TextAPI::getAPI();
 
-        $e1 = $api->findBy(
-            \TextPersistence\Entities\TextEntities\Mword::class,
-            [
-                'word' => $word1
-            ]
-        );
-
+        $e1 = $this->getWordsFromDb($word1);
         if (empty($e1)) {
             $this->markTestSkipped("в базе данных нет слова " . var_export($word1, 1));
         }
 
-        $e2 = $api->findBy(
-            \TextPersistence\Entities\TextEntities\Mword::class,
-            [
-                'word' => $word2
-            ]
-        );
-
+        $e2 = $this->getWordsFromDb($word2);
         if (empty($e2)) {
             $this->markTestSkipped("в базе данных нет слова " . var_export($word2, 1));
         }
@@ -485,7 +447,6 @@ class Factory2Test extends \AotTest\AotDataStorage
         $this->assertNotEmpty($slova_group[$word1]);
         $this->assertNotEmpty($slova_group[$word2]);
     }
-
 
     public function testSearchModeAddNullWords()
     {
@@ -502,14 +463,13 @@ class Factory2Test extends \AotTest\AotDataStorage
         );
     }
 
-
     public function testSearchModeUsePredictor()
     {
         $not_existing_word_form_in_db = 'фвфывдом';
 
         $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
             [$not_existing_word_form_in_db]
-            // without prediction
+        // without prediction
         );
 
         $this->assertNotEmpty(
@@ -523,6 +483,40 @@ class Factory2Test extends \AotTest\AotDataStorage
 
         $this->assertEmpty(
             $slova_group[$not_existing_word_form_in_db]
+        );
+    }
+
+    public function testGetNonUniqueWords()
+    {
+        $word = 'корова';
+        $Word = 'Корова';
+        $non_unique_words = [
+            $word,
+            'машина',
+            $word,
+            $Word
+        ];
+
+        $e = $this->getWordsFromDb($word);
+        if (empty($e)) {
+            $this->markTestSkipped("в базе данных нет слова " . var_export($word, 1));
+        }
+
+        $factory = \Aot\RussianMorphology\FactoryFromEntity::get();
+
+        /** @var \Aot\RussianMorphology\Slovo[][] $slova */
+        $slova = $factory->getNonUniqueWords($non_unique_words);
+
+        $this->assertEquals(count($slova[0]), count($slova[2]));
+
+        $this->assertEquals(
+            $slova[0][0]->getText(),
+            $slova[2][0]->getText()
+        );
+
+        $this->assertEquals(
+            $slova[0][0]->getInitialForm(),
+            $slova[2][0]->getInitialForm()
         );
     }
 }

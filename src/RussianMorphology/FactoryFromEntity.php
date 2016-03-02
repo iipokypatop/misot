@@ -14,6 +14,14 @@ class FactoryFromEntity
 {
     const REGULAR_FOR_WHITE_LIST = '/[A-Za-zА-Яа-яёЁ\\d]+/u';
 
+    /**
+     * default mode:
+     * 0. words must be unique
+     * 1. INSENSITIVE
+     * 2. NOT BY INITIAL FORM
+     * 3. WITH PREDICTOR (if word not found)
+     * 4. NO ADDITIONAL NULL WORDS
+     */
     const SEARCH_MODE_DEFAULT = 0;
 
     const SEARCH_MODE_CASE_SENSITIVE = 1;
@@ -540,7 +548,7 @@ class FactoryFromEntity
      */
     protected function predict($word_name)
     {
-        return \Aot\RussianMorphology\Factory::getSlova([$word_name]);
+        return \Aot\RussianMorphology\Factory::getPredictions([$word_name]);
     }
 
     /**
@@ -551,7 +559,36 @@ class FactoryFromEntity
         return (boolean)($this->search_mode & static::SEARCH_MODE_ADD_NULL_WORDS);
     }
 
+    /**
+     * @param string[] $words
+     * @param int $search_mode
+     * @return  Slovo[][]
+     */
+    public function getNonUniqueWords(array $words, $search_mode = self::SEARCH_MODE_DEFAULT)
+    {
+        foreach ($words as $word) {
+            assert(is_string($word));
+        }
 
+        $slova = $this->getSlova(array_unique($words), $search_mode);
+
+        /** @var Slovo[][] $result */
+        $result = [];
+        foreach ($words as $word) {
+            $found_words = [];
+
+            if (!empty($slova[$word])) {
+                foreach ($slova[$word] as $slovo) {
+                    $found_words[] = $slovo->reClone();
+                }
+            }
+
+            $result[] = $found_words;
+        }
+
+
+        return $result;
+    }
 }
 
 class DuplicateException extends \Aot\RussianMorphology\FactoryException

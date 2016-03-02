@@ -52,6 +52,31 @@ class Factory
             return [];
         }
 
+        return FactoryFromEntity::get()->getNonUniqueWords($words);
+    }
+
+ 
+    public static function getSlovaOld(array $words)
+    {
+        throw new \Exception('disabled');
+        if (empty($words)) {
+            return [];
+        }
+
+        return static::getPredictions($words);
+    }
+
+
+    /**
+     * @param string[] $words
+     * @return \Aot\RussianMorphology\Slovo[][]
+     */
+    public static function getPredictions(array $words)
+    {
+        if (empty($words)) {
+            return [];
+        }
+
         list($simple_words, $composite_words)
             = \Aot\RussianMorphology\CompositeWordProcessor::splitArrayWords($words);
 

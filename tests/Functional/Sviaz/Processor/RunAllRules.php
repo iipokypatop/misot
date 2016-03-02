@@ -12,7 +12,7 @@ namespace AotTest\Functional\Sviaz\Processor;
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
 use Aot\Sviaz\Rule\Container;
 
-class RunAllRules extends \AotTest\AotDataStorage
+class RunAllRulesTe extends \AotTest\AotDataStorage
 {
 
     public function dataProviderRules()
