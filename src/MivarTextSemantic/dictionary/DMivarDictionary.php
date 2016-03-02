@@ -15,7 +15,7 @@ class DMivarDictionary
 
     public $array_words;
 
-    function __construct($words_array, $need_forms = false, $connection_string = null)
+    public function __construct($words_array, $need_forms = false, $connection_string = null)
     {
         $this->array_words = $words_array;
         $this->array_current_dictionary = $this->get_words($words_array, $need_forms);
@@ -24,36 +24,33 @@ class DMivarDictionary
 
     public function get_words($words_array, $need_forms = false, $use_predict = true, $use_object = true)
     {
-        return $this->predict($words_array);
+        return $this::predict($words_array);
     }
 
-    protected function predict($words_array)
+    public static function predict(array $words_array)
     {
-        $use_predict = true;
         $result = array();
 
+        if (count($words_array) > 0) {
 
-        if (is_array($words_array) && !empty($words_array)) {
+            $miss_words_predict = \Aot\MivarTextSemantic\dictionary\Helper::getWordFromAllDict($words_array);
 
-            $array_missing_words = $words_array;
-            if ($use_predict && $array_missing_words) {
-                $miss_words_predict = \Aot\MivarTextSemantic\dictionary\Helper::getWordFromAllDict($array_missing_words);
-                if ($miss_words_predict) {
-                    foreach ($miss_words_predict as $word => $dict_words) {
-                        $result[$word] = $dict_words;
-                        if (!empty($dict_words)) {
-                            foreach ($dict_words as $dict_word)
-                                $result[$word]['id_word_classes'][$dict_word['id_word_class']] = $dict_word['id_word_class'];
-                            if (!empty($dict_word)) {
-                                $result[$word]['initial_forms'][$dict_word['initial_form']] = $dict_word['initial_form'];
-                            }
+            if ($miss_words_predict) {
+
+                foreach ($miss_words_predict as $word => $dict_words) {
+                    $result[$word] = $dict_words;
+                    if (!empty($dict_words)) {
+                        foreach ($dict_words as $dict_word)
+                            $result[$word]['id_word_classes'][$dict_word['id_word_class']] = $dict_word['id_word_class'];
+                        if (!empty($dict_word)) {
+                            $result[$word]['initial_forms'][$dict_word['initial_form']] = $dict_word['initial_form'];
                         }
                     }
                 }
             }
         }
-      
-        if ( $result) {
+
+        if ($result) {
             foreach ($result as $kew_w => &$word) {
                 if ($word) {
                     foreach ($word as $kew_dw => &$dw) {
@@ -83,6 +80,7 @@ class DMivarDictionary
                 }
             }
         }
+
         return $result;
     }
 }
