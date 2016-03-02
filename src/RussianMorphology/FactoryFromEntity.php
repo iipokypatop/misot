@@ -169,11 +169,13 @@ class FactoryFromEntity
 
         assert(is_int($search_mode));
 
-        $this->setSearchMode($search_mode);
 
         if (empty($words)) {
             return [];
         }
+
+
+        $this->setSearchMode($search_mode);
 
         $this->assertNotDuplicates($words);
 

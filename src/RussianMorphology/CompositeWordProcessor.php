@@ -76,7 +76,11 @@ class CompositeWordProcessor
      */
     public static function isCompositeWord($word)
     {
-        assert(is_string($word));
+        assert(
+            is_string($word)
+            ||
+            is_int($word)
+        );
 
         return preg_match(self::getCompositeRegular(), $word);
     }
