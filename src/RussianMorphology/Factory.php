@@ -28,6 +28,9 @@ class Factory
      */
     public static function getSlovaWithPunctuation(array $words)
     {
+
+        throw new \Exception ('deprecated');
+
         foreach ($words as $word) {
             assert(is_string($word));
         }
@@ -55,10 +58,11 @@ class Factory
         return FactoryFromEntity::get()->getNonUniqueWords($words);
     }
 
- 
+
     public static function getSlovaOld(array $words)
     {
-        throw new \Exception('disabled');
+        throw new \Exception ('deprecated');
+
         if (empty($words)) {
             return [];
         }
