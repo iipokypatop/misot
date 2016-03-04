@@ -11,11 +11,11 @@ namespace Aot\RussianMorphology\ChastiRechi\Prilagatelnoe;
 use Aot\MivarTextSemantic\OldAotConstants;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Edinstvennoe;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Mnozhestvennoe;
-use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Null as NullChislo;
+use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\ClassNull as NullChislo;
 
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Kratkaya;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya;
-use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Null as NullForma;
+use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\ClassNull as NullForma;
 
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Datelnij;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij;
@@ -23,22 +23,22 @@ use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Predlozsh
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Roditelnij;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Tvoritelnij;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Vinitelnij;
-use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Null as NullPadeszh;
+use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\ClassNull as NullPadeszh;
 
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Kachestvennoe;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Otnositelnoe;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Prityazhatelnoe;
-use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null as NullRazryad;
+use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\ClassNull as NullRazryad;
 
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Muzhskoi;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Srednij;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Zhenskij;
-use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null as NullRod;
+use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\ClassNull as NullRod;
 
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Polozhitelnaya;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Prevoshodnaya;
 use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Sravnitelnaya;
-use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Null as NullStepenSravneniia;
+use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\ClassNull as NullStepenSravneniia;
 
 class Factory extends \Aot\RussianMorphology\FactoryBase
 {

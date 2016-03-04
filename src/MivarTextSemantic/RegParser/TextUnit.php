@@ -82,7 +82,7 @@ class TextUnit
             print_r($minPoz);
             echo "</pre>";*/
             $minPoz["rezText"] = trim($minPoz["rezText"]);
-            $obj_text_unit->$array_reg_parts[$lastReg]($minPoz, $lastMinPoz);
+            $obj_text_unit->{$array_reg_parts[$lastReg]}($minPoz, $lastMinPoz);
             $poz = $minPoz["poz"];
             $lastReg = $minPoz["reg"];
             $lastMinPoz = $minPoz;
@@ -93,7 +93,7 @@ class TextUnit
         } else {
             $minPoz["rezText"] = "";
         }
-        $obj_text_unit->$array_reg_parts[$lastReg]($minPoz, $lastMinPoz);
+        $obj_text_unit->{$array_reg_parts[$lastReg]}($minPoz, $lastMinPoz);
         return $obj_text_unit;
     }
 

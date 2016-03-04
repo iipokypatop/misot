@@ -189,7 +189,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
         );
 
         $this->assertEquals(
-            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Null::class,
+            \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\ClassNull::class,
             $result
         );
     }

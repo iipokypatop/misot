@@ -103,7 +103,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
     protected function getOdushevlennost($parameters)
     {
         if (empty($parameters[\Aot\MivarTextSemantic\Constants::ANIMALITY_ID])) {
-            return [Morphology\Odushevlyonnost\Null::create()];
+            return [Morphology\Odushevlyonnost\ClassNull::create()];
         }
 
         $param = $parameters[\Aot\MivarTextSemantic\Constants::ANIMALITY_ID];
@@ -132,7 +132,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
     protected function getRod($parameters)
     {
         if (empty($parameters[\Aot\MivarTextSemantic\Constants::GENUS_ID])) {
-            return [Morphology\Rod\Null::create()];
+            return [Morphology\Rod\ClassNull::create()];
         }
 
         $param = $parameters[\Aot\MivarTextSemantic\Constants::GENUS_ID];
@@ -146,7 +146,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
             } elseif ((int)($val) === \Aot\MivarTextSemantic\Constants::GENUS_FEMININE_ID) {
                 $rod[] = Zhenskii::create();
             } elseif ($val === '') {
-                $rod[] = Morphology\Rod\Null::create();
+                $rod[] = Morphology\Rod\ClassNull::create();
             } else {
 
                 //throw new \RuntimeException('Unsupported value exception = ' . var_export($parameters, 1));
@@ -163,7 +163,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
     {
 
         if (empty($parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID])) {
-            return [Morphology\Chislo\Null::create()];
+            return [Morphology\Chislo\ClassNull::create()];
         }
 
         $param = $parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID];
@@ -189,7 +189,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
     {
 
         if (empty($parameters[OldAotConstants::DECLENSION])) {
-            return [Morphology\Sklonenie\Null::create()];
+            return [Morphology\Sklonenie\ClassNull::create()];
         }
 
         $param = $parameters[OldAotConstants::DECLENSION];
@@ -216,7 +216,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
     protected function getPadeszh($parameters)
     {
         if (empty($parameters[\Aot\MivarTextSemantic\Constants::CASE_ID])) {
-            return [Morphology\Padeszh\Null::create()];
+            return [Morphology\Padeszh\ClassNull::create()];
         }
 
         $param = $parameters[\Aot\MivarTextSemantic\Constants::CASE_ID];
@@ -250,7 +250,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
     protected function getNaritcatelnost($parameters)
     {
         if (empty($parameters[OldAotConstants::SELF_NOMINAL])) {
-            return [Morphology\Naritcatelnost\Null::create()];
+            return [Morphology\Naritcatelnost\ClassNull::create()];
         }
 
         $param = $parameters[OldAotConstants::SELF_NOMINAL];
@@ -275,7 +275,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
     protected function getOtglagolnost(array $parameters)
     {
         if (empty($parameters[\Aot\MivarTextSemantic\Constants::OTGLAGOLNOST_ID])) {
-            return [Morphology\Otglagolnost\Null::create()];
+            return [Morphology\Otglagolnost\ClassNull::create()];
         }
 
         foreach ($parameters as $parameter) {

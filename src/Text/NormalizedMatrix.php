@@ -127,9 +127,9 @@ class NormalizedMatrix implements \Iterator
 
 
         $count = count($this->matrix_id_mask);
-        $this->storage = new \Judy(\Judy::INT_TO_MIXED);
+        $this->storage = new \Judy2(\Judy2::INT_TO_MIXED);
 
-        $tmp = new \Judy(\Judy::INT_TO_MIXED);
+        $tmp = new \Judy2(\Judy2::INT_TO_MIXED);
         for ($j = 0; $j < $count; $j++) {
             $tmp [] = null;
         }

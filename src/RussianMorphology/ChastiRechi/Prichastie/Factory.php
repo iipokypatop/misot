@@ -5,34 +5,34 @@ namespace Aot\RussianMorphology\ChastiRechi\Prichastie;
 use Aot\MivarTextSemantic\OldAotConstants;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Chislo\Edinstvennoe;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Chislo\Mnozhestvennoe;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Chislo\Null as NullChislo;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Chislo\ClassNull as NullChislo;
 
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Forma\Kratkaya;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Forma\Polnaya;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Forma\Null as NullForma;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Forma\ClassNull as NullForma;
 
 
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Perehodnost\Perehodnij;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Perehodnost\Neperehodnij;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Perehodnost\Null as NullPerehodnost;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Perehodnost\ClassNull as NullPerehodnost;
 
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vid\Sovershennyj;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vid\Nesovershennyj;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vid\Null as NullVid;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vid\ClassNull as NullVid;
 
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vozvratnost\Vozvratnyj;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vozvratnost\Nevozvratnyj;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vozvratnost\Null as NullVozvratnost;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vozvratnost\ClassNull as NullVozvratnost;
 
 
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Buduschee;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Proshedshee;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Nastoyaschee;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\Null as NullVremya;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vremya\ClassNull as NullVremya;
 
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Dejstvitelnyj;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Stradatelnyj;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\Null as NullRazryad;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Zalog\ClassNull as NullRazryad;
 
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Datelnij;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Imenitelnij;
@@ -40,12 +40,12 @@ use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Predlozshnij
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Roditelnij;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Tvoritelnij;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Vinitelnij;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\Null as NullPadeszh;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Padeszh\ClassNull as NullPadeszh;
 
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Muzhskoi;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Srednij;
 use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Zhenskij;
-use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\Null as NullRod;
+use Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Rod\ClassNull as NullRod;
 
 use Aot\MivarTextSemantic\Dw;
 use Aot\MivarTextSemantic\Word;

@@ -68,7 +68,7 @@ class NormalizedMatrixTest extends \AotTest\AotDataStorage
 
 
         $res = PHPUnitHelper::callProtectedMethod($normalizedMatrix, 'normalize', []);
-        $this->assertNull($res); // метод ничего не возвращает, поэтому долно равняться Null
+        $this->assertNull($res); // метод ничего не возвращает, поэтому долно равняться ClassNull
         $this->assertEquals($matrix_id_mask, PHPUnitHelper::getProtectedProperty($normalizedMatrix, 'matrix_id_mask'));
 
         $this->assertEquals([[$data[1]], [$data[2]]], $i->getCalledParams());

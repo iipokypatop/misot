@@ -10,7 +10,7 @@ namespace Aot\Sviaz;
 
 use Aot\Sviaz\Homogeneity\Homogeneity;
 
-class Sequence extends \Judy
+class Sequence extends \Judy2
 {
 
     protected $id;
@@ -33,7 +33,7 @@ class Sequence extends \Judy
 
     public static function create()
     {
-        $ob = new static(\Judy::INT_TO_MIXED);
+        $ob = new static(static::INT_TO_MIXED);
 
         $ob->id = spl_object_hash($ob);
 

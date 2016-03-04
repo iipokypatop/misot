@@ -28,11 +28,11 @@ class Eq extends Base
             return true;
         }
 
-        if (get_class($left) === \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Null::class) {
+        if (get_class($left) === \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\ClassNull::class) {
             return true;
         }
 
-        if (get_class($right) === \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Null::class) {
+        if (get_class($right) === \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\ClassNull::class) {
             return true;
         }
 

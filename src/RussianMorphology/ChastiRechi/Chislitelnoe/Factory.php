@@ -11,7 +11,7 @@ namespace Aot\RussianMorphology\ChastiRechi\Chislitelnoe;
 
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Edinstvennoe;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Mnozhestvennoe;
-use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Null as NullChislo;
+use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\ClassNull as NullChislo;
 
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Imenitelnij;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Datelnij;
@@ -19,25 +19,25 @@ use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Predlozshn
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Roditelnij;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Tvoritelnij;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Vinitelnij;
-use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Null as NullPadeszh;
+use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\ClassNull as NullPadeszh;
 
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid\Prostoy;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid\Sostavnoy;
-use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid\Null as NullPodvid;
+use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid\ClassNull as NullPodvid;
 
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Muzhskoy;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Sredniy;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Zhenskiy;
-use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\Null as NullRod;
+use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\ClassNull as NullRod;
 
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Tip\Celiy;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Tip\Drobniy;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Tip\Sobiratelniy;
-use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Tip\Null as NullTip;
+use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Tip\ClassNull as NullTip;
 
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Kolichestvenniy;
 use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Poryadkoviy;
-use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Null as NullVid;
+use Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\ClassNull as NullVid;
 
 class Factory extends \Aot\RussianMorphology\FactoryBase
 {

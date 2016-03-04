@@ -31,8 +31,8 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::class, $result[0]->forma);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij::class, $result[0]->padeszh);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Muzhskoi::class, $result[0]->rod);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class, $result[0]->razryad);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Null::class, $result[0]->stepen_sravneniia);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\ClassNull::class, $result[0]->razryad);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\ClassNull::class, $result[0]->stepen_sravneniia);
     }
 
     public function testBuild_Success_Point_sravn()
@@ -42,11 +42,11 @@ class FactoryTest extends \AotTest\AotDataStorage
 
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base::class, $result[0]);
         $this->assertEquals(1, count($result));
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Null::class, $result[0]->chislo);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Null::class, $result[0]->forma);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Null::class, $result[0]->padeszh);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Null::class, $result[0]->rod);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class, $result[0]->razryad);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\ClassNull::class, $result[0]->chislo);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\ClassNull::class, $result[0]->forma);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\ClassNull::class, $result[0]->padeszh);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\ClassNull::class, $result[0]->rod);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\ClassNull::class, $result[0]->razryad);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Sravnitelnaya::class, $result[0]->stepen_sravneniia);
     }
 
@@ -59,9 +59,9 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertEquals(1, count($result));
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Chislo\Edinstvennoe::class, $result[0]->chislo);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Kratkaya::class, $result[0]->forma);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Null::class, $result[0]->padeszh);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\ClassNull::class, $result[0]->padeszh);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Srednij::class, $result[0]->rod);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class, $result[0]->razryad);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\ClassNull::class, $result[0]->razryad);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Polozhitelnaya::class, $result[0]->stepen_sravneniia);
     }
 
@@ -77,7 +77,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Forma\Polnaya::class, $result[0]->forma);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Padeszh\Imenitelnij::class, $result[0]->padeszh);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Rod\Muzhskoi::class, $result[0]->rod);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\Null::class, $result[0]->razryad);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\Razryad\ClassNull::class, $result[0]->razryad);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\Prevoshodnaya::class, $result[0]->stepen_sravneniia);
     }
 

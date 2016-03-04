@@ -54,7 +54,7 @@ class FactoryTest extends AotDataStorage
     public function dataProviderPadeszh()
     {
         return [
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Null::class, -1],
+            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\ClassNull::class, -1],
             ['Exception', 1111],
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Imenitelnij::class, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID],
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Roditelnij::class, \Aot\MivarTextSemantic\Constants::CASE_GENITIVE_ID],
@@ -74,11 +74,11 @@ class FactoryTest extends AotDataStorage
     public function testGetPadeszh($expectedResult, $padeszh)
     {
         $point = $this->getPoint(); // берем точку тестовую
-        if ($expectedResult === \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Null::class) {
+        if ($expectedResult === \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\ClassNull::class) {
             unset($point->dw->parameters[\Aot\MivarTextSemantic\Constants::CASE_ID]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getPadeszh', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
-            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Null::class, $result[0]);
+            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\ClassNull::class, $result[0]);
             return;
         } elseif ($expectedResult === 'Exception') {
             // подменяем падеж
@@ -104,7 +104,7 @@ class FactoryTest extends AotDataStorage
     public function dataProviderChislo()
     {
         return [
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Null::class, -1],
+            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\ClassNull::class, -1],
             ['Exception', 1111],
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Edinstvennoe::class, \Aot\MivarTextSemantic\Constants::NUMBER_SINGULAR_ID],
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Mnozhestvennoe::class, \Aot\MivarTextSemantic\Constants::NUMBER_PLURAL_ID]
@@ -120,11 +120,11 @@ class FactoryTest extends AotDataStorage
     public function testGetChislo($expectedResult, $chislo)
     {
         $point = $this->getPoint(); // берем точку тестовую
-        if ($expectedResult === \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Null::class) {
+        if ($expectedResult === \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\ClassNull::class) {
             unset($point->dw->parameters[\Aot\MivarTextSemantic\Constants::NUMBER_ID]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getChislo', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
-            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\Null::class, $result[0]);
+            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Chislo\ClassNull::class, $result[0]);
             return;
         } elseif ($expectedResult === 'Exception') {
             // подменяем число
@@ -152,7 +152,7 @@ class FactoryTest extends AotDataStorage
     public function dataProviderRod()
     {
         return [
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Null::class, -1],
+            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\ClassNull::class, -1],
             ['Exception', 1111],
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Muzhskoi::class, \Aot\MivarTextSemantic\Constants::GENUS_MASCULINE_ID],
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Srednij::class, \Aot\MivarTextSemantic\Constants::GENUS_NEUTER_ID],
@@ -171,11 +171,11 @@ class FactoryTest extends AotDataStorage
         $this->markTestSkipped("включить тест после выполнения #1486");
 
         $point = $this->getPoint(); // берем точку тестовую
-        if ($expectedResult === \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Null::class) {
+        if ($expectedResult === \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\ClassNull::class) {
             unset($point->dw->parameters[\Aot\MivarTextSemantic\Constants::GENUS_ID]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getRod', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
-            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\Null::class, $result[0]);
+            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Rod\ClassNull::class, $result[0]);
             return;
         } elseif ($expectedResult === 'Exception') {
             // подменяем род
@@ -203,7 +203,7 @@ class FactoryTest extends AotDataStorage
     public function dataProviderOdushevlyonnost()
     {
         return [
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Null::class, -1],
+            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\ClassNull::class, -1],
             ['Exception', 1111],
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Odushevlyonnoe::class, \Aot\MivarTextSemantic\Constants::ANIMALITY_ANIMATE_ID],
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Neodushevlyonnoe::class, \Aot\MivarTextSemantic\Constants::ANIMALITY_INANIMATE_ID]
@@ -219,11 +219,11 @@ class FactoryTest extends AotDataStorage
     public function testGetOdushevlyonnost($expectedResult, $odushevlyonnost)
     {
         $point = $this->getPoint(); // берем точку тестовую
-        if ($expectedResult === \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Null::class) {
+        if ($expectedResult === \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\ClassNull::class) {
             unset($point->dw->parameters[\Aot\MivarTextSemantic\Constants::ANIMALITY_ID]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getOdushevlennost', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
-            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\Null::class, $result[0]);
+            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Odushevlyonnost\ClassNull::class, $result[0]);
             return;
         } elseif ($expectedResult === 'Exception') {
             // подменяем одушевленность
@@ -250,7 +250,7 @@ class FactoryTest extends AotDataStorage
     public function dataProviderSklonenie()
     {
         return [
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::class, -1],
+            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\ClassNull::class, -1],
             ['Exception', 1111],
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Pervoe::class, OldAotConstants::DECLENSION_1],
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Vtoroe::class, OldAotConstants::DECLENSION_2],
@@ -267,11 +267,11 @@ class FactoryTest extends AotDataStorage
     public function testGetSklonenie($expectedResult, $sklonenie)
     {
         $point = $this->getPoint(); // берем точку тестовую
-        if ($expectedResult === \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::class) {
+        if ($expectedResult === \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\ClassNull::class) {
             unset($point->dw->parameters[OldAotConstants::DECLENSION]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getSklonenie', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
-            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Null::class, $result[0]);
+            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\ClassNull::class, $result[0]);
             return;
         } elseif ($expectedResult === 'Exception') {
             // подменяем склонение
@@ -299,7 +299,7 @@ class FactoryTest extends AotDataStorage
     public function dataProviderNaritcatelnost()
     {
         return [
-            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\Null::class, -1],
+            [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ClassNull::class, -1],
             ['Exception', 1111],
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaSobstvennoe::class, OldAotConstants::SELF()],
             [\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ImiaNaritcatelnoe::class, OldAotConstants::NOMINAL()]
@@ -315,11 +315,11 @@ class FactoryTest extends AotDataStorage
     public function testGetNaritcatelnost($expectedResult, $naritcatelnost)
     {
         $point = $this->getPoint(); // берем точку тестовую
-        if ($expectedResult === \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\Null::class) {
+        if ($expectedResult === \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ClassNull::class) {
             unset($point->dw->parameters[OldAotConstants::SELF_NOMINAL]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getNaritcatelnost', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
-            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\Null::class, $result[0]);
+            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Naritcatelnost\ClassNull::class, $result[0]);
             return;
         } elseif ($expectedResult === 'Exception') {
             // подменяем падеж

@@ -11,15 +11,15 @@ namespace Aot\RussianMorphology\ChastiRechi\Deeprichastie;
 use Aot\MivarTextSemantic\OldAotConstants;
 use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Neperehodnyj;
 use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Perehodnyj;
-use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Null as NullPerehodnost;
+use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\ClassNull as NullPerehodnost;
 
 use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\Nesovershennyj;
 use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\Sovershennyj;
-use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\Null as NullVid;
+use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\ClassNull as NullVid;
 
 use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Nevozvratnyj;
 use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Vozvratnyj;
-use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Null as NullVozvratnost;
+use Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\ClassNull as NullVozvratnost;
 
 
 use Aot\MivarTextSemantic\Dw;

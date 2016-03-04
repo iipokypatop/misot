@@ -33,7 +33,7 @@ class EqTest extends \AotTest\AotDataStorage
     public function testMatch_Returns_True_Left_Param_Is_Null()
     {
         $operator_eq = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::create();
-        $left = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Null::create();
+        $left = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\ClassNull::create();
         $right = \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Base::create();
         $this->assertEquals(true, $operator_eq->match($left, $right));
     }
@@ -41,7 +41,7 @@ class EqTest extends \AotTest\AotDataStorage
     public function testMatch_Returns_True_Right_Param_Is_Null()
     {
         $operator_eq = \Aot\Sviaz\Rule\AssertedMatching\MorphologyMatchingOperator\Eq::create();
-        $right = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\Null::create();
+        $right = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\ClassNull::create();
         $left = \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Base::create();
 
         $this->assertEquals(true, $operator_eq->match($left, $right));

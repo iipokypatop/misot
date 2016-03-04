@@ -99,7 +99,7 @@ class FactoryFromEntity
                 );
 
                 $this->__cache_priznak_null_4_clone[$priznak_base_class] = new $null;
-            }
+            } 
         }
 
         foreach (\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::getClasses() as $class) {
@@ -214,22 +214,22 @@ class FactoryFromEntity
             }
         }
 
-            if (!$this->isSearchModeNotUsePredictor()) {
+        if (!$this->isSearchModeNotUsePredictor()) {
 
-                foreach ($result as $word_name => $words_array) {
+            foreach ($result as $word_name => $words_array) {
 
-                    if ($result[$word_name] !== []) {
-                        continue;
-                    }
+                if ($result[$word_name] !== []) {
+                    continue;
+                }
 
-                    $slova = $this->predict($word_name);
+                $slova = $this->predict($word_name);
 
-                    if (!empty($slova[0])) {
-                        $result[$word_name] = $slova[0];
-                        continue;
-                    }
+                if (!empty($slova[0])) {
+                    $result[$word_name] = $slova[0];
+                    continue;
                 }
             }
+        }
 
         if ($this->isSearchModeAddNullWords()) {
             foreach ($result as $word_name => $words_array) {
@@ -239,7 +239,7 @@ class FactoryFromEntity
 
         return $result;
     }
-     
+
 
     /**
      * @param int $search_mode
@@ -295,13 +295,43 @@ class FactoryFromEntity
 
     /**
      * @param string[] $words
-     * @return Slovo
+     * @return \Aot\RussianMorphology\Slovo[]
+     * @throws \Aot\Exception
+     */
+    protected function processCachedWords(array $words)
+    {
+        if (empty($words)) {
+            return [];
+        }
+        $words_from_cache = [];
+
+        foreach ($words as $word) {
+            if (empty($this->__cache_slova[$word])) {
+                throw new \Aot\Exception("слова " . var_export($word, 1) . " нет в кэше");
+            }
+
+            foreach ($this->__cache_slova[$word] as $slovo) {
+                $words_from_cache[$word][] = $slovo->reClone();
+            }
+        }
+
+        return $words_from_cache;
+    }
+
+    /**
+     * @param string[] $words
+     * @return Slovo[][]
+     * @throws \Aot\Exception
      * @throws \Exception
      */
     protected function processSimpleWords(array $words)
     {
         foreach ($words as $word) {
             assert(is_string($word));
+        }
+
+        if (empty($words)) {
+            return [];
         }
 
         $words_lower = [];
@@ -325,7 +355,6 @@ class FactoryFromEntity
         $api = \TextPersistence\API\TextAPI::getAPI();
 
         $query_builder = $api
-            ->getEntityManager()
             ->createQueryBuilder()
             ->select('f', 'w')
             ->from(\TextPersistence\Entities\TextEntities\Form::class, 'f')
@@ -386,7 +415,7 @@ class FactoryFromEntity
             }
 
             if ($is_search_mode_sensitive) {
-                // что пришло, то и пушим
+
                 $slova[$word_form][] = $factory->buildFromEntity($form);
 
             } else {
@@ -477,7 +506,7 @@ class FactoryFromEntity
      * @param string $initial_form
      * @param int[] $ids
      * @param int $chast_rechi_id
-     * @return Slovo|null
+     * @return Slovo
      */
     public function build($text, $initial_form, $chast_rechi_id, array $ids)
     {
@@ -630,39 +659,6 @@ class FactoryFromEntity
         return (boolean)($this->search_mode & static::SEARCH_MODE_ADD_NULL_WORDS);
     }
 
-
-    /**
-     * @param string[] $words
-     * @return \Aot\RussianMorphology\Slovo[]
-     * @throws \Aot\Exception
-     */
-    protected function processCachedWords(array $words)
-    {
-        $words_from_cache = [];
-
-        foreach ($words as $word) {
-            if (empty($this->__cache_slova[$word])) {
-                throw new \Aot\Exception("слова " . var_export($word, 1) . " нет в кэше");
-            }
-
-            foreach ($this->__cache_slova[$word] as $slovo) {
-                $words_from_cache[$word][] = $slovo->reClone();
-            }
-        }
-
-        return $words_from_cache;
-    }
-
-    /**
-     * @param $string
-     * @return bool
-     */
-    protected function isCaseLower($string)
-    {
-        return $string === $this->strToLower($string);
-    }
-
-
     /**
      * @param string[] $words
      * @param int $search_mode
@@ -692,6 +688,15 @@ class FactoryFromEntity
 
 
         return $result;
+    }
+
+    /**
+     * @param $string
+     * @return bool
+     */
+    protected function isCaseLower($string)
+    {
+        return $string === $this->strToLower($string);
     }
 }
 

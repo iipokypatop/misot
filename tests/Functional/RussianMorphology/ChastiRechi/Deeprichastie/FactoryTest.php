@@ -25,8 +25,8 @@ class FactoryTest extends \AotTest\AotDataStorage
         $result = $this->buildFactory($point);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Base::class, $result[0]);
         $this->assertEquals(1, count($result));
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\Null::class, $result[0]->vid);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Null::class, $result[0]->perehodnost);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\ClassNull::class, $result[0]->vid);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\ClassNull::class, $result[0]->perehodnost);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Nevozvratnyj::class, $result[0]->vozvratnost);
     }
 
@@ -39,7 +39,7 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertEquals(1, count($result));
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\Nesovershennyj::class, $result[0]->vid);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Neperehodnyj::class, $result[0]->perehodnost);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Null::class, $result[0]->vozvratnost);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\ClassNull::class, $result[0]->vozvratnost);
     }
 
     public function _testBuild_Success3()
@@ -51,11 +51,11 @@ class FactoryTest extends \AotTest\AotDataStorage
         $this->assertEquals(2, count($result));
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\Sovershennyj::class, $result[0]->vid);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Neperehodnyj::class, $result[0]->perehodnost);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Null::class, $result[0]->vozvratnost);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\ClassNull::class, $result[0]->vozvratnost);
 
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vid\Nesovershennyj::class, $result[1]->vid);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Perehodnost\Neperehodnyj::class, $result[1]->perehodnost);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\Null::class, $result[1]->vozvratnost);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\ClassNull::class, $result[1]->vozvratnost);
     }
 
     public function _testBuild_wo_vid()

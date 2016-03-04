@@ -33,7 +33,7 @@ class FactoryTest extends AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Chislo\Edinstvennoe::class, $result[0]->chislo);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Litso\Tretie::class, $result[0]->litso);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Imenitelnij::class, $result[0]->padeszh);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Null::class, $result[0]->razryad);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\ClassNull::class, $result[0]->razryad);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\Muzhskoi::class, $result[0]->rod);
     }
 
@@ -46,7 +46,7 @@ class FactoryTest extends AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Chislo\Edinstvennoe::class, $result[0]->chislo);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Litso\Tretie::class, $result[0]->litso);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Roditelnij::class, $result[0]->padeszh);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Null::class, $result[0]->razryad);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\ClassNull::class, $result[0]->razryad);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\Zhenskij::class, $result[0]->rod);
     }
 
@@ -60,11 +60,11 @@ class FactoryTest extends AotDataStorage
         $result = $this->buildFactory($point);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Base::class, $result[0]);
         $this->assertEquals(1, count($result));
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Chislo\Null::class, $result[0]->chislo);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Chislo\ClassNull::class, $result[0]->chislo);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Litso\Pervoe::class, $result[0]->litso);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Null::class, $result[0]->padeszh);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Null::class, $result[0]->razryad);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\Null::class, $result[0]->rod);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\ClassNull::class, $result[0]->padeszh);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\ClassNull::class, $result[0]->razryad);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\ClassNull::class, $result[0]->rod);
     }
 
     public function testBuild_Success4()
@@ -76,8 +76,8 @@ class FactoryTest extends AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Chislo\Edinstvennoe::class, $result[0]->chislo);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Litso\Vtoroe::class, $result[0]->litso);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Imenitelnij::class, $result[0]->padeszh);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Null::class, $result[0]->razryad);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\Null::class, $result[0]->rod);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\ClassNull::class, $result[0]->razryad);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\ClassNull::class, $result[0]->rod);
     }
 
     public function testBuild_Success5()
@@ -87,10 +87,10 @@ class FactoryTest extends AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Base::class, $result[0]);
         $this->assertEquals(1, count($result));
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Chislo\Mnozhestvennoe::class, $result[0]->chislo);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Litso\Null::class, $result[0]->litso);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Litso\ClassNull::class, $result[0]->litso);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Roditelnij::class, $result[0]->padeszh);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Null::class, $result[0]->razryad);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\Null::class, $result[0]->rod);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\ClassNull::class, $result[0]->razryad);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\ClassNull::class, $result[0]->rod);
     }
 
 
@@ -103,7 +103,7 @@ class FactoryTest extends AotDataStorage
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Chislo\Edinstvennoe::class, $result[0]->chislo);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Litso\Tretie::class, $result[0]->litso);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Imenitelnij::class, $result[0]->padeszh);
-        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Null::class, $result[0]->razryad);
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\ClassNull::class, $result[0]->razryad);
         $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Rod\Srednij::class, $result[0]->rod);
     }
 
@@ -286,7 +286,7 @@ class FactoryTest extends AotDataStorage
     public function dataProviderPadeszh()
     {
         return [
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Null::class, -1],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\ClassNull::class, -1],
             [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Imenitelnij::class, \Aot\MivarTextSemantic\Constants::CASE_SUBJECTIVE_ID],
             [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Roditelnij::class, \Aot\MivarTextSemantic\Constants::CASE_GENITIVE_ID],
             [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Datelnij::class, \Aot\MivarTextSemantic\Constants::CASE_DATIVE_ID],
@@ -305,11 +305,11 @@ class FactoryTest extends AotDataStorage
     public function testGetPadeszh($expectedResult, $padeszh)
     {
         $point = $this->getPoint(); // берем точку тестовую
-        if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Null::class){
+        if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\ClassNull::class){
             unset($point->dw->parameters[\Aot\MivarTextSemantic\Constants::CASE_ID]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getPadeszh', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
-            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Null::class, $result[0]);
+            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\ClassNull::class, $result[0]);
             return;
         }
         else{
@@ -327,7 +327,7 @@ class FactoryTest extends AotDataStorage
     public function dataProviderRazryad()
     {
         return [
-            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Null::class, -1],
+            [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\ClassNull::class, -1],
             [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Lichnoe::class, OldAotConstants::PERSONAL_PRONOUN()],
             [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Vozvratnoe::class, OldAotConstants::REFLEXIVE_PRONOUN()],
             [\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Prityazhatelnoe::class, OldAotConstants::POSSESSIVE_PRONOUN()],
@@ -349,11 +349,11 @@ class FactoryTest extends AotDataStorage
     public function testGetRazryad($expectedResult, $razryad)
     {
         $point = $this->getPoint(); // берем точку тестовую
-        if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Null::class){
+        if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\ClassNull::class){
             # разряда и так по умолчанию нет, поэтому unset делать не надо
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getRazryad', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
-            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Null::class, $result[0]);
+            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\ClassNull::class, $result[0]);
             return;
         }
         else{

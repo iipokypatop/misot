@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\ChastiRechi\Narechie;
 
 use Aot\MivarTextSemantic\OldAotConstants;
-use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Null;
+use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\ClassNull;
 use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Prevoshodnaya;
 use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Polozhitelnaya;
 use Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\StepenSravneniya\Sravnitelnaya;
@@ -53,7 +53,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
     {
 
         if (empty($parameters[\Aot\MivarTextSemantic\Constants::DEGREE_COMPOSITION_ID])) {
-            return [Null::create()];
+            return [ClassNull::create()];
         }
 
         $param = $parameters[\Aot\MivarTextSemantic\Constants::DEGREE_COMPOSITION_ID];

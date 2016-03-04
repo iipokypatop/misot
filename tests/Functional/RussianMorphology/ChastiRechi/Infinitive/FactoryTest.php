@@ -39,7 +39,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     public function dataProviderVid()
     {
         return [
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Null::class, -1],
+            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\ClassNull::class, -1],
             [
                 \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Sovershennyj::class,
                 \Aot\MivarTextSemantic\Constants::VIEW_PERFECTIVE_ID
@@ -60,11 +60,11 @@ class FactoryTest extends \AotTest\AotDataStorage
     public function testGetVid($expectedResult, $vid)
     {
         $point = $this->getPoint(); // берем точку тестовую
-        if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Null::class){
+        if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\ClassNull::class){
             unset($point->dw->parameters[\Aot\MivarTextSemantic\Constants::VIEW_ID]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getVid', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
-            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Null::class, $result[0]);
+            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\ClassNull::class, $result[0]);
             return;
         }
         else{
@@ -82,7 +82,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     public function dataProviderPerehodnost()
     {
         return [
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Null::class, -1],
+            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\ClassNull::class, -1],
             [
                 \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Perehodnyj::class,
                 OldAotConstants::TRANSITIVE()
@@ -103,11 +103,11 @@ class FactoryTest extends \AotTest\AotDataStorage
     public function testGetPerehodnost($expectedResult, $perehodnost)
     {
         $point = $this->getPoint(); // берем точку тестовую
-        if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Null::class){
+        if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\ClassNull::class){
             unset($point->dw->parameters[\Aot\MivarTextSemantic\Constants::TRANSIVITY_ID]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getPerehodnost', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
-            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Null::class, $result[0]);
+            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\ClassNull::class, $result[0]);
             return;
         }
         else{
@@ -125,7 +125,7 @@ class FactoryTest extends \AotTest\AotDataStorage
     public function dataProviderVozvratnost()
     {
         return [
-            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Null::class, -1],
+            [\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\ClassNull::class, -1],
             [
                 \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Vozvratnyj::class,
                 OldAotConstants::RETRIEVABLE()
@@ -146,11 +146,11 @@ class FactoryTest extends \AotTest\AotDataStorage
     public function testGetVozvratnost($expectedResult, $vozvratnost)
     {
         $point = $this->getPoint(); // берем точку тестовую
-        if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Null::class){
+        if( $expectedResult === \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\ClassNull::class){
             unset($point->dw->parameters[OldAotConstants::RETRIEVABLE_IRRETRIEVABLE()]);
             $result = PHPUnitHelper::callProtectedMethod(Factory::get(), 'getVozvratnost', [$point->dw->parameters]);
             $this->assertEquals(1, count($result));
-            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Null::class, $result[0]);
+            $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\ClassNull::class, $result[0]);
             return;
         }
         else{

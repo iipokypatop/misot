@@ -157,11 +157,14 @@ class Factory
 
         $wdw_splitted = self::factorySimpleWords($splitted);
 
-
         // главное слово - первое слово
         foreach ($wdw_splitted[0] as $id_main => $main_slovo) {
 
             $main_initial_form = $main_slovo->dw->initial_form;
+
+            if (null === $main_initial_form) {
+                continue;
+            }
 
             // зависимое слово - второе слово
             $cache_initial_form = [];
@@ -169,6 +172,11 @@ class Factory
             foreach ($wdw_splitted[1] as $depend_slovo) {
 
                 $depend_initial_form = $depend_slovo->dw->initial_form;
+
+                if (null === $depend_initial_form) {
+                    continue;
+                }
+
                 // поскольку морфология зависимого слова не учитывается, то берём только вариации начальных форм
                 if (in_array($depend_initial_form, $cache_initial_form, true)) {
                     continue;

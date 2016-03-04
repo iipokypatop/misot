@@ -11,8 +11,8 @@ namespace Aot\RussianMorphology;
 
 class CompositeWordProcessor
 {
-    const COMPOSITE_WORDS_DELIMITER = '[\\-]';
-    const PART_REGULAR_FOR_COMPOSITE_WORDS = '[A-Za-zА-Яа-яёЁ\\d]+';
+    const COMPOSITE_WORDS_DELIMITER = '[-]';
+    const PART_REGULAR_FOR_COMPOSITE_WORDS = '[A-Za-zА-Яа-яёЁ0-9]+';
     const DELIMITER_FOR_SPLITTED_WORDS = ',';
 
     protected static $uniqueInstances = null;

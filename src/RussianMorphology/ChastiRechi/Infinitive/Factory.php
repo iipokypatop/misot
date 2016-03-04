@@ -12,15 +12,15 @@ namespace Aot\RussianMorphology\ChastiRechi\Infinitive;
 use Aot\MivarTextSemantic\OldAotConstants;
 use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Nesovershennyj;
 use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Sovershennyj;
-use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\Null as NullVid;
+use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\ClassNull as NullVid;
 
 use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Neperehodnyj;
 use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Perehodnyj;
-use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\Null as NullPerehodnost;
+use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Perehodnost\ClassNull as NullPerehodnost;
 
 use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Nevozvratnyj;
 use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Vozvratnyj;
-use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\Null as NullVozvratnost;
+use Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\ClassNull as NullVozvratnost;
 
 
 class Factory extends \Aot\RussianMorphology\FactoryBase
