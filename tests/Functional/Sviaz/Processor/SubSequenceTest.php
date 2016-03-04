@@ -100,7 +100,7 @@ class SubSequenceTest extends \AotTest\AotDataStorage
         $sequence = $this
             ->getMockBuilder(\Aot\Sviaz\Sequence::class)
             ->setMethods(['getSviazi', 'getPosition'])
-            ->setConstructorArgs([\Judy2::INT_TO_MIXED])
+            ->setConstructorArgs([\Aot\Judy2::INT_TO_MIXED])
             ->getMock();
 
         $length_sequence = 10;
@@ -248,7 +248,7 @@ class SubSequenceTest extends \AotTest\AotDataStorage
         $sequence = $this
             ->getMockBuilder(\Aot\Sviaz\Sequence::class)
             ->setMethods(['getSviazi', 'getPosition'])
-            ->setConstructorArgs([\Judy2::INT_TO_MIXED])
+            ->setConstructorArgs([\Aot\Judy2::INT_TO_MIXED])
             ->getMock();
 
         $length_sequence = 10;
@@ -393,7 +393,7 @@ class SubSequenceTest extends \AotTest\AotDataStorage
         $sequence = $this
             ->getMockBuilder(\Aot\Sviaz\Sequence::class)
             ->setMethods(['getSviazi', 'getPosition'])
-            ->setConstructorArgs([\Judy2::INT_TO_MIXED])
+            ->setConstructorArgs([\Aot\Judy2::INT_TO_MIXED])
             ->getMock();
 
 
@@ -456,7 +456,7 @@ class SubSequenceTest extends \AotTest\AotDataStorage
         $sequence = $this
             ->getMockBuilder(\Aot\Sviaz\Sequence::class)
             ->setMethods(['getSviazi', 'getPosition'])
-            ->setConstructorArgs([\Judy2::INT_TO_MIXED])
+            ->setConstructorArgs([\Aot\Judy2::INT_TO_MIXED])
             ->getMock();
 
 

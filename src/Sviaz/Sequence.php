@@ -10,7 +10,7 @@ namespace Aot\Sviaz;
 
 use Aot\Sviaz\Homogeneity\Homogeneity;
 
-class Sequence extends \Judy2
+class Sequence extends \Aot\Judy2
 {
 
     protected $id;
