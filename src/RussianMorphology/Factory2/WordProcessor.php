@@ -21,11 +21,11 @@ class WordProcessor
     /** @var \Aot\RussianMorphology\Factory2\CacheStatic */
     protected $cache_static;
 
-    /** @var  \Aot\RussianMorphology\Factory2\Mode */
+    /** @var  \Aot\RussianMorphology\Factory2\Mode2 */
     protected $mode;
 
     /**
-     * @return Mode
+     * @return Mode2
      */
     public function getMode()
     {
@@ -34,7 +34,7 @@ class WordProcessor
 
     public function __construct()
     {
-        $this->mode = \Aot\RussianMorphology\Factory2\Mode::create();
+        $this->mode = \Aot\RussianMorphology\Factory2\Mode2::create();
         $this->cache_static = \Aot\RussianMorphology\Factory2\CacheStatic::create();
         $this->cache = \Aot\RussianMorphology\Factory2\Cache::create();
     }

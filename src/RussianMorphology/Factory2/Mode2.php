@@ -9,7 +9,7 @@
 namespace Aot\RussianMorphology\Factory2;
 
 
-class Mode
+class Mode2 
 {
     const SEARCH_MODE_CASE_SENSITIVE = 1;
     const SEARCH_MODE_BY_INITIAL_FORM = 2;

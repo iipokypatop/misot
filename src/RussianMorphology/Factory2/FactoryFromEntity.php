@@ -47,7 +47,7 @@ class FactoryFromEntity
      * @param int $search_mode
      * @return \Aot\Unit hashmap
      */
-    public function getSlovaWithPunctuation(array $words, $search_mode = Mode::SEARCH_MODE_DEFAULT)
+    public function getSlovaWithPunctuation(array $words, $search_mode = Mode2::SEARCH_MODE_DEFAULT)
     {
         foreach ($words as $word) {
             assert(is_string($word));
@@ -91,12 +91,12 @@ class FactoryFromEntity
      * @param int $search_mode
      * @return Slovo[][]
      */
-    public function getSlova(array $words, $search_mode = Mode::SEARCH_MODE_DEFAULT)
+    public function getSlova(array $words, $search_mode = Mode2::SEARCH_MODE_DEFAULT)
     {
         return $this->getSlovaInternal($words, $search_mode);
     }
 
-    protected function getSlovaInternal(array $words, $search_mode = Mode::SEARCH_MODE_DEFAULT)
+    protected function getSlovaInternal(array $words, $search_mode = Mode2::SEARCH_MODE_DEFAULT)
     {
         assert(is_int($search_mode));
 
@@ -202,7 +202,7 @@ class FactoryFromEntity
      * @param int $search_mode
      * @return  Slovo[][]
      */
-    public function getNonUniqueWords(array $words, $search_mode = Mode::SEARCH_MODE_DEFAULT)
+    public function getNonUniqueWords(array $words, $search_mode = Mode2::SEARCH_MODE_DEFAULT)
     {
         foreach ($words as $word) {
             assert(is_string($word));
