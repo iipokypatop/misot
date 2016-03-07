@@ -33,6 +33,8 @@ class TokenizerBasedParser
     /** @var  string[][][] */
     protected $symbols_map = [];
 
+    protected $symbols_map_enabled = false;
+
     protected function __construct()
     {
         $this->tokenizer = \Aot\Text\TextParserByTokenizer\Tokenizer::createEmptyConfiguration();
@@ -92,7 +94,9 @@ class TokenizerBasedParser
         // группировка Unit'ов по предложениям
         $this->sentences = $this->findSentences();
 
-        $this->symbols_map = $this->createSymbolsMap();
+        if ($this->symbols_map_enabled) {
+            $this->symbols_map = $this->createSymbolsMap();
+        }
     }
 
     /**
@@ -392,7 +396,6 @@ class TokenizerBasedParser
     }
 
 
-
     /**
      * @return string[]
      */
@@ -460,5 +463,10 @@ class TokenizerBasedParser
         }
 
         return $result;
+    }
+
+    public function enableSymbolsMap()
+    {
+        $this->symbols_map_enabled = true;
     }
 }
