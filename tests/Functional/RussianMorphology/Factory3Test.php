@@ -22,7 +22,7 @@ class Factory3Test extends \AotTest\AotDataStorage
      */
     public function _testBuildFromEntityFromDb()
     {
-        $factory = \Aot\RussianMorphology\FactoryFromEntity::get();
+        $factory = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get();
 
         $form_entity = new Form;
         $mword_entity = new Mword();

@@ -2,10 +2,6 @@
 
 namespace Aot\RussianMorphology;
 
-use Aot\MivarTextSemantic\Dw;
-use Aot\MivarTextSemantic\MivarSpaceWdw;
-use Aot\MivarTextSemantic\SyntaxParser\SyntaxParserManager;
-use Aot\MivarTextSemantic\Word;
 use Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry;
 
 
@@ -55,20 +51,9 @@ class Factory
             return [];
         }
 
-        return FactoryFromEntity::get()->getNonUniqueWords($words);
+        return \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getNonUniqueWords($words);
     }
 
-
-    public static function getSlovaOld(array $words)
-    {
-        throw new \Exception ('deprecated');
-
-        if (empty($words)) {
-            return [];
-        }
-
-        return static::getPredictions($words);
-    }
 
 
     /**
@@ -82,7 +67,7 @@ class Factory
         }
 
         list($simple_words, $composite_words)
-            = \Aot\RussianMorphology\CompositeWordProcessor::splitArrayWords($words);
+            = Factory2\CompositeWordProcessor::splitArrayWords($words);
 
         $factory_list = ChastiRechiRegistry::getFactories();
 
@@ -149,7 +134,7 @@ class Factory
         assert(is_string($composite_word));
 
 
-        $splitted = \Aot\RussianMorphology\CompositeWordProcessor::splitWord($composite_word);
+        $splitted = Factory2\CompositeWordProcessor::splitWord($composite_word);
 
         if (!isset($splitted[0], $splitted[1])) {
             throw new \LogicException("Wrong composite word: " . $composite_word);
@@ -186,7 +171,7 @@ class Factory
 
                 $main_slovo->dw->word_form = $composite_word;
                 $main_slovo->dw->initial_form =
-                    \Aot\RussianMorphology\CompositeWordProcessor::get()
+                    Factory2\CompositeWordProcessor::get()
                         ->joinParts($main_initial_form, $depend_initial_form);
 
             }

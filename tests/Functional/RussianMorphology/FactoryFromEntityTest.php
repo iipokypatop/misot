@@ -9,6 +9,7 @@
 namespace AotTest\Functional\RussianMorphology;
 
 
+use Aot\RussianMorphology\Factory2\Mode;
 use Aot\RussianMorphology\NullWord;
 use MivarTest\PHPUnitHelper;
 
@@ -147,7 +148,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
      */
     public function testBuildFromEntity($expected_class, $word_text, $ids, $word_class_id, $initial_form)
     {
-        $factory = \Aot\RussianMorphology\FactoryFromEntity::get();
+        $factory = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get();
 
 
         $form_entity = new \TextPersistence\Entities\TextEntities\Form;
@@ -171,7 +172,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
         // word_class_id
         PHPUnitHelper::setProtectedProperty($word_class_entity, 'id', $word_class_id);
 
-        $ob = $factory->buildFromEntity($form_entity);
+        $ob = $factory->getWordProcessor()->buildFromEntity($form_entity);
 
         $this->assertEquals($expected_class, get_class($ob));
         $this->assertEquals($word_text, $ob->getText());
@@ -214,7 +215,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
 
         if (!empty($mwords)) {
 
-            $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova([$word_text]);
+            $slova_group = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova([$word_text]);
 
             $this->assertNotEmpty($slova_group);
 
@@ -272,7 +273,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
 
         $composite_word = $part1 . "-" . $part2;
 
-        $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova([$composite_word]);
+        $slova_group = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova([$composite_word]);
 
         $this->assertNotEmpty($slova_group);
 
@@ -293,11 +294,11 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
         ];
         try {
 
-            \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova($word);
+            \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova($word);
 
             $this->fail();
 
-        } catch (\Aot\RussianMorphology\DuplicateException $e) {
+        } catch (\Aot\RussianMorphology\Factory2\Exception\DuplicateException $e) {
 
         }
     }
@@ -306,7 +307,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
     {
         $not_existing_word_form_in_db = static::class;
 
-        $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova([$not_existing_word_form_in_db]);
+        $slova_group = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova([$not_existing_word_form_in_db]);
 
         $this->assertEmpty($slova_group[$not_existing_word_form_in_db]);
     }
@@ -326,7 +327,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
 
         ];
 
-        $units_groups = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlovaWithPunctuation($units);
+        $units_groups = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlovaWithPunctuation($units);
 
         foreach ($units_groups as $units_group) {
             foreach ($units_group as $unit) {
@@ -350,7 +351,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
             '.',
         ];
 
-        $units_groups = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlovaWithPunctuation($units);
+        $units_groups = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlovaWithPunctuation($units);
 
         $this->assertInstanceOf(\Aot\RussianSyntacsis\Punctuaciya\Skobki\Otkrivauchaya::class, $units_groups[0][0]);
         $this->assertInstanceOf(\Aot\RussianSyntacsis\Punctuaciya\Skobki\Zakrivauchaya::class, $units_groups[1][0]);
@@ -375,9 +376,9 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
             $this->markTestSkipped("в базе данных нет слова " . var_export($word, 1));
         }
 
-        $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+        $slova_group = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova(
             [$word, $Word],
-            \Aot\RussianMorphology\FactoryFromEntity::SEARCH_MODE_CASE_SENSITIVE
+            Mode::SEARCH_MODE_CASE_SENSITIVE
         );
 
         $this->assertNotEmpty($slova_group);
@@ -396,9 +397,9 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
             $this->markTestSkipped("в базе данных нет слова " . var_export($Word, 1));
         }
 
-        $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+        $slova_group = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova(
             [$word, $Word],
-            \Aot\RussianMorphology\FactoryFromEntity::SEARCH_MODE_CASE_SENSITIVE
+            Mode::SEARCH_MODE_CASE_SENSITIVE
         );
 
         $this->assertNotEmpty($slova_group);
@@ -411,12 +412,12 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
         $Word = 'Ваня';
 
         try {
-            \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+            \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova(
                 [$Word, $Word],
-                \Aot\RussianMorphology\FactoryFromEntity::SEARCH_MODE_CASE_SENSITIVE
+                Mode::SEARCH_MODE_CASE_SENSITIVE
             );
             $this->fail();
-        } catch (\Aot\RussianMorphology\DuplicateException $e) {
+        } catch (\Aot\RussianMorphology\Factory2\Exception\DuplicateException $e) {
 
         }
     }
@@ -437,9 +438,9 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
             $this->markTestSkipped("в базе данных нет слова " . var_export($word2, 1));
         }
 
-        $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+        $slova_group = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova(
             [$word1, $word2],
-            \Aot\RussianMorphology\FactoryFromEntity::SEARCH_MODE_BY_INITIAL_FORM
+            Mode::SEARCH_MODE_BY_INITIAL_FORM
         );
 
         $this->assertNotEmpty($slova_group);
@@ -452,9 +453,9 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
     {
         $not_existing_word_form_in_db = static::class;
 
-        $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+        $slova_group = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova(
             [$not_existing_word_form_in_db],
-            \Aot\RussianMorphology\FactoryFromEntity::SEARCH_MODE_ADD_NULL_WORDS
+            Mode::SEARCH_MODE_ADD_NULL_WORDS
         );
 
         $this->assertInstanceOf(
@@ -467,7 +468,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
     {
         $not_existing_word_form_in_db = 'фвфывдом';
 
-        $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+        $slova_group = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova(
             [$not_existing_word_form_in_db]
         // without prediction
         );
@@ -476,9 +477,9 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
             $slova_group[$not_existing_word_form_in_db]
         );
 
-        $slova_group = \Aot\RussianMorphology\FactoryFromEntity::get()->getSlova(
+        $slova_group = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova(
             [$not_existing_word_form_in_db],
-            \Aot\RussianMorphology\FactoryFromEntity::SEARCH_MODE_NOT_USE_PREDICTOR
+            Mode::SEARCH_MODE_NOT_USE_PREDICTOR
         );
 
         $this->assertEmpty(
@@ -502,7 +503,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
             $this->markTestSkipped("в базе данных нет слова " . var_export($word, 1));
         }
 
-        $factory = \Aot\RussianMorphology\FactoryFromEntity::get();
+        $factory = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get();
 
         /** @var \Aot\RussianMorphology\Slovo[][] $slova */
         $slova = $factory->getNonUniqueWords($non_unique_words);

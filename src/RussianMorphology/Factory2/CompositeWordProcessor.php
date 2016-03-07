@@ -6,7 +6,7 @@
  * Time: 16:12
  */
 
-namespace Aot\RussianMorphology;
+namespace Aot\RussianMorphology\Factory2;
 
 
 class CompositeWordProcessor

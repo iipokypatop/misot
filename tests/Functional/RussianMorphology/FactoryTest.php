@@ -54,7 +54,7 @@ TEXT
      */
     public function testSplitWordsInSimpleAndCompositeGroups()
     {
-        $res = \Aot\RussianMorphology\CompositeWordProcessor::splitArrayWords(
+        $res = \Aot\RussianMorphology\Factory2\CompositeWordProcessor::splitArrayWords(
             [
                 'Алиса-каприза',
                 'в',

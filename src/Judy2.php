@@ -10,21 +10,21 @@ namespace Aot;
 
 
 
-class Judy2 extends \ArrayObject
+class Judy2 extends \Judy
 {
-    const INT_TO_MIXED = 1;
+//    const INT_TO_MIXED = 1;
+//
+//    public function __construct()
+//    {
+//
+//    }
 
-    public function __construct()
-    {
-
-    }
-
-    protected function last()
-    {
-        if ($this->count() === 0) {
-            return null;
-        }
-
-        return $this->count() - 1;
-    }
+//    protected function last()
+//    {
+//        if ($this->count() === 0) {
+//            return null;
+//        }
+//
+//        return $this->count() - 1;
+//    }
 }
