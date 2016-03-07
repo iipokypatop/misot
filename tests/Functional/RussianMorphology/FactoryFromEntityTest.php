@@ -9,7 +9,7 @@
 namespace AotTest\Functional\RussianMorphology;
 
 
-use Aot\RussianMorphology\Factory2\Mode2;
+use Aot\RussianMorphology\Factory2\Mode;
 use Aot\RussianMorphology\NullWord;
 use MivarTest\PHPUnitHelper;
 
@@ -378,7 +378,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
 
         $slova_group = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova(
             [$word, $Word],
-            Mode2::SEARCH_MODE_CASE_SENSITIVE
+            Mode::SEARCH_MODE_CASE_SENSITIVE
         );
 
         $this->assertNotEmpty($slova_group);
@@ -399,7 +399,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
 
         $slova_group = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova(
             [$word, $Word],
-            Mode2::SEARCH_MODE_CASE_SENSITIVE
+            Mode::SEARCH_MODE_CASE_SENSITIVE
         );
 
         $this->assertNotEmpty($slova_group);
@@ -414,7 +414,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
         try {
             \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova(
                 [$Word, $Word],
-                Mode2::SEARCH_MODE_CASE_SENSITIVE
+                Mode::SEARCH_MODE_CASE_SENSITIVE
             );
             $this->fail();
         } catch (\Aot\RussianMorphology\Factory2\Exception\DuplicateException $e) {
@@ -440,7 +440,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
 
         $slova_group = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova(
             [$word1, $word2],
-            Mode2::SEARCH_MODE_BY_INITIAL_FORM
+            Mode::SEARCH_MODE_BY_INITIAL_FORM
         );
 
         $this->assertNotEmpty($slova_group);
@@ -455,7 +455,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
 
         $slova_group = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova(
             [$not_existing_word_form_in_db],
-            Mode2::SEARCH_MODE_ADD_NULL_WORDS
+            Mode::SEARCH_MODE_ADD_NULL_WORDS
         );
 
         $this->assertInstanceOf(
@@ -479,7 +479,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
 
         $slova_group = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get()->getSlova(
             [$not_existing_word_form_in_db],
-            Mode2::SEARCH_MODE_NOT_USE_PREDICTOR
+            Mode::SEARCH_MODE_NOT_USE_PREDICTOR
         );
 
         $this->assertEmpty(
