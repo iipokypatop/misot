@@ -20,6 +20,11 @@ class Base
      */
     protected $tokens = [];
 
+    /**
+     * @var \Aot\Tokenizer\Token\Regex[][]
+     */
+    protected $regex_list = [];
+
     protected function __construct()
     {
 
@@ -105,10 +110,15 @@ class Base
 
         foreach ($this->token_types as $token_type_id) {
 
+            if (!isset($this->regex_list[$token_type_id])) {
+                $this->regex_list[$token_type_id] =
+                    \Aot\Tokenizer\Token\TokenRegexRegistry::getTokenTypesByPattern($token_type_id);
+            }
+
             /**
              * @var \Aot\Tokenizer\Token\Regex[]
              */
-            $regex_list = \Aot\Tokenizer\Token\TokenRegexRegistry::getTokenTypesByPattern($token_type_id);
+            $regex_list = $this->regex_list[$token_type_id];
 
             if (count($regex_list) === 0) {
                 continue;

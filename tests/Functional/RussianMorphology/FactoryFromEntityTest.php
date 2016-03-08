@@ -238,7 +238,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
 
         if (is_array($words)) {
             foreach ($words as $word) {
-                assert(is_string($words));
+                assert(is_string($word));
             }
         }
 

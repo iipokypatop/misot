@@ -24,14 +24,6 @@ class WordProcessor
     /** @var  \Aot\RussianMorphology\Factory2\Mode */
     protected $mode;
 
-    /**
-     * @return Mode
-     */
-    public function getMode()
-    {
-        return $this->mode;
-    }
-
     public function __construct()
     {
         $this->mode = \Aot\RussianMorphology\Factory2\Mode::create();
@@ -44,6 +36,14 @@ class WordProcessor
         $ob = new static;
 
         return $ob;
+    }
+
+    /**
+     * @return Mode
+     */
+    public function getMode()
+    {
+        return $this->mode;
     }
 
     /**
@@ -223,6 +223,8 @@ class WordProcessor
             assert(is_string($word));
         }
 
+        
+        
         if (empty($words)) {
             return [];
         }
@@ -257,16 +259,20 @@ class WordProcessor
 
         $query_builder = $api
             ->createQueryBuilder()
-            ->select('f', 'w')
+            ->select(
+                'f', 'w', 'wi', 'wc'
+            )
             ->from(\TextPersistence\Entities\TextEntities\Form::class, 'f')
-            ->leftJoin('f.mword', 'w');
+            ->leftJoin('f.mword', 'w')
+            ->leftJoin('f.wordClass', 'wc')
+            ->leftJoin('f.initialForm', 'wi');
 
 
         $param_name_words = ':words';
 
         if ($is_search_mode_by_initial_form) {
             $query_builder
-                ->leftJoin('f.initialForm', 'wi')
+//                ->leftJoin('f.initialForm', 'wi')
                 ->where("wi.word in ($param_name_words)");
         } else {
             $query_builder
@@ -286,25 +292,13 @@ class WordProcessor
         $query = $query_builder->getQuery();
 
 
-        $query->setFetchMode(
-            \TextPersistence\Entities\TextEntities\Form::class,
-            'wordClass',
-            \Doctrine\ORM\Mapping\ClassMetadata::FETCH_EAGER
-        );
-        $query->setFetchMode(
-            \TextPersistence\Entities\TextEntities\Form::class,
-            'initialForm',
-            \Doctrine\ORM\Mapping\ClassMetadata::FETCH_EAGER
-        );
-        $query->setFetchMode(
-            \TextPersistence\Entities\TextEntities\Form::class,
-            'mword',
-            \Doctrine\ORM\Mapping\ClassMetadata::FETCH_EAGER
-        );
+        \Doctrine\DBAL\Driver\PDOStatement::$log_1[] = join(',', $words);
+        \Doctrine\DBAL\Driver\PDOStatement::$log_2[] = join(',', $words);
+
+        
 
         /** @var \TextPersistence\Entities\TextEntities\Form[] $forms */
         $forms = $query->getResult();
-
 
         foreach ($forms as $form) {
 
@@ -331,6 +325,8 @@ class WordProcessor
                 }
             }
         }
+
+
 
         return $slova;
     }

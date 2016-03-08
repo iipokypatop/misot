@@ -31,7 +31,7 @@ class TokenRegexRegistry
 //      const PATTERN_ =  '/\p{Lo}/'; // Другая буква
 //      const PATTERN_ =  '/\p{Lt}/'; // Заглавная буква
 //      const PATTERN_ =  '/\p{Lu}/'; // Прописная буква
-      const PATTERN_UPPERCASE =  '\p{Lu}'; // Прописная буква
+    const PATTERN_UPPERCASE = '\p{Lu}'; // Прописная буква
 //      const PATTERN_ =  '/\p{M}/'; // Знак
 //      const PATTERN_ =  '/\p{Mc}/'; // Пробельный знак
 //      const PATTERN_ =  '/\p{Me}/'; // Окружающий знак
@@ -60,6 +60,7 @@ class TokenRegexRegistry
 //      const PATTERN_ =  '/\p{Zs}/'; // Пробельный разделитель
 
     protected static $registry = [];
+    protected static $instance;
 
     /**
      * @param int $id

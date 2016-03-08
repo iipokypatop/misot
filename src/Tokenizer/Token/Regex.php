@@ -73,20 +73,19 @@ class Regex
      */
     protected function buildPattern()
     {
-        $heart = join('', [
-            $this->caret,
-            '(?<' . static::MASK_HEART_NAME . ">",
-            $this->heart,
+        $heart =
+            $this->caret .
+            '(?<' . static::MASK_HEART_NAME . ">" .
+            $this->heart .
+            ")";
 
-            ")",
-        ]);
 
-        return join('', [
-            static::REGEX_DELIMITER,
-            $heart,
-            static::REGEX_DELIMITER,
-            static::REGEX_MODIFIERS
-        ]);
+        return
+            static::REGEX_DELIMITER.
+            $heart.
+            static::REGEX_DELIMITER.
+            static::REGEX_MODIFIERS;
+
     }
 
     public function addStartingCaret()
