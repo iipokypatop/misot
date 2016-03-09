@@ -292,8 +292,8 @@ class WordProcessor
         $query = $query_builder->getQuery();
 
 
-        \Doctrine\DBAL\Driver\PDOStatement::$log_1[] = join(',', $words);
-        \Doctrine\DBAL\Driver\PDOStatement::$log_2[] = join(',', $words);
+//        \Doctrine\DBAL\Driver\PDOStatement::$log_1[] = join(',', $words);
+//        \Doctrine\DBAL\Driver\PDOStatement::$log_2[] = join(',', $words);
 
         
 
