@@ -17,20 +17,22 @@ class Base
     /** @var \Aot\Sviaz\Processors\AotGraph\Builder */
     protected $builder;
 
-    /** @var \Aot\RussianMorphology\Slovo[] */
-    protected $hash_slovo_map = [];// карта слов
+//    /** @var \Aot\RussianMorphology\Slovo[] */
+//    protected $hash_slovo_map = [];// карта слов
 
     /** @var \Aot\Sviaz\Processors\AotGraph\SentenceManager */
     protected $sentence_manager;
-
-    public static function create()
-    {
-        return new static();
-    }
+    /** @var  \Aot\RussianMorphology\Slovo[][][] */
+    protected $slova_collection;
 
     protected function __construct()
     {
         $this->builder = Builder::create();
+    }
+
+    public static function create()
+    {
+        return new static();
     }
 
     /**
@@ -55,7 +57,6 @@ class Base
         return $this->runByWords($sentence_words);
     }
 
-
     /**
      * @param string[] $sentence_words
      * @return \Aot\Graph\Slovo\Graph
@@ -78,7 +79,6 @@ class Base
 
         return $this->createGraph($links, $prepose_to_slovo);
     }
-
 
     /**
      * Создание синтаксической модели через АОТ
@@ -128,31 +128,34 @@ class Base
 
         /** @var  \Sentence_space_SP_Rel[] $syntax_model */
         foreach ($syntax_model as $key => $point) {
-            if (empty($slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)])) {
-                $factory_slovo = $this->builder->getFactorySlovo($point->dw->id_word_class);
-                $point->dw->word_form = $this->sentence_manager->getSentenceWordByAotId($point->kw);
-                $slovo = $factory_slovo->build($point->dw)[0];
-                $slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)] = $slovo;
-                $this->hash_slovo_map[spl_object_hash($slovo)] = $slovo;
-            } else {
-                $slovo = $slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)];
-            }
+
+            $slovo = $this->buildSlovo($point);
 
             if ($point->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
+
                 $link_with_prepose[$point->Oz][$point->direction] = $slovo;
+
             } else {
 
+                $links[$point->Oz][2] = $point->O;
+
                 if ($point->direction === static::MAIN_POINT) {
+
                     $links[$point->Oz][0] = $slovo;
-                } elseif ($point->direction === static::DEPENDED_POINT) {
-                    $links[$point->Oz][1] = $slovo;
-                } else {
-                    throw new \LogicException('Unknown point direction: ' . var_export($point->direction));
+                    continue;
                 }
 
-                $links[$point->Oz][2] = $point->O;;
+                if ($point->direction === static::DEPENDED_POINT) {
+                    $links[$point->Oz][1] = $slovo;
+                    continue;
+                }
+
+                throw new \LogicException('Unknown point direction: ' . var_export($point->direction));
+
             }
         }
+
+        $links_filtered = $this->filterLinks($links);
 
         $prepose_to_slovo = [];
         foreach ($link_with_prepose as $oz => $pair) {
@@ -161,7 +164,34 @@ class Base
             }
         }
 
-        return [$links, $prepose_to_slovo];
+        return [$links_filtered, $prepose_to_slovo];
+    }
+
+    /**
+     * @param \Sentence_space_SP_Rel $point
+     * @return \Aot\RussianMorphology\Slovo
+     */
+    protected function buildSlovo(\Sentence_space_SP_Rel $point)
+    {
+
+        if (empty($this->slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)])) {
+
+            $factory_slovo = $this->builder->getFactorySlovo($point->dw->id_word_class);
+
+            $point->dw->word_form = $this->sentence_manager->getSentenceWordByAotId($point->kw);
+
+            $slovo = $factory_slovo->build($point->dw)[0];
+
+            $this->slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)] = $slovo;
+
+            //$this->hash_slovo_map[spl_object_hash($slovo)] = $slovo;
+        } else {
+
+            $slovo = $this->slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)];
+        }
+
+
+        return $slovo;
     }
 
     /**
@@ -172,6 +202,27 @@ class Base
     {
         ksort($parameters);
         return md5(serialize($parameters));
+    }
+
+    /**
+     * @param mixed[] $links_in
+     * @return mixed[]
+     */
+    protected function filterLinks(array $links_in)
+    {
+        $links = [];
+        foreach ($links_in as $link) {
+            if (
+                $link[0] instanceof \Aot\RussianMorphology\ChastiRechi\Predlog\Base
+                || $link[1] instanceof \Aot\RussianMorphology\ChastiRechi\Predlog\Base
+            ) {
+                continue;
+            }
+
+            $links[] = $link;
+        }
+
+        return $links;
     }
 
     /**

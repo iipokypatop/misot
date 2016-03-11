@@ -32,5 +32,9 @@ abstract class FactoryBase
         return static::$uniqueInstances[static::class];
     }
 
+    /**
+     * @param \DictionaryWord $dw
+     * @return \Aot\RussianMorphology\Slovo
+     */
     abstract public function build(\DictionaryWord $dw);
 }
