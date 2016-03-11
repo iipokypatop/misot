@@ -49,7 +49,7 @@ class ConvertTextIntoSlova
 
                 $cloned_slova = [];
                 foreach ($slova[$word] as $item) {
-                    $cloned_slova[$word] = $item->reClone();
+                    $cloned_slova[] = $item->reClone();
                 }
 
                 $tmp_sentence->add($word, [$cloned_slova]);
