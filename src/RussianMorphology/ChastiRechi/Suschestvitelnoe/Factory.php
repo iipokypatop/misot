@@ -43,6 +43,9 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
      */
     public function build(\DictionaryWord $dw)
     {
+        if ($dw->initial_form === '') {
+            return [];
+        }
         $text = $dw->word_form;
         $words = [];
         if ((int)($dw->id_word_class) === \Aot\MivarTextSemantic\Constants::NOUN_CLASS_ID) {
