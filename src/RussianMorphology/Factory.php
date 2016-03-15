@@ -95,6 +95,10 @@ class Factory
             $slova[$index] = [];
             foreach ($points as $point) {
                 foreach ($factory_list as $factory) {
+                    /** @warning Решить проблему с начальной формой */
+                    if (empty($point->dw)) {
+                        continue;
+                    }
                     $slova[$index] = array_merge(
                         $slova[$index],
                         $factory->build($point->dw)
