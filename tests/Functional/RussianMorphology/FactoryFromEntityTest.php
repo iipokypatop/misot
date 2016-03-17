@@ -201,7 +201,6 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
             ['безостановочнее'],
             ['безответно'],
             ['леса'],
-
         ];
     }
 
@@ -229,7 +228,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
 
     /**
      * @param $words
-     * @return bool
+     * @return \TextPersistence\Entities\TextEntities\Mword[]
      * @throws \Exception
      */
     protected function getWordsFromDb($words)
@@ -520,4 +519,56 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
             $slova[2][0]->getInitialForm()
         );
     }
+
+    public function testCacheByWordForm()
+    {
+        $word = 'корова';
+
+        $e = $this->getWordsFromDb($word);
+
+        if (empty($e)) {
+            $this->markTestSkipped("в базе данных нет слова " . var_export($word, 1));
+        }
+
+        $factory = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get();
+        $factory->getWordProcessor()->resetWordFormCache();
+
+        /** @var \Aot\RussianMorphology\Factory2\Cache $cache */
+        $cache = PHPUnitHelper::getProtectedProperty($factory->getWordProcessor(), 'word_form_cache');
+
+        $this->assertEquals([], $cache->__cache_slova);
+
+        /** @var \Aot\RussianMorphology\Slovo[][] $slova */
+        $factory->getSlova([$word]);
+
+        $this->assertEquals(1, count($cache->__cache_slova));
+        $this->assertEquals([$word], array_keys($cache->__cache_slova));
+    }
+
+    public function testCacheByInitialForm()
+    {
+        $word = 'корова';
+
+        $e = $this->getWordsFromDb($word);
+
+        if (empty($e)) {
+            $this->markTestSkipped("в базе данных нет слова " . var_export($word, 1));
+        }
+
+        $factory = \Aot\RussianMorphology\Factory2\FactoryFromEntity::get();
+        $factory->getWordProcessor()->resetInitialFormCache();
+
+        /** @var \Aot\RussianMorphology\Factory2\Cache $cache */
+        $cache = PHPUnitHelper::getProtectedProperty($factory->getWordProcessor(), 'initial_form_cache');
+
+        $this->assertEquals([], $cache->__cache_slova);
+
+        /** @var \Aot\RussianMorphology\Slovo[][] $slova */
+        $factory->getSlova([$word], \Aot\RussianMorphology\Factory2\Mode::SEARCH_MODE_BY_INITIAL_FORM);
+
+        $this->assertEquals(1, count($cache->__cache_slova));
+        $this->assertEquals([$word], array_keys($cache->__cache_slova));
+    }
+
+
 }

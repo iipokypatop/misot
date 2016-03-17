@@ -8,15 +8,16 @@
 
 namespace Aot\RussianMorphology\Factory2;
 
-use Aot\RussianMorphology\Slovo;
-use Aot\Text\Encodings;
 
 class WordProcessor
 {
     const REGULAR_FOR_WHITE_LIST = '/[A-Za-zА-Яа-яёЁ\\d]+/u';
 
     /** @var \Aot\RussianMorphology\Factory2\Cache */
-    protected $cache;
+    protected $word_form_cache;
+
+    /** @var \Aot\RussianMorphology\Factory2\Cache */
+    protected $initial_form_cache;
 
     /** @var \Aot\RussianMorphology\Factory2\CacheStatic */
     protected $cache_static;
@@ -28,7 +29,8 @@ class WordProcessor
     {
         $this->mode = \Aot\RussianMorphology\Factory2\Mode::create();
         $this->cache_static = \Aot\RussianMorphology\Factory2\CacheStatic::create();
-        $this->cache = \Aot\RussianMorphology\Factory2\Cache::create();
+        $this->word_form_cache = \Aot\RussianMorphology\Factory2\Cache::create();
+        $this->initial_form_cache = \Aot\RussianMorphology\Factory2\Cache::create();
     }
 
     public static function create()
@@ -36,6 +38,16 @@ class WordProcessor
         $ob = new static;
 
         return $ob;
+    }
+
+    public function resetWordFormCache()
+    {
+        $this->word_form_cache = \Aot\RussianMorphology\Factory2\Cache::create();
+    }
+
+    public function resetInitialFormCache()
+    {
+        $this->initial_form_cache = \Aot\RussianMorphology\Factory2\Cache::create();
     }
 
     /**
@@ -90,16 +102,14 @@ class WordProcessor
             return [[], []];
         }
 
+        $cache_store = $this->getCurrentCache();
+
         $cached = [];
         $new = [];
-        foreach ($words as $word) {
-
-            if (!empty($this->cache->__cache_slova[$word])) {
-
+            foreach ($words as $word) {
+            if (!empty($cache_store->__cache_slova[$word])) {
                 $cached[$word] = $word;
-
             } else {
-
                 $new[$word] = $word;
             }
         }
@@ -223,8 +233,7 @@ class WordProcessor
             assert(is_string($word));
         }
 
-        
-        
+
         if (empty($words)) {
             return [];
         }
@@ -240,7 +249,7 @@ class WordProcessor
 
         $is_search_mode_by_initial_form = $this->mode->isSearchModeByInitialForm();
 
-        /** @var Slovo[][] $slova */
+        /** @var \Aot\RussianMorphology\Slovo[][] $slova */
         $slova = [];
         foreach ($words as $word) {
             $slova[$word] = [];
@@ -295,7 +304,6 @@ class WordProcessor
 //        \Doctrine\DBAL\Driver\PDOStatement::$log_1[] = join(',', $words);
 //        \Doctrine\DBAL\Driver\PDOStatement::$log_2[] = join(',', $words);
 
-        
 
         /** @var \TextPersistence\Entities\TextEntities\Form[] $forms */
         $forms = $query->getResult();
@@ -327,7 +335,6 @@ class WordProcessor
         }
 
 
-
         return $slova;
     }
 
@@ -337,7 +344,7 @@ class WordProcessor
      */
     protected function strToLower($string)
     {
-        return mb_strtolower($string, Encodings::UTF_8);
+        return mb_strtolower($string, \Aot\Text\Encodings::UTF_8);
     }
 
 
@@ -349,7 +356,7 @@ class WordProcessor
     {
         $lower_words = [];
         foreach ($words as $word) {
-            $lower_words[] = mb_strtolower($word, Encodings::UTF_8);
+            $lower_words[] = mb_strtolower($word, \Aot\Text\Encodings::UTF_8);
         }
 
         return $lower_words;
@@ -438,21 +445,21 @@ class WordProcessor
             assert(is_string($word));
         }
 
-
         if (empty($words)) {
             return [];
         }
 
+        $cache_store = $this->getCurrentCache();
+
 
         $words_from_cache = [];
-
         foreach ($words as $word) {
-            if (empty($this->cache->__cache_slova[$word])) {
+            if (empty($cache_store->__cache_slova[$word])) {
                 throw new \Aot\Exception("слова " . var_export($word, 1) . " нет в кэше");
             }
 
-            foreach ($this->cache->__cache_slova[$word] as $slovo) {
-
+            /** @var \Aot\RussianMorphology\Slovo $slovo */
+            foreach ($cache_store->__cache_slova[$word] as $slovo) {
                 $words_from_cache[$word][] = $slovo->reClone();
             }
         }
@@ -486,21 +493,6 @@ class WordProcessor
         return $result;
     }
 
-    /**
-     * @param string $name
-     * @param \Aot\RussianMorphology\Slovo[] $slova
-     */
-    public function cacheWords($name, array $slova)
-    {
-        assert(is_string($name));
-
-        foreach ($slova as $slovo) {
-            assert(is_a($slovo, \Aot\RussianMorphology\Slovo::class));
-        }
-
-        $this->cache->__cache_slova[$name] = $slova;
-    }
-
 
     /**
      * @param string[] $trash
@@ -515,5 +507,17 @@ class WordProcessor
         }
 
         return $res;
+    }
+
+    /**
+     * @return Cache
+     */
+    public function getCurrentCache()
+    {
+        if ($this->mode->isSearchModeByInitialForm()) {
+            return $this->initial_form_cache;
+        }
+
+        return $this->word_form_cache;
     }
 }

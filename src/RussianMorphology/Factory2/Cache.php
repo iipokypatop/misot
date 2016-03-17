@@ -18,7 +18,6 @@ class Cache
     public $__cache_slova = [];
 
 
-    
     protected function __construct()
     {
 
@@ -34,4 +33,19 @@ class Cache
         return $ob;
     }
 
+
+    /**
+     * @param string $name
+     * @param \Aot\RussianMorphology\Slovo[] $slova
+     */
+    public function cacheSlova($name, array $slova)
+    {
+        assert(is_string($name));
+
+        foreach ($slova as $slovo) {
+            assert(is_a($slovo, \Aot\RussianMorphology\Slovo::class));
+        }
+
+        $this->__cache_slova[$name] = $slova;
+    }
 }
