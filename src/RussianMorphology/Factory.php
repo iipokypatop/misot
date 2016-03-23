@@ -94,11 +94,11 @@ class Factory
         foreach ($wdw as $index => $points) {
             $slova[$index] = [];
             foreach ($points as $point) {
+                /** @warning Решить проблему с начальной формой */
+                if ($point->dw->initial_form === '') {
+                    continue;
+                }
                 foreach ($factory_list as $factory) {
-                    /** @warning Решить проблему с начальной формой */
-                    if (empty($point->dw)) {
-                        continue;
-                    }
                     $slova[$index] = array_merge(
                         $slova[$index],
                         $factory->build($point->dw)
