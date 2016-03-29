@@ -11,11 +11,16 @@ namespace Aot\Text\TextParserByTokenizer;
 
 class ConfigurationEndOfSentence
 {
+    /** @var bool  */
     protected $checking_suitable_text = true;
+    /** @var bool  */
     protected $checking_next_unit_is_space = true;
+    /** @var bool  */
     protected $checking_next_capital_letter = true;
+    /** @var bool  */
     protected $checking_closed_brackets = false;
 
+    /** @var string[] */
     protected $suitable_text = [
         '.',
         '...',
@@ -26,6 +31,9 @@ class ConfigurationEndOfSentence
     /** @var  \SplObjectStorage карта свойств Unit's. Необходимо для вычленения информации о том, находится ли Unit внутри скобок или снаружи */
     protected $map_property_of_units;
 
+    /**
+     * @return static
+     */
     public static function create()
     {
         return new static();
@@ -43,6 +51,12 @@ class ConfigurationEndOfSentence
      */
     public function isEnd(array $units, $id)
     {
+        foreach ($units as $unit) {
+            assert(is_a($unit, \Aot\Text\TextParserByTokenizer\Unit::class, true));
+        }
+
+        assert(is_int($id));
+
         //Проверка текстовки
         if ($this->checking_suitable_text) {
             if (!$this->isSuitableText($units[$id])) {
