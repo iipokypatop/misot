@@ -34,6 +34,9 @@ class TokenizerBasedParser
     protected $symbols_map = [];
 
     protected $symbols_map_enabled = false;
+    
+    /** @var \Aot\Text\TextParserByTokenizer\ConfigurationEndOfSentence */
+    protected $configuration_end_of_sentence;
 
     protected function __construct()
     {
@@ -52,6 +55,7 @@ class TokenizerBasedParser
         $ob->tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_SPACE);
         $ob->tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_DASH);
         $ob->tokenizer->addTokenType(\Aot\Tokenizer\Token\TokenFactory::TOKEN_TYPE_PUNCTUATION);
+        $ob->configuration_end_of_sentence = \Aot\Text\TextParserByTokenizer\ConfigurationEndOfSentence::create();
         return $ob;
     }
 
@@ -239,57 +243,9 @@ class TokenizerBasedParser
      */
     protected function isSymbolOfTheEndOfSentence($id)
     {
-        return (
-            ((string)$this->units[$id] === '.'
-                || (string)$this->units[$id] === '...'
-                || (string)$this->units[$id] === '!'
-                || (string)$this->units[$id] === '?'
-            )
-            && $this->isEndOfSentence($id)
-        );
+        return $this->configuration_end_of_sentence->isEnd($this->units, $id);
     }
-
-    /**
-     * @param int $id
-     * @return bool
-     */
-    protected function isEndOfSentence($id)
-    {
-        return ($this->isSpace($id + 1) && $this->isCapitalizedWord($id + 2));
-    }
-
-    /**
-     * Проверка на пробел
-     * @param $id
-     * @return bool
-     */
-    protected function isSpace($id)
-    {
-        return (
-            isset($this->units[$id])
-            && $this->units[$id]->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_SPACE
-        );
-    }
-
-    /**
-     * Проверка на слово, начинающееся с большой буквы
-     * @param $id
-     * @return bool
-     */
-    protected function isCapitalizedWord($id)
-    {
-        if (!isset($this->units[$id])
-            || $this->units[$id]->getType() !== \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD
-        ) {
-            return false;
-        }
-        $text = $this->units[$id]->getTokens()[0]->getText();
-
-
-        $regex = \Aot\Tokenizer\Token\Regex::create(\Aot\Tokenizer\Token\TokenRegexRegistry::PATTERN_UPPERCASE);
-        $regex->addStartingCaret();
-        return $regex->match($text);
-    }
+    
 
     /**
      * @param int $id
@@ -469,4 +425,13 @@ class TokenizerBasedParser
     {
         $this->symbols_map_enabled = true;
     }
+
+    /**
+     * @return ConfigurationEndOfSentence
+     */
+    public function getConfigurationEndOfSentence()
+    {
+        return $this->configuration_end_of_sentence;
+    }
+        
 }
