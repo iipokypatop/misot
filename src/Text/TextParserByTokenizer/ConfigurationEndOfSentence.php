@@ -205,5 +205,4 @@ class ConfigurationEndOfSentence
             $this->map_property_of_units[$unit] = $nesting_level;
         }
     }
-    
 }
