@@ -136,40 +136,21 @@ class ConfigurationEndOfSentence
         return $regex->match($text);
     }
 
+
     /**
-     * @param boolean $checking_suitable_text
+     * @return void
      */
-    public function setCheckingSuitableText($checking_suitable_text)
+    public function turnOnCheckingClosedBrackets()
     {
-        assert(is_bool($checking_suitable_text));
-        $this->checking_suitable_text = $checking_suitable_text;
+        $this->checking_closed_brackets = true;
     }
 
     /**
-     * @param boolean $checking_next_unit_is_space
+     * @return void
      */
-    public function setCheckingNextUnitIsSpace($checking_next_unit_is_space)
+    public function turnOffCheckingClosedBrackets()
     {
-        assert(is_bool($checking_next_unit_is_space));
-        $this->checking_next_unit_is_space = $checking_next_unit_is_space;
-    }
-
-    /**
-     * @param boolean $checking_next_capital_letter
-     */
-    public function setCheckingNextCapitalLetter($checking_next_capital_letter)
-    {
-        assert(is_bool($checking_next_capital_letter));
-        $this->checking_next_capital_letter = $checking_next_capital_letter;
-    }
-
-    /**
-     * @param boolean $checking_closed_brackets
-     */
-    public function setCheckingClosedBrackets($checking_closed_brackets)
-    {
-        assert(is_bool($checking_closed_brackets));
-        $this->checking_closed_brackets = $checking_closed_brackets;
+        $this->checking_closed_brackets = false;
     }
 
     /**
