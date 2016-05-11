@@ -26,6 +26,39 @@ class Base extends Slovo
     /** @var  int */
     protected $digital_view;
 
+    //TODO пока что не удалять
+//    /**
+//     * @param int $view
+//     * @return double|int|string
+//     * @throws \Aot\Exception
+//     */
+//    public function getInitialForm($view = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::STRING_VIEW)
+//    {
+//        if ($view === \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::STRING_VIEW) {
+//            return $this->initial_form;
+//        }
+//        if ($view === \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::DIGITAL_VIEW) {
+//            return \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Helper::convertToDigital($this->initial_form);
+//        }
+//        throw new \Aot\Exception("Неверный формат начальной формы");
+//    }
+
+//    /**
+//     * @param int $view
+//     * @return double|int|string
+//     * @throws \Aot\Exception
+//     */
+//    public function getText($view = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::STRING_VIEW)
+//    {
+//        if ($view === \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::STRING_VIEW) {
+//            return $this->text;
+//        }
+//        if ($view === \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::DIGITAL_VIEW) {
+//            return \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Helper::convertToDigital($this->initial_form);
+//        }
+//        throw new \Aot\Exception("Неверный формат начальной формы");
+//    }
+
     /**
      * @param int|double $value
      */
