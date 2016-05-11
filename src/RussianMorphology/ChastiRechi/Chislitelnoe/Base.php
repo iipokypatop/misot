@@ -23,7 +23,7 @@ use Aot\RussianMorphology\Slovo;
  */
 class Base extends Slovo
 {
-    /** @var  int */
+    /** @var  double */
     protected $digital_view;
 
     //TODO пока что не удалять
@@ -60,11 +60,11 @@ class Base extends Slovo
 //    }
 
     /**
-     * @param int|double $value
+     * @param double $value
      */
     public function setDigitalView($value)
     {
-        assert(is_numeric($value));
+        assert(is_double($value));
         $this->digital_view = $value;
     }
 
@@ -115,7 +115,7 @@ class Base extends Slovo
     }
 
     /**
-     * @return int
+     * @return double
      * @throws \Aot\Exception
      */
     public function getDigitalView()
