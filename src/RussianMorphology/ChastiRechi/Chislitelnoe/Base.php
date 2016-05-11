@@ -23,6 +23,18 @@ use Aot\RussianMorphology\Slovo;
  */
 class Base extends Slovo
 {
+    /** @var  int */
+    protected $digital_view;
+
+    /**
+     * @param int|double $value
+     */
+    public function setDigitalView($value)
+    {
+        assert(is_numeric($value));
+        $this->digital_view = $value;
+    }
+
     public static function getMorphology()
     {
         return [
@@ -68,4 +80,17 @@ class Base extends Slovo
 
         return $ob;
     }
+
+    /**
+     * @return int
+     * @throws \Aot\Exception
+     */
+    public function getDigitalView()
+    {
+        if ($this->digital_view === null) {
+            return \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Helper::convertToDigital($this->initial_form);
+        }
+        return $this->digital_view;
+    }
+    
 }

@@ -520,4 +520,33 @@ class WordProcessor
 
         return $this->word_form_cache;
     }
+
+    /**
+     * @brief Из числа записанного цифрами
+     *
+     * @param \Aot\RussianMorphology\Slovo[][] $words
+     */
+    public function processDigitalOfNumber(array &$words)
+    {
+        foreach ($words as $word => $slova) {
+            if (is_numeric($word)) {
+                $string_view = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Helper::convertToString($word);
+                $slovo = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::create(
+                    $string_view,
+                    \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\ClassNull::create(),
+                    \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Tip\ClassNull::create(),
+                    \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid\ClassNull::create(),
+                    \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\ClassNull::create(),
+                    \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\ClassNull::create(),
+                    \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\ClassNull::create()
+                );
+
+                $slovo->setInitialForm($string_view);
+                $slovo->setDigitalView($word);
+                $words[$word] = [$slovo];
+            }
+        }
+
+
+    }
 }

@@ -99,6 +99,30 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
     }
 
     /**
+     * @param string $digital_value
+     * @return Base[]
+     */
+    public function buildFromNumber($digital_value)
+    {
+        assert(is_string($digital_value));
+        assert(is_numeric($digital_value));
+        $string_view = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Helper::convertToString($digital_value);
+        $word = Base::create(
+            $string_view,
+            \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\ClassNull::create(),
+            \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Tip\ClassNull::create(),
+            \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid\ClassNull::create(),
+            \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\ClassNull::create(),
+            \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\ClassNull::create(),
+            \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\ClassNull::create()
+        );
+
+        $word->setInitialForm($string_view);
+
+        return [$word];
+    }
+
+    /**
      * @param $parameters
      * @return \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Base[]
      */
@@ -273,4 +297,49 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
         return $padeszh;
     }
 
+
+    /**
+     * @param Base[] $slova
+     * @return Base
+     * @throws \Aot\Exception
+     */
+    public function reunion(array $slova)
+    {
+        if (empty($slova)) {
+            throw new \Aot\Exception("Массив числительных пуст");
+        }
+
+        foreach ($slova as $slovo) {
+            assert(is_a($slovo, Base::class), true);
+        }
+
+        $initial_forms = [];
+        foreach ($slova as $slovo) {
+            $initial_forms[] = $slovo->getInitialForm();
+        }
+        $reunion_initial_form = join(' ', $initial_forms);
+
+        $texts = [];
+        foreach ($slova as $slovo) {
+            $texts[] = $slovo->getText();
+        }
+        $reunion_text = join(' ', $texts);
+
+        /** @var Base $base_slovo */
+        $base_slovo = $slova[count($slova) - 1];
+
+        $reunion_slovo = $word = Base::create(
+            $reunion_text,
+            $base_slovo->vid,
+            $base_slovo->tip,
+            $base_slovo->podvid,
+            $base_slovo->chislo,
+            $base_slovo->rod,
+            $base_slovo->padeszh
+        );
+
+        $reunion_slovo->setInitialForm($reunion_initial_form);
+
+        return $reunion_slovo;
+    }
 }
