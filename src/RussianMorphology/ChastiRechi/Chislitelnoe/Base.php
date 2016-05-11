@@ -23,6 +23,51 @@ use Aot\RussianMorphology\Slovo;
  */
 class Base extends Slovo
 {
+    /** @var  double */
+    protected $digital_view;
+
+    //TODO пока что не удалять
+//    /**
+//     * @param int $view
+//     * @return double|int|string
+//     * @throws \Aot\Exception
+//     */
+//    public function getInitialForm($view = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::STRING_VIEW)
+//    {
+//        if ($view === \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::STRING_VIEW) {
+//            return $this->initial_form;
+//        }
+//        if ($view === \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::DIGITAL_VIEW) {
+//            return \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Helper::convertToDigital($this->initial_form);
+//        }
+//        throw new \Aot\Exception("Неверный формат начальной формы");
+//    }
+
+//    /**
+//     * @param int $view
+//     * @return double|int|string
+//     * @throws \Aot\Exception
+//     */
+//    public function getText($view = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::STRING_VIEW)
+//    {
+//        if ($view === \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::STRING_VIEW) {
+//            return $this->text;
+//        }
+//        if ($view === \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::DIGITAL_VIEW) {
+//            return \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Helper::convertToDigital($this->initial_form);
+//        }
+//        throw new \Aot\Exception("Неверный формат начальной формы");
+//    }
+
+    /**
+     * @param double $value
+     */
+    public function setDigitalView($value)
+    {
+        assert(is_double($value));
+        $this->digital_view = $value;
+    }
+
     public static function getMorphology()
     {
         return [
@@ -68,4 +113,17 @@ class Base extends Slovo
 
         return $ob;
     }
+
+    /**
+     * @return double
+     * @throws \Aot\Exception
+     */
+    public function getDigitalView()
+    {
+        if ($this->digital_view === null) {
+            return \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Helper::convertToDigital($this->initial_form);
+        }
+        return $this->digital_view;
+    }
+    
 }

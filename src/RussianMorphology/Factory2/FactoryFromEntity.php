@@ -118,6 +118,11 @@ class FactoryFromEntity
 
         $cached = $this->word_processor->processCachedWords($cached_words);
         $simple = $this->word_processor->processSimpleWords($simple_words);
+
+        //Обработка чисел, которые записаны цифрами
+        $this->word_processor->processDigitalOfNumber($simple);
+        
+        
         $composite = $this->word_processor->processCompositeWords($composite_words);
         $trash = $this->word_processor->processTrash($trash_words);
 

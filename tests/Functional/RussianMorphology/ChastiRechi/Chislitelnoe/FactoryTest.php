@@ -364,4 +364,74 @@ class FactoryTest extends AotDataStorage
         return Factory::get()->build($dw);
     }
 
+
+    public function testReunion()
+    {
+        $factory = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Factory::get();
+
+        $texts = [
+            'семьсот',
+            'сорок',
+            'четыре',
+        ];
+
+        $slova = [];
+
+        /**
+         * 'vid' => Morphology\Vid\Base::class,
+         * 'tip' => Morphology\Tip\Base::class,
+         * 'podvid' => Morphology\Podvid\Base::class,
+         * 'chislo' => Morphology\Chislo\Base::class,
+         * 'rod' => Morphology\Rod\Base::class,
+         * 'padeszh' => Morphology\Padeszh\Base::class
+         */
+
+        /** @var \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base $slovo_1 */
+        $slovo_1 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+        $slovo_1->setInitialForm($texts[0]);
+        PHPUnitHelper::setProtectedProperty($slovo_1, 'text', $texts[0]);
+        $slova[] = $slovo_1;
+
+        /** @var \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base $slovo_2 */
+        $slovo_2 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+        $slovo_2->setInitialForm($texts[1]);
+        PHPUnitHelper::setProtectedProperty($slovo_2, 'text', $texts[1]);
+        $slova[] = $slovo_2;
+
+        /** @var \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base $slovo_3 */
+        $slovo_3 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+        $slovo_3->setInitialForm($texts[2]);
+        $storage_3 = [];
+        $storage_3['vid'] = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\Kolichestvenniy::create();
+        $storage_3['tip'] = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Tip\Sobiratelniy::create();
+        $storage_3['podvid'] = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid\ClassNull::create();
+        $storage_3['chislo'] = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\Edinstvennoe::create();
+        $storage_3['rod'] = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\ClassNull::create();
+        $storage_3['padeszh'] = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Datelnij::create();
+        PHPUnitHelper::setProtectedProperty($slovo_3, 'storage', $storage_3);
+        PHPUnitHelper::setProtectedProperty($slovo_3, 'text', $texts[2]);
+        $slova[] = $slovo_3;
+
+        $reunion_slovo = $factory->reunion($slova);
+
+        $this->assertEquals(join(' ', $texts), $reunion_slovo->getText());
+        $this->assertEquals(join(' ', $texts), $reunion_slovo->getInitialForm());
+
+        $this->assertEquals($slovo_3->vid, $reunion_slovo->vid);
+        $this->assertEquals($slovo_3->tip, $reunion_slovo->tip);
+        $this->assertEquals($slovo_3->podvid, $reunion_slovo->podvid);
+        $this->assertEquals($slovo_3->chislo, $reunion_slovo->chislo);
+        $this->assertEquals($slovo_3->padeszh, $reunion_slovo->padeszh);
+        $this->assertEquals($slovo_3->rod, $reunion_slovo->rod);
+    }
+    
 }
