@@ -542,7 +542,7 @@ class WordProcessor
                 );
 
                 $slovo->setInitialForm($string_view);
-                $slovo->setDigitalView($word);
+                $slovo->setDigitalView((double)$word);
                 $words[$word] = [$slovo];
             }
         }
