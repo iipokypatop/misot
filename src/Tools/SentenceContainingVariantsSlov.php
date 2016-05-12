@@ -155,4 +155,40 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
     {
         return $this->texts;
     }
+
+    /**
+     * @param int $index
+     * @return bool
+     * @throws \Aot\Exception
+     */
+    public function removeByIndex($index)
+    {
+        assert(is_int($index));
+        if ($index < 0 || $index > $this->count() - 1) {
+            throw new \Aot\Exception("Элемента с индексом $index не существует");
+        }
+        unset($this->slova[$index]);
+        unset($this->texts[$index]);
+        return true;
+    }
+
+    /**
+     * @param int $index
+     * @param string[] $texts
+     * @param \Aot\Unit[][] $slova
+     */
+    public function insertAfterIndex($index, array $texts, array $slova)
+    {
+        assert(is_int($index));
+        foreach ($texts as $text) {
+            assert(is_string($text));
+        }
+        foreach ($slova as $item) {
+            foreach ($item as $slovo) {
+                assert($slovo instanceof \Aot\Unit);
+            }
+        }
+        array_splice($this->texts, $index, 0, $texts);
+        array_splice($this->slova, $index, 0, $slova);
+    }
 }
