@@ -106,7 +106,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
     {
         assert(is_string($digital_value));
         assert(is_numeric($digital_value));
-        $string_view = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Helper::convertToString($digital_value);
+        $string_view = \Aot\Tools\ConverterOfNumeral\Base::convertToString((double)$digital_value);
         $word = Base::create(
             $string_view,
             \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\ClassNull::create(),

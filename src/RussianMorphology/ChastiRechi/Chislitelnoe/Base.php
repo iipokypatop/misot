@@ -121,7 +121,7 @@ class Base extends Slovo
     public function getDigitalView()
     {
         if ($this->digital_view === null) {
-            return \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Helper::convertToDigital($this->initial_form);
+            return \Aot\Tools\ConverterOfNumeral\Base::convertToDigital($this->initial_form);
         }
         return $this->digital_view;
     }

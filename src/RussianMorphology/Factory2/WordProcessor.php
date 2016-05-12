@@ -530,7 +530,7 @@ class WordProcessor
     {
         foreach ($words as $word => $slova) {
             if (is_numeric($word)) {
-                $string_view = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Helper::convertToString($word);
+                $string_view = \Aot\Tools\ConverterOfNumeral\Base::convertToString($word);
                 $slovo = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::create(
                     $string_view,
                     \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\ClassNull::create(),
