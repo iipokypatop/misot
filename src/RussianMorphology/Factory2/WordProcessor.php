@@ -531,16 +531,26 @@ class WordProcessor
         foreach ($words as $word => $slova) {
             if (is_numeric($word)) {
                 $string_view = \Aot\Tools\ConverterOfNumeral\Base::convertToString((double)$word);
-                $slovo = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::create(
-                    $string_view,
-                    \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\ClassNull::create(),
-                    \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Tip\ClassNull::create(),
-                    \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid\ClassNull::create(),
-                    \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\ClassNull::create(),
-                    \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\ClassNull::create(),
-                    \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\ClassNull::create()
-                );
-
+                $parts = $this->getChislitelnieForString($string_view);
+                if (count($parts) === 1) {
+                    $slovo = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::create(
+                        $string_view,
+                        \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\ClassNull::create(),
+                        \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Tip\ClassNull::create(),
+                        \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid\ClassNull::create(),
+                        \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\ClassNull::create(),
+                        \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\ClassNull::create(),
+                        \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\ClassNull::create()
+                    );
+                } elseif (count($parts) > 1) {
+                    $slovo = \Aot\RussianMorphology\ChastiRechi\ChislitelnoeSostavnoe\Base::createNew(
+                        $string_view,
+                        $parts
+                    );
+                } else {
+                    throw new \Aot\Exception("Что-то пошло не так.");
+                }
+                
                 $slovo->setInitialForm($string_view);
                 $slovo->setDigitalView((double)$word);
                 $words[$word] = [$slovo];
@@ -548,5 +558,28 @@ class WordProcessor
         }
 
 
+    }
+
+    /**
+     * @param string $string
+     * @return \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base[]
+     * @throws \Aot\Exception
+     */
+    protected function getChislitelnieForString($string)
+    {
+        $simple_words = preg_split('/\s/', $string);
+        $slova = $this->processSimpleWords($simple_words);
+        /** @var \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base[] $parts */
+        $parts = [];
+        foreach ($slova as $item) {
+            foreach ($item as $slovo) {
+                if ($slovo instanceof \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base) {
+                    $parts[] = $slovo;
+                    continue 2;
+                }
+            }
+            throw new \Aot\Exception("Для числа $item не найдено объекта Slovo");
+        }
+        return $parts;
     }
 }

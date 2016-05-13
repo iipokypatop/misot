@@ -13,7 +13,7 @@ class BaseTest extends \AotTest\AotDataStorage
      */
     public function testConvertToString($number, $string)
     {
-        $this->assertEquals($string, \Aot\Tools\ConverterOfNumeral\Base::convertToString($number));
+        $this->assertEquals($string, \Aot\Tools\ConverterOfNumeral\Base::convertToString((double)$number));
     }
 
     public function providerConvertToString()

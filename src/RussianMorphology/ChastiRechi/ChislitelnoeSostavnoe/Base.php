@@ -77,6 +77,7 @@ class Base extends \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base
      * @param string $text
      * @param \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base[] $parts
      * @return Base
+     * @throws \Aot\Exception
      */
     public static function createNew(
         $text,
@@ -85,6 +86,9 @@ class Base extends \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base
         assert(is_string($text));
         foreach ($parts as $part) {
             assert(is_a($part, \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::class, true));
+        }
+        if (count($parts) < 2) {
+            throw new \Aot\Exception("Составное числительное должно содержать как минимум два числительных.");
         }
 
         $ob = new static($text);
