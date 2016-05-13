@@ -72,7 +72,7 @@ class ConvertTextIntoSlova
     {
         /** @var \Aot\Tools\SentenceContainingVariantsSlov $sentence */
         foreach ($sentences as $sentence) {
-            $sequences = static::findSequences($sentence);
+            $sequences = static::findSequencesOfChislitelnie($sentence);
             foreach ($sequences as $sequence) {
                 $elements_for_union = [];
                 $parts_text_of_union = [];
@@ -92,7 +92,7 @@ class ConvertTextIntoSlova
      * @param SentenceContainingVariantsSlov $sentence
      * @return \Aot\RussianMorphology\Slovo[][][]
      */
-    protected static function findSequences(\Aot\Tools\SentenceContainingVariantsSlov $sentence)
+    protected static function findSequencesOfChislitelnie(\Aot\Tools\SentenceContainingVariantsSlov $sentence)
     {
         $sequences = [];
         $sequence = [];

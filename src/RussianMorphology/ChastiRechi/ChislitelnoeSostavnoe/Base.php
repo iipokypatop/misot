@@ -109,7 +109,6 @@ class Base extends \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base
 
     /**
      * @return double
-     * @throws \Aot\Exception
      */
     public function getDigitalView()
     {

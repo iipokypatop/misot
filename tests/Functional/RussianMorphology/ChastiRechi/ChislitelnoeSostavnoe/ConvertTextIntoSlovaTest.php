@@ -12,6 +12,9 @@ namespace AotTest\Functional\RussianMorphology\ChastiRechi\ChislitelnoeSostavnoe
 class ConvertTextIntoSlovaTest extends \AotTest\AotDataStorage
 {
 
+    /**
+     * @brief Тестирование построения графа из текста, содержащего разные числительные.
+     */
     public function testDifferentChislitelnie()
     {
         $text = <<<EOF

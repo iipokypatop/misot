@@ -11,9 +11,7 @@ namespace AotTest\Functional\RussianMorphology\ChastiRechi\ChislitelnoeSostavnoe
 
 class BuildGraphWithChislitelnoeTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @brief Тестирование построения графа из текста, содержащего разные числительные.
-     */
+    
     public function testRunByWords()
     {
         $this->markTestSkipped("Пример, как строить граф по тексту с использованием составных числительных");
