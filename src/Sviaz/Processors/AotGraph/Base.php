@@ -139,7 +139,7 @@ class Base
                 continue;
             }
 
-            throw new \LogicException('Unknown point direction: ' . var_export($point->direction));
+            throw new \LogicException('Unknown point direction: ' . var_export($point->direction, true));
         }
 
         return $links;
