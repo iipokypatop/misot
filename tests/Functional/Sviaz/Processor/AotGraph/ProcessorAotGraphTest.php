@@ -4,6 +4,19 @@
 
 class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 {
+
+
+    public function testDASD()
+    {
+        $sentence = [
+            'Папа',
+            'пошел',
+            'в',
+            'лес',
+        ];
+        $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
+        $graph = $aot_graph->runByWords($sentence);
+    }
     public function testLaunchAndBuildGraph()
     {
         $sentence = [

@@ -61,8 +61,8 @@ class RoleSpecificator
             $role_dep = RoleRegistry::SVOISTVO;
         } // предлог + существительное
         elseif ($name_relation === DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
-            $role_main = RoleRegistry::SVOISTVO; // предлог
-            $role_dep = RoleRegistry::VESCH; // сущ
+            $role_main = RoleRegistry::VESCH; // сущ
+            $role_dep = RoleRegistry::SVOISTVO; // предлог
         } // словосочетание (кресло директора)
         elseif ($name_relation === DefinesAot::GENITIVE_PHRASE_MIVAR) {
             $role_main = RoleRegistry::VESCH;
