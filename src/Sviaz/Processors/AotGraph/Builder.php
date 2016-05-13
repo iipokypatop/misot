@@ -79,8 +79,7 @@ class Builder
         \Aot\Graph\Slovo\Edge::create(
             $main_vertex,
             $depended_vertex,
-            $this->buildRule($main_vertex, $depended_vertex, $relation),
-            $depended_vertex->getPredlog()
+            $this->buildRule($main_vertex, $depended_vertex, $relation)
         );
     }
 
