@@ -14,25 +14,19 @@ class Edge extends \BaseGraph\Edge
     /** @var \Aot\Sviaz\Rule\Base */
     protected $rule;
 
-    /** @var \Aot\RussianMorphology\ChastiRechi\Predlog\Base */
-    protected $predlog;
-
     /**
      * @param Vertex $from
      * @param Vertex $to
      * @param \Aot\Sviaz\Rule\Base $rule
-     * @param \Aot\RussianMorphology\ChastiRechi\Predlog\Base $predlog
      * @return static
      */
     public static function create(
         Vertex $from,
         Vertex $to,
-        \Aot\Sviaz\Rule\Base $rule,
-        \Aot\RussianMorphology\ChastiRechi\Predlog\Base $predlog = null
+        \Aot\Sviaz\Rule\Base $rule
     ) {
         $obj = new static($from, $to);
         $obj->rule = $rule;
-        $obj->predlog = $predlog;
         return $obj;
     }
 
@@ -43,13 +37,4 @@ class Edge extends \BaseGraph\Edge
     {
         return $this->rule;
     }
-
-    /**
-     * @return \Aot\RussianMorphology\ChastiRechi\Predlog\Base
-     */
-    public function getPredlog()
-    {
-        return $this->predlog;
-    }
-
 }

@@ -29,14 +29,8 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
         foreach ($graph->getVertices() as $vertex) {
             $vertex->setAttribute('graphviz.label', $vertex->getSlovo()->getText());
         }
-        /** @var \Aot\Graph\Slovo\Edge $edge */
-        foreach ($graph->getEdges() as $edge) {
-            if (null !== $edge->getPredlog()) {
-                $edge->setAttribute('graphviz.label', $edge->getPredlog()->getText());
-            }
-        }
-
         $graphviz = new \Graphp\GraphViz\GraphViz();
+        $graphviz->createImageSrc($graph);
     }
 
     /**
@@ -73,7 +67,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
                     'съесть',
                     '.',
                 ],
-                [9,8]
+                [10, 9]
             ],
             [
                 [
@@ -82,7 +76,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
                     'летом',
                     'гулять',
                 ],
-                [6,8]
+                [6, 8]
             ],
             [
                 [
@@ -91,7 +85,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
                     'в',
                     'лес',
                 ],
-                [3,2]
+                [4, 3]
             ],
         ];
     }
