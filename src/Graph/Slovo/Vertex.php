@@ -12,8 +12,6 @@ class Vertex extends \BaseGraph\Vertex
 {
     /** @var  \Aot\RussianMorphology\Slovo */
     protected $slovo;
-    /** @var  \Aot\RussianMorphology\ChastiRechi\Predlog\Base */
-    protected $predlog;
 
     public static function create(
         Graph $graph,
@@ -22,7 +20,6 @@ class Vertex extends \BaseGraph\Vertex
     ) {
         $obj = new static($graph, static::getNextId());
         $obj->slovo = $slovo;
-        $obj->predlog = $predlog;
         return $obj;
     }
 
@@ -33,14 +30,4 @@ class Vertex extends \BaseGraph\Vertex
     {
         return $this->slovo;
     }
-
-    /**
-     * @return \Aot\RussianMorphology\ChastiRechi\Predlog\Base
-     */
-    public function getPredlog()
-    {
-        return $this->predlog;
-    }
-
-
 }
