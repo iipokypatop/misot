@@ -18,27 +18,21 @@ class VerticesManager
     /**
      * @param \Aot\Graph\Slovo\Graph $graph
      * @param Builder $builder
-     * @param \Aot\RussianMorphology\Slovo[] $prepose_to_slovo
      * @return \Aot\Sviaz\Processors\AotGraph\VerticesManager
      */
-    public static function create(\Aot\Graph\Slovo\Graph $graph, \Aot\Sviaz\Processors\AotGraph\Builder $builder, array $prepose_to_slovo = null)
+    public static function create(\Aot\Graph\Slovo\Graph $graph, \Aot\Sviaz\Processors\AotGraph\Builder $builder)
     {
-        return new static($graph, $builder, $prepose_to_slovo);
+        return new static($graph, $builder);
     }
 
     /**
      * @param \Aot\Graph\Slovo\Graph $graph
      * @param Builder $builder
-     * @param \Aot\RussianMorphology\Slovo[] $prepose_to_slovo
      */
-    protected function __construct(\Aot\Graph\Slovo\Graph $graph, \Aot\Sviaz\Processors\AotGraph\Builder $builder, array $prepose_to_slovo = [])
+    protected function __construct(\Aot\Graph\Slovo\Graph $graph, \Aot\Sviaz\Processors\AotGraph\Builder $builder)
     {
-        foreach ($prepose_to_slovo as $item) {
-            assert(is_a($item, \Aot\RussianMorphology\Slovo::class, true));
-        }
         $this->graph = $graph;
         $this->builder = $builder;
-        $this->prepose_to_slovo = $prepose_to_slovo;
     }
 
     /**
@@ -49,15 +43,7 @@ class VerticesManager
     public function getVertexBySlovo(\Aot\RussianMorphology\Slovo $slovo)
     {
         if (!$this->isProcessedSlovo($slovo)) {
-            if ($this->isSlovoHasPrepose($slovo)) {
-                $vertex = $this->builder->buildVertex(
-                    $this->graph,
-                    $slovo,
-                    $this->getPreposeBySlovo($slovo)
-                );
-            } else {
-                $vertex = $this->builder->buildVertex($this->graph, $slovo);
-            }
+            $vertex = $this->builder->buildVertex($this->graph, $slovo);
             $this->pushVertex($slovo, $vertex);
         } else {
             $vertex = $this->pullVertex($slovo);
@@ -74,30 +60,6 @@ class VerticesManager
     protected function isProcessedSlovo(\Aot\RussianMorphology\Slovo $slovo)
     {
         return !empty($this->vertices[spl_object_hash($slovo)]);
-    }
-
-    /**
-     * Есть ли у слова предлог
-     * @param \Aot\RussianMorphology\Slovo $slovo
-     * @return bool
-     */
-    protected function isSlovoHasPrepose(\Aot\RussianMorphology\Slovo $slovo)
-    {
-        return !empty($this->prepose_to_slovo[spl_object_hash($slovo)]);
-    }
-
-    /**
-     * Получить предлог по слову
-     * @param \Aot\RussianMorphology\Slovo $slovo
-     * @return bool
-     */
-    protected function getPreposeBySlovo(\Aot\RussianMorphology\Slovo $slovo)
-    {
-        if (!empty($this->prepose_to_slovo[spl_object_hash($slovo)])) {
-            return $this->prepose_to_slovo[spl_object_hash($slovo)];
-        }
-
-        throw new \LogicException("Slovo does not have a prepose");
     }
 
     /**

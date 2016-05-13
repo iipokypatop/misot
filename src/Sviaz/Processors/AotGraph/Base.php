@@ -13,15 +13,14 @@ class Base
     const MAIN_POINT = 'x'; // главная точка в АОТе
     const DEPENDED_POINT = 'y'; // зависимая точка в АОТе
     const RELATION = 'relation'; // отношение
+    const PREPOSITION_RELATION = 'prepositional_phrase'; // связь с предлогом
 
     /** @var \Aot\Sviaz\Processors\AotGraph\Builder */
     protected $builder;
 
-//    /** @var \Aot\RussianMorphology\Slovo[] */
-//    protected $hash_slovo_map = [];// карта слов
-
     /** @var \Aot\Sviaz\Processors\AotGraph\SentenceManager */
     protected $sentence_manager;
+
     /** @var  \Aot\RussianMorphology\Slovo[][][] */
     protected $slova_collection;
 
@@ -75,9 +74,9 @@ class Base
             return $this->builder->buildGraph();
         }
 
-        list($links, $prepose_to_slovo) = $this->getLinkedSlova($syntax_model, $this->sentence_manager);
+        $links = $this->getLinkedSlova($syntax_model);
 
-        return $this->createGraph($links, $prepose_to_slovo);
+        return $this->createGraph($links);
     }
 
     /**
@@ -98,7 +97,7 @@ class Base
 
     /**
      * @param \Sentence_space_SP_Rel[] $syntax_model
-     * @return array []
+     * @return mixed[]
      */
     protected function getLinkedSlova(array $syntax_model)
     {
@@ -120,51 +119,30 @@ class Base
          *           \              \----> (лето)
          *           \---> (пошлый)
          */
-        $slova_collection = [];
 
         $links = [];
-
-        $link_with_prepose = [];
 
         /** @var  \Sentence_space_SP_Rel[] $syntax_model */
         foreach ($syntax_model as $key => $point) {
 
             $slovo = $this->buildSlovo($point);
 
-            if ($point->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
+            $links[$point->Oz][2] = $point->O;
 
-                $link_with_prepose[$point->Oz][$point->direction] = $slovo;
-
-            } else {
-
-                $links[$point->Oz][2] = $point->O;
-
-                if ($point->direction === static::MAIN_POINT) {
-
-                    $links[$point->Oz][0] = $slovo;
-                    continue;
-                }
-
-                if ($point->direction === static::DEPENDED_POINT) {
-                    $links[$point->Oz][1] = $slovo;
-                    continue;
-                }
-
-                throw new \LogicException('Unknown point direction: ' . var_export($point->direction));
-
+            if ($point->direction === static::MAIN_POINT) {
+                $links[$point->Oz][0] = $slovo;
+                continue;
             }
+
+            if ($point->direction === static::DEPENDED_POINT) {
+                $links[$point->Oz][1] = $slovo;
+                continue;
+            }
+
+            throw new \LogicException('Unknown point direction: ' . var_export($point->direction));
         }
 
-        $links_filtered = $this->filterLinks($links);
-
-        $prepose_to_slovo = [];
-        foreach ($link_with_prepose as $oz => $pair) {
-            if (is_a($pair[static::MAIN_POINT], \Aot\RussianMorphology\ChastiRechi\Predlog\Base::class, true)) {
-                $prepose_to_slovo[spl_object_hash($pair[static::DEPENDED_POINT])] = $pair[static::MAIN_POINT];
-            }
-        }
-
-        return [$links_filtered, $prepose_to_slovo];
+        return $links;
     }
 
     /**
@@ -173,7 +151,6 @@ class Base
      */
     protected function buildSlovo(\Sentence_space_SP_Rel $point)
     {
-
         if (empty($this->slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)])) {
 
             $factory_slovo = $this->builder->getFactorySlovo($point->dw->id_word_class);
@@ -184,7 +161,6 @@ class Base
 
             $this->slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)] = $slovo;
 
-            //$this->hash_slovo_map[spl_object_hash($slovo)] = $slovo;
         } else {
 
             $slovo = $this->slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)];
@@ -205,34 +181,12 @@ class Base
     }
 
     /**
-     * @param mixed[] $links_in
-     * @return mixed[]
-     */
-    protected function filterLinks(array $links_in)
-    {
-        $links = [];
-        foreach ($links_in as $link) {
-            if (
-                $link[0] instanceof \Aot\RussianMorphology\ChastiRechi\Predlog\Base
-                || $link[1] instanceof \Aot\RussianMorphology\ChastiRechi\Predlog\Base
-            ) {
-                continue;
-            }
-
-            $links[] = $link;
-        }
-
-        return $links;
-    }
-
-    /**
      * Строим граф
      *
      * @param \Aot\RussianMorphology\Slovo[][] $links
-     * @param \Aot\RussianMorphology\Slovo[] $prepose_to_slovo
      * @return \Aot\Graph\Slovo\Graph
      */
-    protected function createGraph(array $links, array $prepose_to_slovo = [])
+    protected function createGraph(array $links)
     {
         $graph_slova = $this->builder->buildGraph();
 
@@ -242,9 +196,9 @@ class Base
 
         $vertices_manager = \Aot\Sviaz\Processors\AotGraph\VerticesManager::create(
             $graph_slova,
-            $this->builder,
-            $prepose_to_slovo
+            $this->builder
         );
+
 
         foreach ($links as $link) {
 
@@ -252,11 +206,21 @@ class Base
                 throw new \LogicException("Main point or depended point or relation is empty!");
             }
 
+            if ($link[2] === static::PREPOSITION_RELATION) {
+                $this->builder->buildEdge(
+                    $vertices_manager->getVertexBySlovo($link[1]),
+                    $vertices_manager->getVertexBySlovo($link[0]),
+                    $link[2]
+                );
+                continue;
+            }
+
             $this->builder->buildEdge(
                 $vertices_manager->getVertexBySlovo($link[0]),
                 $vertices_manager->getVertexBySlovo($link[1]),
                 $link[2]
             );
+
         }
 
         return $graph_slova;

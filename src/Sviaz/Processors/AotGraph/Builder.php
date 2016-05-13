@@ -75,6 +75,7 @@ class Builder
      */
     public function buildEdge(\Aot\Graph\Slovo\Vertex $main_vertex, \Aot\Graph\Slovo\Vertex $depended_vertex, $relation)
     {
+        assert(is_string($relation));
         \Aot\Graph\Slovo\Edge::create(
             $main_vertex,
             $depended_vertex,

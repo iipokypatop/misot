@@ -37,6 +37,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
         }
 
         $graphviz = new \Graphp\GraphViz\GraphViz();
+        $graphviz->createImageSrc($graph);
     }
 
     /**
@@ -73,7 +74,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
                     'съесть',
                     '.',
                 ],
-                [9,8]
+                [10, 9]
             ],
             [
                 [
@@ -82,7 +83,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
                     'летом',
                     'гулять',
                 ],
-                [6,8]
+                [6, 8]
             ],
             [
                 [
@@ -91,7 +92,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
                     'в',
                     'лес',
                 ],
-                [3,2]
+                [4, 3]
             ],
         ];
     }
