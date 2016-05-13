@@ -57,6 +57,67 @@ class ConvertTextIntoSlova
 
             $sentences[] = $tmp_sentence;
         }
+
+
+        //Объединение объектов числительных в составное числительное, если это возможно
+        static::mergeSimpleChislitelnie($sentences);
+
         return $sentences;
+    }
+
+    /**
+     * @param \Aot\Tools\SentenceContainingVariantsSlov[] $sentences
+     */
+    protected static function mergeSimpleChislitelnie(array &$sentences)
+    {
+        /** @var \Aot\Tools\SentenceContainingVariantsSlov $sentence */
+        foreach ($sentences as $sentence) {
+            $sequences = static::findSequencesOfChislitelnie($sentence);
+            foreach ($sequences as $sequence) {
+                $elements_for_union = [];
+                $parts_text_of_union = [];
+                foreach ($sequence as $index => $elements) {
+                    $sentence->removeByIndex($index);
+                    $elements_for_union[] = $elements[0];
+                    $parts_text_of_union [] = $elements[0]->getText();
+                }
+                $union_element = \Aot\RussianMorphology\ChastiRechi\ChislitelnoeSostavnoe\Base::createNew(join(' ',
+                    $parts_text_of_union), $elements_for_union);
+                $sentence->insertAfterIndex(array_keys($sequence)[0], [$union_element->getText()], [[$union_element]]);
+            }
+        }
+    }
+
+    /**
+     * @param SentenceContainingVariantsSlov $sentence
+     * @return \Aot\RussianMorphology\Slovo[][][]
+     */
+    protected static function findSequencesOfChislitelnie(\Aot\Tools\SentenceContainingVariantsSlov $sentence)
+    {
+        $sequences = [];
+        $sequence = [];
+        $tmp_sequence = [];
+        foreach ($sentence->getSlova() as $index => $slova) {
+            $flag = false;
+            /** @var \Aot\RussianMorphology\Slovo $slovo */
+            foreach ($slova as $slovo) {
+                if ($slovo instanceof \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base) {
+                    $flag = true;
+                    $tmp_sequence[$index][] = $slovo;
+                }
+            }
+            if ($flag) {
+                $sequence = $sequence + $tmp_sequence;
+                $tmp_sequence = [];
+            } else {
+                if (count($sequence) > 1) {
+                    $sequences[] = $sequence;
+                    $sequence = [];
+                } else {
+                    $sequence = [];
+                }
+            }
+        }
+        return $sequences;
     }
 }
