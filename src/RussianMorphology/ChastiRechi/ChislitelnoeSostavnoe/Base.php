@@ -113,7 +113,7 @@ class Base extends \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base
     public function getDigitalView()
     {
         if ($this->digital_view === null) {
-            return \Aot\Tools\ConverterOfNumeral\Base::convertToDigital($this->initial_form);
+            $this->digital_view = \Aot\Tools\ConverterOfNumeral\Base::convertToDigital($this->initial_form);
         }
         return $this->digital_view;
     }
