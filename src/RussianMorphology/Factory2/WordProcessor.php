@@ -537,6 +537,7 @@ class WordProcessor
      * @brief Из числа записанного цифрами
      *
      * @param \Aot\RussianMorphology\Slovo[][] $words
+     * @throws \Aot\Exception
      */
     public function processDigitalOfNumber(array &$words)
     {
@@ -579,7 +580,10 @@ class WordProcessor
      */
     protected function getChislitelnieForString($string)
     {
-        $simple_words = preg_split('/\s/', $string);
+        $simple_words = [];
+        foreach (preg_split('/\s/', $string) as $item) {
+            $simple_words[$item] = $item;
+        }
         $slova = $this->processSimpleWords($simple_words);
         /** @var \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base[] $parts */
         $parts = [];
