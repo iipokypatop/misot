@@ -43,8 +43,11 @@ class BuildTermTreeFromText
             $tmpl_slova = [];
             foreach ($sentence_without_punctuation as $word => $slova) {
                 $tmpl_initial_forms = [];
-                foreach ($slova as $slovo) {
+                foreach ($slova as $index => $slovo) {
                     $initial_form = $slovo->getInitialForm();
+                    if (static::initialFormAlreadyMet($slova, $index, $initial_form)) {
+                        continue;
+                    }
                     $terms = static::getTermsForInitialForm($initial_form);
                     $tmpl_definitions = [];
                     foreach ($terms as $term) {
@@ -195,6 +198,25 @@ class BuildTermTreeFromText
         $state = static::$states [$level];
         static::$states [$level] = static::FALSE_VERTEX;
         return $state;
+    }
+
+    /**
+     * @brief Проверка, есть ли в коллекции до текущего индекса слово с такой же начальной формаой, как указано в параметре
+     *
+     * @param \Aot\RussianMorphology\Slovo[] $slova Массив слов, в котором производится поиск
+     * @param int $index Индекс, до которого производится поиск
+     * @param string $initial_form Сама начальная форма
+     * @return bool
+     */
+    protected static function initialFormAlreadyMet(array $slova, $index, $initial_form)
+    {
+        for ($i = 0; $i < $index; $i++) {
+            $slovo = $slova[$i];
+            if ($initial_form === $slovo->getInitialForm()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
