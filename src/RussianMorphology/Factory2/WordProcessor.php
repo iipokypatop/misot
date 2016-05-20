@@ -239,8 +239,9 @@ class WordProcessor
         }
 
         $words_lower = [];
-        foreach ($words as $word) {
-            $words_lower[$this->strToLower($word)][] = $word;
+        foreach ($words as $index => $word) {
+            $words_lower[$this->strToLowerAndProcessLetterYO($word)][] = $word;
+            $words[$index] = $this->processLetterYO($word);
         }
 
         $this->assertNotDuplicates($words);
@@ -251,8 +252,8 @@ class WordProcessor
 
         /** @var \Aot\RussianMorphology\Slovo[][] $slova */
         $slova = [];
-        foreach ($words as $word) {
-            $slova[$word] = [];
+        foreach ($words as $key_word => $word) {
+            $slova[$key_word] = [];
         }
 
         if (empty($words)) {
@@ -322,7 +323,7 @@ class WordProcessor
 
             } else {
 
-                $word_form_lower = $this->strToLower($word_form);
+                $word_form_lower = $this->strToLowerAndProcessLetterYO($word_form);
 
                 if (!isset($words_lower[$word_form_lower])) {
                     throw new \Aot\Exception("ошибка получения слова в нижнем регистре для слова " . var_export($word_form, 1));
@@ -336,6 +337,17 @@ class WordProcessor
 
 
         return $slova;
+    }
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    protected function strToLowerAndProcessLetterYO($string)
+    {
+        $string = $this->strToLower($string);
+        $string = $this->processLetterYO($string);
+        return $string;
     }
 
     /**
@@ -525,6 +537,7 @@ class WordProcessor
      * @brief Из числа записанного цифрами
      *
      * @param \Aot\RussianMorphology\Slovo[][] $words
+     * @throws \Aot\Exception
      */
     public function processDigitalOfNumber(array &$words)
     {
@@ -550,7 +563,7 @@ class WordProcessor
                 } else {
                     throw new \Aot\Exception("Что-то пошло не так.");
                 }
-                
+
                 $slovo->setInitialForm($string_view);
                 $slovo->setDigitalView((double)$word);
                 $words[$word] = [$slovo];
@@ -567,7 +580,10 @@ class WordProcessor
      */
     protected function getChislitelnieForString($string)
     {
-        $simple_words = preg_split('/\s/', $string);
+        $simple_words = [];
+        foreach (preg_split('/\s/', $string) as $item) {
+            $simple_words[$item] = $item;
+        }
         $slova = $this->processSimpleWords($simple_words);
         /** @var \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base[] $parts */
         $parts = [];
@@ -581,5 +597,17 @@ class WordProcessor
             throw new \Aot\Exception("Для числа $item не найдено объекта Slovo");
         }
         return $parts;
+    }
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    protected function processLetterYO($string)
+    {
+        $pattern = "/ё/ui";
+        $replacement = 'е';
+        $string = preg_replace($pattern, $replacement, $string);
+        return $string;
     }
 }
