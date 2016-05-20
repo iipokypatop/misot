@@ -48,7 +48,8 @@ class SequenceTest extends \AotTest\AotDataStorage
         $callOriginalClone = true,
         $callAutoload = true,
         $cloneArguments = false,
-        $callOriginalMethods = false
+        $callOriginalMethods = false,
+        $proxyTarget = null
     ) {
         return parent::getMock($originalClassName, $methods, $arguments, $mockClassName, $callOriginalConstructor,
             $callOriginalClone, $callAutoload, $cloneArguments,
