@@ -252,8 +252,8 @@ class WordProcessor
 
         /** @var \Aot\RussianMorphology\Slovo[][] $slova */
         $slova = [];
-        foreach ($words as $word) {
-            $slova[$word] = [];
+        foreach ($words as $key_word => $word) {
+            $slova[$key_word] = [];
         }
 
         if (empty($words)) {
