@@ -159,10 +159,16 @@ class WordProcessor
             $all_words[] = $splitted[1];
         }
 
-        $slova = $this->processSimpleWords(
-            array_unique($all_words)
-        );
+        $all_words = array_unique($all_words);
 
+        $processed_array = [];
+        foreach ($all_words as $word) {
+            $processed_array[$word] = $word;
+        }
+
+        $slova = $this->processSimpleWords(
+            $processed_array
+        );
 
         $result = [];
         foreach ($mask as $word_text => $parts) {
