@@ -223,7 +223,22 @@ class Base
 
         }
 
+        $this->filterExcessEdgeFromAOT($graph_slova);
+
         return $graph_slova;
+    }
+
+    /**
+     * @param \Aot\Graph\Slovo\Graph $graph_slova
+     */
+    protected function filterExcessEdgeFromAOT(\Aot\Graph\Slovo\Graph $graph_slova)
+    {
+        /** @var \BaseGraph\Edge $edge */
+        foreach ($graph_slova->getEdges() as $edge) {
+            if ($edge->getVertexStart() === $edge->getVertexEnd()) {
+                $edge->destroy();
+            }
+        }
     }
 
 }
