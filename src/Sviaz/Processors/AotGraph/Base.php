@@ -223,6 +223,7 @@ class Base
 
         }
 
+        // http://redmine.mivar.ru/issues/3183
         $this->filterExcessEdgeFromAOT($graph_slova);
 
         return $graph_slova;
