@@ -24,21 +24,24 @@ class Eq extends Base
             throw new \LogicException("Must not be equal");
         }
 
-        if (get_class($left) === get_class($right)) {
+        $left_class = get_class($left);
+        $right_class = get_class($right);
+
+        if ($left_class === $right_class) {
             return true;
         }
 
-        if (get_class($left) === \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\ClassNull::class) {
+        if ($left_class === \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\ClassNull::class) {
             return true;
         }
 
-        if (get_class($right) === \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\ClassNull::class) {
+        if ($right_class === \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Rod\ClassNull::class) {
             return true;
         }
 
         foreach (MorphologyRegistry::getClasses() as $morphology_id => $variants) {
             foreach ($variants as $variant) {
-                if (in_array(get_class($left), $variant, true) && in_array(get_class($right), $variant, true)) {
+                if (in_array($left_class, $variant, true) && in_array($right_class, $variant, true)) {
                     return true;
                 }
             }
