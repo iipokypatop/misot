@@ -39,6 +39,8 @@ class Eq extends Base
             return true;
         }
 
+
+        // В целях оптимизации
 //        foreach (MorphologyRegistry::getClasses() as $morphology_id => $variants) {
 //            foreach ($variants as $variant) {
 //                if (in_array($left_class, $variant, true) && in_array($right_class, $variant, true)) {
@@ -46,7 +48,6 @@ class Eq extends Base
 //                }
 //            }
 //        }
-
         return isset(static::$map_of_comparisons_morphology[$left_class][$right_class]);
     }
 }

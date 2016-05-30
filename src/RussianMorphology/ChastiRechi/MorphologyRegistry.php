@@ -188,7 +188,7 @@ class MorphologyRegistry extends MorphologyRegistryParent
                 //Формируем все варианты совпадений
                 foreach ($level_2 as $index_left => $left) {
                     foreach ($level_2 as $index_right => $right) {
-                        $result[$left][$right] = $index_left === $index_right;
+                        $result[$left][$right] = true;
                     }
                 }
 
