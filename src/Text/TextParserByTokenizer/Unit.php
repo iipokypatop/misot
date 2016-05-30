@@ -21,6 +21,8 @@ class Unit
     /** @var \Aot\Tokenizer\Token\Token[] */
     protected $tokens = [];
 
+    protected $last_string_representation;
+
     /** @var int */
     protected $type;
 
@@ -36,8 +38,11 @@ class Unit
         }
         assert(is_int($type));
 
-        if (!in_array($type, \Aot\Text\TextParserByTokenizer\TokenAndUnitRegistry::getAssociatedUnitTypeAndTokenTypeMap())) {
-            throw new \LogicException('The type of token ' . var_export($type, true) . ' does not associated to any unit token');
+        if (!in_array($type,
+            \Aot\Text\TextParserByTokenizer\TokenAndUnitRegistry::getAssociatedUnitTypeAndTokenTypeMap())
+        ) {
+            throw new \LogicException('The type of token ' . var_export($type,
+                    true) . ' does not associated to any unit token');
         }
 
         if ([] === $tokens) {
@@ -72,9 +77,19 @@ class Unit
         return $this->getStringRepresentation();
     }
 
-    public function getStringRepresentation()
+    /**
+     * @return string
+     */
+    public function getStringRepresentation($rebuild_representation = true)
     {
-        return join('', $this->tokens);
+        if ($rebuild_representation) {
+            $this->last_string_representation = join('', $this->tokens);
+            return $this->last_string_representation;
+        }
+        if ($this->last_string_representation === null) {
+            $this->last_string_representation = join('', $this->tokens);
+        }
+        return $this->last_string_representation;
     }
 
     /**

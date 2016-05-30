@@ -92,7 +92,7 @@ class ConfigurationEndOfSentence
     protected function isSuitableText(\Aot\Text\TextParserByTokenizer\Unit $unit)
     {
         foreach ($this->suitable_text as $suitable_text) {
-            if ((string)$unit === $suitable_text) {
+            if ($unit->getStringRepresentation(false) === $suitable_text) {
                 return true;
             }
         }
