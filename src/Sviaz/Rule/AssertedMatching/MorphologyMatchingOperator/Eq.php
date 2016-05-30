@@ -47,6 +47,6 @@ class Eq extends Base
 //            }
 //        }
 
-        return static::$map_of_comparisons_morphology[$left_class][$right_class];
+        return isset(static::$map_of_comparisons_morphology[$left_class][$right_class]);
     }
 }
