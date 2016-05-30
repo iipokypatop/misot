@@ -154,6 +154,7 @@ class MorphologyRegistry extends MorphologyRegistryParent
 
     public static $getMorphologyGroupIdCache;
     public static $classes = [];
+    public static $map_of_comparisons_morphology = [];
     public static $classByChastRechiAndPriznak = [];
 
     public static function getLvl1()
@@ -163,6 +164,44 @@ class MorphologyRegistry extends MorphologyRegistryParent
         );
     }
 
+
+    /**
+     * $brief Метод для оптимизации, возвращающий карту сравнений в виде массива с двумя ключами
+     * $array[$key1][$key2] = $value;
+     * где $key1 - класс первого элемента, $key2 -  класс второго элемента, $value - совпадение (true) или несовпадение (false);
+     *
+     * @return bool[][]
+     */
+    public static function getMapOfComparisonsMorphology()
+    {
+        // Если поле заполнено, то не пересчитываем его
+        if (static::$map_of_comparisons_morphology !== []) {
+            return static::$map_of_comparisons_morphology;
+        }
+
+        $classes = static::getClasses();
+
+        $result = [];
+        foreach ($classes as $level_1) {
+            foreach ($level_1 as $level_2) {
+
+                //Формируем все варианты совпадений
+                foreach ($level_2 as $index_left => $left) {
+                    foreach ($level_2 as $index_right => $right) {
+                        $result[$left][$right] = $index_left === $index_right;
+                    }
+                }
+
+            }
+        }
+        static::$map_of_comparisons_morphology = $result;
+        return static::$map_of_comparisons_morphology;
+    }
+
+
+    /**
+     * @return string[][][]
+     */
     public static function getClasses()
     {
         if ([] === static::$classes) {
@@ -661,7 +700,7 @@ class MorphologyRegistry extends MorphologyRegistryParent
                 ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vid\ClassNull::class,
             ],
             static::VOZVRATNOST => [
-                ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\ClassNull::class,   
+                ChastiRechiRegistry::GLAGOL => \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\ClassNull::class,
                 ChastiRechiRegistry::PRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Prichastie\Morphology\Vozvratnost\ClassNull::class,
                 ChastiRechiRegistry::DEEPRICHASTIE => \Aot\RussianMorphology\ChastiRechi\Deeprichastie\Morphology\Vozvratnost\ClassNull::class,
                 ChastiRechiRegistry::INFINITIVE => \Aot\RussianMorphology\ChastiRechi\Infinitive\Morphology\Vozvratnost\ClassNull::class,
@@ -1067,7 +1106,8 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::RAZRYAD_MESTOIMENIE_PRITYAZHATELNOE => \Aot\MivarTextSemantic\OldAotConstants::POSSESSIVE_PRONOUN,
             static::RAZRYAD_MESTOIMENIE_VOZVRATNOE => \Aot\MivarTextSemantic\OldAotConstants::REFLEXIVE_PRONOUN,
             static::RAZRYAD_MESTOIMENIE_LICHNOE => \Aot\MivarTextSemantic\OldAotConstants::PERSONAL_PRONOUN,
-            static::RAZRYAD_MESTOIMENIE_NEOPREDELENNOE => \Aot\MivarTextSemantic\OldAotConstants::INDEFINITE_PRONOUN, // ?
+            static::RAZRYAD_MESTOIMENIE_NEOPREDELENNOE => \Aot\MivarTextSemantic\OldAotConstants::INDEFINITE_PRONOUN,
+            // ?
             static::RAZRYAD_MESTOIMENIE_OPREDELITELNOE => \Aot\MivarTextSemantic\OldAotConstants::ATTRIBUTIVE_PRONOUN,
             static::RAZRYAD_MESTOIMENIE_OTRICATELNOE => \Aot\MivarTextSemantic\OldAotConstants::NEGATIVE_PRONOUN,
             static::RAZRYAD_MESTOIMENIE_UKAZATELNOE => \Aot\MivarTextSemantic\OldAotConstants::DEMONSTRATIVE_PRONOUN,
