@@ -14,6 +14,7 @@ use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Edinstvennoe;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\Mnozhestvennoe;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Chislo\ClassNull as NullChislo;
 
+use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Litso\ClassNull;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Dejstvitelnyj;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\Stradatelnyj;
 use Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\ClassNull as NullRazryad;
@@ -418,7 +419,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
             } elseif ((int)($val) === \Aot\MivarTextSemantic\Constants::PERSON_THIRD_ID) {
                 $litso[] = TretieLitso::create();
             } else {
-                throw new \RuntimeException('Unsupported value exception = ' . var_export($val, 1));
+                $litso[] = ClassNull::create();
             }
         }
         return $litso;
