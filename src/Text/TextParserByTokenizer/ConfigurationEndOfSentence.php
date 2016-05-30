@@ -92,7 +92,7 @@ class ConfigurationEndOfSentence
     protected function isSuitableText(\Aot\Text\TextParserByTokenizer\Unit $unit)
     {
         foreach ($this->suitable_text as $suitable_text) {
-            if ($unit->getStringRepresentation() === $suitable_text) {
+            if ($unit->__string_representation === $suitable_text) {
                 return true;
             }
         }
@@ -175,12 +175,12 @@ class ConfigurationEndOfSentence
         $nesting_level = 0;
 
         foreach ($units as $unit) {
-            if ($unit->getStringRepresentation() === $open_skobka){
+            if ($unit->__string_representation === $open_skobka) {
                 $this->map_property_of_units[$unit] = $nesting_level;
                 $nesting_level++;
                 continue;
             }
-            if ($unit->getStringRepresentation() === $close_skobka){
+            if ($unit->__string_representation === $close_skobka) {
                 $nesting_level--;
             }
             $this->map_property_of_units[$unit] = $nesting_level;

@@ -39,7 +39,7 @@ class UnitPseudoCodeRegistry
     public static function getUnitCode(\Aot\Text\TextParserByTokenizer\Unit $unit)
     {
         $code = '';
-        $unit_string_representation = $unit->getStringRepresentation();
+        $unit_string_representation = $unit->__string_representation;
         $unit_type = $unit->getType();
         $unit_length = mb_strlen($unit_string_representation, Encodings::UTF_8);
         if ($unit_type === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD) {

@@ -324,7 +324,7 @@ class TokenizerBasedParser
                 if ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_SPACE) {
                     continue;
                 }
-                $tmp[] = $unit->getStringRepresentation();
+                $tmp[] = $unit->__string_representation;
             }
             $result[] = $tmp;
         }
@@ -344,7 +344,7 @@ class TokenizerBasedParser
                 if ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_SPACE) {
                     continue;
                 }
-                $result[] = $unit->getStringRepresentation();
+                $result[] = $unit->__string_representation;
             }
         }
 

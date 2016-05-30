@@ -22,7 +22,7 @@ class Unit
     protected $tokens = [];
 
     /** @var  string */
-    protected $string_representation;
+    public $__string_representation;
 
     /** @var int */
     protected $type;
@@ -76,7 +76,7 @@ class Unit
      */
     public function __toString()
     {
-        return $this->getStringRepresentation();
+        return $this->__string_representation;
     }
 
     /**
@@ -84,7 +84,7 @@ class Unit
      */
     public function getStringRepresentation()
     {
-        return $this->string_representation;
+        return $this->__string_representation;
     }
 
     /**
