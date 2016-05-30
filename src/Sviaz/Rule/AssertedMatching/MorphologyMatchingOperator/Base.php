@@ -12,6 +12,9 @@ use Aot\RussianMorphology\ChastiRechi\MorphologyBase;
 
 abstract class Base
 {
+    /** @var boolean[][] Поле для оптимизации, карта сранений морфологии */
+    protected static $map_of_comparisons_morphology = [];
+
     /**
      * Base constructor.
      */
@@ -31,6 +34,9 @@ abstract class Base
 
     public static function create()
     {
+        if (static::$map_of_comparisons_morphology === []) {
+            static::$map_of_comparisons_morphology = \Aot\RussianMorphology\ChastiRechi\MorphologyRegistry::getMapOfComparisonsMorphology();
+        }
         return new static;
     }
 
