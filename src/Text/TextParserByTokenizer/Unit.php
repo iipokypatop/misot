@@ -21,7 +21,8 @@ class Unit
     /** @var \Aot\Tokenizer\Token\Token[] */
     protected $tokens = [];
 
-    protected $last_string_representation;
+    /** @var  string */
+    protected $string_representation;
 
     /** @var int */
     protected $type;
@@ -50,6 +51,7 @@ class Unit
         }
         $ob = new static();
         $ob->tokens = $tokens;
+        $ob->string_representation = join('', $tokens);
         $ob->type = $type;
 
         return $ob;
@@ -80,16 +82,9 @@ class Unit
     /**
      * @return string
      */
-    public function getStringRepresentation($rebuild_representation = true)
+    public function getStringRepresentation()
     {
-        if ($rebuild_representation) {
-            $this->last_string_representation = join('', $this->tokens);
-            return $this->last_string_representation;
-        }
-        if ($this->last_string_representation === null) {
-            $this->last_string_representation = join('', $this->tokens);
-        }
-        return $this->last_string_representation;
+        return $this->string_representation;
     }
 
     /**
