@@ -120,9 +120,6 @@ class Base
              */
             $regex_list = $this->regex_list[$token_type_id];
 
-            if (count($regex_list) === 0) {
-                continue;
-            }
 
             foreach ($regex_list as $regex) {
 
