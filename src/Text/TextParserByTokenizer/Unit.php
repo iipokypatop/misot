@@ -51,7 +51,7 @@ class Unit
         }
         $ob = new static();
         $ob->tokens = $tokens;
-        $ob->string_representation = join('', $tokens);
+        $ob->__string_representation = join('', $tokens);
         $ob->type = $type;
 
         return $ob;
