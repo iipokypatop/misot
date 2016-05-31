@@ -39,42 +39,45 @@ class UnitPseudoCodeRegistry
     public static function getUnitCode(\Aot\Text\TextParserByTokenizer\Unit $unit)
     {
         $code = '';
-        if ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD) {
+        $unit_string_representation = $unit->__string_representation;
+        $unit_type = $unit->getType();
+        $unit_length = mb_strlen($unit_string_representation, Encodings::UTF_8);
+        if ($unit_type === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_WORD) {
             $regex = \Aot\Tokenizer\Token\Regex::create(\Aot\Tokenizer\Token\TokenRegexRegistry::PATTERN_UPPERCASE);
             $regex->addStartingCaret();
-            $uppercase = $regex->match($unit);
-            if (mb_strlen($unit, Encodings::UTF_8) === 1) {
+            $uppercase = $regex->match($unit_string_representation);
+            if ($unit_length === 1) {
                 if ($uppercase) {
                     $code = static::LETTER_UPPERCASE;
                 } else {
                     $code = static::LETTER_LOWERCASE;
                 }
-            } elseif (mb_strlen($unit, Encodings::UTF_8) > 1) {
+            } elseif ($unit_length > 1) {
                 if ($uppercase) {
                     $code = static::WORD_FIRST_LETTER_UPPERCASE;
                 } else {
                     $code = static::WORD_FIRST_LETTER_LOWERCASE;
                 }
             }
-        } elseif ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_PUNCTUATION) {
-            if (mb_strlen($unit, Encodings::UTF_8) === 1) {
-                if ((string)$unit === '.') {
+        } elseif ($unit_type === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_PUNCTUATION) {
+            if ($unit_length === 1) {
+                if ($unit_string_representation === '.') {
                     $code = static::SINGLE_DOT;
-                } elseif ((string)$unit === '(') {
+                } elseif ($unit_string_representation === '(') {
                     $code = static::BRACE_LEFT;
-                } elseif ((string)$unit === ')') {
+                } elseif ($unit_string_representation === ')') {
                     $code = static::BRACE_RIGHT;
                 }
             }
-        } elseif ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_SPACE) {
+        } elseif ($unit_type === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_SPACE) {
             $code = static::SPACE;
-        } elseif ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_NUMBER) {
+        } elseif ($unit_type === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_NUMBER) {
             $code = static::NUMBER;
-        } elseif ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_DASH) {
+        } elseif ($unit_type === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_DASH) {
             $code = static::DASH;
-        } elseif ($unit->getType() === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_OTHER) {
-            if (mb_strlen($unit, Encodings::UTF_8) === 1) {
-                if ((string)$unit === '+') {
+        } elseif ($unit_type === \Aot\Text\TextParserByTokenizer\Unit::UNIT_TYPE_OTHER) {
+            if (mb_strlen($unit_string_representation, Encodings::UTF_8) === 1) {
+                if ($unit_string_representation === '+') {
                     $code = static::PLUS;
                 }
             }
