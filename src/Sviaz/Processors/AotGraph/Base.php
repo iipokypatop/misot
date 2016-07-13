@@ -12,8 +12,6 @@ class Base
 {
     const MAIN_POINT = 'x'; // главная точка в АОТе
     const DEPENDED_POINT = 'y'; // зависимая точка в АОТе
-    const RELATION = 'relation'; // отношение
-    const PREPOSITION_RELATION = 'prepositional_phrase'; // связь с предлогом
 
     /** @var \Aot\Sviaz\Processors\AotGraph\Builder */
     protected $builder;
@@ -24,14 +22,17 @@ class Base
     /** @var  \Aot\RussianMorphology\Slovo[][][] */
     protected $slova_collection;
 
-    protected function __construct()
-    {
-        $this->builder = Builder::create();
-    }
-
+    /**
+     * @return static
+     */
     public static function create()
     {
         return new static();
+    }
+
+    protected function __construct()
+    {
+        $this->builder = Builder::create();
     }
 
     /**
@@ -130,8 +131,6 @@ class Base
 
             $slovo = $this->buildSlovo($point);
 
-
-            ////////
             if (!isset($links[$point->Oz])) {
                 $link = \Aot\Sviaz\Processors\AotGraph\Link::create($point->O);
                 $links[$point->Oz] = $link;
@@ -283,15 +282,6 @@ class Base
 
             if ($link->getMainSlovo() === null || $link->getDependedSlovo() === null) {
                 throw new \LogicException("Main point or depended point is empty!" . var_export($link, true));
-            }
-
-            if ($link->getNameOfLink() === static::PREPOSITION_RELATION) {
-                $this->builder->buildEdge(
-                    $vertices_manager->getVertexBySlovo($link->getDependedSlovo()),
-                    $vertices_manager->getVertexBySlovo($link->getMainSlovo()),
-                    $link->getNameOfLink()
-                );
-                continue;
             }
 
             $this->builder->buildEdge(
