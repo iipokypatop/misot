@@ -117,5 +117,4 @@ class Link
     {
         return $this->main_position;
     }
-
 }

@@ -92,17 +92,15 @@ class Builder
         }
     }
 
-
     /**
      * Собираем вершину
      * @param \Aot\Graph\Slovo\Graph $graph
      * @param \Aot\RussianMorphology\Slovo $slovo
-     * @param \Aot\RussianMorphology\ChastiRechi\Predlog\Base $predlog
      * @return \Aot\Graph\Slovo\Vertex
      */
-    public function buildVertex(\Aot\Graph\Slovo\Graph $graph, \Aot\RussianMorphology\Slovo $slovo, \Aot\RussianMorphology\ChastiRechi\Predlog\Base $predlog = null)
+    public function buildVertex(\Aot\Graph\Slovo\Graph $graph, \Aot\RussianMorphology\Slovo $slovo)
     {
-        return \Aot\Graph\Slovo\Vertex::create($graph, $slovo, $predlog);
+        return \Aot\Graph\Slovo\Vertex::create($graph, $slovo);
     }
 
     /**

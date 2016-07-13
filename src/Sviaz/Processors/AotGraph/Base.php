@@ -158,79 +158,6 @@ class Base
     }
 
     /**
-     * @param \Sentence_space_SP_Rel[] $syntax_model
-     * @return mixed[]
-     */
-    protected function getLinkedSlova2(array $syntax_model)
-    {
-        foreach ($syntax_model as $point) {
-            assert(is_a($point, \Sentence_space_SP_Rel::class, true));
-        }
-
-        if (empty($syntax_model)) {
-            return [];
-        }
-
-
-        /**
-         * $slova_collection:
-         * для каждого [point->kw][point->initial_form] - свой объект Slovo
-         * Человек пошел летом гулять:
-         *                         /----> (гулять)
-         * (человек) ----> (пойти) -----> (летом)
-         *           \              \----> (лето)
-         *           \---> (пошлый)
-         */
-
-        $links = [];
-
-        $links2 = [];
-
-        /** @var  \Sentence_space_SP_Rel[] $syntax_model */
-        foreach ($syntax_model as $key => $point) {
-
-            $slovo = $this->buildSlovo($point);
-
-            $links[$point->Oz][2] = $point->O;
-
-
-            ////////
-            if (!isset($links2[$point->Oz])) {
-                $link = \Aot\Sviaz\Processors\AotGraph\Link::create($point->O);
-                $links2[$point->Oz] = $link;
-            } else {
-                $link = $links2[$point->Oz];
-            }
-
-            if ($point->direction === static::MAIN_POINT) {
-                $link->setMainSlovo($slovo);
-                $link->setMainPosition($point->get_kw());
-
-            }
-
-            if ($point->direction === static::DEPENDED_POINT) {
-                $link->setDependedSlovo($slovo);
-                $link->setDependedPosition($point->get_kw());
-            }
-            ////////
-
-            if ($point->direction === static::MAIN_POINT) {
-                $links[$point->Oz][0] = $slovo;
-                continue;
-            }
-
-            if ($point->direction === static::DEPENDED_POINT) {
-                $links[$point->Oz][1] = $slovo;
-                continue;
-            }
-
-            throw new \LogicException('Unknown point direction: ' . var_export($point->direction, true));
-        }
-
-        return $links;
-    }
-
-    /**
      * @param \Sentence_space_SP_Rel $point
      * @return \Aot\RussianMorphology\Slovo
      */
@@ -285,59 +212,9 @@ class Base
             }
 
             $this->builder->buildEdge(
-                $vertices_manager->getVertexBySlovo($link->getMainSlovo()),
-                $vertices_manager->getVertexBySlovo($link->getDependedSlovo()),
+                $vertices_manager->getVertexBySlovo($link->getMainSlovo(), $link->getMainPosition()),
+                $vertices_manager->getVertexBySlovo($link->getDependedSlovo(), $link->getDependedPosition()),
                 $link->getNameOfLink()
-            );
-
-        }
-
-        // http://redmine.mivar.ru/issues/3183
-        $this->filterExcessEdgeFromAOT($graph_slova);
-
-        return $graph_slova;
-    }
-
-
-    /**
-     * Строим граф
-     *
-     * @param \Aot\RussianMorphology\Slovo[][] $links
-     * @return \Aot\Graph\Slovo\Graph
-     */
-    protected function createGraph2(array $links)
-    {
-        $graph_slova = $this->builder->buildGraph();
-
-        if (empty($links)) {
-            return $graph_slova;
-        }
-
-        $vertices_manager = \Aot\Sviaz\Processors\AotGraph\VerticesManager::create(
-            $graph_slova,
-            $this->builder
-        );
-
-
-        foreach ($links as $link) {
-
-            if (empty($link[0]) || empty($link[1]) || empty($link[2])) {
-                throw new \LogicException("Main point or depended point or relation is empty!");
-            }
-
-            if ($link[2] === static::PREPOSITION_RELATION) {
-                $this->builder->buildEdge(
-                    $vertices_manager->getVertexBySlovo($link[1]),
-                    $vertices_manager->getVertexBySlovo($link[0]),
-                    $link[2]
-                );
-                continue;
-            }
-
-            $this->builder->buildEdge(
-                $vertices_manager->getVertexBySlovo($link[0]),
-                $vertices_manager->getVertexBySlovo($link[1]),
-                $link[2]
             );
 
         }
