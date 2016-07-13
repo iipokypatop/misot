@@ -43,6 +43,8 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
         $aot_graph = \AotTest\Functional\Sviaz\Processor\AotGraph\AotGraphSyntaxModelMock::create();
         $graph = $aot_graph->runByWords($sentence);
 
+//        print_r($sentence);
+//        die();
         $this->assertEquals($graph->getVertices()->count(), $cnt_vertices_and_edges[0]);
         $this->assertEquals($graph->getEdges()->count(), $cnt_vertices_and_edges[1]);
     }

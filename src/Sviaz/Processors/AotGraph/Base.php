@@ -95,9 +95,10 @@ class Base
         return $mivar->getSyntaxModel();
     }
 
+
     /**
      * @param \Sentence_space_SP_Rel[] $syntax_model
-     * @return mixed[]
+     * @return \Aot\Sviaz\Processors\AotGraph\Link[]
      */
     protected function getLinkedSlova(array $syntax_model)
     {
@@ -120,6 +121,8 @@ class Base
          *           \---> (пошлый)
          */
 
+
+        /** @var \Aot\Sviaz\Processors\AotGraph\Link[] $links */
         $links = [];
 
         /** @var  \Sentence_space_SP_Rel[] $syntax_model */
@@ -127,7 +130,90 @@ class Base
 
             $slovo = $this->buildSlovo($point);
 
+
+            ////////
+            if (!isset($links[$point->Oz])) {
+                $link = \Aot\Sviaz\Processors\AotGraph\Link::create($point->O);
+                $links[$point->Oz] = $link;
+            } else {
+                $link = $links[$point->Oz];
+            }
+
+            if ($point->direction === static::MAIN_POINT) {
+                $link->setMainSlovo($slovo);
+                $link->setMainPosition($point->get_kw());
+                continue;
+
+            }
+
+            if ($point->direction === static::DEPENDED_POINT) {
+                $link->setDependedSlovo($slovo);
+                $link->setDependedPosition($point->get_kw());
+                continue;
+            }
+
+            throw new \LogicException('Unknown point direction: ' . var_export($point->direction, true));
+        }
+
+        return $links;
+    }
+
+    /**
+     * @param \Sentence_space_SP_Rel[] $syntax_model
+     * @return mixed[]
+     */
+    protected function getLinkedSlova2(array $syntax_model)
+    {
+        foreach ($syntax_model as $point) {
+            assert(is_a($point, \Sentence_space_SP_Rel::class, true));
+        }
+
+        if (empty($syntax_model)) {
+            return [];
+        }
+
+
+        /**
+         * $slova_collection:
+         * для каждого [point->kw][point->initial_form] - свой объект Slovo
+         * Человек пошел летом гулять:
+         *                         /----> (гулять)
+         * (человек) ----> (пойти) -----> (летом)
+         *           \              \----> (лето)
+         *           \---> (пошлый)
+         */
+
+        $links = [];
+
+        $links2 = [];
+
+        /** @var  \Sentence_space_SP_Rel[] $syntax_model */
+        foreach ($syntax_model as $key => $point) {
+
+            $slovo = $this->buildSlovo($point);
+
             $links[$point->Oz][2] = $point->O;
+
+
+            ////////
+            if (!isset($links2[$point->Oz])) {
+                $link = \Aot\Sviaz\Processors\AotGraph\Link::create($point->O);
+                $links2[$point->Oz] = $link;
+            } else {
+                $link = $links2[$point->Oz];
+            }
+
+            if ($point->direction === static::MAIN_POINT) {
+                $link->setMainSlovo($slovo);
+                $link->setMainPosition($point->get_kw());
+
+            }
+
+            if ($point->direction === static::DEPENDED_POINT) {
+                $link->setDependedSlovo($slovo);
+                $link->setDependedPosition($point->get_kw());
+            }
+            ////////
 
             if ($point->direction === static::MAIN_POINT) {
                 $links[$point->Oz][0] = $slovo;
@@ -152,20 +238,13 @@ class Base
     protected function buildSlovo(\Sentence_space_SP_Rel $point)
     {
         if (empty($this->slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)])) {
-
             $factory_slovo = $this->builder->getFactorySlovo($point->dw->id_word_class);
-
             $point->dw->word_form = $this->sentence_manager->getSentenceWordByAotId($point->kw);
-
             $slovo = $factory_slovo->build($point->dw)[0];
-
             $this->slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)] = $slovo;
-
         } else {
-
             $slovo = $this->slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)];
         }
-
 
         return $slovo;
     }
@@ -183,10 +262,60 @@ class Base
     /**
      * Строим граф
      *
-     * @param \Aot\RussianMorphology\Slovo[][] $links
+     * @param \Aot\Sviaz\Processors\AotGraph\Link[] $links
      * @return \Aot\Graph\Slovo\Graph
      */
     protected function createGraph(array $links)
+    {
+        $graph_slova = $this->builder->buildGraph();
+
+        if (empty($links)) {
+            return $graph_slova;
+        }
+
+        $vertices_manager = \Aot\Sviaz\Processors\AotGraph\VerticesManager::create(
+            $graph_slova,
+            $this->builder
+        );
+
+
+        foreach ($links as $link) {
+
+            if ($link->getMainSlovo() === null || $link->getDependedSlovo() === null) {
+                throw new \LogicException("Main point or depended point is empty!" . var_export($link, true));
+            }
+
+            if ($link->getNameOfLink() === static::PREPOSITION_RELATION) {
+                $this->builder->buildEdge(
+                    $vertices_manager->getVertexBySlovo($link->getDependedSlovo()),
+                    $vertices_manager->getVertexBySlovo($link->getMainSlovo()),
+                    $link->getNameOfLink()
+                );
+                continue;
+            }
+
+            $this->builder->buildEdge(
+                $vertices_manager->getVertexBySlovo($link->getMainSlovo()),
+                $vertices_manager->getVertexBySlovo($link->getDependedSlovo()),
+                $link->getNameOfLink()
+            );
+
+        }
+
+        // http://redmine.mivar.ru/issues/3183
+        $this->filterExcessEdgeFromAOT($graph_slova);
+
+        return $graph_slova;
+    }
+
+
+    /**
+     * Строим граф
+     *
+     * @param \Aot\RussianMorphology\Slovo[][] $links
+     * @return \Aot\Graph\Slovo\Graph
+     */
+    protected function createGraph2(array $links)
     {
         $graph_slova = $this->builder->buildGraph();
 
