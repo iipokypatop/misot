@@ -15,10 +15,10 @@ class Link
     protected $name_of_link = '';
 
     /** @var  \Aot\RussianMorphology\Slovo */
-    protected $main_slovo = null;
+    protected $main_slovo;
 
     /** @var  \Aot\RussianMorphology\Slovo */
-    protected $depended_slovo = null;
+    protected $depended_slovo;
 
     /** @var  int */
     protected $main_position;
@@ -44,6 +44,7 @@ class Link
         assert(is_string($name_of_link));
         $this->name_of_link = $name_of_link;
     }
+
     /**
      * @return string
      */
@@ -57,6 +58,9 @@ class Link
      */
     public function getMainSlovo()
     {
+        if (!isset($this->main_slovo)) {
+            throw new \Aot\Exception('Main slovo is not set!');
+        }
         return $this->main_slovo;
     }
 
@@ -73,6 +77,9 @@ class Link
      */
     public function getDependedSlovo()
     {
+        if (!isset($this->depended_slovo)) {
+            throw new \Aot\Exception('Depended slovo is not set!');
+        }
         return $this->depended_slovo;
     }
 
@@ -107,6 +114,9 @@ class Link
      */
     public function getDependedPosition()
     {
+        if (!isset($this->depended_position)) {
+            throw new \Aot\Exception('Depended position is not set!');
+        }
         return $this->depended_position;
     }
 
@@ -115,6 +125,9 @@ class Link
      */
     public function getMainPosition()
     {
+        if (!isset($this->main_position)) {
+            throw new \Aot\Exception('Main position is not set!');
+        }
         return $this->main_position;
     }
 }

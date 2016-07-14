@@ -3,7 +3,7 @@ namespace Aot\Graph\Slovo;
 
 class Graph extends \BaseGraph\Graph
 {
-    /** @var \Aot\Graph\Slovo\Vertex[] */
+    /** @var \Aot\Graph\Slovo\Vertex[][] */
     protected $map_vertices_by_positions = [];
 
     /** @var int[][] */
@@ -41,7 +41,7 @@ class Graph extends \BaseGraph\Graph
     }
 
     /**
-     * @return \Aot\Graph\Slovo\Vertex[]
+     * @return \Aot\Graph\Slovo\Vertex[][]
      */
     public function getMapVerticesByPositions()
     {

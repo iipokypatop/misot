@@ -206,17 +206,11 @@ class Base
 
 
         foreach ($links as $link) {
-
-            if ($link->getMainSlovo() === null || $link->getDependedSlovo() === null) {
-                throw new \LogicException("Main point or depended point is empty!" . var_export($link, true));
-            }
-
             $this->builder->buildEdge(
                 $vertices_manager->getVertexBySlovo($link->getMainSlovo(), $link->getMainPosition()),
                 $vertices_manager->getVertexBySlovo($link->getDependedSlovo(), $link->getDependedPosition()),
                 $link->getNameOfLink()
             );
-
         }
 
         // http://redmine.mivar.ru/issues/3183
