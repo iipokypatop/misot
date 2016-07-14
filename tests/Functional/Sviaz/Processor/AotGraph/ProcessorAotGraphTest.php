@@ -47,6 +47,39 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
         $this->assertEquals($graph->getEdges()->count(), $cnt_vertices_and_edges[1]);
     }
 
+    public function testCorrectPositions()
+    {
+        $sentence = [
+            'Папа',
+            'пошел',
+            'в',
+            'лес',
+            ',',
+            'чтобы',
+            'искать',
+            'гриб',
+            ',',
+            'а',
+            'потом',
+            'его',
+            'съесть',
+            '.',
+        ];
+        $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
+        $graph = $aot_graph->runByWords($sentence);
+        $sentence_without_punctuation = [];
+        foreach ($sentence as $item) {
+            if (!preg_match("/[\\.\\,\\?\\!]/ui", $item)) {
+                $sentence_without_punctuation[] = $item;
+            }
+        }
+        foreach ($graph->getVerticesCollection() as $vertex) {
+            /** @var \Aot\Graph\Slovo\Vertex $vertex */
+            $this->assertArrayHasKey($vertex->getPositionInSentence(), $sentence_without_punctuation);
+            $this->assertEquals($vertex->getSlovo()->getText(), $sentence_without_punctuation[$vertex->getPositionInSentence()]);
+        }
+    }
+
     public function dataProviderSerializedSyntaxModels()
     {
         return [

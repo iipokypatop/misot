@@ -11,8 +11,9 @@ namespace Aot\Sviaz\Processors\AotGraph;
 
 class Builder
 {
-    /** @var \Aot\RussianMorphology\FactoryBase[]  */
+    /** @var \Aot\RussianMorphology\FactoryBase[] */
     protected $factories;
+    const PREPOSITION_RELATION = 'prepositional_phrase'; // связь с предлогом
 
     public static function create()
     {
@@ -44,7 +45,7 @@ class Builder
             \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::getIdByClass(get_class($depended_vertex->getSlovo()));
 
         list($role_main, $role_dep) =
-        \Aot\Sviaz\Processors\AotGraph\RoleSpecificator::getRoles($relation, $id_word_class_main, $id_word_class_depended);
+            \Aot\Sviaz\Processors\AotGraph\RoleSpecificator::getRoles($relation, $id_word_class_main, $id_word_class_depended);
 
         $builder =
             \Aot\Sviaz\Rule\Builder2::create()
@@ -76,24 +77,30 @@ class Builder
     public function buildEdge(\Aot\Graph\Slovo\Vertex $main_vertex, \Aot\Graph\Slovo\Vertex $depended_vertex, $relation)
     {
         assert(is_string($relation));
-        \Aot\Graph\Slovo\Edge::create(
-            $main_vertex,
-            $depended_vertex,
-            $this->buildRule($main_vertex, $depended_vertex, $relation)
-        );
+        if ($relation === static::PREPOSITION_RELATION) {
+            \Aot\Graph\Slovo\Edge::create(
+                $depended_vertex,
+                $main_vertex,
+                $this->buildRule($depended_vertex, $main_vertex, $relation)
+            );
+        } else {
+            \Aot\Graph\Slovo\Edge::create(
+                $main_vertex,
+                $depended_vertex,
+                $this->buildRule($main_vertex, $depended_vertex, $relation)
+            );
+        }
     }
-
 
     /**
      * Собираем вершину
      * @param \Aot\Graph\Slovo\Graph $graph
      * @param \Aot\RussianMorphology\Slovo $slovo
-     * @param \Aot\RussianMorphology\ChastiRechi\Predlog\Base $predlog
      * @return \Aot\Graph\Slovo\Vertex
      */
-    public function buildVertex(\Aot\Graph\Slovo\Graph $graph, \Aot\RussianMorphology\Slovo $slovo, \Aot\RussianMorphology\ChastiRechi\Predlog\Base $predlog = null)
+    public function buildVertex(\Aot\Graph\Slovo\Graph $graph, \Aot\RussianMorphology\Slovo $slovo)
     {
-        return \Aot\Graph\Slovo\Vertex::create($graph, $slovo, $predlog);
+        return \Aot\Graph\Slovo\Vertex::create($graph, $slovo);
     }
 
     /**
