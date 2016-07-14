@@ -67,7 +67,7 @@ class Link
     /**
      * @param \Aot\RussianMorphology\Slovo $main_slovo
      */
-    public function setMainSlovo($main_slovo)
+    public function setMainSlovo(\Aot\RussianMorphology\Slovo $main_slovo)
     {
         $this->main_slovo = $main_slovo;
     }
@@ -86,7 +86,7 @@ class Link
     /**
      * @param \Aot\RussianMorphology\Slovo $depended_slovo
      */
-    public function setDependedSlovo($depended_slovo)
+    public function setDependedSlovo(\Aot\RussianMorphology\Slovo $depended_slovo)
     {
         $this->depended_slovo = $depended_slovo;
     }
