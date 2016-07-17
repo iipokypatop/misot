@@ -19,7 +19,7 @@ class Issue3183Test extends \AotTest\AotDataStorage
             'фонарь',
         ];
         $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
-        $graph = $aot_graph->runByWords($words);
+        $graph = $aot_graph->runBySentenceWords($words);
         $this->assertEquals(3, count($graph->getVertices()));
         $this->assertEquals(0, count($graph->getEdges()));
     }
