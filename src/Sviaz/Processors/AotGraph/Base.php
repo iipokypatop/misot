@@ -62,7 +62,7 @@ class Base
      * @param int $sentence_id
      * @return \Aot\Graph\Slovo\Graph
      */
-    public function runBySentenceWords(array $sentence_words, $sentence_id)
+    public function runBySentenceWords(array $sentence_words, $sentence_id = 0)
     {
         assert(is_int($sentence_id));
         foreach ($sentence_words as $sentence_word) {
