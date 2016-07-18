@@ -96,11 +96,18 @@ class Builder
      * Собираем вершину
      * @param \Aot\Graph\Slovo\Graph $graph
      * @param \Aot\RussianMorphology\Slovo $slovo
+     * @param int $sentence_id
+     * @param int $position_slovo_in_sentence
      * @return \Aot\Graph\Slovo\Vertex
      */
-    public function buildVertex(\Aot\Graph\Slovo\Graph $graph, \Aot\RussianMorphology\Slovo $slovo)
+    public function buildVertex(
+        \Aot\Graph\Slovo\Graph $graph,
+        \Aot\RussianMorphology\Slovo $slovo,
+        $sentence_id,
+        $position_slovo_in_sentence
+    )
     {
-        return \Aot\Graph\Slovo\Vertex::create($graph, $slovo);
+        return \Aot\Graph\Slovo\Vertex::create($graph, $slovo, $sentence_id, $position_slovo_in_sentence);
     }
 
     /**

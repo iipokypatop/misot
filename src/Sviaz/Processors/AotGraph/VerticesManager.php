@@ -39,14 +39,16 @@ class VerticesManager
      * Получение вершины по слову
      * @param \Aot\RussianMorphology\Slovo $slovo
      * @param int $position_slovo_in_sentence
+     * @param int $sentence_id
      * @return \Aot\Graph\Slovo\Vertex
      */
-    public function getVertexBySlovo(\Aot\RussianMorphology\Slovo $slovo, $position_slovo_in_sentence)
+    public function getVertexBySlovo(\Aot\RussianMorphology\Slovo $slovo, $sentence_id, $position_slovo_in_sentence)
     {
         assert(is_int($position_slovo_in_sentence));
         if (!$this->isProcessedSlovo($slovo)) {
-            $vertex = $this->builder->buildVertex($this->graph, $slovo);
-            $vertex->addPositionInSentence($position_slovo_in_sentence);
+            $vertex = $this->builder->buildVertex($this->graph, $slovo, $sentence_id, $position_slovo_in_sentence);
+//            $vertex->addPositionInSentence($position_slovo_in_sentence);
+//            $vertex->setSentenceId($sentence_id);
             $this->pushVertex($slovo, $vertex);
         } else {
             $vertex = $this->pullVertex($slovo);

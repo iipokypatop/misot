@@ -32,16 +32,17 @@ class Graph extends \BaseGraph\Graph
      */
     public function appendVertexInMapPositionsOfVerticesInSentence(\Aot\Graph\Slovo\Vertex $vertex)
     {
-        $pos = $vertex->getPositionInSentence();
-        if (!is_int($pos) || $pos < 0) {
-            throw new \Aot\Exception("Wrong position value! " . var_export($pos, true));
+        $position_in_sentence = $vertex->getPositionInSentence();
+        $sentence_id = $vertex->getSentenceId();
+        if (!is_int($position_in_sentence) || $position_in_sentence < 0) {
+            throw new \Aot\Exception("Wrong position value! " . var_export($position_in_sentence, true));
         }
-        $this->map_vertices_by_positions[$pos][spl_object_hash($vertex)] = $vertex;
-        $this->map_positions_by_vertices[spl_object_hash($vertex)][$pos] = $pos;
+        $this->map_vertices_by_positions[$sentence_id][$position_in_sentence][spl_object_hash($vertex)] = $vertex;
+        $this->map_positions_by_vertices[spl_object_hash($vertex)][$sentence_id][$position_in_sentence] = $position_in_sentence;
     }
 
     /**
-     * @return \Aot\Graph\Slovo\Vertex[][]
+     * @return \Aot\Graph\Slovo\Vertex[][][]
      */
     public function getMapVerticesByPositions()
     {
@@ -49,7 +50,7 @@ class Graph extends \BaseGraph\Graph
     }
 
     /**
-     * @return int[][]
+     * @return int[][][]
      */
     public function getMapPositionsByVertices()
     {

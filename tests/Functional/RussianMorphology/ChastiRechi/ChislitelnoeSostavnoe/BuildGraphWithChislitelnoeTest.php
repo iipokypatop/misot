@@ -40,7 +40,7 @@ EOF;
                 }
             }
 
-            $graphs[] = $graph->runByWords($words);
+            $graphs[] = $graph->runBySentenceWords($words);
         }
 
     }

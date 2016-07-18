@@ -54,15 +54,17 @@ class Base
             }
         }
 
-        return $this->runByWords($sentence_words);
+        return $this->runBySentenceWords($sentence_words);
     }
 
     /**
      * @param string[] $sentence_words
+     * @param int $sentence_id
      * @return \Aot\Graph\Slovo\Graph
      */
-    public function runByWords(array $sentence_words)
+    public function runBySentenceWords(array $sentence_words, $sentence_id = 0)
     {
+        assert(is_int($sentence_id));
         foreach ($sentence_words as $sentence_word) {
             assert(is_string($sentence_word));
         }
@@ -77,7 +79,7 @@ class Base
 
         $links = $this->getLinkedSlova($syntax_model);
 
-        return $this->createGraph($links);
+        return $this->createGraph($links, $sentence_id);
     }
 
     /**
@@ -189,9 +191,10 @@ class Base
      * Строим граф
      *
      * @param \Aot\Sviaz\Processors\AotGraph\Link[] $links
+     * @param int $sentence_id
      * @return \Aot\Graph\Slovo\Graph
      */
-    protected function createGraph(array $links)
+    protected function createGraph(array $links, $sentence_id)
     {
         $graph_slova = $this->builder->buildGraph();
 
@@ -207,8 +210,8 @@ class Base
 
         foreach ($links as $link) {
             $this->builder->buildEdge(
-                $vertices_manager->getVertexBySlovo($link->getMainSlovo(), $link->getMainPosition()),
-                $vertices_manager->getVertexBySlovo($link->getDependedSlovo(), $link->getDependedPosition()),
+                $vertices_manager->getVertexBySlovo($link->getMainSlovo(), $sentence_id, $link->getMainPosition()),
+                $vertices_manager->getVertexBySlovo($link->getDependedSlovo(), $sentence_id, $link->getDependedPosition()),
                 $link->getNameOfLink()
             );
         }
