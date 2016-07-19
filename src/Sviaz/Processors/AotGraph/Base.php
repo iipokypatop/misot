@@ -127,7 +127,7 @@ class Base
 
         /** @var \Aot\Sviaz\Processors\AotGraph\Link[] $links */
         $links = [];
-        $sub_conjunctions = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::getSubConjunctions();
+        $sub_conjunctions = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::$sub_conjunctions;
         /** @var  \Sentence_space_SP_Rel[] $syntax_model */
         foreach ($syntax_model as $key => $point) {
 
@@ -139,12 +139,9 @@ class Base
             } else {
                 $link = $links[$point->Oz];
             }
-
-            foreach ($sub_conjunctions as $sub_conjunction) {
-                if ($link->getNameOfLink() === $sub_conjunction) {
-                    $link->setDirectLink(false);
-                    break;
-                }
+            
+            if (in_array($link->getNameOfLink(), $sub_conjunctions)) {
+                $link->setDirectLink(false);
             }
 
             if ($point->direction === static::MAIN_POINT) {
