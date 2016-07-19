@@ -104,7 +104,7 @@ class Builder
         \Aot\Graph\Slovo\Graph $graph,
         \Aot\RussianMorphology\Slovo $slovo,
         $sentence_id,
-        $position_slovo_in_sentence
+        $position_slovo_in_sentence = null
     )
     {
         return \Aot\Graph\Slovo\Vertex::create($graph, $slovo, $sentence_id, $position_slovo_in_sentence);

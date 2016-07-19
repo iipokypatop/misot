@@ -44,7 +44,7 @@ class VerticesManager
      */
     public function getVertexBySlovo(\Aot\RussianMorphology\Slovo $slovo, $sentence_id, $position_slovo_in_sentence)
     {
-        assert(is_int($position_slovo_in_sentence));
+        assert(is_int($position_slovo_in_sentence) || is_null($position_slovo_in_sentence));
         if (!$this->isProcessedSlovo($slovo)) {
             $vertex = $this->builder->buildVertex($this->graph, $slovo, $sentence_id, $position_slovo_in_sentence);
 //            $vertex->addPositionInSentence($position_slovo_in_sentence);
