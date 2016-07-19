@@ -9,6 +9,8 @@
 namespace Aot\Sviaz\Processors\AotGraph;
 
 
+use Aot\Exception;
+
 class Builder
 {
     /** @var \Aot\RussianMorphology\FactoryBase[] */
@@ -104,7 +106,7 @@ class Builder
         \Aot\Graph\Slovo\Graph $graph,
         \Aot\RussianMorphology\Slovo $slovo,
         $sentence_id,
-        $position_slovo_in_sentence
+        $position_slovo_in_sentence = null
     )
     {
         return \Aot\Graph\Slovo\Vertex::create($graph, $slovo, $sentence_id, $position_slovo_in_sentence);
@@ -167,5 +169,34 @@ class Builder
         ];
 
         return $conformity[$id_part_of_speech_aot];
+    }
+
+    /**
+     * @param \Aot\Graph\Slovo\Graph $graph
+     * @param int $sentence_id
+     * @param Link $link
+     * @return \Aot\Graph\Slovo\Vertex
+     */
+    public function buildSoyuzVertex(
+        \Aot\Graph\Slovo\Graph $graph,
+        $sentence_id,
+        \Aot\Sviaz\Processors\AotGraph\Link $link
+    )
+    {
+        assert(is_int($sentence_id));
+        $text_soyuz = $this->getTextOfSoyuz($link);
+        $slovo_union = \Aot\RussianMorphology\ChastiRechi\Soyuz\Base::create($text_soyuz);
+        return $this->buildVertex($graph, $slovo_union, $sentence_id);
+    }
+
+    /**
+     * @param Link $link
+     * @return string
+     * @throws \Exception
+     */
+    protected function getTextOfSoyuz(\Aot\Sviaz\Processors\AotGraph\Link $link)
+    {
+        $text_soyuz = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::getSubConjunctionText($link);
+        return $text_soyuz;
     }
 }

@@ -25,7 +25,11 @@ class Link
 
     /** @var  int */
     protected $depended_position;
-
+    
+    /** @var bool */
+    protected $direct_link = true;
+    
+    
     /**
      * @param string $name_of_link
      * @return static
@@ -45,6 +49,22 @@ class Link
         $this->name_of_link = $name_of_link;
     }
 
+    /**
+     * @param bool $direct
+     */
+    public function setDirectLink($direct)
+    {
+        assert(is_bool($direct));
+        $this->direct_link = $direct;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDirectLink()
+    {
+        return $this->direct_link;
+    }
     /**
      * @return string
      */

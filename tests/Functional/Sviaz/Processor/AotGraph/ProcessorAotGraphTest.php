@@ -12,7 +12,8 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
             'в',
             'лес',
             ',',
-            'чтобы',
+            'потому',
+            'что',
             'искать',
             'гриб',
             ',',
@@ -140,4 +141,40 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
         ];
     }
 
+
+
+    public function testAddSoyuzOnGraph()
+    {
+        $sentence = [
+            'папа',
+            'пошел',
+            'в',
+            'лес',
+            ',',
+            'если',
+            'искать',
+            'гриб',
+            '.',
+        ];
+        $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
+        $graph = $aot_graph->runBySentenceWords($sentence);
+
+        /** @var \Aot\Graph\Slovo\Vertex $vertex */
+        foreach ($graph->getVertices() as $vertex) {
+            if ($vertex->getSlovo()->getText() === 'если') {
+                break;
+            }
+        }
+        $edge_in = $vertex->getEdgesIn();
+        $edge_out = $vertex->getEdgesOut();
+
+        /** @var \Aot\Graph\Slovo\Vertex $vertex_start */
+        $vertex_start = $edge_in->getEdgeFirst()->getVerticesStart()->getVertexFirst();
+        /** @var \Aot\Graph\Slovo\Vertex $vertex_target */
+        $vertex_target = $edge_out->getEdgeLast()->getVerticesTarget()->getVertexFirst();
+
+        $this->assertEquals(2, $vertex->getEdges()->count());
+        $this->assertEquals('пойти', $vertex_start->getSlovo()->getInitialForm());
+        $this->assertEquals('искать', $vertex_target->getSlovo()->getInitialForm());
+    }
 }

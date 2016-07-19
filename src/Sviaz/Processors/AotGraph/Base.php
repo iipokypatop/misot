@@ -101,7 +101,7 @@ class Base
 
     /**
      * @param \Sentence_space_SP_Rel[] $syntax_model
-     * @return \Aot\Sviaz\Processors\AotGraph\Link[]
+     * @return Link[]
      */
     protected function getLinkedSlova(array $syntax_model)
     {
@@ -127,7 +127,7 @@ class Base
 
         /** @var \Aot\Sviaz\Processors\AotGraph\Link[] $links */
         $links = [];
-
+        
         /** @var  \Sentence_space_SP_Rel[] $syntax_model */
         foreach ($syntax_model as $key => $point) {
 
@@ -138,6 +138,10 @@ class Base
                 $links[$point->Oz] = $link;
             } else {
                 $link = $links[$point->Oz];
+            }
+            
+            if (in_array($link->getNameOfLink(), \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::$sub_conjunctions)) {
+                $link->setDirectLink(false);
             }
 
             if ($point->direction === static::MAIN_POINT) {
@@ -153,7 +157,7 @@ class Base
                 continue;
             }
 
-            throw new \LogicException('Unknown point direction: ' . var_export($point->direction, true));
+            throw new \Aot\Exception('Unknown point direction: ' . var_export($point->direction, true));
         }
 
         return $links;
@@ -207,8 +211,22 @@ class Base
             $this->builder
         );
 
-
         foreach ($links as $link) {
+            if (!$link->isDirectLink()) {
+                $vertex_union = $this->builder->buildSoyuzVertex($graph_slova, $sentence_id, $link);
+                $this->builder->buildEdge(
+                    $vertices_manager->getVertexBySlovo($link->getMainSlovo(), $sentence_id, $link->getMainPosition()),
+                    $vertex_union,
+                    $link->getNameOfLink()
+                );
+
+                $this->builder->buildEdge(
+                    $vertex_union,
+                    $vertices_manager->getVertexBySlovo($link->getDependedSlovo(), $sentence_id, $link->getDependedPosition()),
+                    $link->getNameOfLink()
+                );
+                continue;
+            }
             $this->builder->buildEdge(
                 $vertices_manager->getVertexBySlovo($link->getMainSlovo(), $sentence_id, $link->getMainPosition()),
                 $vertices_manager->getVertexBySlovo($link->getDependedSlovo(), $sentence_id, $link->getDependedPosition()),
@@ -234,5 +252,4 @@ class Base
             }
         }
     }
-
 }
