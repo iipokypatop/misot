@@ -101,7 +101,7 @@ class Base
 
     /**
      * @param \Sentence_space_SP_Rel[] $syntax_model
-     * @return \Aot\Sviaz\Processors\AotGraph\Link[]
+     * @return Link[]
      */
     protected function getLinkedSlova(array $syntax_model)
     {
@@ -127,7 +127,7 @@ class Base
 
         /** @var \Aot\Sviaz\Processors\AotGraph\Link[] $links */
         $links = [];
-        $sub_conjunctions = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::$sub_conjunctions;
+        
         /** @var  \Sentence_space_SP_Rel[] $syntax_model */
         foreach ($syntax_model as $key => $point) {
 
@@ -140,7 +140,7 @@ class Base
                 $link = $links[$point->Oz];
             }
             
-            if (in_array($link->getNameOfLink(), $sub_conjunctions)) {
+            if (in_array($link->getNameOfLink(), \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::$sub_conjunctions)) {
                 $link->setDirectLink(false);
             }
 
@@ -157,7 +157,7 @@ class Base
                 continue;
             }
 
-            throw new \Exception('Unknown point direction: ' . var_export($point->direction, true));
+            throw new \Aot\Exception('Unknown point direction: ' . var_export($point->direction, true));
         }
 
         return $links;

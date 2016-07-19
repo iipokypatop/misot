@@ -40,7 +40,6 @@ class SubConjunctionRegistry
     /**
      * @param Link $link
      * @return string
-     * @throws \Exception
      */
     public static function getSubConjunctionText(\Aot\Sviaz\Processors\AotGraph\Link $link)
     {
@@ -56,7 +55,7 @@ class SubConjunctionRegistry
             return static::$conjunction[$key];
         }
 
-        throw new \Exception('Union not found ' . var_export($link->getNameOfLink(), true));
+        throw new \Aot\Exception('Union not found ' . var_export($link->getNameOfLink(), true));
     }
     
 }
