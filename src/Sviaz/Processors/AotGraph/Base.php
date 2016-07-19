@@ -127,7 +127,7 @@ class Base
 
         /** @var \Aot\Sviaz\Processors\AotGraph\Link[] $links */
         $links = [];
-        $sub_conjunction_numbers = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::getSubConjunctions();
+        $sub_conjunctions = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::getSubConjunctions();
         /** @var  \Sentence_space_SP_Rel[] $syntax_model */
         foreach ($syntax_model as $key => $point) {
 
@@ -140,8 +140,8 @@ class Base
                 $link = $links[$point->Oz];
             }
 
-            foreach ($sub_conjunction_numbers as $sub_conjunction_number) {
-                if ($link->getNameOfLink() === $sub_conjunction_number) {
+            foreach ($sub_conjunctions as $sub_conjunction) {
+                if ($link->getNameOfLink() === $sub_conjunction) {
                     $link->setDirectLink(false);
                     break;
                 }
@@ -160,7 +160,7 @@ class Base
                 continue;
             }
 
-            throw new \LogicException('Unknown point direction: ' . var_export($point->direction, true));
+            throw new \Exception('Unknown point direction: ' . var_export($point->direction, true));
         }
 
         return $links;

@@ -191,21 +191,12 @@ class Builder
 
     /**
      * @param Link $link
-     * @return \LogicException|string
+     * @return string
+     * @throws \Exception
      */
     protected function getTextOfSoyuz(\Aot\Sviaz\Processors\AotGraph\Link $link)
     {
-        $text_soyuz = '';
-        $sub_conjunctions = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::getSubConjunctions();
-        foreach ($sub_conjunctions as $key => $sub_conjunction) {
-            if ($sub_conjunction === $link->getNameOfLink()) {
-                $text_soyuz = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::getSubConjunctionText($key);
-                break;
-            }
-        }
-        if ($text_soyuz === '') {
-            throw new \LogicException('Union not found');
-        }
+        $text_soyuz = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::getSubConjunctionText($link);
         return $text_soyuz;
     }
 }

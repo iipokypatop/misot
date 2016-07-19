@@ -12,13 +12,13 @@ namespace Aot\Sviaz\Processors\AotGraph;
 class SubConjunctionRegistry
 {
     /**
-     * @param int $key
-     * @return string|\LogicException
+     * @param Link $link
+     * @return string
+     * @throws \Exception
      */
-    public static function getSubConjunctionText($key) {
-        assert(is_int($key));
-        
-        $conjunction =  [
+    public static function getSubConjunctionText(\Aot\Sviaz\Processors\AotGraph\Link $link)
+    {
+        $conjunction = [
             'потому что',
             'чтобы',
             'когда',
@@ -27,12 +27,20 @@ class SubConjunctionRegistry
             'что',
             'несмотря на то что',
         ];
-        $result = null;
-        if (isset($key, $conjunction)) {
+        
+        $key = null;
+        $sub_conjunctions = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::getSubConjunctions();
+        foreach ($sub_conjunctions as $key => $sub_conjunction) {
+            if ($sub_conjunction === $link->getNameOfLink()) {
+                break;
+            }
+        }
+
+        if (isset($conjunction[$key])) {
             return $conjunction[$key];
         }
 
-        throw new \LogicException('Union not found');
+        throw new \Exception('Union not found ' . var_export($link->getNameOfLink(), true));
     }
 
     /**
