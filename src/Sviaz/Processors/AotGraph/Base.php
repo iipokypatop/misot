@@ -127,7 +127,7 @@ class Base
 
         /** @var \Aot\Sviaz\Processors\AotGraph\Link[] $links */
         $links = [];
-        $sub_conjunction_numbers = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::getSubConjunctionNumbers();
+        $sub_conjunction_numbers = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::getSubConjunctions();
         /** @var  \Sentence_space_SP_Rel[] $syntax_model */
         foreach ($syntax_model as $key => $point) {
 
@@ -142,7 +142,7 @@ class Base
 
             foreach ($sub_conjunction_numbers as $sub_conjunction_number) {
                 if ($link->getNameOfLink() === $sub_conjunction_number) {
-                    $link->setDirectLink();
+                    $link->setDirectLink(false);
                     break;
                 }
             }
@@ -216,15 +216,15 @@ class Base
 
         foreach ($links as $link) {
             if (!$link->isDirectLink()) {
-                $vertex_union = $this->vertexSoyuz($graph_slova, $sentence_id, $link);
+                $vertex_union = $this->builder->buildSoyuzVertex($graph_slova, $sentence_id, $link);
                 $this->builder->buildEdge(
                     $vertices_manager->getVertexBySlovo($link->getMainSlovo(), $sentence_id, $link->getMainPosition()),
-                    $vertices_manager->getVertexBySlovo($vertex_union->getSlovo(), $sentence_id, $vertex_union->getPositionInSentence()),
+                    $vertex_union,
                     $link->getNameOfLink()
                 );
 
                 $this->builder->buildEdge(
-                    $vertices_manager->getVertexBySlovo($vertex_union->getSlovo(), $sentence_id, $vertex_union->getPositionInSentence()),
+                    $vertex_union,
                     $vertices_manager->getVertexBySlovo($link->getDependedSlovo(), $sentence_id, $link->getDependedPosition()),
                     $link->getNameOfLink()
                 );
@@ -254,40 +254,5 @@ class Base
                 $edge->destroy();
             }
         }
-    }
-
-    /**
-     * @param \Aot\Graph\Slovo\Graph $graph
-     * @param int $sentence_id
-     * @param Link $link
-     * @return \Aot\Graph\Slovo\Vertex
-     */
-    protected function vertexSoyuz(
-        \Aot\Graph\Slovo\Graph $graph,
-        $sentence_id,
-        \Aot\Sviaz\Processors\AotGraph\Link $link
-    )
-    {
-        assert(is_int($sentence_id));
-        $text_soyuz = $this->textOfSoyuz($link);
-        $slovo_union = \Aot\RussianMorphology\ChastiRechi\Soyuz\Base::create($text_soyuz);
-        return $this->builder->buildVertex($graph, $slovo_union, $sentence_id);
-    }
-
-    /**
-     * @param \Aot\Sviaz\Processors\AotGraph\Link $link
-     * @return string
-     */
-    protected function textOfSoyuz(\Aot\Sviaz\Processors\AotGraph\Link $link)
-    {
-        $text_soyuz = '';
-        $sub_conjunction_numbers = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::getSubConjunctionNumbers();
-        foreach ($sub_conjunction_numbers as $key => $sub_conjunction_number) {
-            if ($sub_conjunction_number === $link->getNameOfLink()) {
-                $text_soyuz = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::getSubConjunctionText()[$key];
-                break;
-            }
-        }
-        return $text_soyuz;
     }
 }

@@ -52,7 +52,7 @@ class Link
     /**
      * @param bool $direct
      */
-    public function setDirectLink($direct = false)
+    public function setDirectLink($direct)
     {
         assert(is_bool($direct));
         $this->direct_link = $direct;

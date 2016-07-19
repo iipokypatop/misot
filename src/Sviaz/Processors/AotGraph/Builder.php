@@ -9,6 +9,8 @@
 namespace Aot\Sviaz\Processors\AotGraph;
 
 
+use Aot\Exception;
+
 class Builder
 {
     /** @var \Aot\RussianMorphology\FactoryBase[] */
@@ -167,5 +169,43 @@ class Builder
         ];
 
         return $conformity[$id_part_of_speech_aot];
+    }
+
+    /**
+     * @param \Aot\Graph\Slovo\Graph $graph
+     * @param int $sentence_id
+     * @param Link $link
+     * @return \Aot\Graph\Slovo\Vertex
+     */
+    public function buildSoyuzVertex(
+        \Aot\Graph\Slovo\Graph $graph,
+        $sentence_id,
+        \Aot\Sviaz\Processors\AotGraph\Link $link
+    )
+    {
+        assert(is_int($sentence_id));
+        $text_soyuz = $this->getTextOfSoyuz($link);
+        $slovo_union = \Aot\RussianMorphology\ChastiRechi\Soyuz\Base::create($text_soyuz);
+        return $this->buildVertex($graph, $slovo_union, $sentence_id);
+    }
+
+    /**
+     * @param Link $link
+     * @return \LogicException|string
+     */
+    protected function getTextOfSoyuz(\Aot\Sviaz\Processors\AotGraph\Link $link)
+    {
+        $text_soyuz = '';
+        $sub_conjunctions = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::getSubConjunctions();
+        foreach ($sub_conjunctions as $key => $sub_conjunction) {
+            if ($sub_conjunction === $link->getNameOfLink()) {
+                $text_soyuz = \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::getSubConjunctionText($key);
+                break;
+            }
+        }
+        if ($text_soyuz === '') {
+            throw new \LogicException('Union not found');
+        }
+        return $text_soyuz;
     }
 }

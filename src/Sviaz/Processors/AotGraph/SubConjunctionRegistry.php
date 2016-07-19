@@ -11,8 +11,14 @@ namespace Aot\Sviaz\Processors\AotGraph;
 
 class SubConjunctionRegistry
 {
-    public static function getSubConjunctionText() {
-        return [
+    /**
+     * @param int $key
+     * @return string|\LogicException
+     */
+    public static function getSubConjunctionText($key) {
+        assert(is_int($key));
+        
+        $conjunction =  [
             'потому что',
             'чтобы',
             'когда',
@@ -21,9 +27,18 @@ class SubConjunctionRegistry
             'что',
             'несмотря на то что',
         ];
+        $result = null;
+        if (isset($key, $conjunction)) {
+            return $conjunction[$key];
+        }
+
+        throw new \LogicException('Union not found');
     }
 
-    public static function getSubConjunctionNumbers()
+    /**
+     * @return string[]
+     */
+    public static function getSubConjunctions()
     {
         return [
             'sub_conj_1',
