@@ -164,6 +164,7 @@ class Builder
             \DefinesAot::ADVERB_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::NARECHIE, // нар
             \DefinesAot::PREDICATIVE_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::INFINITIVE, // инф
             \DefinesAot::NUMERAL_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::CHISLITELNOE, // числ
+            \DefinesAot::FRAZ_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::FRAZ, // фразеологизм
             # в МИСОТе нет
             # 15 =>\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::, // сокращение
         ];

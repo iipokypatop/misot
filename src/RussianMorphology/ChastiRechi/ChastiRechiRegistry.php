@@ -35,6 +35,8 @@ class ChastiRechiRegistry
     CONST SOKRASHHENIE = 24;
     CONST ABBREVIATURA = 25;
 
+    CONST FRAZ = 29;
+
 
     public static function getNames()
     {
@@ -56,6 +58,8 @@ class ChastiRechiRegistry
 
             static::MEZHDOMETIE => 'междометие',
             static::PRISTAVKA => 'приставка',
+
+            static::FRAZ => 'фразеологизм',
         ];
     }
 
@@ -78,6 +82,8 @@ class ChastiRechiRegistry
 
             static::MEZHDOMETIE => Mezhdometie\Base::class,
             static::PRISTAVKA => Pristavka\Base::class,
+
+            static::FRAZ => Other\Base::class,
         ];
     }
 
@@ -101,6 +107,8 @@ class ChastiRechiRegistry
             static::SOYUZ => Soyuz\Factory::get(),
 
             static::MEZHDOMETIE => Mezhdometie\Factory::get(),
+
+            static::FRAZ => Other\Factory::get(),
             //static::PRISTAVKA => Pristavka\Factory::get(),
         ];
     }
@@ -139,6 +147,7 @@ class ChastiRechiRegistry
      */
     protected function getEntityClass()
     {
+        $x = 1;
         return \SemanticPersistence\Entities\MisotEntities\ChastiRechi::class;
     }
 
@@ -147,6 +156,7 @@ class ChastiRechiRegistry
      */
     protected function getIds()
     {
+        $x = 1;
         return array_keys(static::getNames());
     }
 
@@ -155,6 +165,7 @@ class ChastiRechiRegistry
      */
     protected function getFields()
     {
+        $x = 1;
         return [
             'name' => [static::class, 'getNames'],
         ];
