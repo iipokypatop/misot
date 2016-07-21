@@ -147,7 +147,6 @@ class ChastiRechiRegistry
      */
     protected function getEntityClass()
     {
-        $x = 1;
         return \SemanticPersistence\Entities\MisotEntities\ChastiRechi::class;
     }
 
@@ -156,7 +155,6 @@ class ChastiRechiRegistry
      */
     protected function getIds()
     {
-        $x = 1;
         return array_keys(static::getNames());
     }
 
@@ -165,7 +163,6 @@ class ChastiRechiRegistry
      */
     protected function getFields()
     {
-        $x = 1;
         return [
             'name' => [static::class, 'getNames'],
         ];
