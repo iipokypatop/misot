@@ -1,13 +1,13 @@
 <?php
 
-namespace Aot\RussianMorphology\ChastiRechi\Other;
+namespace Aot\RussianMorphology\ChastiRechi\Fraz;
 
 
 class Factory extends \Aot\RussianMorphology\FactoryBase
 {
     /**
      * @param \DictionaryWord $dw
-     * @return \Aot\RussianMorphology\ChastiRechi\Other\Base[]
+     * @return \Aot\RussianMorphology\ChastiRechi\Fraz\Base[]
      */
     public function build(\DictionaryWord $dw)
     {
@@ -15,7 +15,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
         $words = [];
 
         if ((int)($dw->id_word_class) === 29) {
-            $words[] = $word = \Aot\RussianMorphology\ChastiRechi\Other\Base::create($text);
+            $words[] = $word = \Aot\RussianMorphology\ChastiRechi\Fraz\Base::create($text);
             $word->setInitialForm($dw->initial_form);
         }
         return $words;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Aot\RussianMorphology\ChastiRechi\Other;
+namespace Aot\RussianMorphology\ChastiRechi\Fraz;
 
 use Aot\RussianMorphology\Slovo;
 

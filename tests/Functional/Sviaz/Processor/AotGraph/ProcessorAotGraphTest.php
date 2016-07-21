@@ -142,7 +142,6 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
     }
 
 
-
     public function testAddSoyuzOnGraph()
     {
         $sentence = [
@@ -177,4 +176,32 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
         $this->assertEquals('пойти', $vertex_start->getSlovo()->getInitialForm());
         $this->assertEquals('искать', $vertex_target->getSlovo()->getInitialForm());
     }
+
+    public function testForFraz()
+    {
+        $sentence = [
+            'Папа',
+            'увидел',
+            'несмотря',
+            'на',
+            'то',
+            ',',
+            'что',
+            'искали',
+            'грибы',
+            '.',
+        ];
+
+        $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
+        $graph = $aot_graph->runBySentenceWords($sentence);
+        /** @var \Aot\Graph\Slovo\Vertex $vertex */
+        foreach ($graph->getVertices() as $vertex) {
+            if ($vertex->getSlovo()->getText() === 'несмотря') {
+                break;
+            }
+        }
+        $this->assertInstanceOf(\Aot\RussianMorphology\ChastiRechi\Fraz\Base::class, $vertex->getSlovo());
+    }
+    
+    
 }

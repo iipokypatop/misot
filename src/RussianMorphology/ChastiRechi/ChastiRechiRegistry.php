@@ -83,7 +83,7 @@ class ChastiRechiRegistry
             static::MEZHDOMETIE => Mezhdometie\Base::class,
             static::PRISTAVKA => Pristavka\Base::class,
 
-            static::FRAZ => Other\Base::class,
+            static::FRAZ => Fraz\Base::class,
         ];
     }
 
@@ -108,7 +108,7 @@ class ChastiRechiRegistry
 
             static::MEZHDOMETIE => Mezhdometie\Factory::get(),
 
-            static::FRAZ => Other\Factory::get(),
+            static::FRAZ => Fraz\Factory::get(),
             //static::PRISTAVKA => Pristavka\Factory::get(),
         ];
     }
