@@ -35,7 +35,7 @@ class Vertex extends \BaseGraph\Vertex
         $obj->slovo = $slovo;
         if ($position_in_sentence !== null) {
             $obj->position_in_sentence = $position_in_sentence;
-            $graph->appendVertexInMapPositionsOfVerticesInSentence($obj);
+            $graph->appendVertexInMapPositionsOfVerticesInSentence($obj, $sentence_id, $position_in_sentence);
         }
         $obj->sentence_id = $sentence_id;
         return $obj;
@@ -49,20 +49,28 @@ class Vertex extends \BaseGraph\Vertex
         return $this->slovo;
     }
 
-    /**
-     * @return int
-     */
-    public function getPositionInSentence()
-    {
-        return $this->position_in_sentence;
-    }
+    //TODO i.yakovenko считает, это нельзя использовать, по всем вопросам обращаться к нему!
+//    /**
+//     * @return int
+//     */
+//    public function getPositionInSentence()
+//    {
+//        return $this->position_in_sentence;
+//    }
+//
+//    /**
+//     * @return int
+//     */
+//    public function getSentenceId()
+//    {
+//        return $this->sentence_id;
+//    }
 
-    /**
-     * @return int
-     */
-    public function getSentenceId()
+    public function destroy()
     {
-        return $this->sentence_id;
+        parent::destroy();
+        /** @var \Aot\Graph\Slovo\Graph $graph */
+        $graph = $this->getGraph();
+        $graph->deleteVertexFromMaps($this);
     }
-
 }
