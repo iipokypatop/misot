@@ -17,14 +17,47 @@ use Aot\Sviaz\Processors\AotGraph\CollocationManager\SubstitutesWordsInCollocati
 class CollocationManager2Test extends \PHPUnit_Framework_TestCase
 {
 
+    public function testNeedStructureDBPostgres()
+    {
+        $config = \MivarUtils\Common\Config::getConfig();
+        $db = $config['text']['db'];
+
+        $data = [
+            [
+                'sql' => "select count(*) from pg_tables where tablename='wcombi'",
+                'error' => "В текущей БД () нет таблицы 'wcombii'",
+            ],
+            [
+                'sql' => "select count(*) from pg_tables where tablename='wcombi_item'",
+                'error' => "В текущей БД () нет таблицы 'wcombi_item'",
+            ],
+        ];
+        //
+
+        $api = \TextPersistence\API\TextAPI::getAPI();
+
+        $em = $api->getEntityManager();
+
+        foreach ($data as $item) {
+            $sql = $item['sql'];
+            $stmt = $em->getConnection()->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            $this->assertEquals(1, $result[0]['count'], $item['error']);
+        }
+
+    }
+
     public function testRun()
     {
         $graph = $this->buildGraph();
         // Для тех, кто хочет посмотреть, как выглядит граф
 //        $this->printGraph($graph);
 
-        $this->assertEquals(6, count($graph->getVerticesCollection()));
-        $this->assertEquals(5, count($graph->getEdgesCollection()));
+        $this->assertEquals(6, count($graph->getVerticesCollection()),
+            'Число вершин в исходном графе не совпадает с ожиданиями');
+        $this->assertEquals(5, count($graph->getEdgesCollection()),
+            'Число рёбер в исходном графе не совпадает с ожиданиями');
 
 
         $collocation_manager = \Aot\Sviaz\Processors\AotGraph\CollocationManager\Manager::create();
@@ -54,7 +87,7 @@ class CollocationManager2Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals('лесу', current($map_vertices_by_positions[0][5])->getSlovo()->getText());
 
 
-        //TODO дописать ассерты
+        //TODO дописать ассерты по желанию
 
 
         // Для тех, кто хочет посмотреть, как выглядит граф
