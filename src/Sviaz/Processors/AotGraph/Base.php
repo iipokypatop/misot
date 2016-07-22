@@ -148,8 +148,10 @@ class Base
                 $link = $links[$point->Oz];
             }
 
-            if (in_array($link->getNameOfLink(),
-                \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::$sub_conjunctions)) {
+            if (in_array(
+                $link->getNameOfLink(),
+                \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::$sub_conjunctions)
+            ) {
                 $link->setDirectLink(false);
             }
 
@@ -224,23 +226,37 @@ class Base
             if (!$link->isDirectLink()) {
                 $vertex_union = $this->builder->buildSoyuzVertex($graph_slova, $sentence_id, $link);
                 $this->builder->buildEdge(
-                    $vertices_manager->getVertexBySlovo($link->getMainSlovo(), $sentence_id, $link->getMainPosition()),
+                    $vertices_manager->getVertexBySlovo(
+                        $link->getMainSlovo(),
+                        $sentence_id,
+                        $link->getMainPosition()
+                    ),
                     $vertex_union,
                     $link->getNameOfLink()
                 );
 
                 $this->builder->buildEdge(
                     $vertex_union,
-                    $vertices_manager->getVertexBySlovo($link->getDependedSlovo(), $sentence_id,
-                        $link->getDependedPosition()),
+                    $vertices_manager->getVertexBySlovo(
+                        $link->getDependedSlovo(),
+                        $sentence_id,
+                        $link->getDependedPosition()
+                    ),
                     $link->getNameOfLink()
                 );
                 continue;
             }
             $this->builder->buildEdge(
-                $vertices_manager->getVertexBySlovo($link->getMainSlovo(), $sentence_id, $link->getMainPosition()),
-                $vertices_manager->getVertexBySlovo($link->getDependedSlovo(), $sentence_id,
-                    $link->getDependedPosition()),
+                $vertices_manager->getVertexBySlovo(
+                    $link->getMainSlovo(),
+                    $sentence_id,
+                    $link->getMainPosition()
+                ),
+                $vertices_manager->getVertexBySlovo(
+                    $link->getDependedSlovo(),
+                    $sentence_id,
+                    $link->getDependedPosition()
+                ),
                 $link->getNameOfLink()
             );
         }

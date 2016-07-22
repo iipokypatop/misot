@@ -16,8 +16,7 @@ class BaseFilter implements IFilter
      */
     public static function create()
     {
-        $ob = new static();
-        return $ob;
+        return new static();
     }
 
     protected function __construct()

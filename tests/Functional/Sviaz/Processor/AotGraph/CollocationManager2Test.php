@@ -228,11 +228,11 @@ class CollocationManager2Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject | \Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\API\API
+     * @return \PHPUnit_Framework_MockObject_MockObject | \Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\WordsCollocationAPI\API
      */
     protected function getMockApi()
     {
-        $api = $this->getMockBuilder(\Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\API\API::class)
+        $api = $this->getMockBuilder(\Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\WordsCollocationAPI\API::class)
             ->disableOriginalConstructor()
             ->setMethods([
                 'getMapCollocationIdsByFirstInitialForm',

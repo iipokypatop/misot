@@ -6,14 +6,14 @@
  * Time: 13:08
  */
 
-namespace Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\API;
+namespace Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\WordsCollocationAPI;
 
 
 class API
 {
     // TODO заполнение данных полей не желательно при каждом запуске, хорошо бы положить всё это дело в кэш
 
-    /** @var \Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\API\API */
+    /** @var \Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\WordsCollocationAPI\API */
     protected static $instance;
     /** @var int[][] Для поиска id всех словосочетаний по начальной форме первого слова словосочетания */
     protected $map_collocation_ids_by_first_initial_form = [];
@@ -25,7 +25,7 @@ class API
     protected $map_main_position_by_collocation_id = [];
 
     /**
-     * @return \Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\API\API
+     * @return \Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\WordsCollocationAPI\API
      */
     public static function get()
     {

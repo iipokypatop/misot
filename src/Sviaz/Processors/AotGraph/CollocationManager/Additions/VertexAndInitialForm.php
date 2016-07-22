@@ -24,8 +24,7 @@ class VertexAndInitialForm
     public static function create(\Aot\Graph\Slovo\Vertex $vertex, $initial_form)
     {
         assert(is_string($initial_form));
-        $ob = new static($vertex, $initial_form);
-        return $ob;
+        return new static($vertex, $initial_form);
     }
 
     /**

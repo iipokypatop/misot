@@ -39,8 +39,7 @@ class ContainerCollocation
      */
     public static function create()
     {
-        $ob = new static();
-        return $ob;
+        return new static();
     }
 
     protected function __construct()
@@ -117,7 +116,7 @@ class ContainerCollocation
     /**
      * @return string[]
      */
-    public function getInitialFormsOfWordSofCollocation()
+    public function getInitialFormsOfWordsOfCollocation()
     {
         if ($this->initial_forms_of_words_of_collocation === null) {
             throw new \Aot\Exception("Поле 'initial_forms_of_words_of_collocation' не задано.");
@@ -129,7 +128,7 @@ class ContainerCollocation
      * @param string[] $initial_forms_of_words_of_collocation
      * @return ContainerCollocation
      */
-    public function setInitialFormOfWordsOfCollocation(array $initial_forms_of_words_of_collocation)
+    public function setInitialFormsOfWordsOfCollocation(array $initial_forms_of_words_of_collocation)
     {
         foreach ($initial_forms_of_words_of_collocation as $initial_form_of_word_of_collocation) {
             assert(is_string($initial_form_of_word_of_collocation));
@@ -189,6 +188,11 @@ class ContainerCollocation
      */
     public function addVertexOfCollocation(\Aot\Graph\Slovo\Vertex $vertex_of_collocation)
     {
+        foreach ($this->vertices_of_collocation as $item) {
+            if ($vertex_of_collocation === $item) {
+                throw new \Aot\Exception("Данная вершина уже была добавлена");
+            }
+        }
         $this->vertices_of_collocation[] = $vertex_of_collocation;
         return $this;
     }

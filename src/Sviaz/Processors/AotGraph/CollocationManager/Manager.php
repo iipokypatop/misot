@@ -21,7 +21,7 @@ class Manager
     /** @var  IFactory */
     protected $factory_collocation_candidates;
     /** @var  IFilter[] */
-    protected $filters_collocation_candidate;
+    protected $filters_collocation_candidate = [];
     /** @var  ISubstitute */
     protected $substitute_words_in_collocation;
 
@@ -42,8 +42,7 @@ class Manager
      */
     public static function create()
     {
-        $ob = new static();
-        return $ob;
+        return new static();
     }
 
     protected function __construct()
@@ -83,9 +82,8 @@ class Manager
     /**
      * @param FactoriesCollocationCandidate\IFactory $factory_collocation_candidates
      */
-    public function setFactoryCollocationCandidates(
-        IFactory $factory_collocation_candidates
-    ) {
+    public function setFactoryCollocationCandidates(IFactory $factory_collocation_candidates)
+    {
         $this->factory_collocation_candidates = $factory_collocation_candidates;
     }
 
@@ -100,9 +98,8 @@ class Manager
     /**
      * @param FiltersCollocationCandidate\IFilter $filter_collocation_candidate
      */
-    public function addFiltersCollocationCandidate(
-        IFilter $filter_collocation_candidate
-    ) {
+    public function addFiltersCollocationCandidate(IFilter $filter_collocation_candidate)
+    {
         $this->filters_collocation_candidate[] = $filter_collocation_candidate;
     }
 
@@ -117,9 +114,8 @@ class Manager
     /**
      * @param SubstitutesWordsInCollocation\ISubstitute $substitute_words_in_collocation
      */
-    public function setSubstituteWordsInCollocation(
-        ISubstitute $substitute_words_in_collocation
-    ) {
+    public function setSubstituteWordsInCollocation(ISubstitute $substitute_words_in_collocation)
+    {
         $this->substitute_words_in_collocation = $substitute_words_in_collocation;
     }
 

@@ -16,7 +16,7 @@ use Aot\Sviaz\Processors\AotGraph\CollocationManager\Additions\VertexAndInitialF
  */
 class BaseFactory implements IFactory
 {
-    /** @var  \Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\API\API */
+    /** @var  \Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\WordsCollocationAPI\API */
     protected $api;
 
     /**
@@ -25,7 +25,7 @@ class BaseFactory implements IFactory
     public static function createDefault()
     {
         $ob = new static();
-        $ob->api = $api = API\API::get();
+        $ob->api = $api = WordsCollocationAPI\API::get();
         return $ob;
     }
 
@@ -34,8 +34,7 @@ class BaseFactory implements IFactory
      */
     public static function create()
     {
-        $ob = new static();
-        return $ob;
+        return new static();
     }
 
     protected function __construct()
@@ -65,17 +64,17 @@ class BaseFactory implements IFactory
         foreach ($collocation_candidates as $collocation_candidate) {
             /** @var \Aot\Graph\Slovo\Vertex[] $suitable_vertices */
             $suitable_vertices = [];
-            foreach ($collocation_candidate->getInitialFormsOfWordSofCollocation() as $relative_index => $collocation_element) {
+            foreach ($collocation_candidate->getInitialFormsOfWordsOfCollocation() as $relative_index => $collocation_element) {
                 $start_position = $collocation_candidate->getStartPosition();
-                $flag = false;
+                $exists_initial_form_in_origin_text = false;
                 /** @var VertexAndInitialForm $initial_form_and_vertex */
                 foreach ($map_initial_forms_and_vertex_by_positions[$start_position + $relative_index] as $initial_form_and_vertex) {
                     if ($initial_form_and_vertex->getInitialForm() === $collocation_element) {
                         $suitable_vertices[$start_position + $relative_index] = $initial_form_and_vertex->getVertex();
-                        $flag = true;
+                        $exists_initial_form_in_origin_text = true;
                     }
                 }
-                if (!$flag) {
+                if (!$exists_initial_form_in_origin_text) {
                     continue 2;
                 }
             }
@@ -110,8 +109,7 @@ class BaseFactory implements IFactory
             /** @var \Aot\Graph\Slovo\Vertex $vertex */
             foreach ($vertices as $vertex) {
                 $initial_form = $vertex->getSlovo()->getInitialForm();
-                $data[] = VertexAndInitialForm::create($vertex,
-                    $initial_form);
+                $data[] = VertexAndInitialForm::create($vertex, $initial_form);
             }
             $map_initial_forms_by_positions[$position] = $data;
         }
@@ -166,7 +164,7 @@ class BaseFactory implements IFactory
         foreach ($collocation_ids as $collocation_id) {
             $elements = $map_initial_forms_by_collocation_id[$collocation_id];
             $candidate = Additions\ContainerCollocation::create()
-                ->setInitialFormOfWordsOfCollocation($elements)
+                ->setInitialFormsOfWordsOfCollocation($elements)
                 ->setCollocationInitialForm($map_collocation_initial_form_by_collocation_id[$collocation_id])
                 ->setStartPosition($position)
                 ->setCount(count($elements))
@@ -200,9 +198,11 @@ class BaseFactory implements IFactory
     }
 
     /**
-     * @param API\API $api
+     * @param WordsCollocationAPI\API $api
      */
-    public function setApi(\Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\API\API $api)
+    public function setApi(
+        \Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\WordsCollocationAPI\API $api
+    )
     {
         $this->api = $api;
     }

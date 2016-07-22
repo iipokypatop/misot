@@ -18,8 +18,7 @@ class BaseSubstitute implements ISubstitute
      */
     public static function create()
     {
-        $ob = new static();
-        return $ob;
+        return new static();
     }
 
     protected function __construct()
@@ -42,8 +41,12 @@ class BaseSubstitute implements ISubstitute
             $vertices_of_collocation = $collocation->getVerticesOfCollocation();
 
             // Создаём вершину словосочетания
-            $new_vertex = \Aot\Graph\Slovo\Vertex::create($graph, $collocation->getCollocationSlovo(), 0,
-                $collocation->getStartPosition());
+            $new_vertex = \Aot\Graph\Slovo\Vertex::create(
+                $graph,
+                $collocation->getCollocationSlovo(),
+                0,
+                $collocation->getStartPosition()
+            );
 
             //Перекидываем на неё связи
             foreach ($vertices_of_collocation as $vertex_of_collocation) {
@@ -90,6 +93,9 @@ class BaseSubstitute implements ISubstitute
         $this->fixPositionInGraph($graph);
     }
 
+    /**
+     * @param \Aot\Graph\Slovo\Graph $graph
+     */
     protected function fixPositionInGraph(\Aot\Graph\Slovo\Graph $graph)
     {
         //TODO именно здесь надо будет сдвигать позиции, если это понадобится

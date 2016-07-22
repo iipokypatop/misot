@@ -6,7 +6,7 @@
  * Time: 13:42
  */
 
-namespace Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\API;
+namespace Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\WordsCollocationAPI;
 
 
 class RegistrySQL
