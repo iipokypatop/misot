@@ -49,23 +49,6 @@ class Vertex extends \BaseGraph\Vertex
         return $this->slovo;
     }
 
-    //TODO i.yakovenko считает, это нельзя использовать, по всем вопросам обращаться к нему!
-//    /**
-//     * @return int
-//     */
-//    public function getPositionInSentence()
-//    {
-//        return $this->position_in_sentence;
-//    }
-//
-//    /**
-//     * @return int
-//     */
-//    public function getSentenceId()
-//    {
-//        return $this->sentence_id;
-//    }
-
     public function destroy()
     {
         parent::destroy();
