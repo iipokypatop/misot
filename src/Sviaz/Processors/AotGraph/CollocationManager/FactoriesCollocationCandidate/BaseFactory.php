@@ -100,7 +100,7 @@ class BaseFactory implements IFactory
             throw new \Aot\Exception("Ожидалось, что в тексте будет только одно и только предложение");
         }
 
-        $map_vertices_by_positions = $map_vertices_by_positions_raw[0];
+        $map_vertices_by_positions = current($map_vertices_by_positions_raw);
 
         ksort($map_vertices_by_positions);
         $map_initial_forms_by_positions = [];

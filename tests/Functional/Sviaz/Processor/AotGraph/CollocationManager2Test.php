@@ -32,7 +32,6 @@ class CollocationManager2Test extends \PHPUnit_Framework_TestCase
                 'error' => "В текущей БД () нет таблицы 'wcombi_item'",
             ],
         ];
-        //
 
         $api = \TextPersistence\API\TextAPI::getAPI();
 
