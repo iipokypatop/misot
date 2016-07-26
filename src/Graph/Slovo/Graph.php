@@ -50,6 +50,16 @@ class Graph extends \BaseGraph\Graph
     }
 
     /**
+     * @param \Aot\Graph\Slovo\Vertex $vertex
+     */
+    public function removeVertexFromMapVerticesByPositions(\Aot\Graph\Slovo\Vertex $vertex){
+        if( !isset($this->map_vertices_by_positions[$vertex->getSentenceId()][$vertex->getPositionInSentence()][spl_object_hash($vertex)])){
+            throw new \Aot\Exception('The vertex is not set in map!'. var_export($vertex, true));
+        }
+        unset($this->map_vertices_by_positions[$vertex->getSentenceId()][$vertex->getPositionInSentence()][spl_object_hash($vertex)]);
+    }
+
+    /**
      * @return int[][][]
      */
     public function getMapPositionsByVertices()

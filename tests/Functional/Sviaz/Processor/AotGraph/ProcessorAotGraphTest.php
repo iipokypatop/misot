@@ -142,7 +142,6 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
     }
 
 
-
     public function testAddSoyuzOnGraph()
     {
         $sentence = [
@@ -191,10 +190,11 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
             \Aot\Sviaz\Processors\AotGraph\Filters\BySameLinkedVertices\Base::create(),
         ]);
         $graph = $aot_graph->runBySentenceWords($sentence);
-        print_r([
-            $graph->getVertices()->count(),
-            $graph->getEdges()->count(),
-        ]);
-
+        $this->assertEquals(4, $graph->getVertices()->count());
+        $this->assertEquals(3, $graph->getEdges()->count());
+        $map = current($graph->getMapVerticesByPositions());
+        $this->assertCount(1, $map[0]);
+        $this->assertCount(1, $map[1]);
+        $this->assertCount(2, $map[2]);
     }
 }
