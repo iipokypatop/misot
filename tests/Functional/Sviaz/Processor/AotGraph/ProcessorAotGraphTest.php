@@ -188,7 +188,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
         ];
         $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
         $aot_graph->addFilters([
-            \Aot\Sviaz\Processors\AotGraph\Filters\SameForms\Base::create(),
+            \Aot\Sviaz\Processors\AotGraph\Filters\BySameLinkedVertices\Base::create(),
         ]);
         $graph = $aot_graph->runBySentenceWords($sentence);
         print_r([
