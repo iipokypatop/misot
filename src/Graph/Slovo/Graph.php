@@ -38,7 +38,7 @@ class Graph extends \BaseGraph\Graph
     /**
      * @param \Aot\Graph\Slovo\Vertex $vertex
      */
-    public function removeVertexFromPositionMaps(\Aot\Graph\Slovo\Vertex $vertex)
+    public function removeVertexFromMapVerticesByPositions(\Aot\Graph\Slovo\Vertex $vertex)
     {
         $hash = spl_object_hash($vertex);
         if (!isset($this->map_vertices_by_positions[$vertex->getSentenceId()][$vertex->getPositionInSentence()][$hash])) {
