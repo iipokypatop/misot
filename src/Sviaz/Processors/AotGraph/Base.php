@@ -10,8 +10,11 @@ namespace Aot\Sviaz\Processors\AotGraph;
  */
 class Base
 {
-    const MAIN_POINT = 'x'; // главная точка в АОТе
-    const DEPENDED_POINT = 'y'; // зависимая точка в АОТе
+    // главная точка в АОТе
+    const MAIN_POINT = 'x';
+
+    // зависимая точка в АОТе
+    const DEPENDED_POINT = 'y';
 
     /** @var \Aot\Sviaz\Processors\AotGraph\Builder */
     protected $builder;
@@ -20,7 +23,10 @@ class Base
     protected $sentence_manager;
 
     /** @var  \Aot\RussianMorphology\Slovo[][][] */
-    protected $slova_collection;
+    protected $slova_collection = [];
+
+    /** @var  \Aot\Sviaz\Processors\AotGraph\Filters\Base[] */
+    protected $filters = [];
 
     /**
      * @return static
@@ -33,6 +39,17 @@ class Base
     protected function __construct()
     {
         $this->builder = Builder::create();
+    }
+
+    /**
+     * @param \Aot\Sviaz\Processors\AotGraph\Filters\Base[] $filters
+     */
+    public function addFilters(array $filters)
+    {
+        foreach ($filters as $filter) {
+            assert(is_a($filter, \Aot\Sviaz\Processors\AotGraph\Filters\Base::class, true));
+        }
+        $this->filters = array_merge($this->filters, $filters);
     }
 
     /**
@@ -79,7 +96,12 @@ class Base
 
         $links = $this->getLinkedSlova($syntax_model);
 
-        return $this->createGraph($links, $sentence_id);
+        $graph = $this->createGraph($links, $sentence_id);
+
+        if (!empty($this->filters)) {
+            $this->filter($graph);
+        }
+        return $graph;
     }
 
     /**
@@ -127,7 +149,7 @@ class Base
 
         /** @var \Aot\Sviaz\Processors\AotGraph\Link[] $links */
         $links = [];
-        
+
         /** @var  \Sentence_space_SP_Rel[] $syntax_model */
         foreach ($syntax_model as $key => $point) {
 
@@ -139,7 +161,7 @@ class Base
             } else {
                 $link = $links[$point->Oz];
             }
-            
+
             if (in_array($link->getNameOfLink(), \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::$sub_conjunctions)) {
                 $link->setDirectLink(false);
             }
@@ -251,5 +273,17 @@ class Base
                 $edge->destroy();
             }
         }
+    }
+
+    /**
+     * @param \Aot\Graph\Slovo\Graph $graph
+     * @return \Aot\Graph\Slovo\Graph
+     */
+    protected function filter(\Aot\Graph\Slovo\Graph $graph)
+    {
+        foreach ($this->filters as $filter) {
+            $filter->run($graph);
+        }
+        return $graph;
     }
 }
