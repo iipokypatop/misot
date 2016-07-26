@@ -99,8 +99,9 @@ class Base
         $graph = $this->createGraph($links, $sentence_id);
 
         if (!empty($this->filters)) {
-            $this->filter($graph);
+            $this->runFilters($graph);
         }
+
         return $graph;
     }
 
@@ -277,13 +278,11 @@ class Base
 
     /**
      * @param \Aot\Graph\Slovo\Graph $graph
-     * @return \Aot\Graph\Slovo\Graph
      */
-    protected function filter(\Aot\Graph\Slovo\Graph $graph)
+    protected function runFilters(\Aot\Graph\Slovo\Graph $graph)
     {
         foreach ($this->filters as $filter) {
             $filter->run($graph);
         }
-        return $graph;
     }
 }
