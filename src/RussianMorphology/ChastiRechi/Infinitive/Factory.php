@@ -27,11 +27,11 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
 {
 
     /**
-     * @param \DictionaryWord $dw
+     * @param \WrapperAot\ModelNew\Convert\DictionaryWord $dw
      * @return \Aot\RussianMorphology\ChastiRechi\Infinitive\Base[]
      * @throws \Exception
      */
-    public function build(\DictionaryWord $dw)
+    public function build(\WrapperAot\ModelNew\Convert\DictionaryWord $dw)
     {
         $text = $dw->word_form;
         $words = [];

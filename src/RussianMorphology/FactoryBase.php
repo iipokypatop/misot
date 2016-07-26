@@ -33,8 +33,8 @@ abstract class FactoryBase
     }
 
     /**
-     * @param \DictionaryWord $dw
+     * @param \WrapperAot\ModelNew\Convert\DictionaryWord $dw
      * @return \Aot\RussianMorphology\Slovo
      */
-    abstract public function build(\DictionaryWord $dw);
+    abstract public function build(\WrapperAot\ModelNew\Convert\DictionaryWord $dw);
 }

@@ -85,28 +85,28 @@ class Base
     /**
      * Создание синтаксической модели через АОТ
      * @param string $sentence
-     * @return \Sentence_space_SP_Rel[]
+     * @return \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[]
      */
     protected function createSyntaxModel($sentence)
     {
         assert(is_string($sentence));
 
-        $mivar = new \DMivarText(['txt' => $sentence]);
+        $mivar = \WrapperAot\ModelNew\Lib\DMivarText::create(['txt' => $sentence]);
 
-        $mivar->syntax_model();
+        $mivar->syntaxModel();
 
         return $mivar->getSyntaxModel();
     }
 
 
     /**
-     * @param \Sentence_space_SP_Rel[] $syntax_model
+     * @param \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[] $syntax_model
      * @return Link[]
      */
     protected function getLinkedSlova(array $syntax_model)
     {
         foreach ($syntax_model as $point) {
-            assert(is_a($point, \Sentence_space_SP_Rel::class, true));
+            assert(is_a($point, \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel::class, true));
         }
 
         if (empty($syntax_model)) {
@@ -127,10 +127,10 @@ class Base
 
         /** @var \Aot\Sviaz\Processors\AotGraph\Link[] $links */
         $links = [];
-        
-        /** @var  \Sentence_space_SP_Rel[] $syntax_model */
-        foreach ($syntax_model as $key => $point) {
 
+        /** @var  \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[] $syntax_model */
+        foreach ($syntax_model as $key => $point) {
+            echo $point->Oz . "\n";
             $slovo = $this->buildSlovo($point);
 
             if (!isset($links[$point->Oz])) {
@@ -146,14 +146,14 @@ class Base
 
             if ($point->direction === static::MAIN_POINT) {
                 $link->setMainSlovo($slovo);
-                $link->setMainPosition($point->get_kw());
+                $link->setMainPosition($point->kw);
                 continue;
 
             }
 
             if ($point->direction === static::DEPENDED_POINT) {
                 $link->setDependedSlovo($slovo);
-                $link->setDependedPosition($point->get_kw());
+                $link->setDependedPosition($point->kw);
                 continue;
             }
 
@@ -164,10 +164,10 @@ class Base
     }
 
     /**
-     * @param \Sentence_space_SP_Rel $point
+     * @param \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel $point
      * @return \Aot\RussianMorphology\Slovo
      */
-    protected function buildSlovo(\Sentence_space_SP_Rel $point)
+    protected function buildSlovo(\WrapperAot\ModelNew\Convert\SentenceSpaceSPRel $point)
     {
         if (empty($this->slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)])) {
             $factory_slovo = $this->builder->getFactorySlovo($point->dw->id_word_class);
