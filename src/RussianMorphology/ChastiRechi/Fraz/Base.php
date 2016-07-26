@@ -14,13 +14,4 @@ class Base extends Slovo
     {
         return new static($text);
     }
-
-    /**
-     * Base constructor.
-     * @param string $text
-     */
-    protected function __construct($text)
-    {
-        parent::__construct($text);
-    }
 }
