@@ -14,7 +14,6 @@ class Base extends \Aot\Sviaz\Processors\AotGraph\Filters\Base
 
     /**
      * @param \Aot\Graph\Slovo\Graph $graph
-     * @return \Aot\Graph\Slovo\Graph
      */
     public function run(\Aot\Graph\Slovo\Graph $graph)
     {

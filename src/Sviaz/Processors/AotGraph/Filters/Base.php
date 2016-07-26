@@ -12,7 +12,6 @@ abstract class Base
 {
     /**
      * @param \Aot\Graph\Slovo\Graph $graph
-     * @return \Aot\Graph\Slovo\Graph
      */
     abstract public function run(\Aot\Graph\Slovo\Graph $graph);
 }
