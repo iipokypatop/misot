@@ -177,4 +177,29 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
         $this->assertEquals('пойти', $vertex_start->getSlovo()->getInitialForm());
         $this->assertEquals('искать', $vertex_target->getSlovo()->getInitialForm());
     }
+
+
+    public function testLaunchAndBuildGraphWithFilters()
+    {
+        $sentence = [
+            'Папа',
+            'пошел',
+            'в',
+            'лес',
+            ',',
+            'потому',
+            'что',
+            'искать',
+            'гриб',
+            ',',
+            'а',
+            'потом',
+            'его',
+            'съесть',
+            '.',
+        ];
+        $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
+        $graph = $aot_graph->runBySentenceWords($sentence);
+
+    }
 }
