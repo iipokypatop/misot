@@ -6,25 +6,12 @@ class Graph extends \BaseGraph\Graph
     /** @var \Aot\Graph\Slovo\Vertex[][] */
     protected $map_vertices_by_positions = [];
 
-    /** @var int[][] */
-    protected $map_positions_by_vertices = [];
-
     /**
      * @return \Aot\Graph\Slovo\Graph
      */
     public static function create()
     {
         return new static();
-    }
-
-    /**
-     * Removes a single attribute with the given $name
-     *
-     * @param string $name
-     */
-    public function removeAttribute($name)
-    {
-        // TODO: Implement removeAttribute() method.
     }
 
     /**
@@ -38,7 +25,6 @@ class Graph extends \BaseGraph\Graph
             throw new \Aot\Exception("Wrong position value! " . var_export($position_in_sentence, true));
         }
         $this->map_vertices_by_positions[$sentence_id][$position_in_sentence][spl_object_hash($vertex)] = $vertex;
-        $this->map_positions_by_vertices[spl_object_hash($vertex)][$sentence_id][$position_in_sentence] = $position_in_sentence;
     }
 
     /**
@@ -56,20 +42,8 @@ class Graph extends \BaseGraph\Graph
     {
         $hash = spl_object_hash($vertex);
         if (!isset($this->map_vertices_by_positions[$vertex->getSentenceId()][$vertex->getPositionInSentence()][$hash])) {
-            throw new \Aot\Exception('The vertex is not set in map!' . var_export($vertex, true));
-        }
-        if (!isset($this->map_positions_by_vertices[$hash])) {
-            throw new \Aot\Exception('The vertex is not set in map!' . var_export($vertex, true));
+            throw new \Aot\Exception('The vertex is not set in vertices by positions map!' . var_export($vertex, true));
         }
         unset($this->map_vertices_by_positions[$vertex->getSentenceId()][$vertex->getPositionInSentence()][$hash]);
-        unset($this->map_positions_by_vertices[$hash]);
-    }
-
-    /**
-     * @return int[][][]
-     */
-    public function getMapPositionsByVertices()
-    {
-        return $this->map_positions_by_vertices;
     }
 }
