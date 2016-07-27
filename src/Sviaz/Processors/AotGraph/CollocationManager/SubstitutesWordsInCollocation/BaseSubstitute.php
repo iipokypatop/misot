@@ -64,7 +64,6 @@ class BaseSubstitute implements ISubstitute
                         }
                         $new_edge = \Aot\Graph\Slovo\Edge::create($new_vertex, $vertex_end, $edge->getRule());
                         $edge->destroy();
-                        continue;
                     } elseif ($edge->getVertexEnd() === $vertex_of_collocation) {
                         /** @var \Aot\Graph\Slovo\Vertex $vertex_start */
                         $vertex_start = $edge->getVertexStart();
@@ -76,9 +75,7 @@ class BaseSubstitute implements ISubstitute
                         }
                         $new_edge = \Aot\Graph\Slovo\Edge::create($vertex_start, $new_vertex, $edge->getRule());
                         $edge->destroy();
-                        continue;
                     }
-                    throw new \Aot\Exception("Не может такого быть");
                 }
             }
 
