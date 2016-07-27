@@ -14,7 +14,7 @@ use Aot\Sviaz\Processors\AotGraph\CollocationManager\SubstitutesWordsInCollocati
 
 
 /**
- * Преобразование обычного графа в граф на словах
+ * Формирование словосочетаний в графе
  */
 class Manager
 {
