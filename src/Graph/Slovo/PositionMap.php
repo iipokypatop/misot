@@ -6,7 +6,7 @@ namespace Aot\Graph\Slovo;
 class PositionMap extends \SplObjectStorage
 {
     /** @var  \Aot\Graph\Slovo\Vertex[][][] */
-    protected $map = [];
+    protected $map_vertices_by_positions = [];
 
     /**
      * @return static
@@ -28,7 +28,7 @@ class PositionMap extends \SplObjectStorage
      */
     public function add(\Aot\Graph\Slovo\Vertex $vertex, $sentence_id, $position_in_sentence)
     {
-        $this->map[$sentence_id][$position_in_sentence][spl_object_hash($vertex)] = $vertex;
+        $this->map_vertices_by_positions[$sentence_id][$position_in_sentence][spl_object_hash($vertex)] = $vertex;
         $this->attach($vertex, [$sentence_id, $position_in_sentence]);
     }
 
@@ -39,7 +39,10 @@ class PositionMap extends \SplObjectStorage
      */
     public function getVerticesByPosition($sentence_id, $position_in_sentence)
     {
-        return $this->map[$sentence_id][$position_in_sentence];
+        if (!isset($this->map_vertices_by_positions[$sentence_id][$position_in_sentence])) {
+            throw new \Aot\Exception('Is not set any vertices by input positions!');
+        }
+        return $this->map_vertices_by_positions[$sentence_id][$position_in_sentence];
     }
 
     /**
@@ -47,8 +50,15 @@ class PositionMap extends \SplObjectStorage
      */
     public function delete(\Aot\Graph\Slovo\Vertex $vertex)
     {
+        if (!$this->hasPosition($vertex)) {
+            throw new \Aot\Exception('The vertex is not set in position map!');
+        }
         $position = $this->getPosition($vertex);
-        unset($this->map[$position[0]][$position[1]][spl_object_hash($vertex)]);
+        $hash = spl_object_hash($vertex);
+        if (!isset($this->map_vertices_by_positions[$position[0]][$position[1]][$hash])) {
+            throw new \Aot\Exception('The vertex is not set in vertices by positions map!');
+        }
+        unset($this->map_vertices_by_positions[$position[0]][$position[1]][$hash]);
         $this->detach($vertex);
     }
 
@@ -82,14 +92,5 @@ class PositionMap extends \SplObjectStorage
         $position = $this->getPosition($vertex);
         return $position[1];
     }
-
-    /**
-     * @return Vertex[][][]
-     */
-    public function getMap()
-    {
-        return $this->map;
-    }
-
 
 }
