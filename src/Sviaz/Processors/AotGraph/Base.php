@@ -130,7 +130,7 @@ class Base
 
         /** @var  \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[] $syntax_model */
         foreach ($syntax_model as $key => $point) {
-            echo $point->Oz . "\n";
+
             $slovo = $this->buildSlovo($point);
 
             if (!isset($links[$point->Oz])) {
