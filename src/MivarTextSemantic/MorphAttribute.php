@@ -50,4 +50,54 @@ class MorphAttribute
         $this->short_value = $short_value;
         $this->value = $value;
     }
+
+    /**
+     * @return id|null
+     */
+    public function getIdMorphAttr()
+    {
+        return $this->id_morph_attr;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNumberMorphAttr()
+    {
+        return $this->number_morph_attr;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIdValueAttr()
+    {
+        return $this->id_value_attr;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getShortValue()
+    {
+        return $this->short_value;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+
 }

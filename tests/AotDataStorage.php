@@ -26,6 +26,11 @@ use Aot\RussianMorphology\ChastiRechi\Predlog\Base as Predlog;
  */
 class AotDataStorage extends \MivarTest\Base
 {
+    public function testMock()
+    {
+
+    }
+    
     /**
      * @param \Aot\Sviaz\Podchinitrelnaya\Base[][] $sviazi
      * @return string[]

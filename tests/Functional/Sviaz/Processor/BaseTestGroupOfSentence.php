@@ -6,6 +6,8 @@
  * Time: 2:47
  */
 
+//TODO Вообще не является тестом очень давно
+
 namespace AotTest\Functional\Sviaz\Processor;
 
 
@@ -238,7 +240,7 @@ TEXT;
         $poiavilis[0]->vid = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vid\Sovershennyj::create();
         $poiavilis[0]->vozvratnost = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vozvratnost\Nevozvratnyj::create();
         $poiavilis[0]->vremya = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Vremya\Proshedshee::create();
-        $poiavilis[0]->razryad = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\ClassNull::create();
+        $poiavilis[0]->zalog = \Aot\RussianMorphology\ChastiRechi\Glagol\Morphology\Zalog\ClassNull::create();
 
         $add[0] = $this->getMock(Prilagatelnoe::class, ['_']);
         PHPUnitHelper::setProtectedProperty($add[0], 'text', 'красивое');
