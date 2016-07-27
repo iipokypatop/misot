@@ -3,10 +3,10 @@ namespace Aot\Graph\Slovo;
 
 class Graph extends \BaseGraph\Graph
 {
-    /** @var \Aot\Graph\Slovo\Vertex[][] */
+    /** @var \Aot\Graph\Slovo\Vertex[][][] */
     protected $map_vertices_by_positions = [];
 
-    /** @var int[][] */
+    /** @var int[][][] */
     protected $map_positions_by_vertices = [];
 
     /**
@@ -29,11 +29,14 @@ class Graph extends \BaseGraph\Graph
 
     /**
      * @param \Aot\Graph\Slovo\Vertex $vertex
+     * @param int $sentence_id
+     * @param int $position_in_sentence
      */
-    public function appendVertexInMapPositionsOfVerticesInSentence(\Aot\Graph\Slovo\Vertex $vertex)
-    {
-        $position_in_sentence = $vertex->getPositionInSentence();
-        $sentence_id = $vertex->getSentenceId();
+    public function appendVertexInMapPositionsOfVerticesInSentence(
+        \Aot\Graph\Slovo\Vertex $vertex,
+        $sentence_id,
+        $position_in_sentence
+    ) {
         if (!is_int($position_in_sentence) || $position_in_sentence < 0) {
             throw new \Aot\Exception("Wrong position value! " . var_export($position_in_sentence, true));
         }
@@ -55,5 +58,30 @@ class Graph extends \BaseGraph\Graph
     public function getMapPositionsByVertices()
     {
         return $this->map_positions_by_vertices;
+    }
+
+    /**
+     * @param Vertex $vertex_for_delete
+     * @return bool
+     */
+    public function deleteVertexFromMaps(\Aot\Graph\Slovo\Vertex $vertex_for_delete)
+    {
+        $hash_vertex_for_delete = spl_object_hash($vertex_for_delete);
+        foreach ($this->map_positions_by_vertices as $hash => $positions) {
+            if ($hash_vertex_for_delete === $hash) {
+                unset($this->map_positions_by_vertices[$hash]);
+                break;
+            }
+        }
+
+        foreach ($this->map_vertices_by_positions as $sentence_id => $words_id) {
+            foreach ($words_id as $word_id => $vertices) {
+                foreach ($vertices as $hash => $vertex) {
+                    if ($hash_vertex_for_delete === $hash) {
+                        unset ($this->map_vertices_by_positions[$sentence_id][$word_id][$hash]);
+                    }
+                }
+            }
+        }
     }
 }

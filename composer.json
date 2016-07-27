@@ -24,7 +24,7 @@
     "mivar-projects/utils": "dev-develop",
     "mivar-projects/text-libraries": "dev-develop",
     "mivar-projects/graph": "dev-develop",
-    "mivar-projects/db-api-text" : "dev-develop"
+    "mivar-projects/db-api-text": "dev-develop"
   },
   "repositories": [
     {
