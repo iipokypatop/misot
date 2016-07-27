@@ -91,12 +91,10 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 
         foreach ($graphs as $id => $graph) {
             foreach ($graph->getVerticesCollection() as $vertex) {
-                $map_positions_by_vertices = $graph->getMapPositionsByVertices();
-                $map_of_this_vertex = $map_positions_by_vertices[spl_object_hash($vertex)];
-                $sentence_id = current(array_keys($map_of_this_vertex));
-                $position_in_sentence = current($map_of_this_vertex[$sentence_id]);
-                /** @var \Aot\Graph\Slovo\Vertex $vertex */
-                $this->assertEquals($id, $sentence_id);
+                if (!$vertex->hasPositionInSentence()) {
+                    continue;
+                }
+                $position_in_sentence = $vertex->getPositionInSentence();
                 $this->assertArrayHasKey($position_in_sentence, $sentence_without_punctuation[$id]);
                 $this->assertEquals($vertex->getSlovo()->getText(),
                     $sentence_without_punctuation[$id][$position_in_sentence]);
@@ -185,7 +183,6 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 
     public function testLaunchAndBuildGraphWithFilters()
     {
-        $this->markTestSkipped('Отключен, пока не будет выполнена задача с позициями');
         $sentence = [
             'телефон',
             'офиса',
@@ -198,7 +195,11 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
         $graph = $aot_graph->runBySentenceWords($sentence);
         $this->assertEquals(4, $graph->getVertices()->count());
         $this->assertEquals(3, $graph->getEdges()->count());
-        $map = current($graph->getMapVerticesByPositions());
+        $map = [];
+        foreach ($graph->getVerticesCollection() as $vertex) {
+            $map[$vertex->getPositionInSentence()][] = $vertex;
+        }
+//        $map = current($graph->getMapVerticesByPositions());
         $this->assertCount(1, $map[0]);
         $this->assertCount(1, $map[1]);
         $this->assertCount(2, $map[2]);
@@ -212,27 +213,26 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
             '1',
         ];
         $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
-//        $aot_graph->addFilters([
-//            \Aot\Sviaz\Processors\AotGraph\Filters\RemoveEdgesThatLinkSameVertices\Base::create(),
-//        ]);
+        $aot_graph->addFilters([
+            \Aot\Sviaz\Processors\AotGraph\Filters\RemoveEdgesThatLinkSameVertices\Base::create(),
+        ]);
 
         $graph = $aot_graph->runBySentenceWords($sentence);
 
-        print_r([
-            $graph->getVertices()->count(),
-            $graph->getEdges()->count(),
-        ]);
-//        $this->assertEquals(4, $graph->getVertices()->count());
-//        $this->assertEquals(3, $graph->getEdges()->count());
-//        $map = current($graph->getMapVerticesByPositions());
-//        $this->assertCount(1, $map[0]);
-//        $this->assertCount(1, $map[1]);
-//        $this->assertCount(2, $map[2]);
+        $this->assertEquals(4, $graph->getVertices()->count());
+        $this->assertEquals(4, $graph->getEdges()->count());
+
+        $map = [];
+        foreach ($graph->getVerticesCollection() as $vertex) {
+            $map[$vertex->getPositionInSentence()][] = $vertex;
+        }
+        $this->assertCount(1, $map[0]);
+        $this->assertCount(1, $map[1]);
+        $this->assertCount(2, $map[2]);
     }
 
     public function testLaunchAndBuildGraphWithFilterBySameVertices()
     {
-//        $this->markTestSkipped('Отключен, пока не будет выполнена задача с позициями');
         /**
          * Условный граф из предложения:
          * "Человек пошел в большой дом"
@@ -279,7 +279,6 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
             ->disableOriginalConstructor()
             ->setMethods(['_'])
             ->getMock();
-
 
 
         $vertex_chelovek_1 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_chelovek_1, 0, 0);
@@ -369,7 +368,6 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
             ->disableOriginalConstructor()
             ->setMethods(['_'])
             ->getMock();
-
 
 
         $vertex_chelovek_1 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_chelovek_1, 0, 0);

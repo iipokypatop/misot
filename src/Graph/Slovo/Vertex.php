@@ -41,6 +41,15 @@ class Vertex extends \BaseGraph\Vertex
         return $obj;
     }
 
+
+    /**
+     * @return int
+     */
+    public function getPositionInSentence()
+    {
+        return $this->getGraph()->getVertexPositionInSentence($this);
+    }
+
     /**
      * @return \Aot\Graph\Slovo\Graph
      */
@@ -62,6 +71,14 @@ class Vertex extends \BaseGraph\Vertex
         parent::destroy();
         /** @var \Aot\Graph\Slovo\Graph $graph */
         $graph = $this->getGraph();
-        $graph->deleteVertexFromMaps($this);
+        $graph->deleteVertexFromPositionMap($this);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasPositionInSentence()
+    {
+        return $this->getGraph()->isVertexHasPosition($this);
     }
 }

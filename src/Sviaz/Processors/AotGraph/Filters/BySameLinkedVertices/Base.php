@@ -48,7 +48,11 @@ class Base extends \Aot\Sviaz\Processors\AotGraph\Filters\Base
      */
     protected function getGroupsVerticesByPositionsInSentence(\Aot\Graph\Slovo\Graph $graph)
     {
-        return current($graph->getMapVerticesByPositions());
+        $map = [];
+        foreach ($graph->getVerticesCollection() as $vertex) {
+            $map[$vertex->getPositionInSentence()][] = $vertex;
+        }
+        return $map;
     }
 
     /**
