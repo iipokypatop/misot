@@ -6,7 +6,7 @@
  * Time: 17:16
  */
 
-namespace AotTest\Functional\RussianMorphology;
+namespace AotTest\Launchers;
 
 
 class UploadTest extends \AotTest\AotDataStorage

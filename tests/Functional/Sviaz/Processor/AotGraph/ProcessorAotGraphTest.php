@@ -91,10 +91,15 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 
         foreach ($graphs as $id => $graph) {
             foreach ($graph->getVerticesCollection() as $vertex) {
+                $map_positions_by_vertices = $graph->getMapPositionsByVertices();
+                $map_of_this_vertex = $map_positions_by_vertices[spl_object_hash($vertex)];
+                $sentence_id = current(array_keys($map_of_this_vertex));
+                $position_in_sentence = current($map_of_this_vertex[$sentence_id]);
                 /** @var \Aot\Graph\Slovo\Vertex $vertex */
-                $this->assertArrayHasKey($vertex->getPositionInSentence(), $sentence_without_punctuation[$id]);
-                $this->assertEquals($vertex->getSlovo()->getText(), $sentence_without_punctuation[$id][$vertex->getPositionInSentence()]);
-                $this->assertEquals($id, $vertex->getSentenceId());
+                $this->assertEquals($id, $sentence_id);
+                $this->assertArrayHasKey($position_in_sentence, $sentence_without_punctuation[$id]);
+                $this->assertEquals($vertex->getSlovo()->getText(),
+                    $sentence_without_punctuation[$id][$position_in_sentence]);
             }
         }
     }
