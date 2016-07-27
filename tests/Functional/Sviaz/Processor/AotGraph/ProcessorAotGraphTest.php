@@ -184,6 +184,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 
     public function testLaunchAndBuildGraphWithFilters()
     {
+        $this->markTestSkipped('Отключен, пока не будет выполнена задача с позициями');
         $sentence = [
             'телефон',
             'офиса',
@@ -204,6 +205,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 
     public function testLaunchAndBuildGraphWithFilters2()
     {
+        $this->markTestSkipped('Отключен, пока не будет выполнена задача с позициями');
         /**
          * Условный граф из предложения:
          * "Человек пошел в большой дом"
