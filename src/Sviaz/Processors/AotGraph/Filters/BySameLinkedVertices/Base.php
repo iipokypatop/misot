@@ -53,7 +53,7 @@ class Base extends \Aot\Sviaz\Processors\AotGraph\Filters\Base
      * @param \Aot\Graph\Slovo\Graph $graph
      * @return \Aot\Graph\Slovo\Vertex[][]
      */
-    private function getGroupsVerticesByPositionsInSentence(\Aot\Graph\Slovo\Graph $graph)
+    protected function getGroupsVerticesByPositionsInSentence(\Aot\Graph\Slovo\Graph $graph)
     {
         return current($graph->getMapVerticesByPositions());
     }
@@ -75,18 +75,16 @@ class Base extends \Aot\Sviaz\Processors\AotGraph\Filters\Base
      */
     protected function selectDeletedVerticesFromLinkedVerticesToGroup(\Aot\Graph\Slovo\Graph $graph, array $cache)
     {
-
         $visited = [];
         $deleted_vertices = [];
         foreach ($cache as $key1 => $item1) {
 
             foreach ($cache as $key2 => $item2) {
-                if ($key1 === $key2) {
+
+                if ($key1 === $key2 || isset($visited[$key1][$key2])) {
                     continue;
                 }
-                if (isset($visited[$key1][$key2])) {
-                    continue;
-                }
+
                 $visited[$key1][$key2] = 1;
                 $visited[$key2][$key1] = 1;
                 if ($item1 === $item2) {
@@ -101,7 +99,7 @@ class Base extends \Aot\Sviaz\Processors\AotGraph\Filters\Base
      * @param \Aot\Graph\Slovo\Vertex[] $vertices
      * @return int[][]
      */
-    private function getMapLinkedVerticesToGroup($vertices)
+    protected function getMapLinkedVerticesToGroup($vertices)
     {
         $map_linked_vertices = [];
 
@@ -126,7 +124,11 @@ class Base extends \Aot\Sviaz\Processors\AotGraph\Filters\Base
 
                 $map_linked_vertices[$vertex->getId()][$linked_vertex->getId()] = $linked_vertex->getId();
             }
+
+            ksort($map_linked_vertices[$vertex->getId()]);
+
         }
+
         return $map_linked_vertices;
     }
 
