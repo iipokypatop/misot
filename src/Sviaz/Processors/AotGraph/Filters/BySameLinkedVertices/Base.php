@@ -4,13 +4,6 @@ namespace Aot\Sviaz\Processors\AotGraph\Filters\BySameLinkedVertices;
 
 class Base extends \Aot\Sviaz\Processors\AotGraph\Filters\Base
 {
-    /**
-     * @return static
-     */
-    public static function create()
-    {
-        return new static();
-    }
 
     /**
      * @param \Aot\Graph\Slovo\Graph $graph

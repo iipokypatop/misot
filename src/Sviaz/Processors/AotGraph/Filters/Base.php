@@ -11,6 +11,14 @@ namespace Aot\Sviaz\Processors\AotGraph\Filters;
 abstract class Base
 {
     /**
+     * @return static
+     */
+    public static function create()
+    {
+        return new static();
+    }
+
+    /**
      * @param \Aot\Graph\Slovo\Graph $graph
      */
     abstract public function run(\Aot\Graph\Slovo\Graph $graph);
