@@ -81,7 +81,7 @@ class Base extends \Aot\Sviaz\Processors\Base
         $offsetManager = $sequence_driver->getOffsetManager();
 
         foreach ($syntax_model as $point) {
-            assert(is_a($point, \Sentence_space_SP_Rel::class, true));
+            assert(is_a($point, \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel::class, true));
         }
 
         $sorted_points = [];
@@ -150,22 +150,25 @@ class Base extends \Aot\Sviaz\Processors\Base
     /**
      * Замена элемента в последовательности без предлога на элемент с предлогом
      * @param \Aot\Sviaz\Sequence $sequence
-     * @param \Sentence_space_SP_Rel $prepose_point
-     * @param \Sentence_space_SP_Rel $word_point
+     * @param \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel $prepose_point
+     * @param \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel $word_point
      * @param \Aot\Sviaz\Processors\Aot\Sequence\SequenceDriver $sequence_driver
      */
     protected function replaceSequenceMemberToMemberWithPreposition(
         \Aot\Sviaz\Sequence $sequence,
-        \Sentence_space_SP_Rel $prepose_point,
-        \Sentence_space_SP_Rel $word_point,
+        \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel $prepose_point,
+        \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel $word_point,
         Sequence\SequenceDriver $sequence_driver
     )
     {
         $sentence_words_array = $sequence_driver->getWordsArray();
         $offsetManager = $sequence_driver->getOffsetManager();
 
-        if ($prepose_point->dw->id_word_class !== \DefinesAot::PREPOSITION_CLASS_ID
-            || !in_array($word_point->dw->id_word_class, [\DefinesAot::NOUN_CLASS_ID, \DefinesAot::PRONOUN_CLASS_ID], true)
+        if ($prepose_point->dw->id_word_class !== \WrapperAot\ModelNew\Convert\Defines::PREPOSITION_CLASS_ID
+            || !in_array($word_point->dw->id_word_class, [
+                \WrapperAot\ModelNew\Convert\Defines::NOUN_CLASS_ID,
+                \WrapperAot\ModelNew\Convert\Defines::PRONOUN_CLASS_ID
+            ], true)
         ) {
             // данная ситуация - бага в аоте/конвертере из аота
             return;
@@ -257,7 +260,7 @@ class Base extends \Aot\Sviaz\Processors\Base
         $to_create_relations = [];
 
         foreach ($linked_pairs as $pair_points) {
-            if ($pair_points[self::MAIN_POINT]->O === \DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
+            if ($pair_points[self::MAIN_POINT]->O === \WrapperAot\ModelNew\Convert\Defines::PREPOSITIONAL_PHRASE_MIVAR) {
                 $to_replace[] = $pair_points;
             } else {
                 $to_create_relations[] = $pair_points;

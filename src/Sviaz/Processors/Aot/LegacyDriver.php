@@ -64,9 +64,9 @@ class LegacyDriver
     {
         assert(is_string($text));
 
-        $mivar = new \DMivarText(['txt' => $text]);
+        $mivar = \WrapperAot\ModelNew\Lib\DMivarText::create(['txt' => $text]);
 
-        $mivar->syntax_model();
+        $mivar->syntaxModel();
 
         return $mivar->getSyntaxModel();
     }

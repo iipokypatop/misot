@@ -46,7 +46,7 @@ class PointWdw extends Point
         $this->ks = (is_numeric($ks)) ? $ks : null;
         $this->count_dw = (is_numeric($count_dw)) ? $count_dw : null;
         $this->w = ($w instanceof Word) ? $w : new Word();
-        $this->dw = ($dw instanceof \DictionaryWord) ? $dw : new \DictionaryWord();
+        $this->dw = ($dw instanceof \WrapperAot\ModelNew\Convert\DictionaryWord) ? $dw : \WrapperAot\ModelNew\Convert\DictionaryWord::create();
     }
 
     /**

@@ -37,11 +37,11 @@ use Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Sklonenie\Vtor
 class Factory extends \Aot\RussianMorphology\FactoryBase
 {
     /**
-     * @param \DictionaryWord $dw
+     * @param \WrapperAot\ModelNew\Convert\DictionaryWord $dw
      * @return static
      * @throws \Exception
      */
-    public function build(\DictionaryWord $dw)
+    public function build(\WrapperAot\ModelNew\Convert\DictionaryWord $dw)
     {
         $text = $dw->word_form;
         $words = [];

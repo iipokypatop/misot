@@ -352,7 +352,7 @@ class FactoryTest extends AotDataStorage
     {
         //var_export($point);die;
 
-        $dw = new \DictionaryWord(
+        $dw = \WrapperAot\ModelNew\Convert\DictionaryWord::create(
             $point->dw->id_word_form,
             $point->dw->initial_form,
             $point->dw->initial_form,
