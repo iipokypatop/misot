@@ -388,49 +388,24 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
             ->disableOriginalConstructor()
             ->setMethods(['_'])
             ->getMock();
-        /**
-         * человек - пошел:
-         * 1-1 = 2
-         * 2-1 = 2
-         * 3-1 = 4
-         *
-         * Всего: 8
-         * Лишних связей: 1 + 1 + 3 = 5
-         * Должно остаться: 3
-         */
+
         \Aot\Graph\Slovo\Edge::create($vertex_chelovek_1, $vertex_poshel_1, $rule);
         \Aot\Graph\Slovo\Edge::create($vertex_chelovek_2, $vertex_poshel_1, $rule);
         \Aot\Graph\Slovo\Edge::create($vertex_chelovek_3, $vertex_poshel_1, $rule);
-        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_1, $vertex_poshel_1, $rule);
-        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_2, $vertex_poshel_1, $rule);
-        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_3, $vertex_poshel_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_1, $vertex_poshel_2, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_2, $vertex_poshel_2, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_3, $vertex_poshel_2, $rule);
         \Aot\Graph\Slovo\Edge::create($vertex_chelovek_3, $vertex_poshel_1, $rule);
         \Aot\Graph\Slovo\Edge::create($vertex_chelovek_3, $vertex_poshel_1, $rule);
 
 
-        /**
-         * пошел - дом:
-         * 1-1 = 2
-         * 2-1 = 1
-         *
-         * Всего: 3
-         * Итого лишних связей: 1 + 0 = 1
-         * Должно остаться: 2
-         */
+        \Aot\Graph\Slovo\Edge::create($vertex_poshel_1, $vertex_dom_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_poshel_1, $vertex_dom_1, $rule);
         \Aot\Graph\Slovo\Edge::create($vertex_poshel_1, $vertex_dom_1, $rule);
         \Aot\Graph\Slovo\Edge::create($vertex_poshel_1, $vertex_dom_1, $rule);
         \Aot\Graph\Slovo\Edge::create($vertex_poshel_2, $vertex_dom_1, $rule);
 
 
-        /**
-         * большой - дом:
-         * 1-1 = 2
-         * 1-2 = 1
-         *
-         * Всего: 2
-         * Итого лишних связей: 0 + 0 = 0
-         * Должно остаться: 2
-         */
         \Aot\Graph\Slovo\Edge::create($vertex_dom_1, $vertex_bolshoy_1, $rule);
         \Aot\Graph\Slovo\Edge::create($vertex_dom_1, $vertex_bolshoy_2, $rule);
 
@@ -438,6 +413,6 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
         $filter->run($graph);
 
         $this->assertEquals(8, $graph->getVertices()->count());
-        $this->assertEquals(7, $graph->getEdges()->count());
+        $this->assertEquals(10, $graph->getEdges()->count());
     }
 }
