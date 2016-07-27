@@ -28,12 +28,17 @@ class Base
     /** @var  \Aot\Sviaz\Processors\AotGraph\Filters\Base[] */
     protected $filters = [];
 
+    /** @var  \Aot\Sviaz\Processors\AotGraph\CollocationManager\Manager */
+    protected $collocation_manager;
+
     /**
      * @return static
      */
     public static function create()
     {
-        return new static();
+        $ob = new static();
+        $ob->collocation_manager = CollocationManager\Manager::createDefault();
+        return $ob;
     }
 
     protected function __construct()
@@ -91,17 +96,17 @@ class Base
         $syntax_model = $this->createSyntaxModel($this->sentence_manager->getSentence());
 
         if (empty($syntax_model)) {
-            return $this->builder->buildGraph();
+            $graph = $this->builder->buildGraph();
+        } else {
+            $links = $this->getLinkedSlova($syntax_model);
+            $graph = $this->createGraph($links, $sentence_id);
         }
-
-        $links = $this->getLinkedSlova($syntax_model);
-
-        $graph = $this->createGraph($links, $sentence_id);
 
         if (!empty($this->filters)) {
             $this->runFilters($graph);
         }
 
+        $this->collocation_manager->run($graph);
         return $graph;
     }
 
@@ -163,7 +168,10 @@ class Base
                 $link = $links[$point->Oz];
             }
 
-            if (in_array($link->getNameOfLink(), \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::$sub_conjunctions)) {
+            if (in_array(
+                $link->getNameOfLink(),
+                \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::$sub_conjunctions)
+            ) {
                 $link->setDirectLink(false);
             }
 
@@ -238,21 +246,37 @@ class Base
             if (!$link->isDirectLink()) {
                 $vertex_union = $this->builder->buildSoyuzVertex($graph_slova, $sentence_id, $link);
                 $this->builder->buildEdge(
-                    $vertices_manager->getVertexBySlovo($link->getMainSlovo(), $sentence_id, $link->getMainPosition()),
+                    $vertices_manager->getVertexBySlovo(
+                        $link->getMainSlovo(),
+                        $sentence_id,
+                        $link->getMainPosition()
+                    ),
                     $vertex_union,
                     $link->getNameOfLink()
                 );
 
                 $this->builder->buildEdge(
                     $vertex_union,
-                    $vertices_manager->getVertexBySlovo($link->getDependedSlovo(), $sentence_id, $link->getDependedPosition()),
+                    $vertices_manager->getVertexBySlovo(
+                        $link->getDependedSlovo(),
+                        $sentence_id,
+                        $link->getDependedPosition()
+                    ),
                     $link->getNameOfLink()
                 );
                 continue;
             }
             $this->builder->buildEdge(
-                $vertices_manager->getVertexBySlovo($link->getMainSlovo(), $sentence_id, $link->getMainPosition()),
-                $vertices_manager->getVertexBySlovo($link->getDependedSlovo(), $sentence_id, $link->getDependedPosition()),
+                $vertices_manager->getVertexBySlovo(
+                    $link->getMainSlovo(),
+                    $sentence_id,
+                    $link->getMainPosition()
+                ),
+                $vertices_manager->getVertexBySlovo(
+                    $link->getDependedSlovo(),
+                    $sentence_id,
+                    $link->getDependedPosition()
+                ),
                 $link->getNameOfLink()
             );
         }
