@@ -212,9 +212,9 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
             '1',
         ];
         $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
-        $aot_graph->addFilters([
-            \Aot\Sviaz\Processors\AotGraph\Filters\RemoveEdgesThatLinkSameVertices\Base::create(),
-        ]);
+//        $aot_graph->addFilters([
+//            \Aot\Sviaz\Processors\AotGraph\Filters\RemoveEdgesThatLinkSameVertices\Base::create(),
+//        ]);
 
         $graph = $aot_graph->runBySentenceWords($sentence);
 
@@ -232,7 +232,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 
     public function testLaunchAndBuildGraphWithFilterBySameVertices()
     {
-        $this->markTestSkipped('Отключен, пока не будет выполнена задача с позициями');
+//        $this->markTestSkipped('Отключен, пока не будет выполнена задача с позициями');
         /**
          * Условный граф из предложения:
          * "Человек пошел в большой дом"

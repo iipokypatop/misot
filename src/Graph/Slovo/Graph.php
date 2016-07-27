@@ -9,12 +9,17 @@ class Graph extends \BaseGraph\Graph
     /** @var int[][][] */
     protected $map_positions_by_vertices = [];
 
+    /** @var  \Aot\Graph\Slovo\TextPosition */
+    protected $position_from_text;
+
     /**
      * @return \Aot\Graph\Slovo\Graph
      */
     public static function create()
     {
-        return new static();
+        $ob = new static();
+        $ob->position_from_text = TextPosition::create();
+        return $ob;
     }
 
     /**
@@ -38,6 +43,7 @@ class Graph extends \BaseGraph\Graph
         if (!is_int($position_in_sentence) || $position_in_sentence < 0) {
             throw new \Aot\Exception("Wrong position value! " . var_export($position_in_sentence, true));
         }
+        $this->position_from_text->add($vertex, $sentence_id, $position_in_sentence);
         $this->map_vertices_by_positions[$sentence_id][$position_in_sentence][spl_object_hash($vertex)] = $vertex;
         $this->map_positions_by_vertices[spl_object_hash($vertex)][$sentence_id][$position_in_sentence] = $position_in_sentence;
     }
