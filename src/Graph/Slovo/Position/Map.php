@@ -1,9 +1,9 @@
 <?php
 
-namespace Aot\Graph\Slovo;
+namespace Aot\Graph\Slovo\Position;
 
 
-class PositionMap
+class Map
 {
     /** @var  \Aot\Graph\Slovo\Vertex[][][] */
     protected $map_vertices_by_positions = [];
@@ -32,7 +32,7 @@ class PositionMap
     public function add(\Aot\Graph\Slovo\Vertex $vertex, $sentence_id, $position_in_sentence)
     {
         $this->map_vertices_by_positions[$sentence_id][$position_in_sentence][spl_object_hash($vertex)] = $vertex;
-        $coordinate = \Aot\Graph\Slovo\Coordinate::create($sentence_id, $position_in_sentence);
+        $coordinate = \Aot\Graph\Slovo\Position\Coordinate::create($sentence_id, $position_in_sentence);
         $this->storage->attach($vertex, $coordinate);
     }
 
@@ -79,7 +79,7 @@ class PositionMap
 
     /**
      * @param \Aot\Graph\Slovo\Vertex $vertex
-     * @return \Aot\Graph\Slovo\Coordinate
+     * @return \Aot\Graph\Slovo\Position\Coordinate
      */
     public function getPosition(\Aot\Graph\Slovo\Vertex $vertex)
     {

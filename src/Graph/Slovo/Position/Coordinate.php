@@ -1,6 +1,6 @@
 <?php
 
-namespace Aot\Graph\Slovo;
+namespace Aot\Graph\Slovo\Position;
 
 
 class Coordinate
