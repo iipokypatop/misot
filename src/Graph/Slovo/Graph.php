@@ -54,9 +54,6 @@ class Graph extends \BaseGraph\Graph
     {
         assert(is_int($sentence_id));
         assert(is_int($position_in_sentence) && $position_in_sentence >= 0);
-        if (!is_int($position_in_sentence) || $position_in_sentence < 0) {
-            throw new \Aot\Exception("Wrong position value! " . var_export($position_in_sentence, true));
-        }
         $this->position_map->add($vertex, $sentence_id, $position_in_sentence);
     }
 
