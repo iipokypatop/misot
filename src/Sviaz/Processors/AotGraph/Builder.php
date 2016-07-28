@@ -106,7 +106,7 @@ class Builder
         \Aot\Graph\Slovo\Graph $graph,
         \Aot\RussianMorphology\Slovo $slovo,
         $sentence_id,
-        $position_slovo_in_sentence = null
+        $position_slovo_in_sentence
     )
     {
         return \Aot\Graph\Slovo\Vertex::create($graph, $slovo, $sentence_id, $position_slovo_in_sentence);
@@ -199,7 +199,7 @@ class Builder
         assert(is_int($sentence_id));
         $text_soyuz = $this->getTextOfSoyuz($link);
         $slovo_union = \Aot\RussianMorphology\ChastiRechi\Soyuz\Base::create($text_soyuz);
-        return $this->buildVertex($graph, $slovo_union, $sentence_id);
+        return \Aot\Graph\Slovo\Vertex::createVertexWithoutPosition($graph, $slovo_union);
     }
 
     /**

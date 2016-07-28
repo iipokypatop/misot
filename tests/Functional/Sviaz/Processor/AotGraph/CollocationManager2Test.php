@@ -77,13 +77,12 @@ class CollocationManager2Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals(5, count($graph->getVerticesCollection()));
         $this->assertEquals(4, count($graph->getEdgesCollection()));
 
-        $map_vertices_by_positions = $graph->getMapVerticesByPositions();
-        $this->assertEquals('я', current($map_vertices_by_positions[0][0])->getSlovo()->getText());
-        $this->assertEquals('увидел', current($map_vertices_by_positions[0][1])->getSlovo()->getText());
-        $this->assertEquals('папу римского', current($map_vertices_by_positions[0][2])->getSlovo()->getText());
-        $this->assertTrue(empty($map_vertices_by_positions[0][3]));
-        $this->assertEquals('в', current($map_vertices_by_positions[0][4])->getSlovo()->getText());
-        $this->assertEquals('лесу', current($map_vertices_by_positions[0][5])->getSlovo()->getText());
+        $this->assertEquals('я', current($graph->getPositionMap()->getVerticesByPosition(0,0))->getSlovo()->getText());
+        $this->assertEquals('увидел', current($graph->getPositionMap()->getVerticesByPosition(0,1))->getSlovo()->getText());
+        $this->assertEquals('папу римского', current($graph->getPositionMap()->getVerticesByPosition(0,2))->getSlovo()->getText());
+        $this->assertTrue(empty($graph->getPositionMap()->getVerticesByPosition(0,3)));
+        $this->assertEquals('в', current($graph->getPositionMap()->getVerticesByPosition(0,4))->getSlovo()->getText());
+        $this->assertEquals('лесу', current($graph->getPositionMap()->getVerticesByPosition(0,5))->getSlovo()->getText());
 
 
         //TODO дописать ассерты по желанию

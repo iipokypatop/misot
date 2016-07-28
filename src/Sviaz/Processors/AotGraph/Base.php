@@ -10,8 +10,11 @@ namespace Aot\Sviaz\Processors\AotGraph;
  */
 class Base
 {
-    const MAIN_POINT = 'x'; // главная точка в АОТе
-    const DEPENDED_POINT = 'y'; // зависимая точка в АОТе
+    // главная точка в АОТе
+    const MAIN_POINT = 'x';
+
+    // зависимая точка в АОТе
+    const DEPENDED_POINT = 'y';
 
     /** @var \Aot\Sviaz\Processors\AotGraph\Builder */
     protected $builder;
@@ -20,7 +23,10 @@ class Base
     protected $sentence_manager;
 
     /** @var  \Aot\RussianMorphology\Slovo[][][] */
-    protected $slova_collection;
+    protected $slova_collection = [];
+
+    /** @var  \Aot\Sviaz\Processors\AotGraph\Filters\Base[] */
+    protected $filters = [];
 
     /** @var  \Aot\Sviaz\Processors\AotGraph\CollocationManager\Manager */
     protected $collocation_manager;
@@ -38,6 +44,17 @@ class Base
     protected function __construct()
     {
         $this->builder = Builder::create();
+    }
+
+    /**
+     * @param \Aot\Sviaz\Processors\AotGraph\Filters\Base[] $filters
+     */
+    public function addFilters(array $filters)
+    {
+        foreach ($filters as $filter) {
+            assert(is_a($filter, \Aot\Sviaz\Processors\AotGraph\Filters\Base::class, true));
+        }
+        $this->filters = array_merge($this->filters, $filters);
     }
 
     /**
@@ -85,6 +102,7 @@ class Base
             $graph = $this->createGraph($links, $sentence_id);
         }
 
+        $this->runFilters($graph);
 
         $this->collocation_manager->run($graph);
         return $graph;
@@ -277,6 +295,16 @@ class Base
             if ($edge->getVertexStart() === $edge->getVertexEnd()) {
                 $edge->destroy();
             }
+        }
+    }
+
+    /**
+     * @param \Aot\Graph\Slovo\Graph $graph
+     */
+    protected function runFilters(\Aot\Graph\Slovo\Graph $graph)
+    {
+        foreach ($this->filters as $filter) {
+            $filter->run($graph);
         }
     }
 }

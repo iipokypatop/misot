@@ -93,25 +93,14 @@ class BaseFactory implements IFactory
      */
     protected function getMapInitialFormAndVertexByPositions(\Aot\Graph\Slovo\Graph $graph)
     {
-        $map_vertices_by_positions_raw = $graph->getMapVerticesByPositions();
-
-        if (count($map_vertices_by_positions_raw) !== 1) {
-            throw new \Aot\Exception("Ожидалось, что в тексте будет только одно и только предложение");
-        }
-
-        $map_vertices_by_positions = current($map_vertices_by_positions_raw);
-
-        ksort($map_vertices_by_positions);
         $map_initial_forms_by_positions = [];
-        foreach ($map_vertices_by_positions as $position => $vertices) {
-            // Для избавления от повторов
-            $data = [];
-            /** @var \Aot\Graph\Slovo\Vertex $vertex */
-            foreach ($vertices as $vertex) {
-                $initial_form = $vertex->getSlovo()->getInitialForm();
-                $data[] = VertexAndInitialForm::create($vertex, $initial_form);
+        foreach ($graph->getVerticesCollection() as $vertex) {
+            if (!$vertex->hasPositionInSentence()) {
+                continue;
             }
-            $map_initial_forms_by_positions[$position] = $data;
+            $initial_form = $vertex->getSlovo()->getInitialForm();
+            $position = $vertex->getPositionInSentence();
+            $map_initial_forms_by_positions[$position][] = VertexAndInitialForm::create($vertex, $initial_form);
         }
         return $map_initial_forms_by_positions;
     }
@@ -202,8 +191,7 @@ class BaseFactory implements IFactory
      */
     public function setApi(
         \Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\WordsCollocationAPI\API $api
-    )
-    {
+    ) {
         $this->api = $api;
     }
 

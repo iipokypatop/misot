@@ -91,12 +91,10 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 
         foreach ($graphs as $id => $graph) {
             foreach ($graph->getVerticesCollection() as $vertex) {
-                $map_positions_by_vertices = $graph->getMapPositionsByVertices();
-                $map_of_this_vertex = $map_positions_by_vertices[spl_object_hash($vertex)];
-                $sentence_id = current(array_keys($map_of_this_vertex));
-                $position_in_sentence = current($map_of_this_vertex[$sentence_id]);
-                /** @var \Aot\Graph\Slovo\Vertex $vertex */
-                $this->assertEquals($id, $sentence_id);
+                if (!$vertex->hasPositionInSentence()) {
+                    continue;
+                }
+                $position_in_sentence = $vertex->getPositionInSentence();
                 $this->assertArrayHasKey($position_in_sentence, $sentence_without_punctuation[$id]);
                 $this->assertEquals($vertex->getSlovo()->getText(),
                     $sentence_without_punctuation[$id][$position_in_sentence]);
@@ -148,7 +146,6 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
     }
 
 
-
     public function testAddSoyuzOnGraph()
     {
         $sentence = [
@@ -182,5 +179,238 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
         $this->assertEquals(2, $vertex->getEdges()->count());
         $this->assertEquals('пойти', $vertex_start->getSlovo()->getInitialForm());
         $this->assertEquals('искать', $vertex_target->getSlovo()->getInitialForm());
+    }
+
+    public function testLaunchAndBuildGraphWithFilters()
+    {
+        $sentence = [
+            'телефон',
+            'офиса',
+            '1',
+        ];
+        $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
+        $aot_graph->addFilters([
+            \Aot\Sviaz\Processors\AotGraph\Filters\BySameLinkedVertices\Base::create(),
+        ]);
+        $graph = $aot_graph->runBySentenceWords($sentence);
+        $this->assertEquals(4, $graph->getVertices()->count());
+        $this->assertEquals(3, $graph->getEdges()->count());
+        $map = [];
+        foreach ($graph->getVerticesCollection() as $vertex) {
+            $map[$vertex->getPositionInSentence()][] = $vertex;
+        }
+//        $map = current($graph->getMapVerticesByPositions());
+        $this->assertCount(1, $map[0]);
+        $this->assertCount(1, $map[1]);
+        $this->assertCount(2, $map[2]);
+    }
+
+    public function testLaunchAndBuildGraphWithFilterBySameEdges()
+    {
+        $sentence = [
+            'телефона',
+            'офиса',
+            '1',
+        ];
+        $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
+        $aot_graph->addFilters([
+            \Aot\Sviaz\Processors\AotGraph\Filters\RemoveEdgesThatLinkSameVertices\Base::create(),
+        ]);
+
+        $graph = $aot_graph->runBySentenceWords($sentence);
+
+        $this->assertEquals(4, $graph->getVertices()->count());
+        $this->assertEquals(4, $graph->getEdges()->count());
+
+        $map = [];
+        foreach ($graph->getVerticesCollection() as $vertex) {
+            $map[$vertex->getPositionInSentence()][] = $vertex;
+        }
+        $this->assertCount(1, $map[0]);
+        $this->assertCount(1, $map[1]);
+        $this->assertCount(2, $map[2]);
+    }
+
+    public function testLaunchAndBuildGraphWithFilterBySameVertices()
+    {
+        /**
+         * Условный граф из предложения:
+         * "Человек пошел в большой дом"
+         */
+
+        $graph = \Aot\Graph\Slovo\Graph::create();
+
+        /** 3 человека */
+        $slovo_chelovek_1 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+        $slovo_chelovek_2 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+        $slovo_chelovek_3 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+
+        /** 2 пойти */
+        $slovo_poshel_1 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Glagol\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+        $slovo_poshel_2 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Glagol\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+
+        /** 2 большой */
+        $slovo_bolshoy_1 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+        $slovo_bolshoy_2 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+
+        /** 1 дом */
+        $slovo_dom_1 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+
+
+        $vertex_chelovek_1 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_chelovek_1, 0, 0);
+        $vertex_chelovek_2 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_chelovek_2, 0, 0);
+        $vertex_chelovek_3 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_chelovek_3, 0, 0);
+
+        $vertex_poshel_1 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_poshel_1, 0, 1);
+        $vertex_poshel_2 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_poshel_2, 0, 1);
+
+        $vertex_bolshoy_1 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_bolshoy_1, 0, 2);
+        $vertex_bolshoy_2 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_bolshoy_2, 0, 2);
+
+        $vertex_dom_1 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_dom_1, 0, 3);
+
+        $rule = $this->getMockBuilder(\Aot\Sviaz\Rule\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_1, $vertex_poshel_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_2, $vertex_poshel_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_3, $vertex_poshel_1, $rule);
+
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_1, $vertex_poshel_2, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_2, $vertex_poshel_2, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_3, $vertex_poshel_2, $rule);
+
+
+        \Aot\Graph\Slovo\Edge::create($vertex_poshel_1, $vertex_dom_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_poshel_2, $vertex_dom_1, $rule);
+
+        \Aot\Graph\Slovo\Edge::create($vertex_dom_1, $vertex_bolshoy_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_dom_1, $vertex_bolshoy_2, $rule);
+
+
+        $filter = \Aot\Sviaz\Processors\AotGraph\Filters\BySameLinkedVertices\Base::create();
+        $filter->run($graph);
+
+        $this->assertEquals(4, $graph->getVertices()->count());
+        $this->assertEquals(3, $graph->getEdges()->count());
+    }
+
+    public function testLaunchAndBuildGraphWithFilterRemoveEdgesThatLinkSameVertices()
+    {
+        /**
+         * Условный граф из предложения:
+         * "Человек пошел в большой дом"
+         */
+
+        $graph = \Aot\Graph\Slovo\Graph::create();
+
+        /** 3 человека */
+        $slovo_chelovek_1 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+        $slovo_chelovek_2 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+        $slovo_chelovek_3 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+
+        /** 2 пойти */
+        $slovo_poshel_1 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Glagol\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+        $slovo_poshel_2 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Glagol\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+
+        /** 2 большой */
+        $slovo_bolshoy_1 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+        $slovo_bolshoy_2 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+
+        /** 1 дом */
+        $slovo_dom_1 = $this->getMockBuilder(\Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+
+
+        $vertex_chelovek_1 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_chelovek_1, 0, 0);
+        $vertex_chelovek_2 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_chelovek_2, 0, 0);
+        $vertex_chelovek_3 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_chelovek_3, 0, 0);
+
+        $vertex_poshel_1 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_poshel_1, 0, 1);
+        $vertex_poshel_2 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_poshel_2, 0, 1);
+
+        $vertex_bolshoy_1 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_bolshoy_1, 0, 2);
+        $vertex_bolshoy_2 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_bolshoy_2, 0, 2);
+
+        $vertex_dom_1 = \Aot\Graph\Slovo\Vertex::create($graph, $slovo_dom_1, 0, 3);
+
+        $rule = $this->getMockBuilder(\Aot\Sviaz\Rule\Base::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_1, $vertex_poshel_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_2, $vertex_poshel_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_3, $vertex_poshel_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_1, $vertex_poshel_2, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_2, $vertex_poshel_2, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_3, $vertex_poshel_2, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_3, $vertex_poshel_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_chelovek_3, $vertex_poshel_1, $rule);
+
+
+        \Aot\Graph\Slovo\Edge::create($vertex_poshel_1, $vertex_dom_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_poshel_1, $vertex_dom_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_poshel_1, $vertex_dom_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_poshel_1, $vertex_dom_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_poshel_2, $vertex_dom_1, $rule);
+
+
+        \Aot\Graph\Slovo\Edge::create($vertex_dom_1, $vertex_bolshoy_1, $rule);
+        \Aot\Graph\Slovo\Edge::create($vertex_dom_1, $vertex_bolshoy_2, $rule);
+
+        $filter = \Aot\Sviaz\Processors\AotGraph\Filters\RemoveEdgesThatLinkSameVertices\Base::create();
+        $filter->run($graph);
+
+        $this->assertEquals(8, $graph->getVertices()->count());
+        $this->assertEquals(10, $graph->getEdges()->count());
     }
 }

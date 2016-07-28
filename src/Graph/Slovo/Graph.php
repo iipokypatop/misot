@@ -1,13 +1,12 @@
 <?php
 namespace Aot\Graph\Slovo;
 
+use Aot\Graph\Slovo\Position\Map;
+
 class Graph extends \BaseGraph\Graph
 {
-    /** @var \Aot\Graph\Slovo\Vertex[][][] */
-    protected $map_vertices_by_positions = [];
-
-    /** @var int[][][] */
-    protected $map_positions_by_vertices = [];
+    /** @var  \Aot\Graph\Slovo\Position\Map */
+    protected $position_map;
 
     /**
      * @return \Aot\Graph\Slovo\Graph
@@ -17,14 +16,35 @@ class Graph extends \BaseGraph\Graph
         return new static();
     }
 
-    /**
-     * Removes a single attribute with the given $name
-     *
-     * @param string $name
-     */
-    public function removeAttribute($name)
+    public function __construct()
     {
-        // TODO: Implement removeAttribute() method.
+        parent::__construct();
+        $this->position_map = Map::create();
+    }
+
+    /**
+     * @param \Aot\Graph\Slovo\Vertex $vertex
+     * @return int
+     */
+    public function getVertexPositionInSentence(\Aot\Graph\Slovo\Vertex $vertex)
+    {
+        return $this->position_map->getPositionInSentence($vertex);
+    }
+
+    /**
+     * @return \Aot\Graph\Slovo\Edge[]
+     */
+    public function getEdgesCollection()
+    {
+        return parent::getEdgesCollection();
+    }
+
+    /**
+     * @return \Aot\Graph\Slovo\Vertex[]
+     */
+    public function getVerticesCollection()
+    {
+        return parent::getVerticesCollection();
     }
 
     /**
@@ -32,56 +52,37 @@ class Graph extends \BaseGraph\Graph
      * @param int $sentence_id
      * @param int $position_in_sentence
      */
-    public function appendVertexInMapPositionsOfVerticesInSentence(
-        \Aot\Graph\Slovo\Vertex $vertex,
-        $sentence_id,
-        $position_in_sentence
-    ) {
-        if (!is_int($position_in_sentence) || $position_in_sentence < 0) {
-            throw new \Aot\Exception("Wrong position value! " . var_export($position_in_sentence, true));
-        }
-        $this->map_vertices_by_positions[$sentence_id][$position_in_sentence][spl_object_hash($vertex)] = $vertex;
-        $this->map_positions_by_vertices[spl_object_hash($vertex)][$sentence_id][$position_in_sentence] = $position_in_sentence;
+    public function appendVertexInPositionMap(\Aot\Graph\Slovo\Vertex $vertex, $sentence_id, $position_in_sentence)
+    {
+        assert(is_int($sentence_id));
+        assert(is_int($position_in_sentence) && $position_in_sentence >= 0);
+        $this->position_map->add($vertex, $sentence_id, $position_in_sentence);
     }
 
     /**
-     * @return \Aot\Graph\Slovo\Vertex[][][]
+     * @param \Aot\Graph\Slovo\Vertex $vertex
+     * @return bool
      */
-    public function getMapVerticesByPositions()
+    public function isVertexHasPosition(\Aot\Graph\Slovo\Vertex $vertex)
     {
-        return $this->map_vertices_by_positions;
+        return $this->position_map->hasPosition($vertex);
     }
 
-    /**
-     * @return int[][][]
-     */
-    public function getMapPositionsByVertices()
-    {
-        return $this->map_positions_by_vertices;
-    }
 
     /**
      * @param Vertex $vertex_for_delete
      * @return bool
      */
-    public function deleteVertexFromMaps(\Aot\Graph\Slovo\Vertex $vertex_for_delete)
+    public function deleteVertexFromPositionMap(\Aot\Graph\Slovo\Vertex $vertex_for_delete)
     {
-        $hash_vertex_for_delete = spl_object_hash($vertex_for_delete);
-        foreach ($this->map_positions_by_vertices as $hash => $positions) {
-            if ($hash_vertex_for_delete === $hash) {
-                unset($this->map_positions_by_vertices[$hash]);
-                break;
-            }
-        }
+        $this->position_map->delete($vertex_for_delete);
+    }
 
-        foreach ($this->map_vertices_by_positions as $sentence_id => $words_id) {
-            foreach ($words_id as $word_id => $vertices) {
-                foreach ($vertices as $hash => $vertex) {
-                    if ($hash_vertex_for_delete === $hash) {
-                        unset ($this->map_vertices_by_positions[$sentence_id][$word_id][$hash]);
-                    }
-                }
-            }
-        }
+    /**
+     * @return Map
+     */
+    public function getPositionMap()
+    {
+        return $this->position_map;
     }
 }
