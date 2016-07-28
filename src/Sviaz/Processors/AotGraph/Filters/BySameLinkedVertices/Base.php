@@ -67,29 +67,32 @@ class Base extends \Aot\Sviaz\Processors\AotGraph\Filters\Base
     /**
      *
      * @param \Aot\Graph\Slovo\Graph $graph
-     * @param int[][] $cache
+     * @param int[][] $groups_of_linked_vertices
      * @return \Aot\Graph\Slovo\Vertex[]
      */
-    protected function selectDeletedVerticesFromLinkedVerticesToGroup(\Aot\Graph\Slovo\Graph $graph, array $cache)
+    protected function selectDeletedVerticesFromLinkedVerticesToGroup(
+        \Aot\Graph\Slovo\Graph $graph,
+        array $groups_of_linked_vertices
+    )
     {
-        $visited = [];
-        $deleted_vertices = [];
-        foreach ($cache as $key1 => $item1) {
+        $compared_groups = [];
+        $list_of_deleting_vertices = [];
+        foreach ($groups_of_linked_vertices as $vertex_id1 => $vertices_group1) {
 
-            foreach ($cache as $key2 => $item2) {
+            foreach ($groups_of_linked_vertices as $vertex_id2 => $vertices_group2) {
 
-                if ($key1 === $key2 || isset($visited[$key1][$key2])) {
+                if ($vertex_id1 === $vertex_id2 || isset($compared_groups[$vertex_id1][$vertex_id2])) {
                     continue;
                 }
 
-                $visited[$key1][$key2] = 1;
-                $visited[$key2][$key1] = 1;
-                if ($item1 === $item2) {
-                    $deleted_vertices[$key2] = $graph->getVertex($key2);
+                $compared_groups[$vertex_id1][$vertex_id2] = 1;
+                $compared_groups[$vertex_id2][$vertex_id1] = 1;
+                if ($vertices_group1 === $vertices_group2) {
+                    $list_of_deleting_vertices[$vertex_id2] = $graph->getVertex($vertex_id2);
                 }
             }
         }
-        return $deleted_vertices;
+        return $list_of_deleting_vertices;
     }
 
     /**
