@@ -23,21 +23,25 @@ class Vertex extends \BaseGraph\Vertex
      * @param Graph $graph
      * @param \Aot\RussianMorphology\Slovo $slovo
      * @param int $sentence_id
-     *  TODO: по умолчанию стоит null - костыль, для залепы баги из конвертера, как только багу в конвертере поправим - костыль убрать!
      * @param int $position_in_sentence
      * @return static
      */
-    public static function create(Graph $graph, \Aot\RussianMorphology\Slovo $slovo, $sentence_id, $position_in_sentence = null)
+    public static function create(Graph $graph, \Aot\RussianMorphology\Slovo $slovo, $sentence_id, $position_in_sentence)
     {
         assert(is_int($sentence_id));
-        assert(is_int($position_in_sentence) || is_null($position_in_sentence));
+        assert(is_int($position_in_sentence));
         $obj = new static($graph, static::getNextId());
         $obj->slovo = $slovo;
         $obj->sentence_id = $sentence_id;
-        if ($position_in_sentence !== null) {
-            $obj->position_in_sentence = $position_in_sentence;
-            $graph->appendVertexInPositionMap($obj, $sentence_id, $position_in_sentence);
-        }
+        $obj->position_in_sentence = $position_in_sentence;
+        $graph->appendVertexInPositionMap($obj, $sentence_id, $position_in_sentence);
+        return $obj;
+    }
+
+    public static function createVertexWithoutPosition(Graph $graph, \Aot\RussianMorphology\Slovo $slovo)
+    {
+        $obj = new static($graph, static::getNextId());
+        $obj->slovo = $slovo;
         return $obj;
     }
 
