@@ -2,12 +2,6 @@
 
 namespace Aot\Sviaz\Processors\AotGraph;
 
-/**
- * Created by PhpStorm.
- * User: s.kharchenko
- * Date: 11/12/15
- * Time: 01:08
- */
 class Base
 {
     // главная точка в АОТе
@@ -107,23 +101,6 @@ class Base
         $this->collocation_manager->run($graph);
         return $graph;
     }
-
-    /**
-     * Создание синтаксической модели через АОТ
-     * @param string $sentence
-     * @return \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[]
-     */
-    protected function createSyntaxModel($sentence)
-    {
-        assert(is_string($sentence));
-
-        $mivar = \WrapperAot\ModelNew\Lib\DMivarText::create(['txt' => $sentence]);
-
-        $mivar->syntaxModel();
-
-        return $mivar->getSyntaxModel();
-    }
-
 
     /**
      * @param \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[] $syntax_model
@@ -306,5 +283,18 @@ class Base
         foreach ($this->filters as $filter) {
             $filter->run($graph);
         }
+    }
+
+    /**
+     * @param string $sentence
+     * @return \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[]
+     */
+    protected function createSyntaxModel($sentence)
+    {
+        $syntax_manager = \Aot\Sviaz\Processors\AotGraph\SyntaxModelManager\Base::create();
+        $syntax_manager->addPostProcessors([
+            SyntaxModelManager\PostProcessors\ChangeWordClassForPointsWithNumericWord::create(),
+        ]);
+        return $syntax_manager->run($sentence);
     }
 }
