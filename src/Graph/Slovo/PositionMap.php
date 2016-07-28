@@ -3,10 +3,13 @@
 namespace Aot\Graph\Slovo;
 
 
-class PositionMap extends \SplObjectStorage
+class PositionMap
 {
     /** @var  \Aot\Graph\Slovo\Vertex[][][] */
     protected $map_vertices_by_positions = [];
+
+    /** @var \SplObjectStorage  */
+    protected $storage;
 
     /**
      * @return static
@@ -18,7 +21,7 @@ class PositionMap extends \SplObjectStorage
 
     protected function __construct()
     {
-
+        $this->storage = new \SplObjectStorage();
     }
 
     /**
@@ -30,7 +33,7 @@ class PositionMap extends \SplObjectStorage
     {
         $this->map_vertices_by_positions[$sentence_id][$position_in_sentence][spl_object_hash($vertex)] = $vertex;
         $coordinate = \Aot\Graph\Slovo\Coordinate::create($sentence_id, $position_in_sentence);
-        $this->attach($vertex, $coordinate);
+        $this->storage->attach($vertex, $coordinate);
     }
 
     /**
@@ -62,7 +65,7 @@ class PositionMap extends \SplObjectStorage
             throw new \Aot\Exception('The vertex is not set in vertices by positions map!');
         }
         unset($this->map_vertices_by_positions[$sentence_id][$position_in_sentence][$hash]);
-        $this->detach($vertex);
+        $this->storage->detach($vertex);
     }
 
     /**
@@ -71,7 +74,7 @@ class PositionMap extends \SplObjectStorage
      */
     public function hasPosition(\Aot\Graph\Slovo\Vertex $vertex)
     {
-        return parent::contains($vertex);
+        return $this->storage->contains($vertex);
     }
 
     /**
@@ -80,7 +83,7 @@ class PositionMap extends \SplObjectStorage
      */
     public function getPosition(\Aot\Graph\Slovo\Vertex $vertex)
     {
-        return $this->offsetGet($vertex);
+        return  $this->storage->offsetGet($vertex);
     }
 
     /**
