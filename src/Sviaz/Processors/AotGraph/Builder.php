@@ -1,15 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: s.kharchenko
- * Date: 11/12/15
- * Time: 12:59
- */
 
 namespace Aot\Sviaz\Processors\AotGraph;
-
-
-use Aot\Exception;
 
 class Builder
 {
@@ -107,8 +98,7 @@ class Builder
         \Aot\RussianMorphology\Slovo $slovo,
         $sentence_id,
         $position_slovo_in_sentence
-    )
-    {
+    ) {
         return \Aot\Graph\Slovo\Vertex::create($graph, $slovo, $sentence_id, $position_slovo_in_sentence);
     }
 
@@ -194,8 +184,7 @@ class Builder
         \Aot\Graph\Slovo\Graph $graph,
         $sentence_id,
         \Aot\Sviaz\Processors\AotGraph\Link $link
-    )
-    {
+    ) {
         assert(is_int($sentence_id));
         $text_soyuz = $this->getTextOfSoyuz($link);
         $slovo_union = \Aot\RussianMorphology\ChastiRechi\Soyuz\Base::create($text_soyuz);

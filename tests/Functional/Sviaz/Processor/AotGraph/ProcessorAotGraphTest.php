@@ -413,4 +413,11 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
         $this->assertEquals(8, $graph->getVertices()->count());
         $this->assertEquals(10, $graph->getEdges()->count());
     }
+
+    public function testSyntaxModelManager()
+    {
+        $sentence = 'телефон офиса 1';
+        $syntax_manager = \Aot\Sviaz\Processors\AotGraph\SyntaxModelManager\Base::create();
+        $syntax_manager->run($sentence);
+    }
 }
