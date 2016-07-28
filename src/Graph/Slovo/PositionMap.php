@@ -29,7 +29,8 @@ class PositionMap extends \SplObjectStorage
     public function add(\Aot\Graph\Slovo\Vertex $vertex, $sentence_id, $position_in_sentence)
     {
         $this->map_vertices_by_positions[$sentence_id][$position_in_sentence][spl_object_hash($vertex)] = $vertex;
-        $this->attach($vertex, [$sentence_id, $position_in_sentence]);
+        $coordinate = \Aot\Graph\Slovo\Coordinate::create($sentence_id, $position_in_sentence);
+        $this->attach($vertex, $coordinate);
     }
 
     /**
@@ -53,12 +54,14 @@ class PositionMap extends \SplObjectStorage
         if (!$this->hasPosition($vertex)) {
             throw new \Aot\Exception('The vertex is not set in position map!');
         }
-        $position = $this->getPosition($vertex);
+        $coordinate = $this->getPosition($vertex);
         $hash = spl_object_hash($vertex);
-        if (!isset($this->map_vertices_by_positions[$position[0]][$position[1]][$hash])) {
+        $sentence_id = $coordinate->getSentenceId();
+        $position_in_sentence = $coordinate->getPositionInSentence();
+        if (!isset($this->map_vertices_by_positions[$sentence_id][$position_in_sentence][$hash])) {
             throw new \Aot\Exception('The vertex is not set in vertices by positions map!');
         }
-        unset($this->map_vertices_by_positions[$position[0]][$position[1]][$hash]);
+        unset($this->map_vertices_by_positions[$sentence_id][$position_in_sentence][$hash]);
         $this->detach($vertex);
     }
 
@@ -73,7 +76,7 @@ class PositionMap extends \SplObjectStorage
 
     /**
      * @param \Aot\Graph\Slovo\Vertex $vertex
-     * @return int[]
+     * @return \Aot\Graph\Slovo\Coordinate
      */
     public function getPosition(\Aot\Graph\Slovo\Vertex $vertex)
     {
@@ -90,7 +93,7 @@ class PositionMap extends \SplObjectStorage
             throw new \Aot\Exception('The vertex does is not exists in the map!');
         }
         $position = $this->getPosition($vertex);
-        return $position[1];
+        return $position->getPositionInSentence();
     }
 
 }

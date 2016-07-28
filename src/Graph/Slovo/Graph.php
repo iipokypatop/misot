@@ -11,9 +11,13 @@ class Graph extends \BaseGraph\Graph
      */
     public static function create()
     {
-        $ob = new static();
-        $ob->position_map = PositionMap::create();
-        return $ob;
+        return new static();
+    }
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->position_map = PositionMap::create();
     }
 
     /**
@@ -46,12 +50,10 @@ class Graph extends \BaseGraph\Graph
      * @param int $sentence_id
      * @param int $position_in_sentence
      */
-    public function appendVertexInMapPositionsOfVerticesInSentence(
-        \Aot\Graph\Slovo\Vertex $vertex,
-        $sentence_id,
-        $position_in_sentence
-    )
+    public function appendVertexInPositionMap(\Aot\Graph\Slovo\Vertex $vertex, $sentence_id, $position_in_sentence)
     {
+        assert(is_int($sentence_id));
+        assert(is_int($position_in_sentence) && $position_in_sentence >= 0);
         if (!is_int($position_in_sentence) || $position_in_sentence < 0) {
             throw new \Aot\Exception("Wrong position value! " . var_export($position_in_sentence, true));
         }

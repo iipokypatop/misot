@@ -36,7 +36,7 @@ class Vertex extends \BaseGraph\Vertex
         $obj->sentence_id = $sentence_id;
         if ($position_in_sentence !== null) {
             $obj->position_in_sentence = $position_in_sentence;
-            $graph->appendVertexInMapPositionsOfVerticesInSentence($obj, $sentence_id, $position_in_sentence);
+            $graph->appendVertexInPositionMap($obj, $sentence_id, $position_in_sentence);
         }
         return $obj;
     }

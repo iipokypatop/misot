@@ -102,9 +102,7 @@ class Base
             $graph = $this->createGraph($links, $sentence_id);
         }
 
-        if (!empty($this->filters)) {
-            $this->runFilters($graph);
-        }
+        $this->runFilters($graph);
 
         $this->collocation_manager->run($graph);
         return $graph;

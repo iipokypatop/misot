@@ -96,7 +96,7 @@ class Base extends \Aot\Sviaz\Processors\AotGraph\Filters\Base
      * @param \Aot\Graph\Slovo\Vertex[] $vertices
      * @return int[][]
      */
-    protected function getMapLinkedVerticesToGroup($vertices)
+    protected function getMapLinkedVerticesToGroup(array $vertices)
     {
         $map_linked_vertices = [];
 
