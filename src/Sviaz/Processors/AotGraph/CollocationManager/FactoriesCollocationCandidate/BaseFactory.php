@@ -170,8 +170,7 @@ class BaseFactory implements IFactory
      */
     protected function fillCollocationCandidateByCollocationSlovo(
         \Aot\Sviaz\Processors\AotGraph\CollocationManager\Additions\ContainerCollocation $collocation_candidate
-    )
-    {
+    ) {
         /** @var \Aot\Graph\Slovo\Vertex[] $vertices */
         $vertices = array_values($collocation_candidate->getVerticesOfCollocation());
         /** @var \Aot\Graph\Slovo\Vertex $main_vertex */
@@ -192,8 +191,7 @@ class BaseFactory implements IFactory
      */
     public function setApi(
         \Aot\Sviaz\Processors\AotGraph\CollocationManager\FactoriesCollocationCandidate\WordsCollocationAPI\API $api
-    )
-    {
+    ) {
         $this->api = $api;
     }
 

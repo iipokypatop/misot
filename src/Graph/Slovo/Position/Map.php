@@ -8,7 +8,7 @@ class Map
     /** @var  \Aot\Graph\Slovo\Vertex[][][] */
     protected $map_vertices_by_positions = [];
 
-    /** @var \SplObjectStorage  */
+    /** @var \SplObjectStorage */
     protected $storage;
 
     /**
@@ -83,7 +83,7 @@ class Map
      */
     public function getPosition(\Aot\Graph\Slovo\Vertex $vertex)
     {
-        return  $this->storage->offsetGet($vertex);
+        return $this->storage->offsetGet($vertex);
     }
 
     /**
