@@ -30,8 +30,7 @@ class Base
     {
         assert(is_string($sentence));
         $syntax_model = $this->createSyntaxModel($sentence);
-        $syntax_model = $this->runPostProcessors($syntax_model);
-        return $syntax_model;
+        return $this->runPostProcessors($syntax_model);
 
     }
 
