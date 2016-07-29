@@ -67,6 +67,10 @@ class BaseFactory implements IFactory
             foreach ($collocation_candidate->getInitialFormsOfWordsOfCollocation() as $relative_index => $collocation_element) {
                 $start_position = $collocation_candidate->getStartPosition();
                 $exists_initial_form_in_origin_text = false;
+                if ($start_position + $relative_index > count($map_initial_forms_and_vertex_by_positions) - 1) {
+                    //если кондидат выходит за рамки самого предложения
+                    continue 2;
+                }
                 /** @var VertexAndInitialForm $initial_form_and_vertex */
                 foreach ($map_initial_forms_and_vertex_by_positions[$start_position + $relative_index] as $initial_form_and_vertex) {
                     if ($initial_form_and_vertex->getInitialForm() === $collocation_element) {
