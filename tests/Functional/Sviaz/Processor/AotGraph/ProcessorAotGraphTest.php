@@ -2,6 +2,8 @@
 
 //namespace AotTest\Functional\Sviaz\Processor\AotGraph;
 
+use Aot\Sviaz\Processors\AotGraph\SyntaxModelManager\PostProcessors\ChangeWordClassForPointsWithNumericWord;
+
 class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 {
     public function testLaunchAndBuildGraph()
@@ -412,5 +414,89 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 
         $this->assertEquals(8, $graph->getVertices()->count());
         $this->assertEquals(10, $graph->getEdges()->count());
+    }
+
+    /**
+     * Тестирование менеджера создания синтаксической модели
+     */
+    public function testSyntaxModelManager()
+    {
+        $sentence = 'телефон офиса 1';
+        $syntax_manager = \Aot\Sviaz\Processors\AotGraph\SyntaxModelManager\Base::create();
+        $syntax_manager->addPostProcessors([
+            ChangeWordClassForPointsWithNumericWord::create(),
+        ]);
+        $syntax_model = $syntax_manager->run($sentence);
+        foreach ($syntax_model as $item) {
+            if ($item->getKw() === 2) {
+                $this->assertEquals(\WrapperAot\ModelNew\Convert\Defines::NUMERAL_CLASS_ID, $item->dw->id_word_class);
+                $this->assertEquals(\WrapperAot\ModelNew\Convert\Defines::NUMERAL_FULL, $item->dw->name_word_class);
+            }
+        }
+    }
+
+    /**
+     * Тестирование пост обработчика, заменяющего класс точки в синтаксической модели
+     */
+    public function testPostProcessorThatChangeWordClass()
+    {
+        $syntax_model = [];
+
+        // не заменяется
+        $dw1 = \WrapperAot\ModelNew\Convert\DictionaryWord::create(
+            null,
+            null,
+            '1',
+            \WrapperAot\ModelNew\Convert\Defines::NUMERAL_CLASS_ID,
+            \WrapperAot\ModelNew\Convert\Defines::NUMERAL_FULL,
+            []
+        );
+        /** @var \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel $point1 */
+        $point1 = $this->getMockBuilder(\WrapperAot\ModelNew\Convert\SentenceSpaceSPRel::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+        $point1->dw = $dw1;
+
+        // заменяется
+        $dw2 = \WrapperAot\ModelNew\Convert\DictionaryWord::create(
+            null, null, '2555', 3, 'прилагательное', []
+        );
+
+        /** @var \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel $point2 */
+        $point2 = $this->getMockBuilder(\WrapperAot\ModelNew\Convert\SentenceSpaceSPRel::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+
+        $point2->dw = $dw2;
+
+        // не заменяется
+        $dw3 = \WrapperAot\ModelNew\Convert\DictionaryWord::create(
+            null, null, 'один', 3, 'прилагательное', []
+        );
+
+        /** @var \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel $point3 */
+        $point3 = $this->getMockBuilder(\WrapperAot\ModelNew\Convert\SentenceSpaceSPRel::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['_'])
+            ->getMock();
+
+        $point3->dw = $dw3;
+
+        $syntax_model[] = $point1;
+        $syntax_model[] = $point2;
+        $syntax_model[] = $point3;
+
+        $post_processor = ChangeWordClassForPointsWithNumericWord::create();
+        $syntax_model = $post_processor->run($syntax_model);
+        $this->assertEquals(\WrapperAot\ModelNew\Convert\Defines::NUMERAL_CLASS_ID, $syntax_model[0]->dw->id_word_class);
+        $this->assertEquals(\WrapperAot\ModelNew\Convert\Defines::NUMERAL_FULL, $syntax_model[0]->dw->name_word_class);
+
+        $this->assertEquals(\WrapperAot\ModelNew\Convert\Defines::NUMERAL_CLASS_ID, $syntax_model[1]->dw->id_word_class);
+        $this->assertEquals(\WrapperAot\ModelNew\Convert\Defines::NUMERAL_FULL, $syntax_model[1]->dw->name_word_class);
+
+        $this->assertEquals(3, $syntax_model[2]->dw->id_word_class);
+        $this->assertEquals('прилагательное', $syntax_model[2]->dw->name_word_class);
     }
 }
