@@ -29,43 +29,40 @@ class DuplicateTest extends \AotTest\AotDataStorage
      */
     public static function setUpBeforeClass()
     {
-        //TODO тключаю тест. По причине того, что сломался, а чинить некогда и возможно нет смысла
-//        parent::setUpBeforeClass();
-//
-//
-//        <<<TEXT
-//      С глаголами образуют связь следующие наречия, которые пишутся через дефис:...
-//TEXT;
-//
-//
-//        $builder =
-//            \Aot\Sviaz\Rule\Builder2::create()
-//                ->main(
-//                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
-//                        ChastiRechiRegistry::GLAGOL,
-//                        RoleRegistry::OTNOSHENIE
-//                    )
-//                )
-//                ->depended(
-//                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
-//                        ChastiRechiRegistry::NARECHIE,
-//                        RoleRegistry::SVOISTVO
-//                    )
-////                        ->textGroupId(GroupIdRegistry::DEFISNARECH_FOR_GL)
-//                )
-//                ->link(
-//                    AssertedLinkBuilder::create()
-////                        ->dependedRightBeforeMain()
-//                );
-//
-//
-//        static::$rule = $builder->get();
+        parent::setUpBeforeClass();
+
+
+        <<<TEXT
+      С глаголами образуют связь следующие наречия, которые пишутся через дефис:...
+TEXT;
+
+
+        $builder =
+            \Aot\Sviaz\Rule\Builder2::create()
+                ->main(
+                    $builder_main = \Aot\Sviaz\Rule\AssertedMember\Builder\Main\Base::create(
+                        ChastiRechiRegistry::GLAGOL,
+                        RoleRegistry::OTNOSHENIE
+                    )
+                )
+                ->depended(
+                    $builder_depended = \Aot\Sviaz\Rule\AssertedMember\Builder\Depended\Base::create(
+                        ChastiRechiRegistry::NARECHIE,
+                        RoleRegistry::SVOISTVO
+                    )
+//                        ->textGroupId(GroupIdRegistry::DEFISNARECH_FOR_GL)
+                )
+                ->link(
+                    AssertedLinkBuilder::create()
+//                        ->dependedRightBeforeMain()
+                );
+
+
+        static::$rule = $builder->get();
     }
 
     public function testLaunch()
     {
-        $this->markTestSkipped("Отключаю тест. По причине того, что сломался, а чинить некогда и возможно нет смысла");
-
         $ob = \Aot\Sviaz\PostProcessors\Duplicate::create();
 
         $raw_sequence = $this->getRawSequence();
@@ -106,9 +103,6 @@ class DuplicateTest extends \AotTest\AotDataStorage
 
     public function testUserAlerted()
     {
-        $this->markTestSkipped("Отключаю тест. По причине того, что сломался, а чинить некогда и возможно нет смысла");
-
-
         /** @var \Aot\Sviaz\PostProcessors\Bidirectional | \PHPUnit_Framework_MockObject_MockObject $ob */
         $ob = $this->getMock(\Aot\Sviaz\PostProcessors\Duplicate::class, [
             'choose',

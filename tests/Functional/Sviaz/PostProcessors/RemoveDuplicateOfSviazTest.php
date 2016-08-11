@@ -32,18 +32,12 @@ class RemoveDuplicateOfSviaz extends \AotTest\AotDataStorage
 
     public function testLaunch()
     {
-        $this->markTestSkipped("Отключаю тест. По причине того, что сломался, а чинить некогда и возможно нет смысла");
-
-
         $obj = \Aot\Sviaz\PostProcessors\RemoveDuplicateOfSviaz::create();
         $this->assertTrue(is_a($obj, \Aot\Sviaz\PostProcessors\RemoveDuplicateOfSviaz::class));
     }
 
     public function testRun()
     {
-        $this->markTestSkipped("Отключаю тест. По причине того, что сломался, а чинить некогда и возможно нет смысла");
-
-
         $sequence = \Aot\Sviaz\Sequence::create();
         //Формируем набор элементов
         $member_1 = $this->getMock(\Aot\Sviaz\SequenceMember\Base::class);
