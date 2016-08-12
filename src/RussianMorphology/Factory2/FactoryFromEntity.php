@@ -111,7 +111,7 @@ class FactoryFromEntity
         $this->word_processor->getMode()->setSearchMode($search_mode);
         $this->word_processor->assertNotDuplicates($words);
         $cache_store = $this->word_processor->getCurrentCache();
-        
+
         list($trash_words, $good_words) = $this->word_processor->splitWordsAndTrash($words);
         list($cached_words, $new_words) = $this->word_processor->splitCachedAndNewWords($good_words);
         list($simple_words, $composite_words) = $this->word_processor->splitArrayWords($new_words);
@@ -121,15 +121,13 @@ class FactoryFromEntity
 
         //Обработка чисел, которые записаны цифрами
         $this->word_processor->processDigitalOfNumber($simple);
-        
-        
+
+
         $composite = $this->word_processor->processCompositeWords($composite_words);
         $trash = $this->word_processor->processTrash($trash_words);
 
-        $result = []; 
+        $result = [];
 
-
-        
 
         foreach ($words as $word) {
 
