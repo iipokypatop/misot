@@ -14,7 +14,7 @@ class Issue3363Test extends \AotTest\AotDataStorage
     public function testIssue()
     {
         $words = [
-            'Лёша',
+            'Лёша-админ',
             'поймал',
             '23',
             'покемона',
@@ -56,6 +56,6 @@ class Issue3363Test extends \AotTest\AotDataStorage
             $words[14],
             $words[15],
         ];
-        $this->assertEquals([], array_diff($expected_texts, $texts));
+        $this->assertEquals([], array_diff($texts, $expected_texts));
     }
 }
