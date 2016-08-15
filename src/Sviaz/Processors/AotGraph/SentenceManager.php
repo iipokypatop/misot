@@ -20,12 +20,13 @@ class SentenceManager
     /** @var int[] */
     protected $map_aot_id_sentence_id = [];
 
-    /** @var string[]  */
+    /** @var string[] */
     protected $punctuation = [',', '.', ';', ':']; // знаки пунктуации
 
 
     /**
      * @param string[] $sentence_words
+     *
      * @return \Aot\Sviaz\Processors\AotGraph\SentenceManager
      */
     public static function create(array $sentence_words)
@@ -45,12 +46,15 @@ class SentenceManager
         $this->sentence_words = $sentence_words;
         $this->sentence = join(' ', $sentence_words);
         $this->map_aot_id_sentence_id = $this->createAotIdSentenceIdMap($sentence_words);
+        $this->rebuildMapsForDifficultWords();
     }
 
 
     /**
      * Получение смещений точек из АОТа со словами предложения
+     *
      * @param string[] $sentence_words
+     *
      * @return int[]
      */
     protected function createAotIdSentenceIdMap(array $sentence_words)
@@ -74,7 +78,9 @@ class SentenceManager
 
     /**
      * Получение слова из массива слов по id из АОТа
+     *
      * @param int $aot_id
+     *
      * @return string
      */
     public function getSentenceWordByAotId($aot_id)
@@ -85,7 +91,9 @@ class SentenceManager
 
     /**
      * Получение id слова из предложения по id из АОТа
+     *
      * @param int $aot_id
+     *
      * @return int
      */
     public function getSentenceIdByAotId($aot_id)
@@ -97,5 +105,52 @@ class SentenceManager
         return $this->map_aot_id_sentence_id[$aot_id];
     }
 
+    /**
+     * Метод перестраивающий карту с учётом того, что есть составные слова
+     */
+    protected function rebuildMapsForDifficultWords()
+    {
+        $tmp_map_aot_id_sentence_id = [];
+        $tmp_sentence_words = [];
+
+        $count_tmp_map_aot_id_sentence_id = count($tmp_map_aot_id_sentence_id);
+        foreach ($this->sentence_words as $index => $sentence_word) {
+            $tmp_sentence_words[] = $sentence_word;
+            $count_parts = $this->countPart($sentence_word);
+            for ($i = 1; $i < $count_parts; $i++) {
+                $tmp_sentence_words[] = null;
+            }
+        }
+
+        $tmp_map_aot_id_sentence_id = [];
+        $main_id = null;
+        foreach ($tmp_sentence_words as $id => $word) {
+            if (!in_array($word, $this->punctuation)) {
+                if ($word !== null) {
+                    $tmp_map_aot_id_sentence_id[] = $id;
+                    $main_id = $id;
+                } else {
+                    $tmp_map_aot_id_sentence_id[] = $main_id;
+                }
+            }
+        }
+
+
+        $this->map_aot_id_sentence_id = $tmp_map_aot_id_sentence_id;
+        $this->sentence_words = $tmp_sentence_words;
+    }
+
+    /**
+     * Подсчёт количества частей
+     *
+     * @param string $word
+     *
+     * @return int
+     */
+    protected function countPart($word)
+    {
+        // Делить слово может не что иное как пробел
+        return (preg_match_all('#\s+#ui', $word) + 1);
+    }
 
 }
