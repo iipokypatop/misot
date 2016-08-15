@@ -136,7 +136,7 @@ class SentenceManager
         }
 
 
-        $this->map_aot_id_sentence_id = ($tmp_map_aot_id_sentence_id);
+        $this->map_aot_id_sentence_id = $tmp_map_aot_id_sentence_id;
         $this->sentence_words = $tmp_sentence_words;
     }
 
