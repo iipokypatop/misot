@@ -82,8 +82,9 @@ class BaseSubstitute implements ISubstitute
 
             //Удаляем прошлые вершины
             foreach ($vertices_of_collocation as $vertex_of_collocation) {
-                $vertex_of_collocation->destroy();
-
+                if ($graph->hasVertex($vertex_of_collocation->getId())) {
+                    $vertex_of_collocation->destroy();
+                }
             }
         }
 
