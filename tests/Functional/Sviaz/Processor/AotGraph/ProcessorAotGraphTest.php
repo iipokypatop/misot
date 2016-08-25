@@ -36,6 +36,22 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
         $graphviz->createImageSrc($graph);
     }
 
+    public function testBuildGraphWithMezhdometie()
+    {
+        $sentence = [
+            'хай',
+        ];
+        $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
+        $graph = $aot_graph->runBySentenceWords($sentence);
+
+        /** @var \Aot\Graph\Slovo\Vertex $vertex */
+        foreach ($graph->getVertices() as $vertex) {
+            $vertex->setAttribute('graphviz.label', $vertex->getSlovo()->getText());
+        }
+        $graphviz = new \Graphp\GraphViz\GraphViz();
+        $graphviz->createImageSrc($graph);
+    }
+
     /**
      * @dataProvider dataProviderSerializedSyntaxModels
      * @param $sentence
