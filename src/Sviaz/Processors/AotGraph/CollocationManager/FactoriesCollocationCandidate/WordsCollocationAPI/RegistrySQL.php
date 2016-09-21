@@ -26,7 +26,7 @@ class RegistrySQL
     {
         return "
         select min(w.word) as " . static::INITIAL_FORM_OF_FIRST_WORD . ", array_agg(i.wcombi_id) as " . static::COLLOCATION_IDS . "
-        from  wcombi_item i 
+        from  words.wcombi_item i
         join mwords w on i.winit_id = w.id and i.position = 1
         group by i.winit_id
         ";
@@ -39,7 +39,7 @@ class RegistrySQL
     {
         return "
         select id as " . static::COLLOCATION_ID . ", init_form as " . static::COLLOCATION_INITIAL_FORM . " 
-        from wcombi
+        from words.wcombi
         ";
     }
 
@@ -50,7 +50,7 @@ class RegistrySQL
     {
         return "
         select i.wcombi_id as " . static::COLLOCATION_ID . ", array_agg(w.word order by i.position) as  " . static::INITIAL_FORMS . "
-        from wcombi_item i 
+        from words.wcombi_item i
         join mwords w on i.winit_id = w.id 
         group by i.wcombi_id
         ";
@@ -63,7 +63,7 @@ class RegistrySQL
     {
         return "
         select i.wcombi_id as " . static::COLLOCATION_ID . ", min(case when i.is_key then i.position end) as " . static::POSITION_MAIN_WORD . "
-        from wcombi_item i 
+        from words.wcombi_item i
         group by i.wcombi_id
         ";
     }
