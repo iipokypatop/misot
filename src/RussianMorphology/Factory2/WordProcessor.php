@@ -551,6 +551,13 @@ class WordProcessor
         foreach ($words as $word => $slova) {
             if (is_numeric($word)) {
                 $string_view = \Aot\Tools\ConverterOfNumeral\Base::convertToString((double)$word);
+                /**
+                 * TODO:
+                 * Заглушка, т.к. бага при получение цифры "0"
+                 */
+                if ($string_view === '') {
+                    continue;
+                }
                 $parts = $this->getChislitelnieForString($string_view);
                 if (count($parts) === 1) {
                     $slovo = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::create(
