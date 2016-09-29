@@ -52,9 +52,9 @@ class MorphologyRegistryParent
 
     const RAZRJAD_NARECHIE = 29000;
 
-    CONST IZMENJAEMOST_PADEZHA = 30000;
+    const IZMENJAEMOST_PADEZHA = 30000;
 
-    CONST TIP_MESTOIMENIYA = 31000;
+    const TIP_MESTOIMENIYA = 31000;
     protected static $nullClassByBaseClass = [];
 
     public static function new_old()
@@ -381,7 +381,9 @@ class MorphologyRegistryParent
             static::PODVID_CHISLITELNOGO => 'подвид числительного',
             static::TIP_CHISLITELNOGO => 'тип',
             static::VID_CHISLITELNOGO => 'вид числительного',
+            static::TIP_MESTOIMENIYA => 'тип местоимения',
             static::RAZRYAD_PRILAGATELNOE => 'разряд прилагательного',
+            static::RAZRYAD_MESTOIMENIE => 'разряд местоимение',
             static::OTGLAGOLNOST_SUSCHESTVITELNOE => 'отглагольность существительного',
         ];
     }

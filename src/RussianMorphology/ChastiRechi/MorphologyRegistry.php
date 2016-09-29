@@ -1005,7 +1005,6 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::CHISLO_EDINSTVENNOE => 'единственное число',
             static::CHISLO_MNOZHESTVENNOE => 'множественное число',
 
-            static::SKLONENIE => 'склонение',
             static::SKLONENIE_PERVOE => 'первое склонение',
             static::SKLONENIE_VTOROE => 'второе склонение',
             static::SKLONENIE_TRETIE => 'третье склонение',
@@ -1013,7 +1012,6 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::NEIZMENYAJMOST_NEIZMNYAJMIJ => 'изменяемый',
             static::PEREHODNOST_PEREHODNII => 'переходный',
             static::PEREHODNOST_NEPEREHODNII => 'непереходный',
-            static::RAZRYAD_MESTOIMENIE => 'разряд местоимение',
             static::RAZRYAD_PRILAGATELNOE_KACHESTVENNOE => 'качественное',
             static::RAZRYAD_MESTOIMENIE_OTNOSITELNOE => 'относительное',
             static::RAZRYAD_MESTOIMENIE_PRITYAZHATELNOE => 'притяжательное',
@@ -1024,33 +1022,34 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::RAZRYAD_MESTOIMENIE_OTRICATELNOE => 'отрицательное',
             static::RAZRYAD_MESTOIMENIE_UKAZATELNOE => 'указательное',
             static::RAZRYAD_MESTOIMENIE_VOPROSITELNOE => 'вопросительное',
-            static::FORMA => 'форма',
+
             static::FORMA_POLNAYA => 'полная',
             static::FORMA_KRATKAYA => 'краткая',
-            static::STEPEN_SRAVNENIYA => 'степень сравнения',
+
             static::STEPEN_SRAVNENIYA_POLOZHITELNAYA => 'положительная',
             static::STEPEN_SRAVNENIYA_SRAVNITELNAYA => 'сравнительная',
             static::STEPEN_SRAVNENIYA_PREVOSHODNAYA => 'превосходная',
-            static::VID => 'вид',
+
             static::VID_SOVERSHENNYJ => 'совершенный',
             static::VID_NESOVERSHENNYJ => 'несовершенный',
             static::VOZVRATNOST_VOZVRATNYJ => 'возвратный',
             static::VOZVRATNOST_NEVOZVRATNYJ => 'невозвратный',
-            static::ZALOG => 'залог',
+
             static::ZALOG_DEJSTVITELNYJ => 'действительный',
             static::ZALOG_STRADATELNYJ => 'страдательный',
-            static::SPRYAZHENIE => 'спряжение',
+
             static::SPRYAZHENIE_PERVOE => 'первое',
             static::SPRYAZHENIE_VTOROE => 'второе',
-            static::NAKLONENIE => 'наклонение',
+
             static::NAKLONENIE_IZYAVITELNOE => 'изъявительное',
             static::NAKLONENIE_POVELITELNOE => 'повелительное',
             static::NAKLONENIE_YSLOVNOE => 'условное',
-            static::VREMYA => 'время',
+
+
             static::VREMYA_BUDUSCHEE => 'будущее',
             static::VREMYA_NASTOYASCHEE => 'настоящее',
             static::VREMYA_PROSHEDSHEE => 'прошедшее',
-            static::LITSO => 'лицо',
+
             static::LITSO_PERVOE => 'первое',
             static::LITSO_VTOROE => 'второе',
             static::LITSO_TRETIE => 'третье',
