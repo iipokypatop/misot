@@ -21,6 +21,7 @@ class MorphologyRegistryParent
     const SKLONENIE = 4000;
     const NEIZMENYAJMOST = 5000;
     const PEREHODNOST = 6000;
+    // дублирование ???
     const NARICATELNOST = 7000;
     const RAZRYAD_MESTOIMENIE = 9000;
 
@@ -50,6 +51,7 @@ class MorphologyRegistryParent
 
     const RAZRJAD_SOYUZ = 29000;
 
+    // дублирование??
     const RAZRJAD_NARECHIE = 29000;
 
     const IZMENJAEMOST_PADEZHA = 30000;

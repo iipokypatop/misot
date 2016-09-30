@@ -993,26 +993,40 @@ class MorphologyRegistry extends MorphologyRegistryParent
     public static function getNames()
     {
         $names = [
+            // падеж
             static::PADESZH_IMENITELNIJ => 'именительный падеж',
             static::PADESZH_RODITELNIJ => 'родительный падеж',
             static::PADESZH_DATELNIJ => 'дательный падеж',
             static::PADESZH_VINITELNIJ => 'винительный падеж',
             static::PADESZH_TVORITELNIJ => 'творительный падеж',
             static::PADESZH_PREDLOZSHNIJ => 'предложный падеж',
+
+            // род
             static::ROD_MUZHSKOI => 'мужской род',
             static::ROD_ZHENSKII => 'женский род',
             static::ROD_SREDNIJ => 'средний род',
+
+            // число
             static::CHISLO_EDINSTVENNOE => 'единственное число',
             static::CHISLO_MNOZHESTVENNOE => 'множественное число',
 
+            // склонение
             static::SKLONENIE_PERVOE => 'первое склонение',
             static::SKLONENIE_VTOROE => 'второе склонение',
             static::SKLONENIE_TRETIE => 'третье склонение',
+
+            // неизменяемость
             static::NEIZMENYAJMOST_IZMNYAJMIJ => 'неизменяемый',
             static::NEIZMENYAJMOST_NEIZMNYAJMIJ => 'изменяемый',
+
+            // переходность
             static::PEREHODNOST_PEREHODNII => 'переходный',
             static::PEREHODNOST_NEPEREHODNII => 'непереходный',
+
+            // разряд прилагательного
             static::RAZRYAD_PRILAGATELNOE_KACHESTVENNOE => 'качественное',
+
+            // разряд местоимения
             static::RAZRYAD_MESTOIMENIE_OTNOSITELNOE => 'относительное',
             static::RAZRYAD_MESTOIMENIE_PRITYAZHATELNOE => 'притяжательное',
             static::RAZRYAD_MESTOIMENIE_VOZVRATNOE => 'возвратное',
@@ -1023,60 +1037,121 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::RAZRYAD_MESTOIMENIE_UKAZATELNOE => 'указательное',
             static::RAZRYAD_MESTOIMENIE_VOPROSITELNOE => 'вопросительное',
 
+            // форма
             static::FORMA_POLNAYA => 'полная',
             static::FORMA_KRATKAYA => 'краткая',
 
+            // степень сравнения
             static::STEPEN_SRAVNENIYA_POLOZHITELNAYA => 'положительная',
             static::STEPEN_SRAVNENIYA_SRAVNITELNAYA => 'сравнительная',
             static::STEPEN_SRAVNENIYA_PREVOSHODNAYA => 'превосходная',
 
+            // вид
             static::VID_SOVERSHENNYJ => 'совершенный',
             static::VID_NESOVERSHENNYJ => 'несовершенный',
+
+            // возвратность
             static::VOZVRATNOST_VOZVRATNYJ => 'возвратный',
             static::VOZVRATNOST_NEVOZVRATNYJ => 'невозвратный',
 
+            // залог
             static::ZALOG_DEJSTVITELNYJ => 'действительный',
             static::ZALOG_STRADATELNYJ => 'страдательный',
 
+            // спряжение
             static::SPRYAZHENIE_PERVOE => 'первое',
             static::SPRYAZHENIE_VTOROE => 'второе',
 
+            // наклонение
             static::NAKLONENIE_IZYAVITELNOE => 'изъявительное',
             static::NAKLONENIE_POVELITELNOE => 'повелительное',
             static::NAKLONENIE_YSLOVNOE => 'условное',
 
-
+            // время
             static::VREMYA_BUDUSCHEE => 'будущее',
             static::VREMYA_NASTOYASCHEE => 'настоящее',
             static::VREMYA_PROSHEDSHEE => 'прошедшее',
 
+            // лицо
             static::LITSO_PERVOE => 'первое',
             static::LITSO_VTOROE => 'второе',
             static::LITSO_TRETIE => 'третье',
+
+            // одушевленность
             static::ODUSHEVLYONNOST_ODUSHEVLYONNOE => 'одушевленное',
             static::ODUSHEVLYONNOST_NEODUSHEVLYONNOE => 'неодушевленное',
+
+            // нарицательность
             static::NARITCATELNOST_IMIA_NARITCATELNOE => 'нарицательное',
             static::NARITCATELNOST_IMIA_SOBSTVENNOE => 'собственное',
 
+            // подвид
             static::PODVID_CHISLITELNOGO_PROSTOY => 'простое',
             static::PODVID_CHISLITELNOGO_SOSTAVNOY => 'составное',
+
+            // тип числительного
             static::TIP_CHISLITELNOGO_CELIY => 'целое',
             static::TIP_CHISLITELNOGO_DROBNIY => 'дробное',
             static::TIP_CHISLITELNOGO_SOBIRATELNIY => 'собирательное',
+
+            // вид числительного
             static::VID_CHISLITELNOGO_KOLICHESTVENNIY => 'количественный',
             static::VID_CHISLITELNOGO_PORYADKOVIY => 'порядковый',
 
+            // разряд прилагательного
             static::RAZRYAD_PRILAGATELNOE_KACHESTVENNOE => 'качественное',
             static::RAZRYAD_PRILAGATELNOE_OTNOSITELNOE => 'относительное',
             static::RAZRYAD_PRILAGATELNOE_PRITYAZHATELNOE => 'притяжательное',
 
+            // отглагольность существительного
             static::OTGLAGOLNOST_SUSCHESTVITELNOE_NEOTGLAGOLNOE => 'неотглагольное',
             static::OTGLAGOLNOST_SUSCHESTVITELNOE_OTGLAGOLNOE => 'отглагольное',
 
+            // тип местоимения
             static::TIP_MESTOIMENIYA_BEZLICHNOE => 'безличное местоимение',
             static::TIP_MESTOIMENIYA_LICHNOE_ODUSHEVLENNOE => 'личное одушевленное местоимение',
             static::TIP_MESTOIMENIYA_MESTOIMENIE_PRILAGATELNOE => 'прилагательное местоимение',
             static::TIP_MESTOIMENIYA_MESTOIMENIE_SUSHHESTVITELNOE => 'существительное местоимение',
+
+
+            // производность предлога
+//            static::PROIZVODNOST_PREDLOG_PROIZVODNIJ => 'производный предлог',
+//            static::PROIZVODNOST_PREDLOG_NEPROIZVODNIJ => 'непроизводный предлог',
+
+
+            // разряд наречия
+//            static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_MESTA => 'наречие обстоятельства места',
+//            static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_CELI => 'наречие обстоятельства цели',
+//            static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_PRICHINY => 'наречие обстоятельства причины',
+//            static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_VREMENI => 'наречие обстоятельства времени',
+//            static::RAZRYAD_NARECHIE_OPREDELITELNYJ_MERY_I_STEPENI => 'наречие меры и степени',
+//            static::RAZRYAD_NARECHIE_OPREDELITELNYJ_OBRAZA_DEJSTVIJA => 'наречие образа действия',
+
+            // разряд предлога
+//            static::RAZRJAD_PREDLOG_CELEVOJ => 'предлог целевой',
+//            static::RAZRJAD_PREDLOG_DOPOLNITELNYJ => 'предлог дополнительный',
+//            static::RAZRJAD_PREDLOG_OBRAZA_DEJSTVIJA => 'предлог образа действия',
+//            static::RAZRJAD_PREDLOG_PRICHINNYJ => 'предлог причины',
+//            static::RAZRJAD_PREDLOG_PROSTRANSTVENNYJ => 'предлог пространственный',
+//            static::RAZRJAD_PREDLOG_VREMENNOJ => 'предлог временной',
+
+            // разряд союза
+//            static::RAZRJAD_SOYUZ_PODCH_CEL => 'союз подчинительный цели',
+//            static::RAZRJAD_SOYUZ_PODCH_IZJASN => 'союз подчинительный изъявительный',
+//            static::RAZRJAD_SOYUZ_PODCH_PRICH => 'союз подчинительный причинный',
+//            static::RAZRJAD_SOYUZ_PODCH_SLED => 'союз подчинительный следственный',
+//            static::RAZRJAD_SOYUZ_PODCH_SRAV => 'союз подчинительный сравнительный',
+//            static::RAZRJAD_SOYUZ_PODCH_USL => 'союз подчинительный условный',
+//            static::RAZRJAD_SOYUZ_PODCH_UST => 'союз подчинительный уступительный',
+//            static::RAZRJAD_SOYUZ_PODCH_VREM => 'союз подчинительный временной',
+//            static::RAZRJAD_SOYUZ_SOCHIN_PROTIV => 'союз сочинительный противительный',
+//            static::RAZRJAD_SOYUZ_SOCHIN_RAZD => 'союз сочинительный разделительный',
+//            static::RAZRJAD_SOYUZ_SOCHINITELNYJ_SOEDINITELNYJ => 'союз сочинительный соединительный',
+
+
+            // IZMENJAEMOST_PADEZHA
+//            static::IZMENJAEMOST_PADEZHA_NEIZMENJAEMYJ_PADEZH => 'неизменяемый падеж',
+
         ];
 
 
@@ -1170,12 +1245,12 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::PROIZVODNOST_PREDLOG_NEPROIZVODNIJ => 58,
 
 
-            static:: RAZRJAD_PREDLOG_PROSTRANSTVENNYJ => 59,
-            static:: RAZRJAD_PREDLOG_VREMENNOJ => 60,
-            static:: RAZRJAD_PREDLOG_PRICHINNYJ => 61,
-            static:: RAZRJAD_PREDLOG_CELEVOJ => 62,
-            static:: RAZRJAD_PREDLOG_OBRAZA_DEJSTVIJA => 63,
-            static:: RAZRJAD_PREDLOG_DOPOLNITELNYJ => 64,
+            static::RAZRJAD_PREDLOG_PROSTRANSTVENNYJ => 59,
+            static::RAZRJAD_PREDLOG_VREMENNOJ => 60,
+            static::RAZRJAD_PREDLOG_PRICHINNYJ => 61,
+            static::RAZRJAD_PREDLOG_CELEVOJ => 62,
+            static::RAZRJAD_PREDLOG_OBRAZA_DEJSTVIJA => 63,
+            static::RAZRJAD_PREDLOG_DOPOLNITELNYJ => 64,
 
 
             static::RAZRJAD_SOYUZ_SOCHINITELNYJ_SOEDINITELNYJ => 65,
