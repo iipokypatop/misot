@@ -1072,6 +1072,11 @@ class MorphologyRegistry extends MorphologyRegistryParent
 
             static::OTGLAGOLNOST_SUSCHESTVITELNOE_NEOTGLAGOLNOE => 'неотглагольное',
             static::OTGLAGOLNOST_SUSCHESTVITELNOE_OTGLAGOLNOE => 'отглагольное',
+
+            static::TIP_MESTOIMENIYA_BEZLICHNOE => 'безличное местоимение',
+            static::TIP_MESTOIMENIYA_LICHNOE_ODUSHEVLENNOE => 'личное одушевленное местоимение',
+            static::TIP_MESTOIMENIYA_MESTOIMENIE_PRILAGATELNOE => 'прилагательное местоимение',
+            static::TIP_MESTOIMENIYA_MESTOIMENIE_SUSHHESTVITELNOE => 'существительное местоимение',
         ];
 
 
