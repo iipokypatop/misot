@@ -1,15 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: s.kharchenko
- * Date: 11/12/15
- * Time: 12:59
- */
 
 namespace Aot\Sviaz\Processors\AotGraph;
-
-
-use Aot\Exception;
 
 class Builder
 {
@@ -106,9 +97,8 @@ class Builder
         \Aot\Graph\Slovo\Graph $graph,
         \Aot\RussianMorphology\Slovo $slovo,
         $sentence_id,
-        $position_slovo_in_sentence = null
-    )
-    {
+        $position_slovo_in_sentence
+    ) {
         return \Aot\Graph\Slovo\Vertex::create($graph, $slovo, $sentence_id, $position_slovo_in_sentence);
     }
 
@@ -149,22 +139,34 @@ class Builder
         assert(is_int($id_part_of_speech_aot));
         // соответвие id части речи из морфика и в мисоте
         $conformity = [
-            \DefinesAot::VERB_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::GLAGOL, // гл
-            \DefinesAot::NOUN_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::SUSCHESTVITELNOE, // сущ
-            \DefinesAot::ADJECTIVE_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::PRILAGATELNOE, // прил
-            \DefinesAot::PRONOUN_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::MESTOIMENIE, // мест
-            \DefinesAot::COMMUNION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::PRICHASTIE, // прич
-            \DefinesAot::PREPOSITION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::PREDLOG, // предлог
+            \WrapperAot\ModelNew\Convert\Defines::VERB_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::GLAGOL,
+            // гл
+            \WrapperAot\ModelNew\Convert\Defines::NOUN_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::SUSCHESTVITELNOE,
+            // сущ
+            \WrapperAot\ModelNew\Convert\Defines::ADJECTIVE_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::PRILAGATELNOE,
+            // прил
+            \WrapperAot\ModelNew\Convert\Defines::PRONOUN_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::MESTOIMENIE,
+            // мест
+            \WrapperAot\ModelNew\Convert\Defines::COMMUNION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::PRICHASTIE,
+            // прич
+            \WrapperAot\ModelNew\Convert\Defines::PREPOSITION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::PREDLOG,
+            // предлог
             # в МИСОТе нет
             # 7 =>\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::, // аббревиатура
-            \DefinesAot::UNION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::SOYUZ, // союз
-            \DefinesAot::PARTICLE_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::CHASTICA, // част
-            \DefinesAot::INTERJECTION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::MEZHDOMETIE, // межд
-            \DefinesAot::PARTICIPLE_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::DEEPRICHASTIE, // деепр
-            \DefinesAot::ADVERB_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::NARECHIE, // нар
-            \DefinesAot::PREDICATIVE_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::INFINITIVE, // инф
-            \DefinesAot::NUMERAL_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::CHISLITELNOE, // числ
-            \DefinesAot::FRAZ_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::FRAZ, // фразеологизм
+            \WrapperAot\ModelNew\Convert\Defines::UNION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::SOYUZ,
+            // союз
+            \WrapperAot\ModelNew\Convert\Defines::PARTICLE_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::CHASTICA,
+            // част
+            \WrapperAot\ModelNew\Convert\Defines::INTERJECTION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::MEZHDOMETIE,
+            // межд
+            \WrapperAot\ModelNew\Convert\Defines::PARTICIPLE_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::DEEPRICHASTIE,
+            // деепр
+            \WrapperAot\ModelNew\Convert\Defines::ADVERB_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::NARECHIE,
+            // нар
+            \WrapperAot\ModelNew\Convert\Defines::PREDICATIVE_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::INFINITIVE,
+            // инф
+            \WrapperAot\ModelNew\Convert\Defines::NUMERAL_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::CHISLITELNOE,
+            // числ
             # в МИСОТе нет
             # 15 =>\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::, // сокращение
         ];
@@ -182,12 +184,12 @@ class Builder
         \Aot\Graph\Slovo\Graph $graph,
         $sentence_id,
         \Aot\Sviaz\Processors\AotGraph\Link $link
-    )
-    {
+    ) {
         assert(is_int($sentence_id));
         $text_soyuz = $this->getTextOfSoyuz($link);
         $slovo_union = \Aot\RussianMorphology\ChastiRechi\Soyuz\Base::create($text_soyuz);
-        return $this->buildVertex($graph, $slovo_union, $sentence_id);
+        $slovo_union->setInitialForm($text_soyuz);
+        return \Aot\Graph\Slovo\Vertex::createVertexWithoutPosition($graph, $slovo_union);
     }
 
     /**

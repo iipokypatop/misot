@@ -2,16 +2,13 @@
 
 namespace Aot\Sviaz\Processors\AotGraph;
 
-/**
- * Created by PhpStorm.
- * User: s.kharchenko
- * Date: 11/12/15
- * Time: 01:08
- */
 class Base
 {
-    const MAIN_POINT = 'x'; // главная точка в АОТе
-    const DEPENDED_POINT = 'y'; // зависимая точка в АОТе
+    // главная точка в АОТе
+    const MAIN_POINT = 'x';
+
+    // зависимая точка в АОТе
+    const DEPENDED_POINT = 'y';
 
     /** @var \Aot\Sviaz\Processors\AotGraph\Builder */
     protected $builder;
@@ -20,19 +17,38 @@ class Base
     protected $sentence_manager;
 
     /** @var  \Aot\RussianMorphology\Slovo[][][] */
-    protected $slova_collection;
+    protected $slova_collection = [];
+
+    /** @var  \Aot\Sviaz\Processors\AotGraph\Filters\Base[] */
+    protected $filters = [];
+
+    /** @var  \Aot\Sviaz\Processors\AotGraph\CollocationManager\Manager */
+    protected $collocation_manager;
 
     /**
      * @return static
      */
     public static function create()
     {
-        return new static();
+        $ob = new static();
+        $ob->collocation_manager = CollocationManager\Manager::createDefault();
+        return $ob;
     }
 
     protected function __construct()
     {
         $this->builder = Builder::create();
+    }
+
+    /**
+     * @param \Aot\Sviaz\Processors\AotGraph\Filters\Base[] $filters
+     */
+    public function addFilters(array $filters)
+    {
+        foreach ($filters as $filter) {
+            assert(is_a($filter, \Aot\Sviaz\Processors\AotGraph\Filters\Base::class, true));
+        }
+        $this->filters = array_merge($this->filters, $filters);
     }
 
     /**
@@ -74,39 +90,26 @@ class Base
         $syntax_model = $this->createSyntaxModel($this->sentence_manager->getSentence());
 
         if (empty($syntax_model)) {
-            return $this->builder->buildGraph();
+            $graph = $this->builder->buildGraph();
+        } else {
+            $links = $this->getLinkedSlova($syntax_model);
+            $graph = $this->createGraph($links, $sentence_id);
         }
 
-        $links = $this->getLinkedSlova($syntax_model);
+        $this->runFilters($graph);
 
-        return $this->createGraph($links, $sentence_id);
+        $this->collocation_manager->run($graph);
+        return $graph;
     }
 
     /**
-     * Создание синтаксической модели через АОТ
-     * @param string $sentence
-     * @return \Sentence_space_SP_Rel[]
-     */
-    protected function createSyntaxModel($sentence)
-    {
-        assert(is_string($sentence));
-
-        $mivar = new \DMivarText(['txt' => $sentence]);
-
-        $mivar->syntax_model();
-
-        return $mivar->getSyntaxModel();
-    }
-
-
-    /**
-     * @param \Sentence_space_SP_Rel[] $syntax_model
+     * @param \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[] $syntax_model
      * @return Link[]
      */
     protected function getLinkedSlova(array $syntax_model)
     {
         foreach ($syntax_model as $point) {
-            assert(is_a($point, \Sentence_space_SP_Rel::class, true));
+            assert(is_a($point, \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel::class, true));
         }
 
         if (empty($syntax_model)) {
@@ -127,8 +130,8 @@ class Base
 
         /** @var \Aot\Sviaz\Processors\AotGraph\Link[] $links */
         $links = [];
-        
-        /** @var  \Sentence_space_SP_Rel[] $syntax_model */
+
+        /** @var  \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[] $syntax_model */
         foreach ($syntax_model as $key => $point) {
 
             $slovo = $this->buildSlovo($point);
@@ -139,21 +142,24 @@ class Base
             } else {
                 $link = $links[$point->Oz];
             }
-            
-            if (in_array($link->getNameOfLink(), \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::$sub_conjunctions)) {
+
+            if (in_array(
+                $link->getNameOfLink(),
+                \Aot\Sviaz\Processors\AotGraph\SubConjunctionRegistry::$sub_conjunctions)
+            ) {
                 $link->setDirectLink(false);
             }
 
             if ($point->direction === static::MAIN_POINT) {
                 $link->setMainSlovo($slovo);
-                $link->setMainPosition($point->get_kw());
+                $link->setMainPosition($point->kw);
                 continue;
 
             }
 
             if ($point->direction === static::DEPENDED_POINT) {
                 $link->setDependedSlovo($slovo);
-                $link->setDependedPosition($point->get_kw());
+                $link->setDependedPosition($point->kw);
                 continue;
             }
 
@@ -164,10 +170,10 @@ class Base
     }
 
     /**
-     * @param \Sentence_space_SP_Rel $point
+     * @param \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel $point
      * @return \Aot\RussianMorphology\Slovo
      */
-    protected function buildSlovo(\Sentence_space_SP_Rel $point)
+    protected function buildSlovo(\WrapperAot\ModelNew\Convert\SentenceSpaceSPRel $point)
     {
         if (empty($this->slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)])) {
             $factory_slovo = $this->builder->getFactorySlovo($point->dw->id_word_class);
@@ -215,21 +221,37 @@ class Base
             if (!$link->isDirectLink()) {
                 $vertex_union = $this->builder->buildSoyuzVertex($graph_slova, $sentence_id, $link);
                 $this->builder->buildEdge(
-                    $vertices_manager->getVertexBySlovo($link->getMainSlovo(), $sentence_id, $link->getMainPosition()),
+                    $vertices_manager->getVertexBySlovo(
+                        $link->getMainSlovo(),
+                        $sentence_id,
+                        $link->getMainPosition()
+                    ),
                     $vertex_union,
                     $link->getNameOfLink()
                 );
 
                 $this->builder->buildEdge(
                     $vertex_union,
-                    $vertices_manager->getVertexBySlovo($link->getDependedSlovo(), $sentence_id, $link->getDependedPosition()),
+                    $vertices_manager->getVertexBySlovo(
+                        $link->getDependedSlovo(),
+                        $sentence_id,
+                        $link->getDependedPosition()
+                    ),
                     $link->getNameOfLink()
                 );
                 continue;
             }
             $this->builder->buildEdge(
-                $vertices_manager->getVertexBySlovo($link->getMainSlovo(), $sentence_id, $link->getMainPosition()),
-                $vertices_manager->getVertexBySlovo($link->getDependedSlovo(), $sentence_id, $link->getDependedPosition()),
+                $vertices_manager->getVertexBySlovo(
+                    $link->getMainSlovo(),
+                    $sentence_id,
+                    $link->getMainPosition()
+                ),
+                $vertices_manager->getVertexBySlovo(
+                    $link->getDependedSlovo(),
+                    $sentence_id,
+                    $link->getDependedPosition()
+                ),
                 $link->getNameOfLink()
             );
         }
@@ -251,5 +273,28 @@ class Base
                 $edge->destroy();
             }
         }
+    }
+
+    /**
+     * @param \Aot\Graph\Slovo\Graph $graph
+     */
+    protected function runFilters(\Aot\Graph\Slovo\Graph $graph)
+    {
+        foreach ($this->filters as $filter) {
+            $filter->run($graph);
+        }
+    }
+
+    /**
+     * @param string $sentence
+     * @return \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[]
+     */
+    protected function createSyntaxModel($sentence)
+    {
+        $syntax_manager = \Aot\Sviaz\Processors\AotGraph\SyntaxModelManager\Base::create();
+        $syntax_manager->addPostProcessors([
+            SyntaxModelManager\PostProcessors\ChangeWordClassForPointsWithNumericWord::create(),
+        ]);
+        return $syntax_manager->run($sentence);
     }
 }

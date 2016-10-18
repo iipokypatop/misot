@@ -9,7 +9,7 @@
 namespace Aot\Sviaz\Processors\Aot;
 
 use Aot\Sviaz\Role\Registry as RoleRegistry;
-use DefinesAot;
+use \WrapperAot\ModelNew\Convert\Defines;
 
 /**
  * Class RoleSpecification
@@ -30,57 +30,61 @@ class RoleSpecificator
         assert(is_int($id_word_class_dep));
 
         // подлежащее-сказуемое
-        if ($name_relation === DefinesAot::BASIS_MIVAR) {
+        if ($name_relation === \WrapperAot\ModelNew\Convert\Defines::BASIS_MIVAR) {
             $role_main = RoleRegistry::VESCH;
             $role_dep = RoleRegistry::OTNOSHENIE;
         } // составное сказуемое
-        elseif ($name_relation === DefinesAot::COMPLEX_PREDICATE_MIVAR) {
+        elseif ($name_relation === \WrapperAot\ModelNew\Convert\Defines::COMPLEX_PREDICATE_MIVAR) {
             $role_main = RoleRegistry::OTNOSHENIE;
             $role_dep = RoleRegistry::SVOISTVO;
         } // косвенное дополнение
-        elseif ($name_relation === DefinesAot::INDIRECT_OBJECT_MIVAR) {
+        elseif ($name_relation === \WrapperAot\ModelNew\Convert\Defines::INDIRECT_OBJECT_MIVAR) {
             $role_main = RoleRegistry::OTNOSHENIE;
             $role_dep = RoleRegistry::VESCH;
         } // прямое дополнение
-        elseif ($name_relation === DefinesAot::DIRECT_OBJECT_MIVAR) {
+        elseif ($name_relation === \WrapperAot\ModelNew\Convert\Defines::DIRECT_OBJECT_MIVAR) {
             $role_main = RoleRegistry::OTNOSHENIE;
             $role_dep = RoleRegistry::VESCH;
         } // не + глагол/сущ/местоимение/прилагательное
-        elseif ($name_relation === DefinesAot::NEGATIVE_NUMERAL_MIVAR) {
-            if (in_array($id_word_class_main, [DefinesAot::NOUN_CLASS_ID, DefinesAot::PRONOUN_CLASS_ID, DefinesAot::ADJECTIVE_CLASS_ID])) {
+        elseif ($name_relation === \WrapperAot\ModelNew\Convert\Defines::NEGATIVE_NUMERAL_MIVAR) {
+            if (in_array($id_word_class_main, [
+                \WrapperAot\ModelNew\Convert\Defines::NOUN_CLASS_ID,
+                \WrapperAot\ModelNew\Convert\Defines::PRONOUN_CLASS_ID,
+                \WrapperAot\ModelNew\Convert\Defines::ADJECTIVE_CLASS_ID
+            ])) {
                 $role_main = RoleRegistry::VESCH;
             } else {
                 $role_main = RoleRegistry::OTNOSHENIE;
             }
             $role_dep = RoleRegistry::SVOISTVO;
         } // предлог + существительное
-        elseif ($name_relation === DefinesAot::PREPOSITIONAL_PHRASE_MIVAR) {
+        elseif ($name_relation === \WrapperAot\ModelNew\Convert\Defines::PREPOSITIONAL_PHRASE_MIVAR) {
             $role_main = RoleRegistry::SVOISTVO; // предлог
             $role_dep = RoleRegistry::VESCH; // сущ
         } // словосочетание (кресло директора)
-        elseif ($name_relation === DefinesAot::GENITIVE_PHRASE_MIVAR) {
+        elseif ($name_relation === \WrapperAot\ModelNew\Convert\Defines::GENITIVE_PHRASE_MIVAR) {
             $role_main = RoleRegistry::VESCH;
             $role_dep = RoleRegistry::SVOISTVO;
         } //  глагол и наречие
-        elseif ($name_relation === DefinesAot::ADVERB_PHRASE_MIVAR) {
+        elseif ($name_relation === \WrapperAot\ModelNew\Convert\Defines::ADVERB_PHRASE_MIVAR) {
             $role_main = RoleRegistry::OTNOSHENIE;
             $role_dep = RoleRegistry::SVOISTVO;
         } // крайне редко
-        elseif ($name_relation === DefinesAot::ADJECTIVE_PHRASE_MIVAR) {
+        elseif ($name_relation === \WrapperAot\ModelNew\Convert\Defines::ADJECTIVE_PHRASE_MIVAR) {
             $role_main = RoleRegistry::VESCH;
             $role_dep = RoleRegistry::SVOISTVO;
         } // числительные
-        elseif ($name_relation === DefinesAot::NUMERAL_PHRASE_MIVAR) {
+        elseif ($name_relation === \WrapperAot\ModelNew\Convert\Defines::NUMERAL_PHRASE_MIVAR) {
             $role_main = RoleRegistry::VESCH;
             $role_dep = RoleRegistry::SVOISTVO;
-        } elseif ($name_relation === DefinesAot::ATTRIBUTE_NOUN_MIVAR) {
+        } elseif ($name_relation === \WrapperAot\ModelNew\Convert\Defines::ATTRIBUTE_NOUN_MIVAR) {
             $role_main = RoleRegistry::VESCH;
             $role_dep = RoleRegistry::SVOISTVO;
-        } elseif ($name_relation === DefinesAot::ADJUNCT_VERB_MIVAR) {
+        } elseif ($name_relation === \WrapperAot\ModelNew\Convert\Defines::ADJUNCT_VERB_MIVAR) {
             $role_main = RoleRegistry::OTNOSHENIE;
             $role_dep = RoleRegistry::SVOISTVO;
         } // дядя Ваня
-        elseif ($name_relation === DefinesAot::SEMANTIC_COORDINATION_MIVAR) {
+        elseif ($name_relation === \WrapperAot\ModelNew\Convert\Defines::SEMANTIC_COORDINATION_MIVAR) {
             $role_main = RoleRegistry::VESCH;
             $role_dep = RoleRegistry::SVOISTVO;
         } // sub_conj[1,2,3,4,5,6,7] - связь отношений через подчинительные союзы

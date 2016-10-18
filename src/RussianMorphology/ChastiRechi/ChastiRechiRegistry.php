@@ -24,14 +24,11 @@ class ChastiRechiRegistry
     const CHISLITELNOE = 16;
     const MESTOIMENIE = 17;
     const INFINITIVE = 18;
-
     const PREDLOG = 19;
     const SOYUZ = 20;
     const CHASTICA = 21;
-
     const MEZHDOMETIE = 22;
     const PRISTAVKA = 23;
-
     CONST SOKRASHHENIE = 24;
     CONST ABBREVIATURA = 25;
 

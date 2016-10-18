@@ -11,10 +11,10 @@ namespace Aot\RussianMorphology\ChastiRechi\Chastica;
 class Factory extends \Aot\RussianMorphology\FactoryBase
 {
     /**
-     * @param \DictionaryWord $dw
+     * @param \WrapperAot\ModelNew\Convert\DictionaryWord $dw
      * @return \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base[]
      */
-    public function build(\DictionaryWord $dw)
+    public function build(\WrapperAot\ModelNew\Convert\DictionaryWord $dw)
     {
         $text = $dw->word_form;
         $words = [];

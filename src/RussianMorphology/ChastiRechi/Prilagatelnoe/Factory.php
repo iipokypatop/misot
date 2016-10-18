@@ -43,7 +43,11 @@ use Aot\RussianMorphology\ChastiRechi\Prilagatelnoe\Morphology\StepenSravneniya\
 class Factory extends \Aot\RussianMorphology\FactoryBase
 {
 
-    public function build(\DictionaryWord $dw)
+    /**
+     * @param \WrapperAot\ModelNew\Convert\DictionaryWord $dw
+     * @return array
+     */
+    public function build(\WrapperAot\ModelNew\Convert\DictionaryWord $dw)
     {
         $text = $dw->word_form;
         $words = [];

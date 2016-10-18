@@ -63,14 +63,14 @@ class DMivarDictionary
                                     $param['short_value'],
                                     isset($param['value']) ? $param['value'] : array());
                             }
-                            $dw = new \DictionaryWord($dw['id_word_form'],
+                            $dw = \WrapperAot\ModelNew\Convert\DictionaryWord::create($dw['id_word_form'],
                                 $dw['word_form'],
                                 $dw['initial_form'],
                                 $dw['id_word_class'],
                                 $dw['name_word_class'],
                                 $dw['parametrs']);
                         } else if (isset($dw['id_word_form'])) {
-                            $dw = new \DictionaryWord($dw['id_word_form'],
+                            $dw = \WrapperAot\ModelNew\Convert\DictionaryWord::create($dw['id_word_form'],
                                 $dw['word_form'],
                                 $dw['initial_form'],
                                 $dw['id_word_class'],

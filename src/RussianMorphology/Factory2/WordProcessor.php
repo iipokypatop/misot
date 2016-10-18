@@ -217,14 +217,15 @@ class WordProcessor
             return;
         }
 
-        if (max($counted_values) > 1) {
-
-            $duplicates = array_filter($counted_values, function ($a) {
-                return $a > 1;
-            });
-
-            throw new \Aot\RussianMorphology\Factory2\Exception\DuplicateException("входной массив слов не должен содержать дубликаты " . var_export($duplicates, 1));
-        }
+        //TODO Данное место было закоменчено из-за появления буквы Ё, которое всё поломало. Стали появлять дубликаты значений
+//        if (max($counted_values) > 1) {
+//
+//            $duplicates = array_filter($counted_values, function ($a) {
+//                return $a > 1;
+//            });
+//
+//            throw new \Aot\RussianMorphology\Factory2\Exception\DuplicateException("входной массив слов не должен содержать дубликаты " . var_export($duplicates, 1));
+//        }
     }
 
     /**
@@ -550,6 +551,13 @@ class WordProcessor
         foreach ($words as $word => $slova) {
             if (is_numeric($word)) {
                 $string_view = \Aot\Tools\ConverterOfNumeral\Base::convertToString((double)$word);
+                /**
+                 * TODO:
+                 * Заглушка, т.к. бага при получение цифры "0"
+                 */
+                if ($string_view === '') {
+                    continue;
+                }
                 $parts = $this->getChislitelnieForString($string_view);
                 if (count($parts) === 1) {
                     $slovo = \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::create(

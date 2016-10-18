@@ -65,19 +65,20 @@ class ParserManager
         $connection_string = null
     ) {
 
-        if ($connection_string === null) {
-            $config = \MivarUtils\Common\Config::getConfig();
-
-            $db = $config['misot']['intelligence']['db'];
-
-            $connection_string =
-                \MivarUtils\Common\Config::build_connection_string(
-                    $db['host'],
-                    $db['dbname'],
-                    $db['user'],
-                    $db['password']
-                );
-        }
+        //TODO Предположительно не нужная вещь, пока что "выключу"
+//        if ($connection_string === null) {
+//            $config = \MivarUtils\Common\Config::getConfig();
+//
+//            $db = $config['misot']['intelligence']['db'];
+//
+//            $connection_string =
+//                \MivarUtils\Common\Config::build_connection_string(
+//                    $db['host'],
+//                    $db['dbname'],
+//                    $db['user'],
+//                    $db['password']
+//                );
+//        }
 
         //$this->reg_parser = new RegParser;
         $this->reg_parser = new Text;
