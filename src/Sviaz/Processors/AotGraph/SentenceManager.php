@@ -21,7 +21,7 @@ class SentenceManager
     protected $map_aot_id_sentence_id = [];
 
     /** @var string[] */
-    protected $punctuation = [',', '.', ';', ':', '?', '!']; // знаки пунктуации
+    protected static $punctuation = [',', '.', ';', ':', '?', '!']; // знаки пунктуации
 
 
     /**
@@ -61,7 +61,7 @@ class SentenceManager
     {
         $map = [];
         foreach ($sentence_words as $id => $word) {
-            if (!in_array($word, $this->punctuation)) {
+            if (!in_array($word, self::$punctuation)) {
                 $map[] = $id;
             }
         }
@@ -123,7 +123,7 @@ class SentenceManager
         $tmp_map_aot_id_sentence_id = [];
         $main_id = null;
         foreach ($tmp_sentence_words as $id => $word) {
-            if (!in_array($word, $this->punctuation)) {
+            if (!in_array($word, self::$punctuation)) {
                 if ($word !== null) {
                     $tmp_map_aot_id_sentence_id[] = $id;
                     $main_id = $id;
