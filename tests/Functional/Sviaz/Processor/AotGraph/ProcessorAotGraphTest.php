@@ -6,9 +6,50 @@ use Aot\Sviaz\Processors\AotGraph\SyntaxModelManager\PostProcessors\ChangeWordCl
 
 class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 {
+
+    public function testBuildGraphBySentence()
+    {
+        // TODO:  тесты
+        $sentence_words = [
+            'Мамин-Сибиряк',
+            'купил',
+            'сине-зеленые',
+            'штаны',
+            ',',
+            'он',
+            'Призывался-Филипповский',
+            'сельсоветом',
+            '!',
+        ];
+
+        $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
+        $graph = $aot_graph->runBySentenceWords($sentence_words);
+        $slova_collection = \MivarTest\PHPUnitHelper::getProtectedProperty($aot_graph, 'slova_collection');
+        /**
+         * АОТ:
+         * 'Мамин-Сибиряк' разбивается на 2 слова: 1 -> 2 (9 -> 10)
+         * 'сине-зеленые' остаются одним словом: 1 -> 1 (10 -> 10)
+         * 'Призывался-Филипповский' разбивается на 2 слова: 1 -> 2 (10 -> 11)
+         * Знаки препинания не считаются, их 2: 2 -> 0 (11 -> 9)
+         *
+         */
+        $this->assertCount(9, $slova_collection);
+
+        $sentence_manager = \MivarTest\PHPUnitHelper::getProtectedProperty($aot_graph, 'sentence_manager');
+        $sentence = \MivarTest\PHPUnitHelper::getProtectedProperty($sentence_manager, 'sentence');
+        $map_aot_id_sentence_id = \MivarTest\PHPUnitHelper::getProtectedProperty($sentence_manager, 'map_aot_id_sentence_id');
+        /**
+         * 'Мамин-Сибиряк', 'сине-зеленые', 'Призывался-Филипповский' - считаются за одну конструкцию
+         * Знаки препинания не учитываются (2 штуки),
+         * итого: (9 - 2) = 7
+         */
+        $this->assertCount(7, $map_aot_id_sentence_id);
+        $this->assertEquals('Мамин-Сибиряк купил сине-зеленые штаны , он Призывался-Филипповский сельсоветом !', $sentence);
+    }
+
     public function testLaunchAndBuildGraph()
     {
-        $sentence = [
+        $sentence_words = [
             'Папа',
             'пошел',
             'в',
@@ -26,7 +67,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
             '.',
         ];
         $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
-        $graph = $aot_graph->runBySentenceWords($sentence);
+        $graph = $aot_graph->runBySentenceWords($sentence_words);
 
         /** @var \Aot\Graph\Slovo\Vertex $vertex */
         foreach ($graph->getVertices() as $vertex) {

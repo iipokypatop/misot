@@ -21,7 +21,7 @@ class SentenceManager
     protected $map_aot_id_sentence_id = [];
 
     /** @var string[] */
-    protected $punctuation = [',', '.', ';', ':']; // знаки пунктуации
+    protected static $punctuation = [',', '.', ';', ':', '?', '!']; // знаки пунктуации
 
 
     /**
@@ -61,7 +61,7 @@ class SentenceManager
     {
         $map = [];
         foreach ($sentence_words as $id => $word) {
-            if (!in_array($word, $this->punctuation)) {
+            if (!in_array($word, self::$punctuation)) {
                 $map[] = $id;
             }
         }
@@ -110,10 +110,8 @@ class SentenceManager
      */
     protected function rebuildMapsForDifficultWords()
     {
-        $tmp_map_aot_id_sentence_id = [];
         $tmp_sentence_words = [];
 
-        $count_tmp_map_aot_id_sentence_id = count($tmp_map_aot_id_sentence_id);
         foreach ($this->sentence_words as $index => $sentence_word) {
             $tmp_sentence_words[] = $sentence_word;
             $count_parts = $this->countPart($sentence_word);
@@ -125,7 +123,7 @@ class SentenceManager
         $tmp_map_aot_id_sentence_id = [];
         $main_id = null;
         foreach ($tmp_sentence_words as $id => $word) {
-            if (!in_array($word, $this->punctuation)) {
+            if (!in_array($word, self::$punctuation)) {
                 if ($word !== null) {
                     $tmp_map_aot_id_sentence_id[] = $id;
                     $main_id = $id;
@@ -151,6 +149,24 @@ class SentenceManager
     {
         // Делить слово может не что иное как пробел
         return (preg_match_all('#\s+#ui', $word) + 1);
+    }
+
+    /**
+     * @param \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[] $syntax_model
+     * @return bool
+     */
+    public function hasOffset(array $syntax_model)
+    {
+        foreach ($syntax_model as $point) {
+            assert(is_a($point, \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel::class, true));
+        }
+
+        $positions = [];
+        foreach ($syntax_model as $point) {
+            $positions[$point->kw][] = $point;
+        }
+
+        return count($positions) !== count($this->map_aot_id_sentence_id);
     }
 
 }

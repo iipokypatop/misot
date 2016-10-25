@@ -25,6 +25,9 @@ class Base
     /** @var  \Aot\Sviaz\Processors\AotGraph\CollocationManager\Manager */
     protected $collocation_manager;
 
+    /** @var bool */
+    protected $use_initial_form_aot_as_word_form = false;
+
     /**
      * @return static
      */
@@ -89,12 +92,17 @@ class Base
 
         $syntax_model = $this->createSyntaxModel($this->sentence_manager->getSentence());
 
+
         if (empty($syntax_model)) {
-            $graph = $this->builder->buildGraph();
-        } else {
-            $links = $this->getLinkedSlova($syntax_model);
-            $graph = $this->createGraph($links, $sentence_id);
+            return $this->builder->buildGraph();
         }
+
+        if ($this->sentence_manager->hasOffset($syntax_model)) {
+            $this->use_initial_form_aot_as_word_form = true;
+        }
+
+        $links = $this->getLinkedSlova($syntax_model);
+        $graph = $this->createGraph($links, $sentence_id);
 
         $this->runFilters($graph);
 
@@ -176,8 +184,13 @@ class Base
     protected function buildSlovo(\WrapperAot\ModelNew\Convert\SentenceSpaceSPRel $point)
     {
         if (empty($this->slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)])) {
+
             $factory_slovo = $this->builder->getFactorySlovo($point->dw->id_word_class);
-            $point->dw->word_form = $this->sentence_manager->getSentenceWordByAotId($point->kw);
+            if (!$this->use_initial_form_aot_as_word_form) {
+                $point->dw->word_form = $this->sentence_manager->getSentenceWordByAotId($point->kw);
+            } else {
+                $point->dw->word_form = $point->dw->initial_form;
+            }
             $slovo = $factory_slovo->build($point->dw)[0];
             $this->slova_collection[$point->kw][$point->dw->initial_form][$this->getHashParameters($point->dw->parameters)] = $slovo;
         } else {
@@ -188,7 +201,7 @@ class Base
     }
 
     /**
-     * @param  $parameters
+     * @param array $parameters
      * @return string
      */
     protected function getHashParameters(array $parameters = [])
