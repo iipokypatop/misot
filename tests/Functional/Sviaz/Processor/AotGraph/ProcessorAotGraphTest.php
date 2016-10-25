@@ -6,9 +6,21 @@ use Aot\Sviaz\Processors\AotGraph\SyntaxModelManager\PostProcessors\ChangeWordCl
 
 class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 {
+
+    public function testBuildGraphBySentence()
+    {
+        $sentence_words = [
+            'Призывался-Филипповский',
+            'сельсовет',
+        ];
+        $sentence = 'Призывался-Филипповский сельсовет';
+        $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
+        $graph = $aot_graph->runBySentenceWords($sentence_words);
+    }
+
     public function testLaunchAndBuildGraph()
     {
-        $sentence = [
+        $sentence_words = [
             'Папа',
             'пошел',
             'в',
@@ -26,7 +38,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
             '.',
         ];
         $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
-        $graph = $aot_graph->runBySentenceWords($sentence);
+        $graph = $aot_graph->runBySentenceWords($sentence_words);
 
         /** @var \Aot\Graph\Slovo\Vertex $vertex */
         foreach ($graph->getVertices() as $vertex) {

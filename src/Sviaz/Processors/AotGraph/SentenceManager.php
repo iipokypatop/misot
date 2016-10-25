@@ -153,4 +153,23 @@ class SentenceManager
         return (preg_match_all('#\s+#ui', $word) + 1);
     }
 
+    /**
+     * @param \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[] $syntax_model
+     * @return bool
+     */
+    public function hasOffset(array $syntax_model)
+    {
+        foreach ($syntax_model as $point) {
+            assert(is_a($point, \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel::class, true));
+        }
+
+        $positions = [];
+        foreach ($syntax_model as $point) {
+            $positions[$point->kw][] = $point;
+        }
+
+
+        return count($positions) !== count($this->sentence_words);
+    }
+
 }
