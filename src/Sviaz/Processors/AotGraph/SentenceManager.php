@@ -21,7 +21,7 @@ class SentenceManager
     protected $map_aot_id_sentence_id = [];
 
     /** @var string[] */
-    protected $punctuation = [',', '.', ';', ':']; // знаки пунктуации
+    protected $punctuation = [',', '.', ';', ':', '?', '!']; // знаки пунктуации
 
 
     /**
@@ -110,10 +110,8 @@ class SentenceManager
      */
     protected function rebuildMapsForDifficultWords()
     {
-        $tmp_map_aot_id_sentence_id = [];
         $tmp_sentence_words = [];
 
-        $count_tmp_map_aot_id_sentence_id = count($tmp_map_aot_id_sentence_id);
         foreach ($this->sentence_words as $index => $sentence_word) {
             $tmp_sentence_words[] = $sentence_word;
             $count_parts = $this->countPart($sentence_word);
@@ -168,8 +166,7 @@ class SentenceManager
             $positions[$point->kw][] = $point;
         }
 
-
-        return count($positions) !== count($this->sentence_words);
+        return count($positions) !== count($this->map_aot_id_sentence_id);
     }
 
 }
