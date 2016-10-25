@@ -111,35 +111,6 @@ class Base
     }
 
     /**
-     * @param string $sentence
-     * @param int $sentence_id
-     * @return \Aot\Graph\Slovo\Graph
-     */
-    public function runBySentence($sentence, $sentence_id = 0)
-    {
-        assert(is_string($sentence));
-        assert(is_int($sentence_id));
-
-//        $this->sentence_manager = \Aot\Sviaz\Processors\AotGraph\SentenceManager::create();
-
-        $syntax_model = $this->createSyntaxModel($sentence);
-
-        if (empty($syntax_model)) {
-            return $this->builder->buildGraph();
-        }
-
-
-        $links = $this->getLinkedSlova($syntax_model);
-        $graph = $this->createGraph($links, $sentence_id);
-
-
-        $this->runFilters($graph);
-
-        $this->collocation_manager->run($graph);
-        return $graph;
-    }
-
-    /**
      * @param \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[] $syntax_model
      * @return Link[]
      */
