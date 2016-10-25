@@ -32,6 +32,8 @@ class ChastiRechiRegistry
     CONST SOKRASHHENIE = 24;
     CONST ABBREVIATURA = 25;
 
+    CONST FRAZ = 29;
+
 
     public static function getNames()
     {
@@ -53,6 +55,8 @@ class ChastiRechiRegistry
 
             static::MEZHDOMETIE => 'междометие',
             static::PRISTAVKA => 'приставка',
+
+            static::FRAZ => 'фразеологизм',
         ];
     }
 
@@ -75,6 +79,8 @@ class ChastiRechiRegistry
 
             static::MEZHDOMETIE => Mezhdometie\Base::class,
             static::PRISTAVKA => Pristavka\Base::class,
+
+            static::FRAZ => Fraz\Base::class,
         ];
     }
 
@@ -98,6 +104,8 @@ class ChastiRechiRegistry
             static::SOYUZ => Soyuz\Factory::get(),
 
             static::MEZHDOMETIE => Mezhdometie\Factory::get(),
+
+            static::FRAZ => Fraz\Factory::get(),
             //static::PRISTAVKA => Pristavka\Factory::get(),
         ];
     }

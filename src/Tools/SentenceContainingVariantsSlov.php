@@ -164,7 +164,7 @@ class SentenceContainingVariantsSlov implements \Iterator, \Countable
     public function removeByIndex($index)
     {
         assert(is_int($index));
-        if ($index < 0 || $index > $this->count() - 1) {
+        if ($index < 0 || !isset($this->slova[$index])) {
             throw new \Aot\Exception("Элемента с индексом $index не существует");
         }
         unset($this->slova[$index]);
