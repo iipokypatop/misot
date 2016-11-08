@@ -603,10 +603,11 @@ class WordProcessor
         $parts = [];
         foreach ($slova as $item) {
             foreach ($item as $slovo) {
-                if ($slovo instanceof \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base) {
+                // TODO: http://redmine.mivar.ru/issues/3654
+//                if ($slovo instanceof \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base) {
                     $parts[] = $slovo;
                     continue 2;
-                }
+//                }
             }
             throw new \Aot\Exception("Для числа $item не найдено объекта Slovo");
         }

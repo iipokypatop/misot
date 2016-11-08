@@ -92,7 +92,6 @@ class Base
 
         $syntax_model = $this->createSyntaxModel($this->sentence_manager->getSentence());
 
-
         if (empty($syntax_model)) {
             return $this->builder->buildGraph();
         }
