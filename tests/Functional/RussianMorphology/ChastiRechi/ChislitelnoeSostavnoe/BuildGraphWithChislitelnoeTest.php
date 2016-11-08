@@ -14,14 +14,13 @@ class BuildGraphWithChislitelnoeTest extends \PHPUnit_Framework_TestCase
     
     public function testRunByWords()
     {
-        $this->markTestSkipped("Пример, как строить граф по тексту с использованием составных числительных");
-
         $text = <<<EOF
             Я купил 200 яблок.
             Я купил двести яблок.
             Я купил двести двадцать три яблока.
             Я купил миллион яблок и триллион груш.
             Я купил 189 яблок, 869 груш, сто пять апельсинов.
+            1941-1945.
 EOF;
 
         $sentences = \Aot\Tools\ConvertTextIntoSlova::convert($text);

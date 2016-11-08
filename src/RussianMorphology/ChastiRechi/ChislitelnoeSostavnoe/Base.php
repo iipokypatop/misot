@@ -96,12 +96,23 @@ class Base extends \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base
         $ob->parts = $parts;
 
         $last_part = $parts[count($parts) - 1];
-        $ob->vid = $last_part->vid;
-        $ob->tip = $last_part->tip;
-        $ob->podvid = $last_part->podvid;
-        $ob->chislo = $last_part->chislo;
-        $ob->rod = $last_part->rod;
-        $ob->padeszh = $last_part->padeszh;
+
+        // TODO: http://redmine.mivar.ru/issues/3654
+        if (is_a($last_part, \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Base::class, true)) {
+            $ob->vid = $last_part->vid;
+            $ob->tip = $last_part->tip;
+            $ob->podvid = $last_part->podvid;
+            $ob->chislo = $last_part->chislo;
+            $ob->rod = $last_part->rod;
+            $ob->padeszh = $last_part->padeszh;
+        } else {
+            $ob->vid = isset($morphology_last['vid']) ? $last_part->vid : \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Vid\ClassNull::create();
+            $ob->tip = isset($morphology_last['tip']) ? $last_part->tip : \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Tip\ClassNull::create();
+            $ob->podvid = isset($morphology_last['podvid']) ? $last_part->podvid : \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Podvid\ClassNull::create();
+            $ob->chislo = isset($morphology_last['chislo']) ? $last_part->chislo : \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Chislo\ClassNull::create();
+            $ob->rod = isset($morphology_last['rod']) ? $last_part->rod : \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Rod\ClassNull::create();
+            $ob->padeszh = isset($morphology_last['padeszh']) ? $last_part->padeszh : \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\ClassNull::create();
+        }
 
         $ob->digital_view = \Aot\Tools\ConverterOfNumeral\Base::convertToDigital($text);
         $ob->initial_form = 'не забыть задать начальную форму';
