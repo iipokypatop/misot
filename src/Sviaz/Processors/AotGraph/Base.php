@@ -92,8 +92,6 @@ class Base
 
         $syntax_model = $this->createSyntaxModel($this->sentence_manager->getSentence());
 
-        $syntax_model = $this->clearFromUnknownEntities($syntax_model);
-
         if (empty($syntax_model)) {
             return $this->builder->buildGraph();
         }
@@ -310,29 +308,5 @@ class Base
             SyntaxModelManager\PostProcessors\ChangeWordClassForPointsWithNumericWord::create(),
         ]);
         return $syntax_manager->run($sentence);
-    }
-
-    /**
-     * @param \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[] $syntax_model
-     * @return \WrapperAot\ModelNew\Convert\SentenceSpaceSPRel[]
-     */
-    protected function clearFromUnknownEntities(array $syntax_model)
-    {
-        $relations_with_unknown = [];
-        foreach ($syntax_model as $id => $item) {
-            if (!is_int($item->dw->id_word_class)) {
-                $relations_with_unknown[] = $item->getOz();
-                unset($syntax_model[$id]);
-            }
-        }
-        $relations_with_unknown = array_unique($relations_with_unknown);
-
-        // todo: пока отношения с неизвестными не удаляем, потом мб придется
-//        foreach ($syntax_model as $id => $item) {
-//            if (in_array($item->getOz(), $relations_with_unknown, true)) {
-//
-//            }
-//        }
-        return $syntax_model;
     }
 }
