@@ -11,7 +11,7 @@ class BaseTest extends \AotTest\AotDataStorage
 
     public function testConvertComplexToStringLauncher(){
         $this->markTestSkipped('Для проверки');
-        $number = '58.58';
+        $number = '300260946';
         $word_processor = \Aot\RussianMorphology\Factory2\WordProcessor::create();
         $numbers_array = [$number => []];
         $word_processor->processDigitalOfNumber($numbers_array);
@@ -40,6 +40,7 @@ class BaseTest extends \AotTest\AotDataStorage
             [1234567, 'один миллион двести тридцать четыре тысячи пятьсот шестьдесят семь'],
             [58.58, 'пятьдесят восемь точка пятьдесят восемь'],
             [122352.58135512323, 'сто двадцать две тысячи триста пятьдесят два точка пятьдесят восемь миллионов сто тридцать пять тысяч пятьсот двенадцать'],
+            [300260946, 'триста миллионов двести шестьдесят тысяч девятьсот сорок шесть'],
         ];
     }
 

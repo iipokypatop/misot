@@ -84,6 +84,9 @@ class Base
 
                 // преобразуем все составные числа в слова
                 foreach ($digits as $j => $digit) {
+                    if (!isset($little_number[$digit])) {
+                        $digit = abs($digit);
+                    }
                     $digits[$j] = $little_number[$digit];
                 }
 
