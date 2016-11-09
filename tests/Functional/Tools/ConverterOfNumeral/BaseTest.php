@@ -8,12 +8,25 @@
  */
 class BaseTest extends \AotTest\AotDataStorage
 {
+
+    public function testConvertComplexToStringLauncher(){
+        $this->markTestSkipped('Для проверки');
+        $number = '58.58';
+        $word_processor = \Aot\RussianMorphology\Factory2\WordProcessor::create();
+        $numbers_array = [$number => []];
+        $word_processor->processDigitalOfNumber($numbers_array);
+    }
+
     /**
      * @dataProvider providerConvertToString
      */
     public function testConvertToString($number, $string)
     {
         $this->assertEquals($string, \Aot\Tools\ConverterOfNumeral\Base::convertToString((double)$number));
+
+        $word_processor = \Aot\RussianMorphology\Factory2\WordProcessor::create();
+        $numbers_array = [$number => []];
+        $word_processor->processDigitalOfNumber($numbers_array);
     }
 
     public function providerConvertToString()
@@ -23,7 +36,10 @@ class BaseTest extends \AotTest\AotDataStorage
             [20, 'двадцать'],
             [1945, 'одна тысяча девятьсот сорок пять'],
             [2001, 'две тысячи один'],
+            [2300, 'две тысячи триста'],
             [1234567, 'один миллион двести тридцать четыре тысячи пятьсот шестьдесят семь'],
+            [58.58, 'пятьдесят восемь точка пятьдесят восемь'],
+            [122352.58135512323, 'сто двадцать две тысячи триста пятьдесят два точка пятьдесят восемь миллионов сто тридцать пять тысяч пятьсот двенадцать'],
         ];
     }
 
