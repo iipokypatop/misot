@@ -57,6 +57,9 @@ class MorphologyRegistryParent
     const IZMENJAEMOST_PADEZHA = 30000;
 
     const TIP_MESTOIMENIYA = 31000;
+
+    const DOP_PRIZNAKI_SUSCHESTVITELNOGO = 40000;
+
     protected static $nullClassByBaseClass = [];
 
     public static function new_old()
@@ -233,6 +236,9 @@ class MorphologyRegistryParent
             static::TIP_MESTOIMENIYA => [
                 ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Tip\Base::class
             ],
+            static::DOP_PRIZNAKI_SUSCHESTVITELNOGO => [
+                ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\DopPriznaki\Base::class
+            ]
         ];
     }
 
@@ -340,6 +346,9 @@ class MorphologyRegistryParent
             static::TIP_MESTOIMENIYA => [
                 ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Tip\ClassNull::class
             ],
+            static::DOP_PRIZNAKI_SUSCHESTVITELNOGO => [
+                ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\DopPriznaki\ClassNull::class
+            ]
         ];
     }
 
@@ -387,6 +396,7 @@ class MorphologyRegistryParent
             static::RAZRYAD_PRILAGATELNOE => 'разряд прилагательного',
             static::RAZRYAD_MESTOIMENIE => 'разряд местоимение',
             static::OTGLAGOLNOST_SUSCHESTVITELNOE => 'отглагольность существительного',
+            static::DOP_PRIZNAKI_SUSCHESTVITELNOGO => 'дополнительные признаки существительного',
         ];
     }
 

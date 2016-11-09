@@ -11,6 +11,12 @@ namespace AotTest\Functional\RussianMorphology;
 
 class Issue3131Test extends \AotTest\AotDataStorage
 {
+    public function testEEE()
+    {
+        $sentences = \Aot\Tools\ConvertTextIntoSlova::convert('служил в СССР');
+        $x = 1;
+    }
+
     public function testIssue3131()
     {
         $text_1 = 'Посмотреть на неё';

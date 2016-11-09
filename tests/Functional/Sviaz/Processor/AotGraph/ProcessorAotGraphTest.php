@@ -7,6 +7,20 @@ use Aot\Sviaz\Processors\AotGraph\SyntaxModelManager\PostProcessors\ChangeWordCl
 class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 {
 
+    public function testBuildGraphAbbr()
+    {
+        // TODO:  служил в НКВД СССР
+        $sentence_words = [
+            'служил',
+            'в',
+            'СССР',
+        ];
+
+        $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
+        $graph = $aot_graph->runBySentenceWords($sentence_words);
+    }
+
+
     public function testBuildGraphBySentence()
     {
         // TODO:  тесты
