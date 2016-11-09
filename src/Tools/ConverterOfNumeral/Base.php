@@ -25,6 +25,8 @@ class Base
         $large_number = \Aot\Tools\ConverterOfNumeral\NumberIntoWordsRegistry::getLargeNumber();
         $map = \Aot\Tools\ConverterOfNumeral\NumberIntoWordsRegistry::getMap();
 
+
+        $digital_value_parts = explode('.', $digital_value);
         // TODO большой копипаст с https://habrahabr.ru/sandbox/94515/ , чуть рефакторинга и ещё больше предстоит ещё больший рефакторинг
         // обозначаем переменную в которую будем писать сгенерированный текст
         $words_of_result = [];
