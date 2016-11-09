@@ -11,6 +11,7 @@ namespace Aot\Tools\ConverterOfNumeral;
 
 class Base
 {
+    const DOT_WORD = ' точка ';
 
     /**
      * @brief большой копипаст с https://habrahabr.ru/sandbox/94515/ , чуть рефакторинга и ещё больше предстоит ещё больший рефакторинг
@@ -21,12 +22,21 @@ class Base
     public static function convertToString($digital_value)
     {
         assert(is_double($digital_value));
+        $digital_value_parts = explode('.', $digital_value);
+        $cache = [];
+        foreach ($digital_value_parts as $digital_value_part) {
+            $cache[] = static::convertDigitalPart($digital_value_part);
+        }
+
+        return join(static::DOT_WORD, $cache);
+    }
+
+    protected static function convertDigitalPart($digital_value)
+    {
         $little_number = \Aot\Tools\ConverterOfNumeral\NumberIntoWordsRegistry::getLittleNumber();
         $large_number = \Aot\Tools\ConverterOfNumeral\NumberIntoWordsRegistry::getLargeNumber();
         $map = \Aot\Tools\ConverterOfNumeral\NumberIntoWordsRegistry::getMap();
 
-
-        $digital_value_parts = explode('.', $digital_value);
         // TODO большой копипаст с https://habrahabr.ru/sandbox/94515/ , чуть рефакторинга и ещё больше предстоит ещё больший рефакторинг
         // обозначаем переменную в которую будем писать сгенерированный текст
         $words_of_result = [];
@@ -62,7 +72,7 @@ class Base
                     // $flag = $i == 1 && $mod1 != 11 && $mod1 != 12 && $mod2 < 3 ? -1 : 1;
                     $flag = $i == 1 && $mod2 < 3 ? -1 : 1;
                     if ($mod1 < 20 || $mod2 === 0) {
-                        $digits[] = $mod1;
+                        $digits[] = $flag * $mod1;
                     } else {
                         $digits[] = floor($mod1 / 10) * 10;
                         $digits[] = $flag * $mod2;
@@ -89,7 +99,6 @@ class Base
 
         // преобразуем переменную в текст и возвращаем из функции, ура!
         return join(' ', $words_of_result);
-
     }
 
 
