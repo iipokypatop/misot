@@ -21,6 +21,7 @@ use Aot\RussianMorphology\Slovo;
  * @property Morphology\Rod\Base $rod
  * @property Morphology\Sklonenie\Base $sklonenie
  * @property Morphology\Otglagolnost\Base $otglagolnost
+ * @property Morphology\DopPriznaki\Base $dop_priznak
  */
 class Base extends Slovo
 {
@@ -34,6 +35,7 @@ class Base extends Slovo
             'rod' => Morphology\Rod\Base::class,
             'sklonenie' => Morphology\Sklonenie\Base::class,
             'otglagolnost' => Morphology\Otglagolnost\Base::class,
+            'dop_priznak' => Morphology\DopPriznaki\Base::class,
         ];
     }
 
@@ -47,6 +49,7 @@ class Base extends Slovo
      * @param Morphology\Rod\Base $rod
      * @param Morphology\Sklonenie\Base Glagol
      * @param Morphology\Otglagolnost\Base $otglagolnost
+     * @param Morphology\DopPriznaki\Base $dop_priznak
      * @return static
      */
     public static function create(
@@ -57,9 +60,9 @@ class Base extends Slovo
         Morphology\Padeszh\Base $padeszh,
         Morphology\Rod\Base $rod,
         Morphology\Sklonenie\Base $sklonenie,
-        Morphology\Otglagolnost\Base $otglagolnost
-    )
-    {
+        Morphology\Otglagolnost\Base $otglagolnost,
+        Morphology\DopPriznaki\Base $dop_priznak = null
+    ) {
         $ob = new static($text);
 
         $ob->chislo = $chislo;
@@ -69,6 +72,7 @@ class Base extends Slovo
         $ob->rod = $rod;
         $ob->sklonenie = $sklonenie;
         $ob->otglagolnost = $otglagolnost;
+        $ob->dop_priznak = $dop_priznak !== null ? $dop_priznak : Morphology\DopPriznaki\ClassNull::create();
 
         return $ob;
     }

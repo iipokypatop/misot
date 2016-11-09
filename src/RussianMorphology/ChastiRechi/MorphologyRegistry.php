@@ -152,6 +152,8 @@ class MorphologyRegistry extends MorphologyRegistryParent
     const TIP_MESTOIMENIYA_MESTOIMENIE_PRILAGATELNOE = 31003;
     const TIP_MESTOIMENIYA_MESTOIMENIE_SUSHHESTVITELNOE = 31004;
 
+    const ABBREVIATURA = 40001;
+
     public static $getMorphologyGroupIdCache;
     public static $classes = [];
     public static $map_of_comparisons_morphology = [];
@@ -546,6 +548,12 @@ class MorphologyRegistry extends MorphologyRegistryParent
                     static::TIP_MESTOIMENIYA_MESTOIMENIE_SUSHHESTVITELNOE => [
                         ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Tip\Sushhestvitelnoe::class
                     ],
+                ],
+
+                static::DOP_PRIZNAKI_SUSCHESTVITELNOGO => [
+                    static::ABBREVIATURA => [
+                        ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\DopPriznaki\Abbreviatura::class
+                    ],
                 ]
 
             ];
@@ -734,6 +742,12 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::OTGLAGOLNOST_SUSCHESTVITELNOE => [
                 ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Otglagolnost\ClassNull::class
             ],
+            static::DOP_PRIZNAKI_SUSCHESTVITELNOGO => [
+                ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\DopPriznaki\ClassNull::class
+            ],
+            static::DOP_PRIZNAKI_SUSCHESTVITELNOGO => [
+                ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\DopPriznaki\ClassNull::class
+            ]
         ];
     }
 
@@ -848,6 +862,10 @@ class MorphologyRegistry extends MorphologyRegistryParent
 
             static::OTGLAGOLNOST_SUSCHESTVITELNOE => [
                 ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Otglagolnost\Base::class
+            ],
+
+            static::DOP_PRIZNAKI_SUSCHESTVITELNOGO => [
+                ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\DopPriznaki\Base::class
             ]
         ];
     }
@@ -1112,6 +1130,8 @@ class MorphologyRegistry extends MorphologyRegistryParent
             static::TIP_MESTOIMENIYA_LICHNOE_ODUSHEVLENNOE => 'личное одушевленное местоимение',
             static::TIP_MESTOIMENIYA_MESTOIMENIE_PRILAGATELNOE => 'прилагательное местоимение',
             static::TIP_MESTOIMENIYA_MESTOIMENIE_SUSHHESTVITELNOE => 'существительное местоимение',
+
+            static::ABBREVIATURA => 'аббревиатура',
 
 
             // производность предлога

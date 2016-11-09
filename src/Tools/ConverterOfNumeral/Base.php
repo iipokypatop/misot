@@ -56,7 +56,9 @@ class Base
                 // (данный блок прокомментирую при необходимости)
                 if ($mod1 = $part % 100) {
                     $mod2 = $part % 10;
-                    $flag = $i == 1 && $mod1 != 11 && $mod1 != 12 && $mod2 < 3 ? -1 : 1;
+                    // old
+                    // $flag = $i == 1 && $mod1 != 11 && $mod1 != 12 && $mod2 < 3 ? -1 : 1;
+                    $flag = $i == 1 && ($mod2 === 1 || $mod2 === 2) ? -1 : 1;
                     if ($mod1 < 20 || !$mod2) {
                         $digits[] = $flag * $mod1;
                     } else {

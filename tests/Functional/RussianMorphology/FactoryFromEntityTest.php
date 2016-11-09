@@ -21,7 +21,7 @@ class FactoryFromEntityTest extends \AotTest\AotDataStorage
             [
                 \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Base::class,
                 'any_word_text',
-                [1001, 2002, 3001, 4001, 5001, 19001, 20001, 25001],
+                [1001, 2002, 3001, 4001, 5001, 19001, 20001, 25001, 40001],
                 \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::SUSCHESTVITELNOE,
                 'initial_form',
             ],
