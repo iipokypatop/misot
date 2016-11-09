@@ -594,6 +594,7 @@ class WordProcessor
      */
     protected function getChislitelnieForString($string)
     {
+        $string = trim($string);
         $simple_words = [];
         foreach (preg_split('/\s/', $string) as $item) {
             $simple_words[$item] = $item;
