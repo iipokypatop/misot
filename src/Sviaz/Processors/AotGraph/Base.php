@@ -101,6 +101,9 @@ class Base
         }
 
         $links = $this->getLinkedSlova($syntax_model);
+
+        $links = $this->filterBrokenLinks($links);
+
         $graph = $this->createGraph($links, $sentence_id);
 
         $this->runFilters($graph);
@@ -230,29 +233,30 @@ class Base
         );
 
         foreach ($links as $link) {
-            if (!$link->isDirectLink()) {
-                $vertex_union = $this->builder->buildSoyuzVertex($graph_slova, $sentence_id, $link);
-                $this->builder->buildEdge(
-                    $vertices_manager->getVertexBySlovo(
-                        $link->getMainSlovo(),
-                        $sentence_id,
-                        $link->getMainPosition()
-                    ),
-                    $vertex_union,
-                    $link->getNameOfLink()
-                );
-
-                $this->builder->buildEdge(
-                    $vertex_union,
-                    $vertices_manager->getVertexBySlovo(
-                        $link->getDependedSlovo(),
-                        $sentence_id,
-                        $link->getDependedPosition()
-                    ),
-                    $link->getNameOfLink()
-                );
-                continue;
-            }
+            // TODO: http://redmine.mivar.ru/issues/3671
+//            if (!$link->isDirectLink()) {
+//                $vertex_union = $this->builder->buildSoyuzVertex($graph_slova, $sentence_id, $link);
+//                $this->builder->buildEdge(
+//                    $vertices_manager->getVertexBySlovo(
+//                        $link->getMainSlovo(),
+//                        $sentence_id,
+//                        $link->getMainPosition()
+//                    ),
+//                    $vertex_union,
+//                    $link->getNameOfLink()
+//                );
+//
+//                $this->builder->buildEdge(
+//                    $vertex_union,
+//                    $vertices_manager->getVertexBySlovo(
+//                        $link->getDependedSlovo(),
+//                        $sentence_id,
+//                        $link->getDependedPosition()
+//                    ),
+//                    $link->getNameOfLink()
+//                );
+//                continue;
+//            }
             $this->builder->buildEdge(
                 $vertices_manager->getVertexBySlovo(
                     $link->getMainSlovo(),
@@ -308,5 +312,19 @@ class Base
             SyntaxModelManager\PostProcessors\ChangeWordClassForPointsWithNumericWord::create(),
         ]);
         return $syntax_manager->run($sentence);
+    }
+
+    /**
+     * @param  \Aot\Sviaz\Processors\AotGraph\Link[] $links
+     * @return  \Aot\Sviaz\Processors\AotGraph\Link[]
+     */
+    protected function filterBrokenLinks(array $links)
+    {
+        foreach ($links as $index => $link) {
+            if (!$link->hasMainSlovo() || !$link->hasDependedSlovo()) {
+                unset($links[$index]);
+            }
+        }
+        return $links;
     }
 }

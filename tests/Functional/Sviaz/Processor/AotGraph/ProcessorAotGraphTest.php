@@ -221,6 +221,7 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 
     public function testAddSoyuzOnGraph()
     {
+        $this->markTestSkipped('http://redmine.mivar.ru/issues/3671');
         $sentence = [
             'папа',
             'пошел',

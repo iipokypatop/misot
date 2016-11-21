@@ -93,6 +93,14 @@ class Link
     }
 
     /**
+     * @return bool
+     */
+    public function hasMainSlovo()
+    {
+        return isset($this->main_slovo);
+    }
+
+    /**
      * @return \Aot\RussianMorphology\Slovo
      */
     public function getDependedSlovo()
@@ -109,6 +117,14 @@ class Link
     public function setDependedSlovo(\Aot\RussianMorphology\Slovo $depended_slovo)
     {
         $this->depended_slovo = $depended_slovo;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasDependedSlovo()
+    {
+        return isset($this->depended_slovo);
     }
 
     /**
