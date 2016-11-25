@@ -151,6 +151,7 @@ class Builder
             // прич
             \WrapperAot\ModelNew\Convert\Defines::PREPOSITION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::PREDLOG,
             // предлог
+            # TODO: добавить в конвертер
             # в МИСОТе нет
             # 7 =>\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::, // аббревиатура
             \WrapperAot\ModelNew\Convert\Defines::UNION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::SOYUZ,
@@ -164,11 +165,12 @@ class Builder
             \WrapperAot\ModelNew\Convert\Defines::ADVERB_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::NARECHIE,
             // нар
             \WrapperAot\ModelNew\Convert\Defines::PREDICATIVE_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::INFINITIVE,
-            // инф
-            \WrapperAot\ModelNew\Convert\Defines::NUMERAL_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::CHISLITELNOE,
             // числ
+            \WrapperAot\ModelNew\Convert\Defines::NUMERAL_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::CHISLITELNOE,
             # в МИСОТе нет
-            # 15 =>\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::, // сокращение
+            #  =>\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::, // сокращение
+            # TODO: добавить в конвертер
+            15 =>\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::FRAZ, // фразеологизм
         ];
 
         return $conformity[$id_part_of_speech_aot];
