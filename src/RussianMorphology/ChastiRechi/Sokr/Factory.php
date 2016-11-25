@@ -18,8 +18,8 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
         $text = $dw->word_form;
         $words = [];
 
-        throw new Exception('Kek!');
-        if ((int)($dw->id_word_class) === 999) {
+        if ((int)($dw->id_word_class) === 444444) {
+            throw new Exception('Kek!');
             $words[] = $word = Base::create($text);
             $word->setInitialForm($dw->initial_form);
         }

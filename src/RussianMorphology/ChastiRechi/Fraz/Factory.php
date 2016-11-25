@@ -14,7 +14,7 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
         $text = $dw->word_form;
         $words = [];
 
-        if ((int)($dw->id_word_class) === 29) {
+        if ((int)($dw->id_word_class) === 15) {
             $words[] = $word = \Aot\RussianMorphology\ChastiRechi\Fraz\Base::create($text);
             $word->setInitialForm($dw->initial_form);
         }
