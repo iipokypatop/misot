@@ -7,6 +7,12 @@ use Aot\Sviaz\Processors\AotGraph\SyntaxModelManager\PostProcessors\ChangeWordCl
 class ProcessorAotGraphTest extends \AotTest\AotDataStorage
 {
 
+    public function testBuildSokr()
+    {
+        $builder = \Aot\Sviaz\Processors\Aot\Builder::create();
+//        $builder->getFactory(15);
+    }
+
     public function testBuildGraphAbbr()
     {
         // TODO:  служил в НКВД СССР

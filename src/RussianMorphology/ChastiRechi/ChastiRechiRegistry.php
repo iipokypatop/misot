@@ -106,6 +106,7 @@ class ChastiRechiRegistry
             static::MEZHDOMETIE => Mezhdometie\Factory::get(),
 
             static::FRAZ => Fraz\Factory::get(),
+            static::SOKRASHHENIE => Sokr\Factory::get(),
             //static::PRISTAVKA => Pristavka\Factory::get(),
         ];
     }
