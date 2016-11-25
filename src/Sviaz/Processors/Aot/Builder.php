@@ -161,7 +161,7 @@ class Builder
             // прич
             \WrapperAot\ModelNew\Convert\Defines::PREPOSITION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::PREDLOG,
             // предлог
-            # в МИСОТе нет
+            # # TODO: добавить в конвертер, и в МИСОТ
             # 7 =>\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::, // аббревиатура
             \WrapperAot\ModelNew\Convert\Defines::UNION_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::SOYUZ,
             // союз
@@ -177,8 +177,8 @@ class Builder
             // инф
             \WrapperAot\ModelNew\Convert\Defines::NUMERAL_CLASS_ID => \Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::CHISLITELNOE,
             // числ
-            # в МИСОТе нет
-            # 15 =>\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::, // сокращение
+            # TODO: добавить в конвертер
+            15 =>\Aot\RussianMorphology\ChastiRechi\ChastiRechiRegistry::SOKRASHHENIE, // сокращение
         ];
 
         return $conformity[$id_part_of_speech_aot];
