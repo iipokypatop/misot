@@ -252,6 +252,9 @@ class MorphologyRegistry extends MorphologyRegistryParent
                         ChastiRechiRegistry::CHISLITELNOE => \Aot\RussianMorphology\ChastiRechi\Chislitelnoe\Morphology\Padeszh\Predlozshnij::class,
                         ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Padeszh\Predlozshnij::class,
                     ],
+                    static::IZMENJAEMOST_PADEZHA_NEIZMENJAEMYJ_PADEZH => [
+                        ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Neizmenyaemiy::class,
+                    ]
                 ],
                 static::ROD => [
                     static::ROD_ZHENSKII => [
@@ -553,6 +556,12 @@ class MorphologyRegistry extends MorphologyRegistryParent
                 static::DOP_PRIZNAKI_SUSCHESTVITELNOGO => [
                     static::ABBREVIATURA => [
                         ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\DopPriznaki\Abbreviatura::class
+                    ],
+                ],
+
+                static::IZMENJAEMOST_PADEZHA => [
+                    static::IZMENJAEMOST_PADEZHA_NEIZMENJAEMYJ_PADEZH => [
+                        ChastiRechiRegistry::SUSCHESTVITELNOE => \Aot\RussianMorphology\ChastiRechi\Suschestvitelnoe\Morphology\Padeszh\Neizmenyaemiy::class
                     ],
                 ]
 
