@@ -71,6 +71,11 @@ class BaseFactory implements IFactory
                     //если кондидат выходит за рамки самого предложения
                     continue 2;
                 }
+                // TODO: разобраться откуда такая ситуация
+                if(!isset($map_initial_forms_and_vertex_by_positions[$start_position + $relative_index])){
+                    continue 2;
+                }
+
                 /** @var VertexAndInitialForm $initial_form_and_vertex */
                 foreach ($map_initial_forms_and_vertex_by_positions[$start_position + $relative_index] as $initial_form_and_vertex) {
                     if ($initial_form_and_vertex->getInitialForm() === $collocation_element) {
