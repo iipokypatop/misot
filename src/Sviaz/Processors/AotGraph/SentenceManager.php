@@ -166,7 +166,9 @@ class SentenceManager
             $positions[$point->kw][] = $point;
         }
 
-        return count($positions) !== count($this->map_aot_id_sentence_id);
+        return
+            count($positions) !== count($this->map_aot_id_sentence_id)
+            || !empty(array_diff_key($positions, $this->map_aot_id_sentence_id));
     }
 
 }
