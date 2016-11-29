@@ -36,7 +36,7 @@ abstract class Slovo implements \Aot\Unit
      */
     protected function __construct($text)
     {
-        assert(!empty($text));
+        assert($text !== null && $text !== '');
 
         $this->text = $text;
     }
