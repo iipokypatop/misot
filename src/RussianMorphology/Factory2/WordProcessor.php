@@ -429,7 +429,7 @@ class WordProcessor
                         'priznak_value_id' => $id
                     ];*/
                     throw new \LogicException(
-                        "chast rechi id = $chast_rechi_id doesn't support priznak value id =  $id"
+                        "chast rechi id = {$chast_rechi_id} doesn't support priznak value id =  {$id}"
                     );
                 }
 

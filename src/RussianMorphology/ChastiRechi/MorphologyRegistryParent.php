@@ -377,7 +377,6 @@ class MorphologyRegistryParent
             static::SKLONENIE => 'склонение',
             static::NEIZMENYAJMOST => 'изменяемость',
             static::PEREHODNOST => 'переходность',
-            static::RAZRYAD_MESTOIMENIE => 'разряд метоимение',
             static::FORMA => 'форма',
             static::STEPEN_SRAVNENIYA => 'степень сравнения',
             static::VID => 'вид',
@@ -395,6 +394,7 @@ class MorphologyRegistryParent
             static::TIP_MESTOIMENIYA => 'тип местоимения',
             static::RAZRYAD_PRILAGATELNOE => 'разряд прилагательного',
             static::RAZRYAD_MESTOIMENIE => 'разряд местоимение',
+            static::RAZRYAD_NARECHIE => 'разряд наречия',
             static::OTGLAGOLNOST_SUSCHESTVITELNOE => 'отглагольность существительного',
             static::DOP_PRIZNAKI_SUSCHESTVITELNOGO => 'дополнительные признаки существительного',
         ];

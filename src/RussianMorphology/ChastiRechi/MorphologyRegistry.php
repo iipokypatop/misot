@@ -382,6 +382,27 @@ class MorphologyRegistry extends MorphologyRegistryParent
                         ChastiRechiRegistry::MESTOIMENIE => \Aot\RussianMorphology\ChastiRechi\Mestoimenie\Morphology\Razryad\Voprositelnoe::class,
                     ],
                 ],
+                // TODO: стоит заглушка
+                static::RAZRYAD_NARECHIE => [
+                    static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_CELI => [
+                        ChastiRechiRegistry::NARECHIE => \Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\Razryad\ClassNull::class,
+                    ],
+                    static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_MESTA => [
+                        ChastiRechiRegistry::NARECHIE => \Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\Razryad\ClassNull::class,
+                    ],
+                    static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_PRICHINY => [
+                        ChastiRechiRegistry::NARECHIE => \Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\Razryad\ClassNull::class,
+                    ],
+                    static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_VREMENI => [
+                        ChastiRechiRegistry::NARECHIE => \Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\Razryad\ClassNull::class,
+                    ],
+                    static::RAZRYAD_NARECHIE_OPREDELITELNYJ_MERY_I_STEPENI => [
+                        ChastiRechiRegistry::NARECHIE => \Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\Razryad\ClassNull::class,
+                    ],
+                    static::RAZRYAD_NARECHIE_OPREDELITELNYJ_OBRAZA_DEJSTVIJA => [
+                        ChastiRechiRegistry::NARECHIE => \Aot\RussianMorphology\ChastiRechi\Narechie\Morphology\Razryad\ClassNull::class,
+                    ],
+                ],
 
                 static::RAZRYAD_PRILAGATELNOE => [
                     static::RAZRYAD_PRILAGATELNOE_KACHESTVENNOE => [
@@ -1148,13 +1169,13 @@ class MorphologyRegistry extends MorphologyRegistryParent
 //            static::PROIZVODNOST_PREDLOG_NEPROIZVODNIJ => 'непроизводный предлог',
 
 
-            // разряд наречия
-//            static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_MESTA => 'наречие обстоятельства места',
-//            static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_CELI => 'наречие обстоятельства цели',
-//            static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_PRICHINY => 'наречие обстоятельства причины',
-//            static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_VREMENI => 'наречие обстоятельства времени',
-//            static::RAZRYAD_NARECHIE_OPREDELITELNYJ_MERY_I_STEPENI => 'наречие меры и степени',
-//            static::RAZRYAD_NARECHIE_OPREDELITELNYJ_OBRAZA_DEJSTVIJA => 'наречие образа действия',
+//             разряд наречия
+            static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_MESTA => 'наречие обстоятельства места',
+            static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_CELI => 'наречие обстоятельства цели',
+            static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_PRICHINY => 'наречие обстоятельства причины',
+            static::RAZRYAD_NARECHIE_OBSTOJATELSTVENNYJ_VREMENI => 'наречие обстоятельства времени',
+            static::RAZRYAD_NARECHIE_OPREDELITELNYJ_MERY_I_STEPENI => 'наречие меры и степени',
+            static::RAZRYAD_NARECHIE_OPREDELITELNYJ_OBRAZA_DEJSTVIJA => 'наречие образа действия',
 
             // разряд предлога
 //            static::RAZRJAD_PREDLOG_CELEVOJ => 'предлог целевой',
