@@ -126,6 +126,7 @@ class Base
                 $matches[$index] = $ordinal_numbers[$number];
                 continue;
             }
+            return null;
         }
 
         $sum = 0;
