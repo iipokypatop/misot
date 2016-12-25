@@ -36,7 +36,6 @@ class BaseSubstitute implements ISubstitute
             assert(is_a($collocation, ContainerCollocation::class, true));
         }
 
-
         foreach ($collocations as $collocation) {
             $vertices_of_collocation = $collocation->getVerticesOfCollocation();
 
@@ -88,13 +87,13 @@ class BaseSubstitute implements ISubstitute
             }
         }
 
-        $this->fixPositionInGraph($graph);
+        $this->fixPositionsInGraph($graph);
     }
 
     /**
      * @param \Aot\Graph\Slovo\Graph $graph
      */
-    protected function fixPositionInGraph(\Aot\Graph\Slovo\Graph $graph)
+    protected function fixPositionsInGraph(\Aot\Graph\Slovo\Graph $graph)
     {
         //TODO именно здесь надо будет сдвигать позиции, если это понадобится
     }

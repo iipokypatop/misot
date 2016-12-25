@@ -33,7 +33,8 @@ class Manager
         $ob = new static();
         $ob->factory_collocation_candidates = FactoriesCollocationCandidate\BaseFactory::createDefault();
         $ob->filters_collocation_candidate[] = FiltersCollocationCandidate\BaseFilter::create();
-        $ob->substitute_words_in_collocation = SubstitutesWordsInCollocation\BaseSubstitute::create();
+//        $ob->substitute_words_in_collocation = SubstitutesWordsInCollocation\BaseSubstitute::create();
+        $ob->substitute_words_in_collocation = SubstitutesWordsInCollocation\ReplaceByPosition::create();
         return $ob;
     }
 
@@ -68,8 +69,32 @@ class Manager
         if ($this->substitute_words_in_collocation === null) {
             throw new \Aot\Exception("Не задан алгоритм внедрения словосочетания");
         }
+        $collocations = $this->filterFromClones($collocations);
         $this->substitute_words_in_collocation->run($graph, $collocations);
     }
+
+
+
+    /**
+     * @param \Aot\Sviaz\Processors\AotGraph\CollocationManager\Additions\ContainerCollocation[] $collocations $collocations
+     * @return \Aot\Sviaz\Processors\AotGraph\CollocationManager\Additions\ContainerCollocation[]
+     */
+    protected function filterFromClones(array $collocations)
+    {
+        foreach ($collocations as $id1 => $collocation1) {
+            foreach ($collocations as $id2 => $collocation2) {
+                if ($collocation1 !== $collocation2
+                    && $collocation1->getStartPosition() === $collocation2->getStartPosition()
+                    && $collocation1->getEndPosition() === $collocation2->getEndPosition()
+                    && $collocation1->getInitialFormsOfWordsOfCollocation() === $collocation2->getInitialFormsOfWordsOfCollocation()
+                ) {
+                    unset($collocations[$id1]);
+                }
+            }
+        }
+        return $collocations;
+    }
+
 
     /**
      * @return FactoriesCollocationCandidate\IFactory

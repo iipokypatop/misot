@@ -85,4 +85,12 @@ class Vertex extends \BaseGraph\Vertex
     {
         return $this->getGraph()->isVertexHasPosition($this);
     }
+
+    /**
+     * @return int
+     */
+    public function getSentenceId()
+    {
+        return $this->sentence_id;
+    }
 }
