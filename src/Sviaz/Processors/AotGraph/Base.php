@@ -310,6 +310,7 @@ class Base
         $syntax_manager = \Aot\Sviaz\Processors\AotGraph\SyntaxModelManager\Base::create();
         $syntax_manager->addPostProcessors([
             SyntaxModelManager\PostProcessors\ChangeWordClassForPointsWithNumericWord::create(),
+            SyntaxModelManager\PostProcessors\KeySentenceProcessing::create(),
         ]);
         return $syntax_manager->run($sentence);
     }
