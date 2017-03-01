@@ -25,6 +25,20 @@ class ProcessorAotGraphTest extends \AotTest\AotDataStorage
         $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
         $graph = $aot_graph->runBySentenceWords($sentence_words);
     }
+    public function testBuildGraphWithNumbers()
+    {
+        // TODO:  служил в НКВД СССР
+        $sentence_words = [
+            'служил',
+            'в',
+            '1995',
+            'году',
+            '.',
+        ];
+
+        $aot_graph = \Aot\Sviaz\Processors\AotGraph\Base::create();
+        $graph = $aot_graph->runBySentenceWords($sentence_words);
+    }
 
 
     public function testBuildGraphOAO()

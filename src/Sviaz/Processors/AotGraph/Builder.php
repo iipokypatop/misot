@@ -5,7 +5,8 @@ namespace Aot\Sviaz\Processors\AotGraph;
 class Builder
 {
     /** @var \Aot\RussianMorphology\FactoryBase[] */
-    protected $factories;
+    protected $factories = [];
+
     const PREPOSITION_RELATION = 'prepositional_phrase'; // связь с предлогом
 
     public static function create()

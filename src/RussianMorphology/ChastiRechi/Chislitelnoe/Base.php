@@ -99,11 +99,13 @@ class Base extends Slovo
         Morphology\Chislo\Base $chislo,
         Morphology\Rod\Base $rod,
         Morphology\Padeszh\Base $padeszh
-    )
-    {
+    ) {
 
         $ob = new static($text);
 
+        if (is_numeric($text)) {
+            $ob->setDigitalView((double)$text);
+        }
         $ob->vid = $vid;
         $ob->tip = $tip;
         $ob->podvid = $podvid;
@@ -125,5 +127,5 @@ class Base extends Slovo
         }
         return $this->digital_view;
     }
-    
+
 }
