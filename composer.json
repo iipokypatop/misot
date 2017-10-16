@@ -12,7 +12,7 @@
   "require": {
     "phpunit/phpunit": "4.8.*",
     "doctrine/orm": "2.5.*",
-    "doctrine/migrations": "dev-master",
+    "doctrine/migrations": "1.3.x-dev",
     "psr/log": "1.0.0",
     "symfony/yaml": "2.7.*",
     "mivar-projects/test-utils": "dev-develop",
