@@ -88,6 +88,11 @@ class Factory extends \Aot\RussianMorphology\FactoryBase
                                     );
 
                                     $word->setInitialForm($dw->initial_form);
+                                    
+                                    // костыль 
+                                    if (is_numeric($dw->initial_form)) {
+                                        $word->setDigitalView((double)$dw->initial_form);
+                                    }
                                 }
                             }
                         }
